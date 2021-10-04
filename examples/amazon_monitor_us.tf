@@ -39,6 +39,7 @@ provider "site24x7" {
   max_retries = 4
 
 }
+
 // Site24x7 Amazon Monitor API doc - https://www.site24x7.com/help/api/#amazon-webservice-monitor
 resource "site24x7_amazon_monitor" "aws_monitor_site24x7" {
   // (Required) Display name for the monitor
@@ -53,3 +54,4 @@ resource "site24x7_amazon_monitor" "aws_monitor_site24x7" {
   // for knowing service ID.
   aws_discover_services = ["1"]
 }
+

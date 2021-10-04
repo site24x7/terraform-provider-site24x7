@@ -18,3 +18,5 @@
 .gitignore
 terraform.tfstate
 terraform.tfstate.backup
+terraform-provider-site24x7
+.gitignore
