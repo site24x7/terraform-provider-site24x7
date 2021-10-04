@@ -9,19 +9,19 @@ terraform {
   }
 }
 
-// Authentication API doc: https://www.site24x7.com/help/api/#authentication
+// Authentication API doc - https://www.site24x7.com/help/api/#authentication
 provider "site24x7" {
   // The client ID will be looked up in the SITE24X7_OAUTH2_CLIENT_ID
   // environment variable if the attribute is empty or omitted.
-  # oauth2_client_id = "<SITE24X7_OAUTH2_CLIENT_ID>"
+  oauth2_client_id = "<SITE24X7_OAUTH2_CLIENT_ID>"
 
-  # // The client secret will be looked up in the SITE24X7_OAUTH2_CLIENT_SECRET
-  # // environment variable if the attribute is empty or omitted.
-  # oauth2_client_secret = "<SITE24X7_OAUTH2_CLIENT_SECRET>"
+  // The client secret will be looked up in the SITE24X7_OAUTH2_CLIENT_SECRET
+  // environment variable if the attribute is empty or omitted.
+  oauth2_client_secret = "<SITE24X7_OAUTH2_CLIENT_SECRET>"
 
-  # // The refresh token will be looked up in the SITE24X7_OAUTH2_REFRESH_TOKEN
-  # // environment variable if the attribute is empty or omitted.
-  # oauth2_refresh_token = "<SITE24X7_OAUTH2_REFRESH_TOKEN>"
+  // The refresh token will be looked up in the SITE24X7_OAUTH2_REFRESH_TOKEN
+  // environment variable if the attribute is empty or omitted.
+  oauth2_refresh_token = "<SITE24X7_OAUTH2_REFRESH_TOKEN>"
 
   // Specify the data center from which you have obtained your
   // OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN).
@@ -39,11 +39,17 @@ provider "site24x7" {
   max_retries = 4
 
 }
-
+// Site24x7 Amazon Monitor API doc - https://www.site24x7.com/help/api/#amazon-webservice-monitor
 resource "site24x7_amazon_monitor" "aws_monitor_site24x7" {
+  // (Required) Display name for the monitor
   display_name = "aws_added_via_terraform"
+  // (Required) AWS access key
   aws_access_key = ""
+  // (Required) AWS secret key
   aws_secret_key = ""
+  // (Optional) AWS discover frequency
   aws_discovery_frequency = 5
+  // (Optional) AWS services to discover. See https://www.site24x7.com/help/api/#aws_discover_services 
+  // for knowing service ID.
   aws_discover_services = ["1"]
 }

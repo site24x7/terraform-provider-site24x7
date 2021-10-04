@@ -13,3 +13,8 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+.terraform.lock.hcl
+.terraform/providers/registry.zoho.io/zoho/site24x7/1.0.0/linux_amd64
+.gitignore
+terraform.tfstate
+terraform.tfstate.backup
