@@ -1,0 +1,31 @@
+{
+  "code":0,
+  "message":"success",
+  "data":[
+    {
+      "group_id":"797300000123437",
+      "description":"checks for misc sites",
+      "health_threshold_count":1,
+      "group_type":1,
+      "display_name":"misc",
+      "monitors":[
+        "13370000004999063",
+        "79730133704999073",
+        "79730000001337083",
+        "12340000005000031"
+      ]
+    },
+    {
+      "group_id":"79123400003075053",
+      "health_threshold_count":1,
+      "group_type":1,
+      "display_name":"api"
+    },
+    {
+      "group_id":"79730456703075223",
+      "health_threshold_count":1,
+      "group_type":1,
+      "display_name":"web"
+    }
+  ]
+}

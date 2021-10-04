@@ -1,0 +1,12 @@
+{
+  "action_id": "123",
+  "action_type": 1,
+  "action_method": "P",
+  "send_mail": false,
+  "action_name": "takeaction",
+  "send_in_json_format": true,
+  "send_custom_parameters": true,
+  "action_url": "https://alert.generic.tld",
+  "action_timeout": 30,
+  "send_incident_parameters": true
+}

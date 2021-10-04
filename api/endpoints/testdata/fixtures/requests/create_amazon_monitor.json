@@ -1,0 +1,14 @@
+{
+  "display_name": "Amazon Monitor Display Name",
+  "type": "AMAZON",
+  "user_group_ids": [
+    "123412341234123415"
+  ],
+  "aws_access_key":"accesskey",
+  "aws_secret_key":"secretkey",
+  "notification_profile_id": "123412341234123413",  
+  "aws_discover_services": [
+    "1"
+  ],
+  "aws_discovery_frequency": 1
+}

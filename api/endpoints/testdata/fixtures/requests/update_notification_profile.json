@@ -1,0 +1,7 @@
+{
+  "profile_id": "123",
+  "profile_name": "Notifi Profile",
+  "rca_needed": true,
+  "escalation_wait_time": 60,
+  "notify_after_executing_actions": true
+}

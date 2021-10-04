@@ -1,0 +1,41 @@
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "monitors": [
+      {
+        "name": "Server1",
+        "down_reason": "maintenance",
+        "duration": "12 days 4 Hrs 55 Mins",
+        "attribute_key": "cpu_used",
+        "status": 0,
+        "last_polled_time": "2015-07-21T16:37:41+0530",
+        "server_type": "WINDOWS",
+        "attribute_label": "CPU",
+        "monitor_type": "SERVER",
+        "unit": "%",
+        "attribute_value": "-",
+        "tags": [
+            "down_tag"
+        ],  
+        "monitor_id": "355000001863001"
+      },
+      {
+        "name": "Site1",
+        "attribute_key": "response_time",
+        "status": 2,
+        "last_polled_time": "2015-07-21T15:30:35+0530",
+        "attributeName": "RESPONSETIME",
+        "monitor_type": "URL",
+        "attribute_label": "Response Time",
+        "attribute_value": 308,
+        "unit": "ms",
+        "outage_id": "1526624941082",
+        "downtime_millis": "12885615",
+        "down_reason": "Response time from California - IN exceeded 2000 ms.",
+        "duration": "3 Hrs 35 Mins ",
+        "monitor_id": "355000001863103"
+      }
+    ]
+  }
+}

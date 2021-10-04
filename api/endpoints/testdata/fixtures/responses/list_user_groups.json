@@ -1,0 +1,27 @@
+{
+  "code":0,
+  "message":"success",
+  "data":[
+    {
+      "user_group_id":"765432344567878",
+      "display_name":"Tester",
+      "attribute_group_id" : "098577445678", 
+      "users":[
+        "654367756756",
+        "232423435455"
+      ]
+    },
+    {
+      "user_group_id":"797300000123437",
+      "display_name":"misc",
+      "users":[
+        "79730000001337083",
+        "12340000005000031"
+      ]
+    },
+    {
+      "user_group_id":"2434322",
+      "display_name":"foo"
+    }
+  ]
+}
