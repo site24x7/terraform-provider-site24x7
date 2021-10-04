@@ -40,20 +40,15 @@ terraform {
 ```
 A terraform provider for managing the following resources in Site24x7:
 
-- site24x7_website_monitor ([Site24x7 Website Monitor API doc](https://www.site24x7.com/help/api/#website))
-- site24x7_ssl_monitor ([Site24x7 SSL Certificate Monitor API doc](https://www.site24x7.com/help/api/#ssl-certificate))
-- site24x7_rest_api_monitor ([Site24x7 Rest API Monitor API doc](https://www.site24x7.com/help/api/#rest-api))
-- site24x7_amazon_monitor ([Site24x7 Amazon Monitor API doc](https://www.site24x7.com/help/api/#amazon-webservice-monitor))
-- site24x7_url_action ([Site24x7 IT Automation API doc](https://www.site24x7.com/help/api/#it-automation))
-- site24x7_monitor_group ([Site24x7 Monitor Group API doc](https://www.site24x7.com/help/api/#monitor-groups))
-- site24x7_threshold_profile ([Site24x7 Threshold Profile API doc](https://www.site24x7.com/help/api/#threshold-website))
-- site24x7_user_group ([Site24x7 User Group API doc](https://www.site24x7.com/help/api/#user-groups))
+- Website Monitor - site24x7_website_monitor ([Site24x7 Website Monitor API doc](https://www.site24x7.com/help/api/#website))
+- SSL Certificate Monitor - site24x7_ssl_monitor ([Site24x7 SSL Certificate Monitor API doc](https://www.site24x7.com/help/api/#ssl-certificate))
+- Rest API Monitor - site24x7_rest_api_monitor ([Site24x7 Rest API Monitor API doc](https://www.site24x7.com/help/api/#rest-api))
+- Amazon Monitor - site24x7_amazon_monitor ([Site24x7 Amazon Monitor API doc](https://www.site24x7.com/help/api/#amazon-webservice-monitor))
+- URL IT Automation - site24x7_url_action ([Site24x7 IT Automation API doc](https://www.site24x7.com/help/api/#it-automation))
+- Monitor Group - site24x7_monitor_group ([Site24x7 Monitor Group API doc](https://www.site24x7.com/help/api/#monitor-groups))
+- Threshold Profile - site24x7_threshold_profile ([Site24x7 Threshold Profile API doc](https://www.site24x7.com/help/api/#threshold-website))
+- User Group - site24x7_user_group ([Site24x7 User Group API doc](https://www.site24x7.com/help/api/#user-groups))
 
-
-
-If you're developing and building the provider, follow the instructions to [install it as a plugin](https://www.terraform.io/docs/plugins/basics.html#installing-a-plugin). After placing the provider your plugins directory, run `terraform init` to initialize it.
-
-For more information on using the provider and the associated resources, please see the [provider documentation][provider_docs] page.
 
 Usage example
 -------------
@@ -183,7 +178,7 @@ Contributions are what make the open source community such an amazing place to l
 
 Copyright (c) 2021 Zoho Corporation Private Limited
 
-This project is licensed under the MIT License - see [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the MIT License - see [LICENSE](https://github.com/site24x7/terraform-provider-site24x7/blob/main/LICENSE) file for details.
 
 
 ## Acknowledgments
