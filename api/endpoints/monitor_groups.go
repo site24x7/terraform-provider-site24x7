@@ -1,11 +1,9 @@
 package endpoints
 
 import (
-	"log"
-
+	"github.com/jinzhu/copier"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	"github.com/site24x7/terraform-provider-site24x7/rest"
-	"github.com/jinzhu/copier"
 )
 
 type MonitorGroups interface {
@@ -56,10 +54,6 @@ func (c *monitorGroups) Update(group *api.MonitorGroup) (*api.MonitorGroup, erro
 	monitorGroupData := &api.MonitorGroup{}
 	copier.Copy(monitorGroupData, group)
 	monitorGroupData.GroupID = ""
-	log.Println("Monitor group update ******************* monitorGroupData : ", monitorGroupData)
-	log.Println("Monitor group update ******************* monitorGroupData.GroupID : ", monitorGroupData.GroupID)
-	log.Println("Monitor group update ******************* group : ", group)
-	log.Println("Monitor group update ******************* group.GroupID : ", group.GroupID)
 	err := c.client.
 		Put().
 		Resource("monitor_groups").

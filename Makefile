@@ -15,8 +15,6 @@ build: ## build terraform-provider-site24x7
 		-o $(BINARY) \
 		main.go
 
-## cp terraform-provider-site24x7 /usr/local/lib/terraform/registry.zoho.io/zoho/site24x7/1.0.0/linux_amd64/terraform-provider-site24x7_v1.0.0
-## cp $(BINARY) /usr/local/lib/terraform/registry.zoho.io/zoho/site24x7/1.0.0/linux_amd64/terraform-provider-site24x7_v1.0.0
 .PHONY: install
 install: build ## install terraform-provider-site24x7
 	mkdir -p $(HOME)/.terraform.d/plugins

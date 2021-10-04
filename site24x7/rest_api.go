@@ -2,14 +2,13 @@ package site24x7
 
 import (
 	"fmt"
-	"log"
 	"sort"
 	"strconv"
 
-	"github.com/site24x7/terraform-provider-site24x7/api"
-	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/site24x7/terraform-provider-site24x7/api"
+	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
 )
 
 // Sample RESTAPI POST JSON
@@ -299,7 +298,7 @@ func restApiMonitorRead(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(Client)
 
 	restApiMonitor, err := client.RestApiMonitors().Get(d.Id())
-	// log.Println("restApiMonitorRead ========================= ", restApiMonitor)
+
 	if err != nil {
 		return err
 	}
@@ -313,7 +312,7 @@ func restApiMonitorUpdate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(Client)
 
 	restApiMonitor, err := resourceDataToRestApiMonitor(d, client)
-	// log.Println("restApiMonitorUpdate ========================= ", restApiMonitor)
+
 	if err != nil {
 		return err
 	}
@@ -538,8 +537,6 @@ func updateRestApiMonitorResourceData(d *schema.ResourceData, monitor *api.RestA
 	}
 	if monitor.UnmatchingKeyword != nil {
 		unmatchingKeywordMap := make(map[string]interface{})
-		typeOfSeverity := fmt.Sprintf("%T", monitor.UnmatchingKeyword["severity"])
-		log.Println("Type of Severity : ", typeOfSeverity)
 		unmatchingKeywordMap["severity"] = int(monitor.UnmatchingKeyword["severity"].(float64))
 		unmatchingKeywordMap["value"] = monitor.UnmatchingKeyword["value"].(string)
 		d.Set("unmatching_keyword", unmatchingKeywordMap)

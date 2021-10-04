@@ -4,10 +4,10 @@ import (
 	"os"
 	"time"
 
-	"github.com/site24x7/terraform-provider-site24x7/backoff"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/terraform"
 	log "github.com/sirupsen/logrus"
+	"github.com/site24x7/terraform-provider-site24x7/backoff"
 )
 
 func Provider() terraform.ResourceProvider {
@@ -77,8 +77,8 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 		log.SetLevel(log.DebugLevel)
 	}
 	dataCenter := GetDataCenter(d.Get("data_center").(string))
-	log.Println("dataCenter GetAPIBaseURL : ", dataCenter.GetAPIBaseURL())
-	log.Println("dataCenter GetTokenURL : ", dataCenter.GetTokenURL())
+	log.Println("GetAPIBaseURL : ", dataCenter.GetAPIBaseURL())
+	log.Println("GetTokenURL : ", dataCenter.GetTokenURL())
 	config := Config{
 		ClientID:     d.Get("oauth2_client_id").(string),
 		ClientSecret: d.Get("oauth2_client_secret").(string),

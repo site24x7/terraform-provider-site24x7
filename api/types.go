@@ -238,7 +238,6 @@ func (thresholdProfile *ThresholdProfile) String() string {
 }
 
 func (thresholdProfile *ThresholdProfile) UnmarshalJSON(rawValue []byte) error {
-	// log.Println("UnMarshalling ThresholdProfile **************************** thresholdProfile : ", thresholdProfile)
 	var f interface{}
 	if err := json.Unmarshal(rawValue, &f); err != nil {
 		return err
@@ -246,10 +245,8 @@ func (thresholdProfile *ThresholdProfile) UnmarshalJSON(rawValue []byte) error {
 	if f == nil {
 		return nil
 	}
-	// log.Println("f :::::::::::::", f, rawValue)
 	m := f.(map[string]interface{})
 	for k, v := range m {
-		// log.Println("K : ", k, v)
 		if k == "profile_id" {
 			thresholdProfile.ProfileID, _ = v.(string)
 		} else if k == "type" {
@@ -272,25 +269,9 @@ func (thresholdProfile *ThresholdProfile) UnmarshalJSON(rawValue []byte) error {
 				}
 			}
 		} else if k == "response_time_threshold" {
-			// unboxed, ok := v.(map[string]interface{})
-			// if !ok {
-			// 	return fmt.Errorf("Output should be a pointer of a map")
-			// } else {
-			// 	log.Println("unboxed : ", unboxed)
-			// }
-			//thresholdProfile.ResponseTimeThreshold = make(map[string][]map[string]interface{})
-			//thresholdProfile.ResponseTimeThreshold = v.(map[string][]map[string]interface{})
 			thresholdProfile.ResponseTimeThreshold = v.(map[string]interface{})
-			// switch val := v.(type) {
-			// case []interface{}:
-			// 	for _, x := range val {
-			// 		fmt.Println("this is b", x.(map[string]interface{}))
-			// 		thresholdProfile.WebsiteContentChanges = append(thresholdProfile.WebsiteContentChanges, x.(map[string]interface{}))
-			// 	}
-			// }
 		}
 	}
-	// log.Println("thresholdProfile in UnmarshalJSON ================== ", thresholdProfile)
 	return nil
 }
 

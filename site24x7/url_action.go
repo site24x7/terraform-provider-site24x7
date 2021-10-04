@@ -1,9 +1,9 @@
 package site24x7
 
 import (
+	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 )
 
 // SAMPLE POST JSON
@@ -11,7 +11,7 @@ import (
 // 	"action_name": "URL IT action",
 // 	"action_type": 1,
 // 	"action_timeout": 15,
-// 	"action_url": "http://www.vtitan.com",
+// 	"action_url": "http://www.example.com",
 // 	"action_method": "G",
 // 	"custom_headers": [
 // 	  {

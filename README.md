@@ -1,9 +1,9 @@
 <a href="https://terraform.io">
-    <img src="https://cdn.rawgit.com/hashicorp/terraform-website/master/content/source/assets/images/logo-hashicorp.svg" alt="Terraform logo" title="Terraform" align="right" height="50" />
+    <img src="https://cdn.rawgit.com/hashicorp/terraform-website/master/content/source/assets/images/logo-terraform-main.svg" alt="Terraform logo" title="Terraform" align="right" height="50" />
 </a>
-
 # Site24x7 Terraform Provider
 
+- Site24x7 Website: <https://www.site24x7.com>
 - Terraform Website: <https://www.terraform.io>
 - Tutorials: [learn.hashicorp.com](https://learn.hashicorp.com/terraform?track=getting-started#getting-started)
 - Documentation: <https://registry.terraform.io/providers/site24x7/site24x7/latest/docs>
@@ -37,12 +37,17 @@ terraform {
   }
 }
 ```
-A terraform provider for managing Site24x7 monitors which currently supports the following resources:
+A terraform provider for managing the following resources in Site24x7:
 
+- site24x7_website_monitor ([Site24x7 Website Monitor API doc](https://www.site24x7.com/help/api/#website))
+- site24x7_ssl_monitor ([Site24x7 SSL Certificate Monitor API doc](https://www.site24x7.com/help/api/#ssl-certificate))
+- site24x7_rest_api_monitor ([Site24x7 Rest API Monitor API doc](https://www.site24x7.com/help/api/#rest-api))
+- site24x7_amazon_monitor ([Site24x7 Amazon Monitor API doc](https://www.site24x7.com/help/api/#amazon-webservice-monitor))
 - site24x7_url_action ([Site24x7 IT Automation API doc](https://www.site24x7.com/help/api/#it-automation))
 - site24x7_monitor_group ([Site24x7 Monitor Group API doc](https://www.site24x7.com/help/api/#monitor-groups))
-- site24x7_website_monitor ([Site24x7 Monitor API doc](https://www.site24x7.com/help/api/#website))
-- site24x7_amazon_monitor
+- site24x7_threshold_profile ([Site24x7 Threshold Profile API doc](https://www.site24x7.com/help/api/#threshold-website))
+- site24x7_user_group ([Site24x7 User Group API doc](https://www.site24x7.com/help/api/#user-groups))
+
 
 
 If you're developing and building the provider, follow the instructions to [install it as a plugin](https://www.terraform.io/docs/plugins/basics.html#installing-a-plugin). After placing the provider your plugins directory, run `terraform init` to initialize it.
@@ -52,12 +57,12 @@ For more information on using the provider and the associated resources, please 
 Usage example
 -------------
 
-Refer to the [_examples/](_examples/) directory for a fully documented usage example.
+Refer to the [examples/](examples/) directory for a fully documented usage example.
 
 This is a quick example of the provider configuration:
 
 ```terraform
-// Authentication API doc: https://www.site24x7.com/help/api/#authentication
+// Authentication API doc - https://www.site24x7.com/help/api/#authentication
 provider "site24x7" {
   // The client ID will be looked up in the SITE24X7_OAUTH2_CLIENT_ID
   // environment variable if the attribute is empty or omitted.
@@ -71,11 +76,8 @@ provider "site24x7" {
   // environment variable if the attribute is empty or omitted.
   oauth2_refresh_token = "<SITE24X7_REFRESH_TOKEN>"
 
-  // Specify the following configuration options if you want to use
-  // some other Site24x7 data center than the default US one. These
-  // must correspond to the data center from which you have obtained your
-  // OAuth client credentials and refresh token.
-
+  // Specify the data center from which you have obtained your
+  // OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN).
   data_center = "US"
   
   // The minimum time to wait in seconds before retrying failed Site24x7 API requests.
@@ -93,61 +95,16 @@ provider "site24x7" {
 
 // Website Monitor API doc: https://www.site24x7.com/help/api/#website
 resource "site24x7_website_monitor" "website_monitor_us" {
-  // (Required) Name for the monitor.
-  display_name = "zoho"
+  // (Required) Name of the monitor
+  display_name = "Example Monitor"
 
   // (Required) Website address to monitor.
-  website = "https://www.zoho.com"
+  website = "https://www.example.com"
 
   // (Optional) Check interval for monitoring. Default: 1. See
   // https://www.site24x7.com/help/api/#check-interval for all supported
   // values.
   check_frequency = 1
-}
-
-resource "site24x7_monitor_group" "monitor_group_us" {
-  // (Required) Display Name for the Monitor Group.
-  display_name = "Website Group"
-
-  // (Optional) Description for the Monitor Group.
-  description = "This is the description of the monitor group from terraform"
-}
-
-resource "site24x7_url_action" "action_us" {
-  // (Required) Display name for the action.
-  name = "Vtitan Action"
-
-  // (Required) URL to be invoked for action execution.
-  url = "https://www.vtitan.com"
-
-  // (Optional) HTTP Method to access the URL. Default: "P". See
-  // https://www.site24x7.com/help/api/#http_methods for allowed values.
-  method = "G"
-
-  // (Optional) If send_custom_parameters is set as true. Custom parameters to
-  // be passed while accessing the URL.
-  custom_parameters = "param=value"
-
-  // (Optional) Configuration to send custom parameters while executing the action.
-  send_custom_parameters = true
-
-  // (Optional) Configuration to enable json format for post parameters.
-  send_in_json_format = true
-
-  // (Optional) Configuration to send incident parameters while executing the action.
-  send_incident_parameters = true
-
-  // (Optional) The amount of time a connection waits to time out. Range 1 - 90. Default: 30.
-  timeout = 10
-}
-
-
-resource "site24x7_amazon_monitor" "aws_monitor_site24x7" {
-  display_name = "AWS Resource"
-  aws_access_key = "<AWS_ACCESS_KEY>"
-  aws_secret_key = "<AWS_SECRET_KEY>"
-  aws_discovery_frequency = 5
-  aws_discover_services = ["1"]
 }
 
 ```
@@ -166,13 +123,38 @@ in use by this provider.
 Clone the repository and build the provider:
 
 ```sh
+
 git clone git@github.com:Site24x7/terraform-provider-site24x7
 cd terraform-provider-site24x7
-make install
+./build/build_terraform_provider_site24x7.sh
+
 ```
 
 This will build the `terraform-provider-site24x7` binary and install it into
-the `$HOME/.terraform.d/plugins` directory.
+the `$HOME/.terraform.d/plugins/registry.zoho.io/zoho/site24x7/1.0.0/linux_amd64` directory.
+
+Place the below content in ~/.terraformrc
+
+```sh
+
+provider_installation {
+  filesystem_mirror {
+    path = "$HOME/.terraform.d/plugins/"
+    include = ["registry.zoho.io/*/*"]
+  }
+  direct {
+    exclude = ["registry.zoho.io/*/*"]
+  }
+}
+
+```
+
+
+Please refer the following links for installing custom providers.
+
+https://www.terraform.io/docs/cloud/run/install-software.html
+https://www.terraform.io/docs/cli/config/config-file.html
+
 
 
 #### Go Version Support
