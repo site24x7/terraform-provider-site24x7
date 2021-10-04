@@ -1,6 +1,7 @@
 <a href="https://terraform.io">
     <img src="https://cdn.rawgit.com/hashicorp/terraform-website/master/content/source/assets/images/logo-terraform-main.svg" alt="Terraform logo" title="Terraform" align="right" height="50" />
 </a>
+
 # Site24x7 Terraform Provider
 
 - Site24x7 Website: <https://www.site24x7.com>
