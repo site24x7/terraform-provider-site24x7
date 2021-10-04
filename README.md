@@ -152,11 +152,8 @@ provider_installation {
 
 
 Please refer the following links for installing custom providers.
-
-https://www.terraform.io/docs/cloud/run/install-software.html
-https://www.terraform.io/docs/cli/config/config-file.html
-
-
+[Installing Terraform Providers](https://www.terraform.io/docs/cloud/run/install-software.html)
+[Overriding Terraform's default installation](https://www.terraform.io/docs/cli/config/config-file.html)
 
 #### Go Version Support
 
