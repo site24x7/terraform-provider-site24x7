@@ -1,0 +1,52 @@
+{
+  "code":0,
+  "message":"success",
+  "data":[
+    {
+      "monitor_id": "123447000020646003",
+      "aws_discovery_frequency": 5,
+      "region_type": 0,
+      "aws_advance_settings_details": {
+        "guidance_report_attributes": [],
+        "aws_threshold_details": []
+      },
+      "type": "AMAZON",
+      "display_name": "Amazon Monitor Display Name",
+      "user_group_ids": [
+        "123412341234123415"
+      ],
+      "aws_secret_key": "secretkey",
+      "aws_discover_services": [
+        "1"
+      ],
+      "registration_method": 0,
+      "aws_access_key": "accesskey",
+      "advance_settings_id": "0",
+      "state": 0,
+      "notification_profile_id": "123412341234123413"
+    },
+    {
+      "monitor_id": "123447000020646008",
+      "aws_discovery_frequency": 5,
+      "region_type": 0,
+      "aws_advance_settings_details": {
+        "guidance_report_attributes": [],
+        "aws_threshold_details": []
+      },
+      "type": "AMAZON",
+      "display_name": "Amazon Monitor Display Name",
+      "user_group_ids": [
+        "123412341234123415"
+      ],
+      "aws_secret_key": "secretkey",
+      "aws_discover_services": [
+        "1"
+      ],
+      "registration_method": 0,
+      "aws_access_key": "accesskey",
+      "advance_settings_id": "0",
+      "state": 0,
+      "notification_profile_id": "123412341234123413"
+    }
+  ]
+}

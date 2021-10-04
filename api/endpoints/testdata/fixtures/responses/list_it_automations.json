@@ -1,0 +1,27 @@
+{
+  "code": 0,
+  "message": "success",
+  "data": [
+    {
+      "action_id": "123",
+      "action_type": 2,
+      "action_method": "P",
+      "action_name": "takeaction",
+      "custom_parameters": "{\"message_type\":\"TEST\"}",
+      "send_in_json_format": true,
+      "send_custom_parameters": true,
+      "action_url": "testing.tld",
+      "action_timeout": 30,
+      "send_incident_parameters": true
+    },
+    {
+      "action_id": "321",
+      "action_type": 4,
+      "action_method": "PP",
+      "action_name": "action",
+      "send_in_json_format": true,
+      "action_url": "testing.tld",
+      "action_timeout": 30
+    }
+  ]
+}

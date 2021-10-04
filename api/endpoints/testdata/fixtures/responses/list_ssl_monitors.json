@@ -1,0 +1,52 @@
+{
+  "code": 0,
+  "message": "success",
+  "data": [
+    {
+      "monitor_id": "897654345678",
+      "display_name": "foo",
+      "type": "SSL_CERT",
+      "domain_name": "www.example.com",
+      "timeout": 30,
+      "protocol": "HTTPS",
+      "expire_days": 30,
+      "http_protocol": "H1.1",
+      "ignore_domain_mismatch": false,
+      "ignore_trust": false,
+      "location_profile_id": "456",
+      "notification_profile_id": "789",
+      "threshold_profile_id": "012",
+      "monitor_groups": [
+        "234",
+        "567"
+      ],
+      "user_group_ids": [
+        "123",
+        "456"
+      ]
+    },
+    {
+      "monitor_id": "933654345678",
+      "display_name": "foo",
+      "type": "SSL_CERT",
+      "domain_name": "www.example.com",
+      "timeout": 30,
+      "protocol": "HTTPS",
+      "expire_days": 30,
+      "http_protocol": "H1.1",
+      "ignore_domain_mismatch": false,
+      "ignore_trust": false,
+      "location_profile_id": "456",
+      "notification_profile_id": "789",
+      "threshold_profile_id": "012",
+      "monitor_groups": [
+        "234",
+        "567"
+      ],
+      "user_group_ids": [
+        "123",
+        "456"
+      ]
+    }
+  ]
+}

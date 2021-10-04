@@ -1,0 +1,11 @@
+{
+  "monitor_id": "123",
+  "display_name":"foo",
+  "type": "AMAZON",
+  "aws_secret_key": "secretkey",
+  "aws_access_key": "accesskey",
+  "aws_discovery_frequency": 5,
+  "aws_discover_services": ["1"],
+  "notification_profile_id": "123412341234123413",
+  "user_group_ids": ["123412341234123415"]
+}

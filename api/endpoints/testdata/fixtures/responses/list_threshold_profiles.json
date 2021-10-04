@@ -1,0 +1,18 @@
+{
+  "code": 0,
+  "message": "success",
+  "data": [
+    {
+      "profile_name": "Threshold Profile",
+      "profile_id": "123",
+      "down_location_threshold": 8,
+      "type": "DNS"
+    },
+    {
+      "profile_name": "Default",
+      "profile_id": "876",
+      "down_location_threshold": 4,
+      "type": "URL"
+    }
+  ]
+}

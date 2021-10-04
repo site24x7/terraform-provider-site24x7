@@ -1,0 +1,9 @@
+{
+  "display_name": "foo group",
+  "description": "This is foo group",
+  "monitors": [
+    "726000000002460",
+    "726000000002464"
+  ],
+  "health_threshold_count": 10
+}

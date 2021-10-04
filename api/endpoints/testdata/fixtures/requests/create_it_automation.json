@@ -1,0 +1,12 @@
+{
+  "action_type": 2,
+  "action_timeout": 30,
+  "action_method": "P",
+  "action_name": "takeaction",
+  "action_url": "testing.tld",
+  "custom_parameters": "",
+  "send_custom_parameters": false,
+  "send_in_json_format": false,
+  "send_mail":false,
+  "send_incident_parameters": false
+}

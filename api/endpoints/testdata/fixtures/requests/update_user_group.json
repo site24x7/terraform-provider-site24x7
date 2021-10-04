@@ -1,0 +1,10 @@
+{
+  "display_name": "Lead",
+  "user_group_id": "123",
+  "product_id":0,
+  "attribute_group_id":"1234",
+  "users": [
+    "43255",
+    "76543"
+  ]
+}

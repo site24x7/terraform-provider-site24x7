@@ -1,0 +1,36 @@
+{
+  "monitor_id":"123",
+  "display_name": "foo",
+  "type": "RESTAPI",
+  "website": "www.test.tld",
+  "check_frequency": "5",
+  "timeout": 10,
+  "http_method": "G",
+  "http_protocol": "H1.1",
+  "ssl_protocol": "Auto",
+  "use_alpn": false,
+  "use_ipv6": false,
+  "request_content_type": "JSON",
+  "response_type": "T",
+  "request_param": "req_param",
+  "auth_user": "username",
+  "auth_pass": "password",
+  "oauth2_provider": "provider",
+  "client_certificate_password": "pass",
+  "jwt_id": "111",
+  "match_case": true,
+  "user_agent": "firefox",
+  "location_profile_id": "456",
+  "notification_profile_id": "789",
+  "threshold_profile_id": "012",
+  "monitor_groups": [
+    "234",
+    "567"
+  ],
+  "user_group_ids": [
+    "123",
+    "456"
+  ],
+  "use_name_server": true,
+  "json_schema_check": false
+}

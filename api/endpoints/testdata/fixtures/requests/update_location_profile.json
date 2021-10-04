@@ -1,0 +1,10 @@
+{
+    "profile_name": "TEST_Profile_update",
+    "primary_location": "16",
+    "restrict_alt_loc": false,
+    "secondary_locations": [
+        "3",
+        "2",
+        "1"
+    ]
+}

@@ -1,0 +1,14 @@
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "user_group_id": "897654345678",
+    "display_name": "Admin Group",
+    "is_master_group": true,
+    "attribute_group_id": "89765467854",
+    "users": [
+      "87654643",
+      "32434567890"
+    ]
+  }
+}
