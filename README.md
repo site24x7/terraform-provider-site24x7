@@ -149,6 +149,7 @@ provider_installation {
 Please refer the following links for installing custom providers.
 - [Installing Terraform Providers](https://www.terraform.io/docs/cloud/run/install-software.html)
 - [Overriding Terraform's default installation](https://www.terraform.io/docs/cli/config/config-file.html)
+- [Documentation](https://pkg.go.dev/github.com/site24x7/terraform-provider-site24x7@v0.0.0-20211004203957-b2a0f1a113f4/api)
 
 #### Go Version Support
 
