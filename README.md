@@ -111,8 +111,7 @@ If you wish to work on the provider, you'll first need [Go](http://www.golang.or
 machine (version 1.13+ is _required_). You'll also need to correctly setup a
 [GOPATH](http://golang.org/doc/code.html#GOPATH), as well as adding `$GOPATH/bin` to your `$PATH`.
 
-Please see our [CONTRIBUTING][contributing] guide for more detail on the APIs
-in use by this provider.
+[//]: <Please see our [CONTRIBUTING][contributing] guide for more detail on the APIs in use by this provider.>
 
 #### Building
 
