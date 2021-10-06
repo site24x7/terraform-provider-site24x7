@@ -7,9 +7,10 @@ import (
 	"github.com/site24x7/terraform-provider-site24x7/api"
 )
 
-// DefaultLocationProfile fetches the first location profile returned by the
-// client. If no location profiles are configured, DefaultLocationProfile will
-// return an error.
+// DefaultLocationProfile fetches all location profiles from the server
+// and tries to find a match for the input profile name. If no match is found
+// the first location profile from the list is returned. If no location profiles are configured,
+// DefaultLocationProfile will return an error.
 func DefaultLocationProfile(client Client, profileNameToMatch string) (*api.LocationProfile, error) {
 	locationProfiles, err := client.LocationProfiles().List()
 	if err != nil {
@@ -48,9 +49,10 @@ func DefaultNotificationProfile(client Client) (*api.NotificationProfile, error)
 	return profiles[0], nil
 }
 
-// DefaultThresholdProfile fetches the first threshold profile returned by the
-// client. If no threshold profiles are configured, DefaultThresholdProfile will
-// return an error.
+// DefaultThresholdProfile fetches all threshold profiles from the server
+// and tries to match threshold profile type and the given monitor type.
+// If no match is found the first threshold profile from the list is returned.
+// If no threshold profiles are configured, DefaultThresholdProfile will return an error.
 func DefaultThresholdProfile(client Client, monitorType api.MonitorType) (*api.ThresholdProfile, error) {
 	profiles, err := client.ThresholdProfiles().List()
 	if err != nil {
