@@ -7,7 +7,8 @@
 - Site24x7 Website: <https://www.site24x7.com>
 - Terraform Website: <https://www.terraform.io>
 - Tutorials: [learn.hashicorp.com](https://learn.hashicorp.com/terraform?track=getting-started#getting-started)
-- Documentation: <https://registry.terraform.io/providers/site24x7/site24x7/latest/docs>
+<!-- - Documentation: <https://registry.terraform.io/providers/site24x7/site24x7/latest/docs> -->
+
 - Mailing List: [Google Groups](http://groups.google.com/group/terraform-tool)
 
 
@@ -111,7 +112,7 @@ If you wish to work on the provider, you'll first need [Go](http://www.golang.or
 machine (version 1.13+ is _required_). You'll also need to correctly setup a
 [GOPATH](http://golang.org/doc/code.html#GOPATH), as well as adding `$GOPATH/bin` to your `$PATH`.
 
-[//]: <Please see our [CONTRIBUTING][contributing] guide for more detail on the APIs in use by this provider.>
+<!-- Please see our [CONTRIBUTING][contributing] guide for more detail on the APIs in use by this provider. -->
 
 #### Building
 
