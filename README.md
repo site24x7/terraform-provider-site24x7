@@ -41,14 +41,14 @@ terraform {
 ```
 A terraform provider for managing the following resources in Site24x7:
 
-- Website Monitor - site24x7_website_monitor ([Site24x7 Website Monitor API doc](https://www.site24x7.com/help/api/#website))
-- SSL Certificate Monitor - site24x7_ssl_monitor ([Site24x7 SSL Certificate Monitor API doc](https://www.site24x7.com/help/api/#ssl-certificate))
-- Rest API Monitor - site24x7_rest_api_monitor ([Site24x7 Rest API Monitor API doc](https://www.site24x7.com/help/api/#rest-api))
-- Amazon Monitor - site24x7_amazon_monitor ([Site24x7 Amazon Monitor API doc](https://www.site24x7.com/help/api/#amazon-webservice-monitor))
-- URL IT Automation - site24x7_url_action ([Site24x7 IT Automation API doc](https://www.site24x7.com/help/api/#it-automation))
-- Monitor Group - site24x7_monitor_group ([Site24x7 Monitor Group API doc](https://www.site24x7.com/help/api/#monitor-groups))
-- Threshold Profile - site24x7_threshold_profile ([Site24x7 Threshold Profile API doc](https://www.site24x7.com/help/api/#threshold-website))
-- User Group - site24x7_user_group ([Site24x7 User Group API doc](https://www.site24x7.com/help/api/#user-groups))
+- Website Monitor - [site24x7_website_monitor](examples/website_monitor_us.tf) ([Site24x7 Website Monitor API doc](https://www.site24x7.com/help/api/#website))
+- SSL Certificate Monitor - [site24x7_ssl_monitor](examples/ssl_monitor_us.tf) ([Site24x7 SSL Certificate Monitor API doc](https://www.site24x7.com/help/api/#ssl-certificate))
+- Rest API Monitor - [site24x7_rest_api_monitor](examples/rest_api_monitor_us.tf) ([Site24x7 Rest API Monitor API doc](https://www.site24x7.com/help/api/#rest-api))
+- Amazon Monitor - [site24x7_amazon_monitor](examples/amazon_monitor_us.tf) ([Site24x7 Amazon Monitor API doc](https://www.site24x7.com/help/api/#amazon-webservice-monitor))
+- URL IT Automation - [site24x7_url_action](examples/it_automation_us.tf) ([Site24x7 IT Automation API doc](https://www.site24x7.com/help/api/#it-automation))
+- Monitor Group - [site24x7_monitor_group](examples/monitor_group_us.tf) ([Site24x7 Monitor Group API doc](https://www.site24x7.com/help/api/#monitor-groups))
+- Threshold Profile - [site24x7_threshold_profile](examples/threshold_profile_us.tf) ([Site24x7 Threshold Profile API doc](https://www.site24x7.com/help/api/#threshold-website))
+- User Group - [site24x7_user_group](examples/user_group_us.tf) ([Site24x7 User Group API doc](https://www.site24x7.com/help/api/#user-groups))
 
 
 Usage example
