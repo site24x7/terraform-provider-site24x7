@@ -1,11 +1,9 @@
 package site24x7
 
 import (
-	"log"
-
+	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 )
 
 var MonitorGroupSchema = map[string]*schema.Schema{
@@ -27,6 +25,7 @@ var MonitorGroupSchema = map[string]*schema.Schema{
 	"health_threshold_count": {
 		Type:     schema.TypeInt,
 		Optional: true,
+		Default:  1,
 	},
 	"dependency_resource_id": {
 		Type: schema.TypeList,
@@ -68,7 +67,8 @@ func monitorGroupCreate(d *schema.ResourceData, meta interface{}) error {
 
 	// Read is called for updating state after modification
 	// https://www.terraform.io/docs/extend/best-practices/detecting-drift.html#update-state-after-modification
-	return monitorGroupRead(d, meta)
+	// return monitorGroupRead(d, meta)
+	return nil
 }
 
 func monitorGroupRead(d *schema.ResourceData, meta interface{}) error {
@@ -103,7 +103,8 @@ func monitorGroupUpdate(d *schema.ResourceData, meta interface{}) error {
 
 	// Read is called for updating state after modification
 	// https://www.terraform.io/docs/extend/best-practices/detecting-drift.html#update-state-after-modification
-	return monitorGroupRead(d, meta)
+	// return monitorGroupRead(d, meta)
+	return nil
 }
 
 func monitorGroupDelete(d *schema.ResourceData, meta interface{}) error {
@@ -154,25 +155,19 @@ func resourceDataToMonitorGroupCreate(d *schema.ResourceData) *api.MonitorGroup 
 		}
 	}
 
-	// log.Println("CREATE ====================== monitors  : ", monitorIDs)
-	// log.Println("CREATE ====================== healthThresholdCount  : ", healthThresholdCount)
 	return &api.MonitorGroup{
-		GroupID:              d.Id(),
-		DisplayName:          d.Get("display_name").(string),
-		Description:          d.Get("description").(string),
-		Monitors:             monitorIDs,
-		HealthThresholdCount: healthThresholdCount,
-		//DependencyResourceID: dependencyIDs,
-		//SuppressAlert:        d.Get("suppress_alert").(bool),
+		GroupID:                d.Id(),
+		DisplayName:            d.Get("display_name").(string),
+		Description:            d.Get("description").(string),
+		Monitors:               monitorIDs,
+		HealthThresholdCount:   healthThresholdCount,
+		DependencyResourceID:   dependencyIDs,
+		SuppressAlert:          d.Get("suppress_alert").(bool),
+		DependencyResourceType: 2,
 	}
 }
 
 func resourceDataToMonitorGroupUpdate(d *schema.ResourceData, monitorGroup *api.MonitorGroup) *api.MonitorGroup {
-	// log.Println("UPDATE ++++++++++++++++++++++ monitors  : ", d.Get("monitors"))
-	// log.Println("UPDATE ++++++++++++++++++++++ dependency_resource_id  : ", d.Get("dependency_resource_id"))
-	// log.Println("UPDATE ++++++++++++++++++++++ suppress_alert  : ", d.Get("suppress_alert"))
-	// log.Println("UPDATE ++++++++++++++++++++++ health_threshold_count  : ", d.Get("health_threshold_count"))
-
 	// For all the three cases mentioned below we find the diff and append monitors to the monitorIDs list
 	// 	- Monitors set in configuration file but not present in Site24x7
 	// 	- Monitors not set in configuration file but present in Site24x7
@@ -190,8 +185,6 @@ func resourceDataToMonitorGroupUpdate(d *schema.ResourceData, monitorGroup *api.
 				monitorIDs = append(monitorIDs, monitorID)
 			}
 		}
-		log.Println("resourceDataToMonitorGroupUpdate ++++++++++++++++++++++ ResourceData oldMonitors : ", oldMonitors)
-		log.Println("resourceDataToMonitorGroupUpdate ++++++++++++++++++++++ ResourceData newMonitors : ", newMonitors)
 	}
 
 	var healthThresholdCount int
@@ -204,31 +197,9 @@ func resourceDataToMonitorGroupUpdate(d *schema.ResourceData, monitorGroup *api.
 		}
 	}
 
-	var dependencyResourceID string
-	if d.HasChange("dependency_resource_id") {
-		oldDependencyID, newDependencyID := d.GetChange("dependency_resource_id")
-		if newDependencyID != "" {
-			dependencyResourceID = newDependencyID.(string)
-		} else {
-			dependencyResourceID = oldDependencyID.(string)
-		}
-	}
-
 	var dependencyResourceIDs []string
-	if d.HasChange("dependency_resource_id") {
-		oldDependencyIDs, newDependencyIDs := d.GetChange("dependency_resource_id")
-		for _, id := range oldDependencyIDs.([]interface{}) {
-			dependencyResourceIDs = append(dependencyResourceIDs, id.(string))
-		}
-		for _, id := range newDependencyIDs.([]interface{}) {
-			monitorID := id.(string)
-			_, found := api.Find(dependencyResourceIDs, monitorID)
-			if !found {
-				dependencyResourceIDs = append(dependencyResourceIDs, monitorID)
-			}
-		}
-		log.Println("resourceDataToMonitorGroupUpdate ++++++++++++++++++++++ ResourceData oldDependencyIDs : ", oldDependencyIDs)
-		log.Println("resourceDataToMonitorGroupUpdate ++++++++++++++++++++++ ResourceData newDependencyIDs : ", newDependencyIDs)
+	for _, dependencyID := range d.Get("dependency_resource_id").([]interface{}) {
+		dependencyResourceIDs = append(dependencyResourceIDs, dependencyID.(string))
 	}
 
 	var suppressAlert bool
@@ -237,24 +208,19 @@ func resourceDataToMonitorGroupUpdate(d *schema.ResourceData, monitorGroup *api.
 		if _, suppressAlertExistsInConf := d.GetOk("suppress_alert"); suppressAlertExistsInConf {
 			suppressAlert = newSuppressAlert.(bool)
 		} else {
-			log.Println("resourceDataToMonitorGroupUpdate ++++++++++++++++++++++ suppressAlert NOT PRESENT IN CONF")
 			suppressAlert = oldSuppressAlert.(bool)
 		}
 	}
 
-	// log.Println("TO UPDATE ++++++++++++++++++++++ monitorIDs  : ", monitorIDs)
-	// log.Println("TO UPDATE ++++++++++++++++++++++ healthThresholdCount  : ", healthThresholdCount)
-	log.Println("TO UPDATE ++++++++++++++++++++++ dependencyResourceID  : ", dependencyResourceID)
-	log.Println("TO UPDATE ++++++++++++++++++++++ suppressAlert  : ", suppressAlert)
-
 	return &api.MonitorGroup{
-		GroupID:              d.Id(),
-		DisplayName:          d.Get("display_name").(string),
-		Description:          d.Get("description").(string),
-		Monitors:             monitorIDs,
-		HealthThresholdCount: healthThresholdCount,
-		//DependencyResourceID: dependencyResourceIDs,
-		//SuppressAlert:        suppressAlert,
+		GroupID:                d.Id(),
+		DisplayName:            d.Get("display_name").(string),
+		Description:            d.Get("description").(string),
+		Monitors:               monitorIDs,
+		HealthThresholdCount:   healthThresholdCount,
+		DependencyResourceID:   dependencyResourceIDs,
+		SuppressAlert:          suppressAlert,
+		DependencyResourceType: 2,
 	}
 }
 
@@ -263,6 +229,6 @@ func updateMonitorGroupResourceData(d *schema.ResourceData, monitorGroup *api.Mo
 	d.Set("description", monitorGroup.Description)
 	d.Set("monitors", monitorGroup.Monitors)
 	d.Set("health_threshold_count", monitorGroup.HealthThresholdCount)
-	//d.Set("dependency_resource_id", monitorGroup.DependencyResourceID)
-	//d.Set("suppress_alert", monitorGroup.SuppressAlert)
+	d.Set("dependency_resource_id", monitorGroup.DependencyResourceID)
+	d.Set("suppress_alert", monitorGroup.SuppressAlert)
 }
