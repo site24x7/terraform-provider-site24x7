@@ -207,13 +207,14 @@ func (amazonMonitor *AmazonMonitor) String() string {
 
 // MonitorGroup organizes Monitor resources into groups.
 type MonitorGroup struct {
-	GroupID              string   `json:"group_id,omitempty"`
-	DisplayName          string   `json:"display_name"`
-	Description          string   `json:"description,omitempty"`
-	Monitors             []string `json:"monitors,omitempty"`
-	HealthThresholdCount int      `json:"health_threshold_count,omitempty"`
-	//DependencyResourceID []string `json:"dependency_resource_id,omitempty"`
-	//SuppressAlert        bool     `json:"suppress_alert"`
+	GroupID                string   `json:"group_id,omitempty"`
+	DisplayName            string   `json:"display_name"`
+	Description            string   `json:"description,omitempty"`
+	Monitors               []string `json:"monitors,omitempty"`
+	HealthThresholdCount   int      `json:"health_threshold_count,omitempty"`
+	DependencyResourceID   []string `json:"dependency_resource_ids,omitempty"`
+	SuppressAlert          bool     `json:"suppress_alert"`
+	DependencyResourceType int      `json:"selection_type,omitempty"`
 }
 
 func (monitorGroup *MonitorGroup) String() string {

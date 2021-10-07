@@ -42,32 +42,21 @@ provider "site24x7" {
 }
 
 
-// Site24x7 IT Automation API doc - https://www.site24x7.com/help/api/#it-automation
-resource "site24x7_url_action" "action_us" {
-  // (Required) Display name for the action.
-  name = "IT Action"
+// Site24x7 Monitor Group API doc - https://www.site24x7.com/help/api/#monitor-groups
+resource "site24x7_monitor_group" "monitor_group_us" {
+  // (Required) Display Name for the Monitor Group.
+  display_name = "terraform_monitor_group_update"
 
-  // (Required) URL to be invoked for action execution.
-  url = "https://www.example.com"
+  // (Optional) Description for the Monitor Group.
+  description = "This is the description of the monitor group from terraform"
 
-  // (Optional) HTTP Method to access the URL. Default: "P". See
-  // https://www.site24x7.com/help/api/#http_methods for allowed values.
-  method = "G"
-
-  // (Optional) If send_custom_parameters is set as true. Custom parameters to
-  // be passed while accessing the URL.
-  custom_parameters = "param=value"
-
-  // (Optional) Configuration to send custom parameters while executing the action.
-  send_custom_parameters = true
-
-  // (Optional) Configuration to enable json format for post parameters.
-  send_in_json_format = true
-
-  // (Optional) Configuration to send incident parameters while executing the action.
-  send_incident_parameters = true
-
-  // (Optional) The amount of time a connection waits to time out. Range 1 - 90. Default: 30.
-  timeout = 10
+  // Number of monitors' health that decide the group status. ‘0’ implies that all the monitors 
+  // are considered for determining the group status. Default value is 1
+  health_threshold_count = 1
+  // (Optional) List of dependent resource ids.
+  dependency_resource_id = ["306947000005938013"]
+  // (Optional) Boolean value indicating whether to suppress alert when the dependent monitor is down
+  // Setting suppress_alert = true with an empty dependency_resource_id is meaningless.
+  suppress_alert = true
 }
 
