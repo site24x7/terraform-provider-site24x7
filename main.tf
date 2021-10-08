@@ -45,7 +45,7 @@ provider "site24x7" {
 // Site24x7 Monitor Group API doc - https://www.site24x7.com/help/api/#monitor-groups
 resource "site24x7_monitor_group" "monitor_group_us" {
   // (Required) Display Name for the Monitor Group.
-  display_name = "terraform_monitor_group_update"
+  display_name = "Web Group"
 
   // (Optional) Description for the Monitor Group.
   description = "This is the description of the monitor group from terraform"

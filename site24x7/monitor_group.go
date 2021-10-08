@@ -15,13 +15,14 @@ var MonitorGroupSchema = map[string]*schema.Schema{
 		Type:     schema.TypeString,
 		Required: true,
 	},
-	"monitors": {
-		Type: schema.TypeList,
-		Elem: &schema.Schema{
-			Type: schema.TypeString,
-		},
-		Optional: true,
-	},
+	// As of now we don't support associating monitors via configuration file
+	// "monitors": {
+	// 	Type: schema.TypeList,
+	// 	Elem: &schema.Schema{
+	// 		Type: schema.TypeString,
+	// 	},
+	// 	Optional: true,
+	// },
 	"health_threshold_count": {
 		Type:     schema.TypeInt,
 		Optional: true,
@@ -172,20 +173,21 @@ func resourceDataToMonitorGroupUpdate(d *schema.ResourceData, monitorGroup *api.
 	// 	- Monitors set in configuration file but not present in Site24x7
 	// 	- Monitors not set in configuration file but present in Site24x7
 	// 	- Monitors not set in configuration file and not present in Site24x7
-	var monitorIDs []string
-	if d.HasChange("monitors") {
-		oldMonitors, newMonitors := d.GetChange("monitors")
-		for _, id := range oldMonitors.([]interface{}) {
-			monitorIDs = append(monitorIDs, id.(string))
-		}
-		for _, id := range newMonitors.([]interface{}) {
-			monitorID := id.(string)
-			_, found := api.Find(monitorIDs, monitorID)
-			if !found {
-				monitorIDs = append(monitorIDs, monitorID)
-			}
-		}
-	}
+
+	// var monitorIDs []string
+	// if d.HasChange("monitors") {
+	// 	oldMonitors, newMonitors := d.GetChange("monitors")
+	// 	for _, id := range oldMonitors.([]interface{}) {
+	// 		monitorIDs = append(monitorIDs, id.(string))
+	// 	}
+	// 	for _, id := range newMonitors.([]interface{}) {
+	// 		monitorID := id.(string)
+	// 		_, found := api.Find(monitorIDs, monitorID)
+	// 		if !found {
+	// 			monitorIDs = append(monitorIDs, monitorID)
+	// 		}
+	// 	}
+	// }
 
 	var healthThresholdCount int
 	if d.HasChange("health_threshold_count") {
@@ -213,10 +215,11 @@ func resourceDataToMonitorGroupUpdate(d *schema.ResourceData, monitorGroup *api.
 	}
 
 	return &api.MonitorGroup{
-		GroupID:                d.Id(),
-		DisplayName:            d.Get("display_name").(string),
-		Description:            d.Get("description").(string),
-		Monitors:               monitorIDs,
+		GroupID:     d.Id(),
+		DisplayName: d.Get("display_name").(string),
+		Description: d.Get("description").(string),
+		// Setting monitors from GET response. Empty "monitors" in PUT request dissociates all monitors from the monitor group.
+		Monitors:               monitorGroup.Monitors,
 		HealthThresholdCount:   healthThresholdCount,
 		DependencyResourceID:   dependencyResourceIDs,
 		SuppressAlert:          suppressAlert,
@@ -227,7 +230,7 @@ func resourceDataToMonitorGroupUpdate(d *schema.ResourceData, monitorGroup *api.
 func updateMonitorGroupResourceData(d *schema.ResourceData, monitorGroup *api.MonitorGroup) {
 	d.Set("display_name", monitorGroup.DisplayName)
 	d.Set("description", monitorGroup.Description)
-	d.Set("monitors", monitorGroup.Monitors)
+	// d.Set("monitors", monitorGroup.Monitors)
 	d.Set("health_threshold_count", monitorGroup.HealthThresholdCount)
 	d.Set("dependency_resource_id", monitorGroup.DependencyResourceID)
 	d.Set("suppress_alert", monitorGroup.SuppressAlert)
