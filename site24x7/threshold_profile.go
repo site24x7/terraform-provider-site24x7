@@ -1,10 +1,10 @@
 package site24x7
 
 import (
-	"github.com/site24x7/terraform-provider-site24x7/api"
-	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/site24x7/terraform-provider-site24x7/api"
+	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
 )
 
 // SAMPLE POST JSON
@@ -48,28 +48,33 @@ import (
 
 var ThresholdProfileSchema = map[string]*schema.Schema{
 	"profile_name": {
-		Type:     schema.TypeString,
-		Required: true,
+		Type:        schema.TypeString,
+		Required:    true,
+		Description: "Display Name for the threshold profile",
 	},
 	"type": {
-		Type:     schema.TypeString,
-		Required: true,
+		Type:        schema.TypeString,
+		Required:    true,
+		Description: "Type of the monitor for which the threshold profile is being created.",
 	},
 	"profile_type": {
 		Type:         schema.TypeInt,
 		Optional:     true,
 		Default:      1,
 		ValidateFunc: validation.IntInSlice([]int{1, 2}),
+		Description:  "Static Threshold(1) or AI-based Threshold(2)",
 	},
 	"down_location_threshold": {
 		Type:         schema.TypeInt,
 		Optional:     true,
 		Default:      1,
 		ValidateFunc: validation.IntInSlice([]int{0, 1, 2, 3, 4, 5, 6, 7, 8}),
+		Description:  "Triggers alert when the monitor is down from configured number of locations.",
 	},
 	"website_content_modified": {
-		Type:     schema.TypeBool,
-		Optional: true,
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Description: "Triggers alert when the website content is modified.",
 	},
 	"website_content_changes": {
 		Type:     schema.TypeList,
@@ -94,79 +99,81 @@ var ThresholdProfileSchema = map[string]*schema.Schema{
 				},
 			},
 		},
+		Description: "	Triggers alert when the website content changes by configured percentage.",
 	},
-	"response_time_threshold": {
-		Type:     schema.TypeMap,
-		Optional: true,
-		Elem: &schema.Resource{
-			Schema: map[string]*schema.Schema{
-				"primary": {
-					Type:     schema.TypeList,
-					Optional: true,
-					MaxItems: 2, // Thresholds can be configured only for Trouble/Critical
-					Elem: &schema.Resource{
-						Schema: map[string]*schema.Schema{
-							"severity": {
-								Type:         schema.TypeInt,
-								Required:     true,
-								ValidateFunc: validation.IntInSlice([]int{2, 3}), // Trouble or Critical
-							},
-							"comparison_operator": {
-								Type:         schema.TypeInt,
-								Required:     true,
-								ValidateFunc: validation.IntInSlice([]int{1, 2, 3, 4, 5}),
-							},
-							"value": {
-								Type:     schema.TypeInt,
-								Required: true,
-							},
-							"strategy": {
-								Type:         schema.TypeInt,
-								Required:     true,
-								ValidateFunc: validation.IntInSlice([]int{1, 2, 3, 4}),
-							},
-							"polls_check": {
-								Type:     schema.TypeInt,
-								Required: true,
-							},
-						},
-					},
-				},
-				"secondary": {
-					Type:     schema.TypeList,
-					Optional: true,
-					MaxItems: 2, // Thresholds can be configured only for Trouble/Critical
-					Elem: &schema.Resource{
-						Schema: map[string]*schema.Schema{
-							"severity": {
-								Type:         schema.TypeInt,
-								Required:     true,
-								ValidateFunc: validation.IntInSlice([]int{2, 3}), // Trouble or Critical
-							},
-							"comparison_operator": {
-								Type:         schema.TypeInt,
-								Required:     true,
-								ValidateFunc: validation.IntInSlice([]int{1, 2, 3, 4, 5}),
-							},
-							"value": {
-								Type:     schema.TypeInt,
-								Required: true,
-							},
-							"strategy": {
-								Type:         schema.TypeInt,
-								Required:     true,
-								ValidateFunc: validation.IntInSlice([]int{1, 2, 3, 4}),
-							},
-							"polls_check": {
-								Type:     schema.TypeInt,
-								Required: true,
-							},
-						},
-					},
-				},
-			},
-		},
-	},
+	// "response_time_threshold": {
+	// 	Type:     schema.TypeMap,
+	// 	Optional: true,
+	// 	Elem: &schema.Resource{
+	// 		Schema: map[string]*schema.Schema{
+	// 			"primary": {
+	// 				Type:     schema.TypeList,
+	// 				Optional: true,
+	// 				MaxItems: 2, // Thresholds can be configured only for Trouble/Critical
+	// 				Elem: &schema.Resource{
+	// 					Schema: map[string]*schema.Schema{
+	// 						"severity": {
+	// 							Type:         schema.TypeInt,
+	// 							Required:     true,
+	// 							ValidateFunc: validation.IntInSlice([]int{2, 3}), // Trouble or Critical
+	// 						},
+	// 						"comparison_operator": {
+	// 							Type:         schema.TypeInt,
+	// 							Required:     true,
+	// 							ValidateFunc: validation.IntInSlice([]int{1, 2, 3, 4, 5}),
+	// 						},
+	// 						"value": {
+	// 							Type:     schema.TypeInt,
+	// 							Required: true,
+	// 						},
+	// 						"strategy": {
+	// 							Type:         schema.TypeInt,
+	// 							Required:     true,
+	// 							ValidateFunc: validation.IntInSlice([]int{1, 2, 3, 4}),
+	// 						},
+	// 						"polls_check": {
+	// 							Type:     schema.TypeInt,
+	// 							Required: true,
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			"secondary": {
+	// 				Type:     schema.TypeList,
+	// 				Optional: true,
+	// 				MaxItems: 2, // Thresholds can be configured only for Trouble/Critical
+	// 				Elem: &schema.Resource{
+	// 					Schema: map[string]*schema.Schema{
+	// 						"severity": {
+	// 							Type:         schema.TypeInt,
+	// 							Required:     true,
+	// 							ValidateFunc: validation.IntInSlice([]int{2, 3}), // Trouble or Critical
+	// 						},
+	// 						"comparison_operator": {
+	// 							Type:         schema.TypeInt,
+	// 							Required:     true,
+	// 							ValidateFunc: validation.IntInSlice([]int{1, 2, 3, 4, 5}),
+	// 						},
+	// 						"value": {
+	// 							Type:     schema.TypeInt,
+	// 							Required: true,
+	// 						},
+	// 						"strategy": {
+	// 							Type:         schema.TypeInt,
+	// 							Required:     true,
+	// 							ValidateFunc: validation.IntInSlice([]int{1, 2, 3, 4}),
+	// 						},
+	// 						"polls_check": {
+	// 							Type:     schema.TypeInt,
+	// 							Required: true,
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// 	Description: "Response time threshold for primary and secondary monitoring location. Anomaly Enabled Attribute",
+	// },
 }
 
 func resourceSite24x7ThresholdProfile() *schema.Resource {

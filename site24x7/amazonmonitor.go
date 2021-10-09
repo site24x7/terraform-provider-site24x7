@@ -1,46 +1,53 @@
 package site24x7
 
 import (
+	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 )
 
 var AmazonMonitorSchema = map[string]*schema.Schema{
 	"display_name": {
-		Type:     schema.TypeString,
-		Required: true,
+		Type:        schema.TypeString,
+		Required:    true,
+		Description: "",
 	},
 	"aws_access_key": {
-		Type:     schema.TypeString,
-		Required: true,
+		Type:        schema.TypeString,
+		Required:    true,
+		Description: "",
 	},
 	"aws_secret_key": {
-		Type:     schema.TypeString,
-		Required: true,
+		Type:        schema.TypeString,
+		Required:    true,
+		Description: "",
 	},
 	"aws_discovery_frequency": {
-		Type:     schema.TypeInt,
-		Optional: true,
-		Default:  1,
+		Type:        schema.TypeInt,
+		Optional:    true,
+		Default:     1,
+		Description: "",
 	},
 	"aws_discover_services": {
 		Type: schema.TypeList,
 		Elem: &schema.Schema{
 			Type: schema.TypeString,
 		},
-		Optional: true,
+		Optional:    true,
+		Description: "",
 	},
 	"notification_profile_id": {
-		Type:     schema.TypeString,
-		Optional: true,
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "",
 	},
 	"user_group_ids": {
 		Type: schema.TypeList,
 		Elem: &schema.Schema{
 			Type: schema.TypeString,
 		},
-		Optional: true,
+		Optional:    true,
+		Description: "List of user groups to be notified when the monitor is down.",
 	},
 }
 
