@@ -54,7 +54,7 @@ resource "site24x7_monitor_group" "monitor_group_us" {
   // are considered for determining the group status. Default value is 1
   health_threshold_count = 1
   // (Optional) List of dependent resource ids.
-  dependency_resource_id = ["306947000005938013"]
+  dependency_resource_id = ["1234000005938013"]
   // (Optional) Boolean value indicating whether to suppress alert when the dependent monitor is down
   // Setting suppress_alert = true with an empty dependency_resource_id is meaningless.
   suppress_alert = true
