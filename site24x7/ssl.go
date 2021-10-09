@@ -1,89 +1,104 @@
 package site24x7
 
 import (
+	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 )
 
 var SSLMonitorSchema = map[string]*schema.Schema{
 	"display_name": {
-		Type:     schema.TypeString,
-		Required: true,
+		Type:        schema.TypeString,
+		Required:    true,
+		Description: "Display Name for the monitor.",
 	},
 	"domain_name": {
-		Type:     schema.TypeString,
-		Required: true,
+		Type:        schema.TypeString,
+		Required:    true,
+		Description: "Domain name to be verified for SSL Certificate.",
 	},
 	"timeout": {
-		Type:     schema.TypeInt,
-		Optional: true,
-		Default:  30,
+		Type:        schema.TypeInt,
+		Optional:    true,
+		Default:     30,
+		Description: "Timeout for connecting to the host. Range 1 - 45.",
 	},
 	"protocol": {
-		Type:     schema.TypeString,
-		Optional: true,
-		Default:  "HTTPS",
+		Type:        schema.TypeString,
+		Optional:    true,
+		Default:     "HTTPS",
+		Description: "Supported protocols are HTTPS, SMTPS, POPS, IMAPS, FTPS or CUSTOM",
 	},
 	"port": {
-		Type:     schema.TypeInt,
-		Optional: true,
-		Default:  443,
+		Type:        schema.TypeInt,
+		Optional:    true,
+		Default:     443,
+		Description: "Server Port.",
 	},
 	"expire_days": {
-		Type:     schema.TypeInt,
-		Optional: true,
-		Default:  30,
+		Type:        schema.TypeInt,
+		Optional:    true,
+		Default:     30,
+		Description: "Day threshold for certificate expiry notification. Range 1 - 999.",
 	},
 	"http_protocol_version": {
-		Type:     schema.TypeString,
-		Optional: true,
-		Default:  "H1.1",
+		Type:        schema.TypeString,
+		Optional:    true,
+		Default:     "H1.1",
+		Description: "Version of the HTTP protocol.",
 	},
 	"ignore_domain_mismatch": {
-		Type:     schema.TypeBool,
-		Optional: true,
-		Default:  false,
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Default:     false,
+		Description: "Boolean to ignore domain name mismatch errors.",
 	},
 	"ignore_trust": {
-		Type:     schema.TypeBool,
-		Optional: true,
-		Default:  false,
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Default:     false,
+		Description: "To ignore the validation of SSL/TLS certificate chain.",
 	},
 	"location_profile_id": {
-		Type:     schema.TypeString,
-		Optional: true,
-		Computed: true,
+		Type:        schema.TypeString,
+		Optional:    true,
+		Computed:    true,
+		Description: "Location profile to be associated with the monitor.",
 	},
 	"location_profile_name": {
-		Type:     schema.TypeString,
-		Optional: true,
-		Computed: true,
+		Type:        schema.TypeString,
+		Optional:    true,
+		Computed:    true,
+		Description: "Name of the location profile to be associated with the monitor.",
 	},
 	"notification_profile_id": {
-		Type:     schema.TypeString,
-		Optional: true,
-		Computed: true,
+		Type:        schema.TypeString,
+		Optional:    true,
+		Computed:    true,
+		Description: "Notification profile to be associated with the monitor.",
 	},
 	"threshold_profile_id": {
-		Type:     schema.TypeString,
-		Optional: true,
-		Computed: true,
+		Type:        schema.TypeString,
+		Optional:    true,
+		Computed:    true,
+		Description: "Threshold profile to be associated with the monitor.",
 	},
 	"monitor_groups": {
 		Type: schema.TypeList,
 		Elem: &schema.Schema{
 			Type: schema.TypeString,
 		},
-		Optional: true,
+		Optional:    true,
+		Description: "List of monitor groups to which the monitor has to be associated.",
 	},
 	"user_group_ids": {
 		Type: schema.TypeList,
 		Elem: &schema.Schema{
 			Type: schema.TypeString,
 		},
-		Optional: true,
-		Computed: true,
+		Optional:    true,
+		Computed:    true,
+		Description: "List of user groups to be notified when the monitor is down.",
 	},
 }
 

@@ -8,12 +8,14 @@ import (
 
 var MonitorGroupSchema = map[string]*schema.Schema{
 	"display_name": {
-		Type:     schema.TypeString,
-		Required: true,
+		Type:        schema.TypeString,
+		Required:    true,
+		Description: "Display Name for the Monitor Group.",
 	},
 	"description": {
-		Type:     schema.TypeString,
-		Required: true,
+		Type:        schema.TypeString,
+		Required:    true,
+		Description: "Description for the Monitor Group.",
 	},
 	// As of now we don't support associating monitors via configuration file
 	// "monitors": {
@@ -24,21 +26,24 @@ var MonitorGroupSchema = map[string]*schema.Schema{
 	// 	Optional: true,
 	// },
 	"health_threshold_count": {
-		Type:     schema.TypeInt,
-		Optional: true,
-		Default:  1,
+		Type:        schema.TypeInt,
+		Optional:    true,
+		Default:     1,
+		Description: "Number of monitors' health that decide the group status. ‘0’ implies that all the monitors are considered for determining the group status. Default value is 1.",
 	},
 	"dependency_resource_id": {
 		Type: schema.TypeList,
 		Elem: &schema.Schema{
 			Type: schema.TypeString,
 		},
-		Optional: true,
+		Optional:    true,
+		Description: "List of dependent resource IDs. Suppress alert when dependent monitor(s) is down.",
 	},
 	"suppress_alert": {
-		Type:     schema.TypeBool,
-		Optional: true,
-		Default:  false,
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Default:     false,
+		Description: "Boolean value indicating whether to suppress alert when the dependent monitor is down. Setting suppress_alert = true with an empty dependency_resource_id is meaningless.",
 	},
 }
 

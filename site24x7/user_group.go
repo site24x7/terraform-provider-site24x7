@@ -1,10 +1,10 @@
 package site24x7
 
 import (
-	"github.com/site24x7/terraform-provider-site24x7/api"
-	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	"github.com/site24x7/terraform-provider-site24x7/api"
+	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
 )
 
 // SAMPLE POST JSON
@@ -19,12 +19,14 @@ import (
 
 var UserGroupSchema = map[string]*schema.Schema{
 	"display_name": {
-		Type:     schema.TypeString,
-		Required: true,
+		Type:        schema.TypeString,
+		Required:    true,
+		Description: "Display name for the user group.",
 	},
 	"attribute_group_id": {
-		Type:     schema.TypeString,
-		Required: true,
+		Type:        schema.TypeString,
+		Required:    true,
+		Description: "Attribute Alert Group to be associated with the User Alert group.",
 	},
 	"users": {
 		Type:     schema.TypeList,
@@ -32,12 +34,14 @@ var UserGroupSchema = map[string]*schema.Schema{
 		Elem: &schema.Schema{
 			Type: schema.TypeString,
 		},
+		Description: "User IDs of the users to be associated to the group.",
 	},
 	"product_id": {
 		Type:         schema.TypeInt,
 		Optional:     true,
 		Default:      0,
 		ValidateFunc: validation.IntInSlice([]int{0, 1, 2}),
+		Description:  "Product for which the user group is being created. Default value is 0.",
 	},
 }
 

@@ -28,69 +28,60 @@ import (
 
 var URLActionSchema = map[string]*schema.Schema{
 	"name": {
-		Type:     schema.TypeString,
-		Required: true,
+		Type:        schema.TypeString,
+		Required:    true,
+		Description: "Display name for the Action.",
 	},
 	"url": {
-		Type:     schema.TypeString,
-		Required: true,
-	},
-	"type": {
-		Type:     schema.TypeInt,
-		Optional: true,
-		Default:  1,
+		Type:        schema.TypeString,
+		Required:    true,
+		Description: "URL to be invoked for action execution.",
 	},
 	"method": {
-		Type:     schema.TypeString,
-		Optional: true,
-		Default:  "G",
-	},
-	"timeout": {
-		Type:     schema.TypeInt,
-		Optional: true,
-		Default:  15,
-	},
-	// @TODO(mohmann): requires_authentication is no valid field in the
-	// URLAutomations API anymore and is thus ignored. We should remove
-	// it completely from the resource in the future. This is just here
-	// for backwards compatibility.
-	"requires_authentication": {
-		Type:     schema.TypeBool,
-		Optional: true,
-		Default:  false,
-	},
-	"custom_parameters": {
-		Type:     schema.TypeString,
-		Optional: true,
+		Type:        schema.TypeString,
+		Optional:    true,
+		Default:     "G",
+		Description: "HTTP Method to access the action url.",
 	},
 	"send_custom_parameters": {
-		Type:     schema.TypeBool,
-		Optional: true,
-		Default:  false,
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Default:     false,
+		Description: "Configuration to send custom parameters while executing the action.",
+	},
+	"custom_parameters": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Mandatory, if send_custom_parameters is set as true. Custom parameters to be passed while accessing the action url.",
 	},
 	"send_in_json_format": {
-		Type:     schema.TypeBool,
-		Optional: true,
-		Default:  false,
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Default:     false,
+		Description: "Optional, use only if HTTP Method chosen is GET. Configuration to enable json format for post parameters.",
 	},
 	"send_email": {
-		Type:     schema.TypeBool,
-		Optional: true,
-		Default:  false,
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Default:     false,
+		Description: "Boolean indicating whether to send email or not.",
 	},
 	"send_incident_parameters": {
-		Type:     schema.TypeBool,
-		Optional: true,
-		Default:  false,
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Default:     false,
+		Description: "Configuration to send incident parameters while executing the action.",
 	},
 	"auth_method": {
-		Type:     schema.TypeString,
-		Optional: true,
-		Default:  "B",
+		Type:        schema.TypeString,
+		Optional:    true,
+		Default:     "B",
+		Description: "Authentication method to access the action url.",
 	},
 	"user_agent": {
-		Type:     schema.TypeString,
-		Optional: true,
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "User Agent to be used while monitoring the website.",
 	},
 }
 
