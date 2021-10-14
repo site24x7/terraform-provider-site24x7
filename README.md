@@ -30,10 +30,10 @@ For Terraform version 0.13.x
 
 ```hcl
 terraform {
-  required_version = "~> 0.13.0"
+  required_version = "~> 0.15.0"
   required_providers {
     site24x7 = {
-      source  = "site24x7/site24x7"
+      source  = "registry.zoho.io/zoho/site24x7"
       version = "~> 1.0.0"
     }
   }
