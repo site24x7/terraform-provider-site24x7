@@ -4,7 +4,9 @@ terraform {
 
   required_providers {
     site24x7 = {
-      source  = "registry.zoho.io/zoho/site24x7"
+      source  = "site24x7/site24x7"
+      # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
+      version = "0.0.1-beta.2"
     }
   }
 }
@@ -43,7 +45,7 @@ provider "site24x7" {
 // Site24x7 Rest API Monitor API doc - https://www.site24x7.com/help/api/#rest-api
 resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
   // (Required) Display name for the monitor
-  display_name = "rest api - terraform"
+  display_name = "REST API Monitor - terraform"
   // (Required) Website address to monitor.
   website = "https://dummy.restapiexample.com/"
   // (Optional) Name of the Location Profile that has to be associated with the monitor. 

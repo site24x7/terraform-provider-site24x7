@@ -49,41 +49,41 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
 
 ### Required
 
-* `display_name` (String)
-* `website` (String)
+* `display_name` (String) Display Name for the monitor.
+* `website` (String) Website address to monitor.
 
 ### Optional
 
-* `auth_pass` (String)
-* `auth_user` (String)
-* `check_frequency` (Number)
-* `client_certificate_password` (String)
-* `custom_headers` (Map of String)
-* `http_method` (String)
-* `http_protocol` (String)
-* `id` (String) The ID of this resource.
-* `json_schema_check` (Boolean)
-* `jwt_id` (String)
 * `location_profile_id` (String) Location profile to be associated with the monitor.
 * `location_profile_name` (String) Name of the location profile to be associated with the monitor.
-* `match_case` (Boolean)
-* `match_regex` (Map of String)
-* `matching_keyword` (Map of String)
 * `monitor_groups` (List of String) List of monitor groups to which the monitor has to be associated.
 * `notification_profile_id` (String) Notification profile to be associated with the monitor.
-* `oauth2_provider` (String)
-* `request_content_type` (String)
-* `request_param` (String)
-* `response_content_type` (String)
-* `ssl_protocol` (String)
 * `threshold_profile_id` (String) Threshold profile to be associated with the monitor.
-* `timeout` (Number)
-* `unmatching_keyword` (Map of String)
-* `use_alpn` (Boolean)
-* `use_ipv6` (Boolean)
-* `use_name_server` (Boolean)
-* `user_agent` (String)
 * `user_group_ids` (List of String) List of user groups to be notified when the monitor is down.
+* `check_frequency` (Number) Interval at which your website has to be monitored. Default value is 1 minute.
+* `timeout` (Number) Timeout for connecting to website. Default value is 10. Range 1 - 45.
+* `client_certificate_password` (String) Password of the uploaded client certificate.
+* `custom_headers` (Map of String) Header name and value in a string array.
+* `http_method` (String) HTTP Method used for accessing the website. Default value is G.
+* `http_protocol` (String) Specify the version of the HTTP protocol. Default value is H1.1.
+* `auth_pass` (String) Authentication user name to access the website.
+* `auth_user` (String) Authentication password to access the website.
+* `id` (String) The ID of this resource.
+* `json_schema_check` (Boolean) Enable this option to perform the JSON schema check.
+* `jwt_id` (String) Token ID of the Web Token to be associated with the monitor.
+* `match_case` (Boolean) Perform case sensitive keyword search or not.
+* `match_regex` (Map of String) Match the regular expression in the website response.
+* `matching_keyword` (Map of String) Check for the keyword in the website response.
+* `unmatching_keyword` (Map of String) Check for non existence of keyword in the website response.
+* `oauth2_provider` (String) Provider ID of the OAuth Provider to be associated with the monitor.
+* `request_content_type` (String) Provide content type for request params.
+* `request_param` (String) Provide parameters to be passed while accessing the website.
+* `response_content_type` (String) Response content type.
+* `ssl_protocol` (String) Specify the version of the SSL protocol. If you are not sure about the version, use Auto.
+* `use_alpn` (Boolean) Enable ALPN to send supported protocols as part of the TLS handshake.
+* `use_ipv6` (Boolean) Select IPv6 for monitoring the websites hosted with IPv6 address. If you choose non IPv6 supported locations, monitoring will happen through IPv4.
+* `use_name_server` (Boolean) Resolve the IP address using Domain Name Server.
+* `user_agent` (String) User Agent to be used while monitoring the website.
 
 
 Refer [API documentation](https://www.site24x7.com/help/api/#rest-api) for more information about attributes.
