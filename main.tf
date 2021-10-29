@@ -4,8 +4,9 @@ terraform {
 
   required_providers {
     site24x7 = {
-      source  = "registry.zoho.io/zoho/site24x7"
-      version = "1.0.0"
+      source  = "site24x7/site24x7"
+      # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
+      version = "0.0.1-beta.2"
     }
   }
 }
@@ -45,7 +46,7 @@ provider "site24x7" {
 // Site24x7 Monitor Group API doc - https://www.site24x7.com/help/api/#monitor-groups
 resource "site24x7_monitor_group" "monitor_group_us" {
   // (Required) Display Name for the Monitor Group.
-  display_name = "Web Group"
+  display_name = "Website Group - Terraform"
 
   // (Optional) Description for the Monitor Group.
   description = "This is the description of the monitor group from terraform"
@@ -54,9 +55,9 @@ resource "site24x7_monitor_group" "monitor_group_us" {
   // are considered for determining the group status. Default value is 1
   health_threshold_count = 1
   // (Optional) List of dependent resource ids.
-  dependency_resource_id = ["1234000005938013"]
+  # dependency_resource_id = ["1234000005938013"]
   // (Optional) Boolean value indicating whether to suppress alert when the dependent monitor is down
   // Setting suppress_alert = true with an empty dependency_resource_id is meaningless.
-  suppress_alert = true
+  # suppress_alert = true
 }
 
