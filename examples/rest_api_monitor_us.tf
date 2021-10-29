@@ -45,7 +45,7 @@ provider "site24x7" {
 // Site24x7 Rest API Monitor API doc - https://www.site24x7.com/help/api/#rest-api
 resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
   // (Required) Display name for the monitor
-  display_name = "rest api - terraform"
+  display_name = "REST API Monitor - terraform"
   // (Required) Website address to monitor.
   website = "https://dummy.restapiexample.com/"
   // (Optional) Name of the Location Profile that has to be associated with the monitor. 

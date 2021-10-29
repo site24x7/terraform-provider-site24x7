@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "0.0.1-beta.2"
+      version = "0.0.1-beta.1"
     }
   }
 }
@@ -60,4 +60,35 @@ resource "site24x7_monitor_group" "monitor_group_us" {
   // Setting suppress_alert = true with an empty dependency_resource_id is meaningless.
   # suppress_alert = true
 }
+
+// Site24x7 Rest API Monitor API doc - https://www.site24x7.com/help/api/#rest-api
+resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
+  // (Required) Display name for the monitor
+  display_name = "REST API Monitor - Terraform"
+  // (Required) Website address to monitor.
+  website = "https://dummy.restapiexample.com/"
+  // (Optional) Name of the Location Profile that has to be associated with the monitor. 
+  // Either specify location_profile_id or location_profile_name.
+  // If location_profile_id and location_profile_name are omitted,
+  // the first profile returned by the /api/location_profiles endpoint
+  // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
+  // used.
+  location_profile_name = "North America"
+  // (Optional) Check for the keyword in the website response.
+  matching_keyword = {
+ 	  severity= 2
+ 	  value= "aaa"
+ 	}
+  // (Optional) Check for non existence of keyword in the website response.
+  unmatching_keyword = {
+ 	  severity= 2
+ 	  value= "bbb"
+ 	}
+  // (Optional) Match the regular expression in the website response.
+  match_regex = {
+ 	  severity= 2
+ 	  value= ".*aaa.*"
+ 	}
+}
+
 

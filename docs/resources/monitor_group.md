@@ -49,3 +49,4 @@ resource "site24x7_monitor_group" "monitor_group_us" {
 
 
 Refer [API documentation](https://www.site24x7.com/help/api/#monitor-groups) for more information about attributes.
+ 
