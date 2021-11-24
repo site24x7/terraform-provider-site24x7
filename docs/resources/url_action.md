@@ -56,6 +56,7 @@ resource "site24x7_url_action" "action_us" {
 * `custom_parameters` (String) Mandatory, if send_custom_parameters is set as true. Custom parameters to be passed while accessing the action url.
 * `id` (String) The ID of this resource.
 * `method` (String) HTTP Method to access the action url.
+* `timeout` (Number) Timeout for connecting to URL. Default value is 10. Range 1 - 90.
 * `send_custom_parameters` (Boolean) Configuration to send custom parameters while executing the action.
 * `send_email` (Boolean) Boolean indicating whether to send email or not.
 * `send_in_json_format` (Boolean) Optional, use only if HTTP Method chosen is GET. Configuration to enable json format for post parameters.

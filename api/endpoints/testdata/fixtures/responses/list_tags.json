@@ -1,0 +1,24 @@
+{
+  "code":0,
+  "message":"success",
+  "data":[
+    {
+      "tag_id":"123",
+      "tag_name":  "foobar",
+      "tag_value": "baz",
+      "tag_color": "#B7DA9E"
+    },
+    {
+      "tag_id":"79123400003075053",
+      "tag_name":  "foobar 1",
+      "tag_value": "baz 1",
+      "tag_color": "#B7DA9E"
+    },
+    {
+      "tag_id":"79730456703075223",
+      "tag_name":  "foobar 2",
+      "tag_value": "baz 2",
+      "tag_color": "#B7DA9E"
+    }
+  ]
+}

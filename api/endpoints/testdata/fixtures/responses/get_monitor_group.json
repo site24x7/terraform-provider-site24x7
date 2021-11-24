@@ -9,8 +9,7 @@
       "726000000002460",
       "726000000002464"
     ],
-    "dependency_resource_ids": ["123"],
-    "suppress_alert": true,
+    "suppress_alert": false,
     "health_threshold_count": 1
   }
 }

@@ -43,6 +43,12 @@ var URLActionSchema = map[string]*schema.Schema{
 		Default:     "G",
 		Description: "HTTP Method to access the action url.",
 	},
+	"timeout": {
+		Type:        schema.TypeInt,
+		Optional:    true,
+		Default:     10,
+		Description: "Timeout for connecting to website. Default value is 10. Range 1 - 90.",
+	},
 	"send_custom_parameters": {
 		Type:        schema.TypeBool,
 		Optional:    true,

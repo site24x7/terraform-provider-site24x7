@@ -8,8 +8,6 @@ import (
 
 type Status int
 
-type MonitorType string
-
 // Custom unmarshaller that allows the value to be both a
 // string and an integer, always unmarshals into integer
 //
@@ -34,23 +32,8 @@ func (status *Status) UnmarshalJSON(rawValue []byte) error {
 	return nil
 }
 
-const (
-	Down               Status = 0
-	Up                 Status = 1
-	Trouble            Status = 2
-	Critical           Status = 3
-	Suspended          Status = 5
-	Maintenance        Status = 7
-	Discovery          Status = 9
-	ConfigurationError Status = 10
-)
-
-const (
-	URL      MonitorType = "URL"
-	SSL_CERT MonitorType = "SSL_CERT"
-	RESTAPI  MonitorType = "RESTAPI"
-	AMAZON   MonitorType = "AMAZON"
-)
+// Type of the Site24x7 resource.
+type MonitorType string
 
 type ValueAndSeverity struct {
 	Value    string `json:"value"`
@@ -67,34 +50,7 @@ type ActionRef struct {
 	AlertType Status `json:"alert_type"`
 }
 
-// Monitor performance of websites and internet services
-type Monitor struct {
-	MonitorID             string            `json:"monitor_id,omitempty"`
-	DisplayName           string            `json:"display_name"`
-	Type                  string            `json:"type"`
-	Website               string            `json:"website"`
-	CheckFrequency        string            `json:"check_frequency"`
-	HTTPMethod            string            `json:"http_method"`
-	AuthUser              string            `json:"auth_user"`
-	AuthPass              string            `json:"auth_pass"`
-	MatchingKeyword       *ValueAndSeverity `json:"matching_keyword,omitempty"`
-	UnmatchingKeyword     *ValueAndSeverity `json:"unmatching_keyword,omitempty"`
-	MatchRegex            *ValueAndSeverity `json:"match_regex,omitempty"`
-	MatchCase             bool              `json:"match_case"`
-	UserAgent             string            `json:"user_agent"`
-	CustomHeaders         []Header          `json:"custom_headers,omitempty"`
-	Timeout               int               `json:"timeout"`
-	LocationProfileID     string            `json:"location_profile_id"`
-	NotificationProfileID string            `json:"notification_profile_id"`
-	ThresholdProfileID    string            `json:"threshold_profile_id"`
-	MonitorGroups         []string          `json:"monitor_groups,omitempty"`
-	UserGroupIDs          []string          `json:"user_group_ids,omitempty"`
-	ActionIDs             []ActionRef       `json:"action_ids,omitempty"`
-	UseNameServer         bool              `json:"use_name_server"`
-	UpStatusCodes         string            `json:"up_status_codes"`
-}
-
-// Monitor performance of websites and internet services
+// Denotes the website monitor resource in Site24x7.
 type WebsiteMonitor struct {
 	MonitorID             string            `json:"monitor_id,omitempty"`
 	DisplayName           string            `json:"display_name"`
@@ -125,6 +81,7 @@ func (websiteMonitor *WebsiteMonitor) String() string {
 	return ToString(websiteMonitor)
 }
 
+// Denotes the SSL monitor resource in Site24x7.
 type SSLMonitor struct {
 	MonitorID             string      `json:"monitor_id,omitempty"`
 	DisplayName           string      `json:"display_name"`
@@ -149,6 +106,7 @@ func (sslMonitor *SSLMonitor) String() string {
 	return ToString(sslMonitor)
 }
 
+// Denotes the REST API monitor resource in Site24x7.
 type RestApiMonitor struct {
 	MonitorID                 string                 `json:"monitor_id,omitempty"`
 	DisplayName               string                 `json:"display_name"`
@@ -189,6 +147,7 @@ func (restApiMonitor *RestApiMonitor) String() string {
 	return ToString(restApiMonitor)
 }
 
+// Denotes the Amazon monitor resource in Site24x7.
 type AmazonMonitor struct {
 	MonitorID             string   `json:"monitor_id,omitempty"`
 	DisplayName           string   `json:"display_name"`
@@ -205,7 +164,7 @@ func (amazonMonitor *AmazonMonitor) String() string {
 	return ToString(amazonMonitor)
 }
 
-// MonitorGroup organizes Monitor resources into groups.
+// MonitorGroup organizes monitor resources into groups.
 type MonitorGroup struct {
 	GroupID                string   `json:"group_id,omitempty"`
 	DisplayName            string   `json:"display_name"`
@@ -221,13 +180,26 @@ func (monitorGroup *MonitorGroup) String() string {
 	return ToString(monitorGroup)
 }
 
+// Tags helps you to organize monitor resources and locate related items that have the same tag.
+type Tag struct {
+	TagID    string `json:"tag_id,omitempty"`
+	TagName  string `json:"tag_name"`
+	TagValue string `json:"tag_value,omitempty"`
+	TagType  int    `json:"tag_type,omitempty"`  // 1 - User Defined Tag or 2 - AWS System Generated Tag
+	TagColor string `json:"tag_color,omitempty"` // Possible Colors - '#B7DA9E','#73C7A3','#B5DCDF','#D4ABBB','#4895A8','#DFE897','#FCEA8B','#FFC36D','#F79953','#F16B3C','#E55445','#F2E2B6','#DEC57B','#CBBD80','#AAB3D4','#7085BA','#F6BDAE','#EFAB6D','#CA765C','#999','#4A148C','#009688','#00ACC1','#0091EA','#8BC34A','#558B2F'
+}
+
+func (tag *Tag) String() string {
+	return ToString(tag)
+}
+
 // ThresholdProfile help the alarms engine to decide if a specific resource has to be declared critical or down
 type ThresholdProfile struct {
 	_                      struct{}                 `type:"structure"` // Enforces key based initialization.
 	ProfileID              string                   `json:"profile_id,omitempty"`
 	Type                   string                   `json:"type"` // Denotes monitor type
 	ProfileName            string                   `json:"profile_name"`
-	ProfileType            int                      `json:"profile_type"` // 1- Static Threshold or 2 - AI-based Threshold
+	ProfileType            int                      `json:"profile_type"` // 1 - Static Threshold or 2 - AI-based Threshold
 	DownLocationThreshold  int                      `json:"down_location_threshold"`
 	WebsiteContentModified bool                     `json:"website_content_modified"`
 	WebsiteContentChanges  []map[string]interface{} `json:"website_content_changes,omitempty"`
