@@ -49,6 +49,7 @@ A terraform provider for managing the following resources in Site24x7:
 - Monitor Group - [site24x7_monitor_group](examples/monitor_group_us.tf) ([Site24x7 Monitor Group API doc](https://www.site24x7.com/help/api/#monitor-groups))
 - Threshold Profile - [site24x7_threshold_profile](examples/threshold_profile_us.tf) ([Site24x7 Threshold Profile API doc](https://www.site24x7.com/help/api/#threshold-website))
 - User Group - [site24x7_user_group](examples/user_group_us.tf) ([Site24x7 User Group API doc](https://www.site24x7.com/help/api/#user-groups))
+- Tag - [site24x7_tag](examples/tag_us.tf) ([Site24x7 Tag API doc](https://www.site24x7.com/help/api/#tags))
 
 
 Usage example
