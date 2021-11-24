@@ -67,6 +67,7 @@ type Client interface {
 	LocationProfiles() endpoints.LocationProfiles
 	LocationTemplate() endpoints.LocationTemplate
 	MonitorGroups() endpoints.MonitorGroups
+	Tags() endpoints.Tags
 	WebsiteMonitors() endpoints.WebsiteMonitors
 	SSLMonitors() endpoints.SSLMonitors
 	RestApiMonitors() endpoints.RestApiMonitors
@@ -149,6 +150,11 @@ func (c *client) RestApiMonitors() endpoints.RestApiMonitors {
 // MonitorGroups implements Client.
 func (c *client) MonitorGroups() endpoints.MonitorGroups {
 	return endpoints.NewMonitorGroups(c.restClient)
+}
+
+// Tags implements Client.
+func (c *client) Tags() endpoints.Tags {
+	return endpoints.NewTags(c.restClient)
 }
 
 // NotificationProfiles implements Client.

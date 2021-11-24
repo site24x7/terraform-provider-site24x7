@@ -1,6 +1,6 @@
 terraform {
   # Require Terraform version 0.15.x (recommended)
-  required_version = "~> 0.15.0"
+  required_version = "~> 0.13.0"
 
   required_providers {
     site24x7 = {
@@ -42,12 +42,15 @@ provider "site24x7" {
 
 }
 
-// User Group API doc: https://www.site24x7.com/help/api/#user-groups
-resource "site24x7_user_group" "user_group_us" {
-  // (Required) Display name for the user group.
-  display_name = "User Group - Terraform"
-  // (Required) User IDs of the users to be associated to the group.
-  users = ["123"]
-  // (Required) Attribute Alert Group to be associated with the User Alert group.
-  attribute_group_id = "456"
+// Site24x7 Tag API doc - https://www.site24x7.com/help/api/#tags
+resource "site24x7_tag" "tag_us" {
+  // (Required) Display Name for the Tag.
+  tag_name = "Website"
+
+  // (Required) Value for the Tag.
+  tag_value = "Zoho websites"
+
+  // Color code for the Tag. Possible values are '#B7DA9E','#73C7A3','#B5DCDF','#D4ABBB','#4895A8','#DFE897','#FCEA8B','#FFC36D','#F79953','#F16B3C','#E55445','#F2E2B6','#DEC57B','#CBBD80','#AAB3D4','#7085BA','#F6BDAE','#EFAB6D','#CA765C','#999','#4A148C','#009688','#00ACC1','#0091EA','#8BC34A','#558B2F'
+  tag_color = "#B7DA9E"
+
 }
