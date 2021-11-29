@@ -112,6 +112,10 @@ func TestMonitors(t *testing.T) {
 					UserGroupIDs: []string{
 						"123412341234123415",
 					},
+					TagIDs: []string{
+						"123456987654321012",
+						"123456987654321013",
+					},
 					LocationProfileID: "123412341234123412",
 					UserAgent:         "Mozilla Firefox",
 					Timeout:           30,

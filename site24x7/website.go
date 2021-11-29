@@ -138,6 +138,14 @@ var WebsiteMonitorSchema = map[string]*schema.Schema{
 		Computed:    true,
 		Description: "List of user groups to be notified when the monitor is down.",
 	},
+	"tag_ids": {
+		Type: schema.TypeList,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Description: "List of Tag IDs to be associated to the monitor.",
+	},
 	"actions": {
 		Type:        schema.TypeMap,
 		Optional:    true,
@@ -270,6 +278,11 @@ func resourceDataToWebsiteMonitor(d *schema.ResourceData, client Client) (*api.W
 		userGroupIDs = append(userGroupIDs, id.(string))
 	}
 
+	var tagIDs []string
+	for _, id := range d.Get("tag_ids").([]interface{}) {
+		tagIDs = append(tagIDs, id.(string))
+	}
+
 	var monitorGroups []string
 	for _, group := range d.Get("monitor_groups").([]interface{}) {
 		monitorGroups = append(monitorGroups, group.(string))
@@ -315,6 +328,7 @@ func resourceDataToWebsiteMonitor(d *schema.ResourceData, client Client) (*api.W
 		ThresholdProfileID:    d.Get("threshold_profile_id").(string),
 		MonitorGroups:         monitorGroups,
 		UserGroupIDs:          userGroupIDs,
+		TagIDs:                tagIDs,
 		ActionIDs:             actionRefs,
 		UseNameServer:         d.Get("use_name_server").(bool),
 		UpStatusCodes:         d.Get("up_status_codes").(string),
@@ -419,6 +433,7 @@ func updateWebsiteMonitorResourceData(d *schema.ResourceData, monitor *api.Websi
 	d.Set("threshold_profile_id", monitor.ThresholdProfileID)
 	d.Set("monitor_groups", monitor.MonitorGroups)
 	d.Set("user_group_ids", monitor.UserGroupIDs)
+	d.Set("tag_ids", monitor.TagIDs)
 
 	actions := make(map[string]interface{})
 	for _, action := range monitor.ActionIDs {

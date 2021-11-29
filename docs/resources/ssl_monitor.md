@@ -52,6 +52,7 @@ resource "site24x7_ssl_monitor" "ssl_monitor_us" {
 * `threshold_profile_id` (String) Threshold profile to be associated with the monitor.
 * `timeout` (Number) Timeout for connecting to the host. Range 1 - 45.
 * `user_group_ids` (List of String) List of user groups to be notified when the monitor is down.
+* `tag_ids` (List of String) List of tags to be associated to the monitor.
 
 
 Refer [API documentation](https://www.site24x7.com/help/api/#ssl-certificate) for more information about attributes.

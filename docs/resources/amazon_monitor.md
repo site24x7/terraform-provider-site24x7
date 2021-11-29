@@ -45,6 +45,7 @@ resource "site24x7_amazon_monitor" "aws_monitor_site24x7" {
 * `id` (String) The ID of this resource.
 * `notification_profile_id` (String)
 * `user_group_ids` (List of String) List of user groups to be notified when the monitor is down.
+* `tag_ids` (List of String) List of tags to be associated to the monitor.
 
 Refer [API documentation](https://www.site24x7.com/help/api/#amazon-webservice-monitor) for more information about attributes.
 

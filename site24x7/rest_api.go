@@ -131,6 +131,14 @@ var RestApiMonitorSchema = map[string]*schema.Schema{
 		Computed:    true,
 		Description: "List of user groups to be notified when the monitor is down.",
 	},
+	"tag_ids": {
+		Type: schema.TypeList,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Description: "List of Tag IDs to be associated to the monitor.",
+	},
 	"http_method": {
 		Type:        schema.TypeString,
 		Optional:    true,
@@ -402,14 +410,19 @@ func resourceDataToRestApiMonitor(d *schema.ResourceData, client Client) (*api.R
 		customHeaders[i] = api.Header{Name: k, Value: customHeaderMap[k].(string)}
 	}
 
+	var monitorGroups []string
+	for _, group := range d.Get("monitor_groups").([]interface{}) {
+		monitorGroups = append(monitorGroups, group.(string))
+	}
+
 	var userGroupIDs []string
 	for _, id := range d.Get("user_group_ids").([]interface{}) {
 		userGroupIDs = append(userGroupIDs, id.(string))
 	}
 
-	var monitorGroups []string
-	for _, group := range d.Get("monitor_groups").([]interface{}) {
-		monitorGroups = append(monitorGroups, group.(string))
+	var tagIDs []string
+	for _, id := range d.Get("tag_ids").([]interface{}) {
+		tagIDs = append(tagIDs, id.(string))
 	}
 
 	var actionRefs []api.ActionRef
@@ -470,6 +483,7 @@ func resourceDataToRestApiMonitor(d *schema.ResourceData, client Client) (*api.R
 		ThresholdProfileID:    d.Get("threshold_profile_id").(string),
 		MonitorGroups:         monitorGroups,
 		UserGroupIDs:          userGroupIDs,
+		TagIDs:                tagIDs,
 		ActionIDs:             actionRefs,
 	}
 
@@ -550,7 +564,7 @@ func updateRestApiMonitorResourceData(d *schema.ResourceData, monitor *api.RestA
 	d.Set("threshold_profile_id", monitor.ThresholdProfileID)
 	d.Set("monitor_groups", monitor.MonitorGroups)
 	d.Set("user_group_ids", monitor.UserGroupIDs)
-
+	d.Set("tag_ids", monitor.TagIDs)
 	// if monitor.MatchingKeyword != nil {
 	// 	d.Set("matching_keyword", monitor.MatchingKeyword)
 	// }

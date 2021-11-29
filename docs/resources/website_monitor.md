@@ -69,6 +69,7 @@ resource "site24x7_website_monitor" "website_monitor_example" {
 * `use_name_server` (Boolean) Resolve the IP address using Domain Name Server.
 * `user_agent` (String) User Agent to be used while monitoring the website.
 * `user_group_ids` (List of String) List of user groups to be notified when the monitor is down.
+* `tag_ids` (List of String) List of tags to be associated to the monitor.
 
 
 Refer [API documentation](https://www.site24x7.com/help/api/#website) for more information about attributes.
