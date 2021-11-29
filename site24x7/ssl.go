@@ -100,6 +100,14 @@ var SSLMonitorSchema = map[string]*schema.Schema{
 		Computed:    true,
 		Description: "List of user groups to be notified when the monitor is down.",
 	},
+	"tag_ids": {
+		Type: schema.TypeList,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Description: "List of Tag IDs to be associated to the monitor.",
+	},
 }
 
 func resourceSite24x7SSLMonitor() *schema.Resource {
@@ -195,14 +203,19 @@ func sslMonitorExists(d *schema.ResourceData, meta interface{}) (bool, error) {
 
 func resourceDataToSSLMonitor(d *schema.ResourceData, client Client) (*api.SSLMonitor, error) {
 
+	var monitorGroups []string
+	for _, group := range d.Get("monitor_groups").([]interface{}) {
+		monitorGroups = append(monitorGroups, group.(string))
+	}
+
 	var userGroupIDs []string
 	for _, id := range d.Get("user_group_ids").([]interface{}) {
 		userGroupIDs = append(userGroupIDs, id.(string))
 	}
 
-	var monitorGroups []string
-	for _, group := range d.Get("monitor_groups").([]interface{}) {
-		monitorGroups = append(monitorGroups, group.(string))
+	var tagIDs []string
+	for _, id := range d.Get("tag_ids").([]interface{}) {
+		tagIDs = append(tagIDs, id.(string))
 	}
 
 	sslMonitor := &api.SSLMonitor{
@@ -222,6 +235,7 @@ func resourceDataToSSLMonitor(d *schema.ResourceData, client Client) (*api.SSLMo
 		ThresholdProfileID:    d.Get("threshold_profile_id").(string),
 		MonitorGroups:         monitorGroups,
 		UserGroupIDs:          userGroupIDs,
+		TagIDs:                tagIDs,
 	}
 
 	if sslMonitor.LocationProfileID == "" {
@@ -280,5 +294,5 @@ func updateSSLMonitorResourceData(d *schema.ResourceData, monitor *api.SSLMonito
 	d.Set("threshold_profile_id", monitor.ThresholdProfileID)
 	d.Set("monitor_groups", monitor.MonitorGroups)
 	d.Set("user_group_ids", monitor.UserGroupIDs)
-
+	d.Set("tag_ids", monitor.TagIDs)
 }

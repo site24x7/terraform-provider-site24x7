@@ -67,14 +67,15 @@ type WebsiteMonitor struct {
 	UserAgent             string            `json:"user_agent"`
 	CustomHeaders         []Header          `json:"custom_headers,omitempty"`
 	Timeout               int               `json:"timeout"`
+	UseNameServer         bool              `json:"use_name_server"`
+	UpStatusCodes         string            `json:"up_status_codes"`
 	LocationProfileID     string            `json:"location_profile_id"`
 	NotificationProfileID string            `json:"notification_profile_id"`
 	ThresholdProfileID    string            `json:"threshold_profile_id"`
 	MonitorGroups         []string          `json:"monitor_groups,omitempty"`
 	UserGroupIDs          []string          `json:"user_group_ids,omitempty"`
+	TagIDs                []string          `json:"tag_ids,omitempty"`
 	ActionIDs             []ActionRef       `json:"action_ids,omitempty"`
-	UseNameServer         bool              `json:"use_name_server"`
-	UpStatusCodes         string            `json:"up_status_codes"`
 }
 
 func (websiteMonitor *WebsiteMonitor) String() string {
@@ -99,6 +100,7 @@ type SSLMonitor struct {
 	ThresholdProfileID    string      `json:"threshold_profile_id"`
 	MonitorGroups         []string    `json:"monitor_groups,omitempty"`
 	UserGroupIDs          []string    `json:"user_group_ids,omitempty"`
+	TagIDs                []string    `json:"tag_ids,omitempty"`
 	// ActionIDs             []ActionRef `json:"action_ids,omitempty"`
 }
 
@@ -117,12 +119,6 @@ type RestApiMonitor struct {
 	HttpMethod                string                 `json:"http_method,omitempty"`
 	HttpProtocol              string                 `json:"http_protocol,omitempty"`
 	SslProtocol               string                 `json:"ssl_protocol,omitempty"`
-	LocationProfileID         string                 `json:"location_profile_id"`
-	NotificationProfileID     string                 `json:"notification_profile_id"`
-	ThresholdProfileID        string                 `json:"threshold_profile_id"`
-	MonitorGroups             []string               `json:"monitor_groups,omitempty"`
-	UserGroupIDs              []string               `json:"user_group_ids,omitempty"`
-	ActionIDs                 []ActionRef            `json:"action_ids,omitempty"`
 	RequestContentType        string                 `json:"request_content_type,omitempty"`
 	ResponseContentType       string                 `json:"response_type,omitempty"`
 	RequestParam              string                 `json:"request_param,omitempty"`
@@ -141,6 +137,13 @@ type RestApiMonitor struct {
 	UseNameServer             bool                   `json:"use_name_server"`
 	UserAgent                 string                 `json:"user_agent"`
 	CustomHeaders             []Header               `json:"custom_headers,omitempty"`
+	LocationProfileID         string                 `json:"location_profile_id"`
+	NotificationProfileID     string                 `json:"notification_profile_id"`
+	ThresholdProfileID        string                 `json:"threshold_profile_id"`
+	MonitorGroups             []string               `json:"monitor_groups,omitempty"`
+	UserGroupIDs              []string               `json:"user_group_ids,omitempty"`
+	TagIDs                    []string               `json:"tag_ids,omitempty"`
+	ActionIDs                 []ActionRef            `json:"action_ids,omitempty"`
 }
 
 func (restApiMonitor *RestApiMonitor) String() string {
@@ -158,6 +161,7 @@ type AmazonMonitor struct {
 	DiscoverServices      []string `json:"aws_discover_services"`
 	NotificationProfileID string   `json:"notification_profile_id"`
 	UserGroupIDs          []string `json:"user_group_ids"`
+	TagIDs                []string `json:"tag_ids,omitempty"`
 }
 
 func (amazonMonitor *AmazonMonitor) String() string {

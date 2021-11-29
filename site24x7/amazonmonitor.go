@@ -49,6 +49,14 @@ var AmazonMonitorSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Description: "List of user groups to be notified when the monitor is down.",
 	},
+	"tag_ids": {
+		Type: schema.TypeList,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Description: "List of Tag IDs to be associated to the monitor.",
+	},
 }
 
 func resourceSite24x7AmazonMonitor() *schema.Resource {
@@ -142,6 +150,11 @@ func resourceDataToAmazonMonitor(d *schema.ResourceData, client Client) (*api.Am
 		userGroupIDs = append(userGroupIDs, id.(string))
 	}
 
+	var tagIDs []string
+	for _, id := range d.Get("tag_ids").([]interface{}) {
+		tagIDs = append(tagIDs, id.(string))
+	}
+
 	var awsServicesToDiscover []string
 	for _, id := range d.Get("aws_discover_services").([]interface{}) {
 		awsServicesToDiscover = append(awsServicesToDiscover, id.(string))
@@ -174,6 +187,7 @@ func resourceDataToAmazonMonitor(d *schema.ResourceData, client Client) (*api.Am
 		AccessKey:             d.Get("aws_access_key").(string),
 		NotificationProfileID: notificationProfileID,
 		UserGroupIDs:          userGroupIDs,
+		TagIDs:                tagIDs,
 	}, nil
 }
 
@@ -182,6 +196,7 @@ func updateAmazonMonitorResourceData(d *schema.ResourceData, amazonMonitor *api.
 	d.Set("aws_discovery_frequency", amazonMonitor.DiscoverFrequency)
 	d.Set("notification_profile_id", amazonMonitor.NotificationProfileID)
 	d.Set("user_group_ids", amazonMonitor.UserGroupIDs)
+	d.Set("tag_ids", amazonMonitor.TagIDs)
 	d.Set("aws_discover_services", amazonMonitor.DiscoverServices)
 	d.Set("aws_secret_key", amazonMonitor.SecretKey)
 	d.Set("aws_access_key", amazonMonitor.AccessKey)
