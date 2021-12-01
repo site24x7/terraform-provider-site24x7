@@ -26,6 +26,10 @@ resource "site24x7_ssl_monitor" "ssl_monitor_us" {
   // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
   // used.
   location_profile_name = "North America"
+  // (Optional) List if tag IDs to be associated to the monitor.
+  tag_ids = [
+    "123",
+  ]
 }
 ```
 

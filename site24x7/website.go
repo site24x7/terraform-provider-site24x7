@@ -6,9 +6,66 @@ import (
 	"strconv"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
 )
+
+// SAMPLE POST JSON
+// {
+// 	"website": "http://www.zoho.com",
+// 	"use_ipv6": false,
+// 	"http_protocol": "H1.1",
+// 	"check_frequency": "5",
+// 	"unmatching_keyword": {
+// 	"value": "unmatching_bbbb",
+// 	"severity": 2
+// 	},
+// 	"threshold_profile_id": "123456000000815001",
+// 	"type": "URL",
+// 	"display_name": "google",
+// 	"user_group_ids": [
+// 	"123456000000025005"
+// 	],
+// 	"timeout": 15,
+// 	"match_case": false,
+// 	"response_headers_check": {
+// 	"value": [
+// 		{
+// 		"name": "Accept-Patch",
+// 		"value": "b"
+// 		},
+// 		{
+// 		"name": "Allow",
+// 		"value": "a"
+// 		}
+// 	],
+// 	"severity": 2
+// 	},
+// 	"auth_method": "B",
+// 	"http_method": "G",
+// 	"perform_automation": false,
+// 	"use_name_server": false,
+// 	"use_alpn": false,
+// 	"matching_keyword": {
+// 	"value": "matching_aaaa",
+// 	"severity": 2
+// 	},
+// 	"notification_profile_id": "123456000000029001",
+// 	"location_profile_id": "123456000000025021",
+// 	"ssl_protocol": "Auto",
+// 	"custom_headers": [
+// 	{
+// 		"name": "Accept-Language",
+// 		"value": "english"
+// 	},
+// 	{
+// 		"name": "Accept-Datetime",
+// 		"value": "dateheader"
+// 	}
+// 	],
+// 	"tag_ids": []
+// }
 
 var WebsiteMonitorSchema = map[string]*schema.Schema{
 	"display_name": {
@@ -86,11 +143,6 @@ var WebsiteMonitorSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Description: "User Agent to be used while monitoring the website.",
 	},
-	"custom_headers": {
-		Type:        schema.TypeMap,
-		Optional:    true,
-		Description: "Header name and value in a string array.",
-	},
 	"timeout": {
 		Type:        schema.TypeInt,
 		Optional:    true,
@@ -163,6 +215,23 @@ var WebsiteMonitorSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Default:     "",
 		Description: "Provide a comma-separated list of HTTP status codes that indicate a successful response. You can specify individual status codes, as well as ranges separated with a colon.",
+	},
+	"custom_headers": {
+		Type:        schema.TypeMap,
+		Optional:    true,
+		Description: "A Map of Header name and value.",
+	},
+	"response_headers_severity": {
+		Type:         schema.TypeInt,
+		Optional:     true,
+		Default:      2,
+		ValidateFunc: validation.IntInSlice([]int{0, 2}), // 0 - Down, 2 - Trouble
+		Description:  "Alert type constant. Can be either 0 or 2. '0' denotes Down and '2' denotes Trouble",
+	},
+	"response_headers": {
+		Type:        schema.TypeMap,
+		Optional:    true,
+		Description: "A Map of Header name and value.",
 	},
 }
 
@@ -259,18 +328,34 @@ func websiteMonitorExists(d *schema.ResourceData, meta interface{}) (bool, error
 }
 
 func resourceDataToWebsiteMonitor(d *schema.ResourceData, client Client) (*api.WebsiteMonitor, error) {
-	customHeaderMap := d.Get("custom_headers").(map[string]interface{})
 
+	// Custom Headers
+	customHeaderMap := d.Get("custom_headers").(map[string]interface{})
 	keys := make([]string, 0, len(customHeaderMap))
 	for k := range customHeaderMap {
 		keys = append(keys, k)
 	}
-
 	sort.Strings(keys)
-
 	customHeaders := make([]api.Header, len(keys))
 	for i, k := range keys {
 		customHeaders[i] = api.Header{Name: k, Value: customHeaderMap[k].(string)}
+	}
+
+	// HTTP Response Headers
+	var httpResponseHeader api.HTTPResponseHeader
+	responseHeaderMap := d.Get("response_headers").(map[string]interface{})
+	if len(responseHeaderMap) > 0 {
+		reponseHeaderKeys := make([]string, 0, len(responseHeaderMap))
+		for k := range responseHeaderMap {
+			reponseHeaderKeys = append(reponseHeaderKeys, k)
+		}
+		sort.Strings(reponseHeaderKeys)
+		responseHeaders := make([]api.Header, len(reponseHeaderKeys))
+		for i, k := range reponseHeaderKeys {
+			responseHeaders[i] = api.Header{Name: k, Value: responseHeaderMap[k].(string)}
+		}
+		httpResponseHeader.Severity = api.Status(d.Get("response_headers_severity").(int))
+		httpResponseHeader.Value = responseHeaders
 	}
 
 	var userGroupIDs []string
@@ -316,13 +401,14 @@ func resourceDataToWebsiteMonitor(d *schema.ResourceData, client Client) (*api.W
 		Type:                  string(api.URL),
 		Website:               d.Get("website").(string),
 		CheckFrequency:        strconv.Itoa(d.Get("check_frequency").(int)),
+		Timeout:               d.Get("timeout").(int),
 		HTTPMethod:            d.Get("http_method").(string),
 		AuthUser:              d.Get("auth_user").(string),
 		AuthPass:              d.Get("auth_pass").(string),
 		MatchCase:             d.Get("match_case").(bool),
 		UserAgent:             d.Get("user_agent").(string),
 		CustomHeaders:         customHeaders,
-		Timeout:               d.Get("timeout").(int),
+		ResponseHeaders:       httpResponseHeader,
 		LocationProfileID:     d.Get("location_profile_id").(string),
 		NotificationProfileID: d.Get("notification_profile_id").(string),
 		ThresholdProfileID:    d.Get("threshold_profile_id").(string),
@@ -425,6 +511,16 @@ func updateWebsiteMonitorResourceData(d *schema.ResourceData, monitor *api.Websi
 		}
 		customHeaders[h.Name] = h.Value
 	}
+
+	responseHeaders := make(map[string]interface{})
+	for _, h := range monitor.ResponseHeaders.Value {
+		if h.Name == "" {
+			continue
+		}
+		responseHeaders[h.Name] = h.Value
+	}
+	d.Set("response_headers", responseHeaders)
+	d.Set("response_headers_severity", monitor.ResponseHeaders.Severity)
 
 	d.Set("custom_headers", customHeaders)
 	d.Set("timeout", monitor.Timeout)
