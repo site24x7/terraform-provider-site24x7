@@ -48,5 +48,18 @@
   "check_frequency": "1440",
   "display_name": "Display name for the monitor",
   "use_name_server": true,
-  "up_status_codes": ""
+  "up_status_codes": "",
+  "response_headers_check": {
+    "severity": 2,
+    "value": [
+      {
+        "name": "Accept-Encoding",
+        "value": "gzip"
+      },
+      {
+        "name": "Cache-Control",
+        "value": "nocache"
+      }
+    ]
+  }
 }

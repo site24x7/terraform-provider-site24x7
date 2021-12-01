@@ -47,6 +47,19 @@ func TestRestApiMonitors(t *testing.T) {
 					UserGroupIDs:              []string{"123", "456"},
 					AuthUser:                  "username",
 					AuthPass:                  "password",
+					ResponseHeaders: api.HTTPResponseHeader{
+						Severity: api.Trouble,
+						Value: []api.Header{
+							{
+								Name:  "Accept-Encoding",
+								Value: "gzip",
+							},
+							{
+								Name:  "Cache-Control",
+								Value: "nocache",
+							},
+						},
+					},
 				}
 
 				_, err := NewRestApiMonitors(c).Create(restApiMonitor)
@@ -210,6 +223,19 @@ func TestRestApiMonitors(t *testing.T) {
 					UserGroupIDs:              []string{"123", "456"},
 					AuthUser:                  "username",
 					AuthPass:                  "password",
+					ResponseHeaders: api.HTTPResponseHeader{
+						Severity: api.Trouble,
+						Value: []api.Header{
+							{
+								Name:  "Accept-Encoding",
+								Value: "gzip",
+							},
+							{
+								Name:  "Cache-Control",
+								Value: "nocache",
+							},
+						},
+					},
 				}
 
 				_, err := NewRestApiMonitors(c).Update(restApiMonitor)

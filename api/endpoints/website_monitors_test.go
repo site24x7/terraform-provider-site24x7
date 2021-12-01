@@ -16,7 +16,7 @@ func TestMonitors(t *testing.T) {
 			name:         "create monitor",
 			expectedVerb: "POST",
 			expectedPath: "/monitors",
-			expectedBody: fixture(t, "requests/create_monitor.json"),
+			expectedBody: fixture(t, "requests/create_website_monitor.json"),
 			statusCode:   200,
 			responseBody: jsonAPIResponseBody(t, nil),
 			fn: func(t *testing.T, c rest.Client) {
@@ -70,6 +70,19 @@ func TestMonitors(t *testing.T) {
 					CheckFrequency: "1440",
 					DisplayName:    "Display name for the monitor",
 					UseNameServer:  true,
+					ResponseHeaders: api.HTTPResponseHeader{
+						Severity: api.Trouble,
+						Value: []api.Header{
+							{
+								Name:  "Accept-Encoding",
+								Value: "gzip",
+							},
+							{
+								Name:  "Cache-Control",
+								Value: "nocache",
+							},
+						},
+					},
 				}
 
 				_, err := NewMonitors(c).Create(monitor)
