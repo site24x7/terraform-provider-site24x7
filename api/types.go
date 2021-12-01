@@ -36,13 +36,18 @@ func (status *Status) UnmarshalJSON(rawValue []byte) error {
 type MonitorType string
 
 type ValueAndSeverity struct {
-	Value    string `json:"value"`
 	Severity Status `json:"severity"`
+	Value    string `json:"value"`
 }
 
 type Header struct {
 	Name  string `json:"name"`
 	Value string `json:"value"`
+}
+
+type HTTPResponseHeader struct {
+	Severity Status   `json:"severity"`
+	Value    []Header `json:"value"`
 }
 
 type ActionRef struct {
@@ -52,30 +57,31 @@ type ActionRef struct {
 
 // Denotes the website monitor resource in Site24x7.
 type WebsiteMonitor struct {
-	MonitorID             string            `json:"monitor_id,omitempty"`
-	DisplayName           string            `json:"display_name"`
-	Type                  string            `json:"type"`
-	Website               string            `json:"website"`
-	CheckFrequency        string            `json:"check_frequency"`
-	HTTPMethod            string            `json:"http_method"`
-	AuthUser              string            `json:"auth_user"`
-	AuthPass              string            `json:"auth_pass"`
-	MatchingKeyword       *ValueAndSeverity `json:"matching_keyword,omitempty"`
-	UnmatchingKeyword     *ValueAndSeverity `json:"unmatching_keyword,omitempty"`
-	MatchRegex            *ValueAndSeverity `json:"match_regex,omitempty"`
-	MatchCase             bool              `json:"match_case"`
-	UserAgent             string            `json:"user_agent"`
-	CustomHeaders         []Header          `json:"custom_headers,omitempty"`
-	Timeout               int               `json:"timeout"`
-	UseNameServer         bool              `json:"use_name_server"`
-	UpStatusCodes         string            `json:"up_status_codes"`
-	LocationProfileID     string            `json:"location_profile_id"`
-	NotificationProfileID string            `json:"notification_profile_id"`
-	ThresholdProfileID    string            `json:"threshold_profile_id"`
-	MonitorGroups         []string          `json:"monitor_groups,omitempty"`
-	UserGroupIDs          []string          `json:"user_group_ids,omitempty"`
-	TagIDs                []string          `json:"tag_ids,omitempty"`
-	ActionIDs             []ActionRef       `json:"action_ids,omitempty"`
+	MonitorID             string             `json:"monitor_id,omitempty"`
+	DisplayName           string             `json:"display_name"`
+	Type                  string             `json:"type"`
+	Website               string             `json:"website"`
+	CheckFrequency        string             `json:"check_frequency"`
+	HTTPMethod            string             `json:"http_method"`
+	AuthUser              string             `json:"auth_user"`
+	AuthPass              string             `json:"auth_pass"`
+	MatchingKeyword       *ValueAndSeverity  `json:"matching_keyword,omitempty"`
+	UnmatchingKeyword     *ValueAndSeverity  `json:"unmatching_keyword,omitempty"`
+	MatchRegex            *ValueAndSeverity  `json:"match_regex,omitempty"`
+	MatchCase             bool               `json:"match_case"`
+	UserAgent             string             `json:"user_agent"`
+	Timeout               int                `json:"timeout"`
+	UseNameServer         bool               `json:"use_name_server"`
+	UpStatusCodes         string             `json:"up_status_codes"`
+	CustomHeaders         []Header           `json:"custom_headers,omitempty"`
+	ResponseHeaders       HTTPResponseHeader `json:"response_headers_check,omitempty"`
+	LocationProfileID     string             `json:"location_profile_id"`
+	NotificationProfileID string             `json:"notification_profile_id"`
+	ThresholdProfileID    string             `json:"threshold_profile_id"`
+	MonitorGroups         []string           `json:"monitor_groups,omitempty"`
+	UserGroupIDs          []string           `json:"user_group_ids,omitempty"`
+	TagIDs                []string           `json:"tag_ids,omitempty"`
+	ActionIDs             []ActionRef        `json:"action_ids,omitempty"`
 }
 
 func (websiteMonitor *WebsiteMonitor) String() string {
@@ -137,6 +143,7 @@ type RestApiMonitor struct {
 	UseNameServer             bool                   `json:"use_name_server"`
 	UserAgent                 string                 `json:"user_agent"`
 	CustomHeaders             []Header               `json:"custom_headers,omitempty"`
+	ResponseHeaders           HTTPResponseHeader     `json:"response_headers_check,omitempty"`
 	LocationProfileID         string                 `json:"location_profile_id"`
 	NotificationProfileID     string                 `json:"notification_profile_id"`
 	ThresholdProfileID        string                 `json:"threshold_profile_id"`

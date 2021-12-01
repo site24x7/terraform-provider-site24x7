@@ -26,6 +26,10 @@ resource "site24x7_amazon_monitor" "aws_monitor_site24x7" {
   // (Optional) AWS services to discover. See https://www.site24x7.com/help/api/#aws_discover_services 
   // for knowing service ID.
   aws_discover_services = ["1"]
+  // (Optional) List if tag IDs to be associated to the monitor.
+  tag_ids = [
+    "123",
+  ]
 }
 
 ```

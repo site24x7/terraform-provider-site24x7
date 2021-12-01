@@ -71,24 +71,24 @@ var RestApiMonitorSchema = map[string]*schema.Schema{
 	"display_name": {
 		Type:        schema.TypeString,
 		Required:    true,
-		Description: "",
+		Description: "Display Name for the monitor.",
 	},
 	"website": {
 		Type:        schema.TypeString,
 		Required:    true,
-		Description: "",
+		Description: "Website address to monitor.",
 	},
 	"check_frequency": {
 		Type:        schema.TypeInt,
 		Optional:    true,
 		Default:     1,
-		Description: "",
+		Description: "Interval at which your website has to be monitored. Default value is 1 minute.",
 	},
 	"timeout": {
 		Type:        schema.TypeInt,
 		Optional:    true,
 		Default:     10,
-		Description: "",
+		Description: "Timeout for connecting to website. Default value is 10. Range 1 - 45.",
 	},
 	"location_profile_id": {
 		Type:        schema.TypeString,
@@ -143,74 +143,65 @@ var RestApiMonitorSchema = map[string]*schema.Schema{
 		Type:        schema.TypeString,
 		Optional:    true,
 		Default:     "G",
-		Description: "",
+		Description: "HTTP Method used for accessing the website. Default value is G.",
 	},
 	"http_protocol": {
 		Type:        schema.TypeString,
 		Optional:    true,
 		Default:     "H1.1",
-		Description: "",
+		Description: "Specify the version of the HTTP protocol. Default value is H1.1.",
 	},
 	"ssl_protocol": {
-		Type:     schema.TypeString,
-		Optional: true,
-		Default:  "Auto",
-		// DiffSuppressFunc: func(k, sslProtocolInState, sslProtocolInConf string, d *schema.ResourceData) bool {
-		// 	// GET API response doesn't contain 'ssl_protocol' attribute. Temporary fix to suppress the
-		// 	// misleading plan.
-		// 	if sslProtocolInState == "" {
-		// 		return true
-		// 	} else {
-		// 		return false
-		// 	}
-		// },
-		Description: "",
+		Type:        schema.TypeString,
+		Optional:    true,
+		Default:     "Auto",
+		Description: "Specify the version of the SSL protocol. If you are not sure about the version, use Auto.",
 	},
 	"use_ipv6": {
 		Type:        schema.TypeBool,
 		Optional:    true,
-		Description: "",
+		Description: "Select IPv6 for monitoring the websites hosted with IPv6 address. If you choose non IPv6 supported locations, monitoring will happen through IPv4.",
 	},
 	"request_content_type": {
 		Type:        schema.TypeString,
 		Optional:    true,
-		Description: "",
+		Description: "Provide content type for request params.",
 	},
 	"response_content_type": {
 		Type:        schema.TypeString,
 		Optional:    true,
 		Default:     "T",
-		Description: "",
+		Description: "Response content type.",
 	},
 	"request_param": {
 		Type:        schema.TypeString,
 		Optional:    true,
-		Description: "",
+		Description: "Provide parameters to be passed while accessing the website.",
 	},
 	"auth_user": {
 		Type:        schema.TypeString,
 		Optional:    true,
-		Description: "",
+		Description: "Authentication password to access the website.",
 	},
 	"auth_pass": {
 		Type:        schema.TypeString,
 		Optional:    true,
-		Description: "",
+		Description: "Authentication user name to access the website.",
 	},
 	"oauth2_provider": {
 		Type:        schema.TypeString,
 		Optional:    true,
-		Description: "",
+		Description: "Provider ID of the OAuth Provider to be associated with the monitor.",
 	},
 	"client_certificate_password": {
 		Type:        schema.TypeString,
 		Optional:    true,
-		Description: "",
+		Description: "Password of the uploaded client certificate.",
 	},
 	"jwt_id": {
 		Type:        schema.TypeString,
 		Optional:    true,
-		Description: "",
+		Description: "Token ID of the Web Token to be associated with the monitor.",
 	},
 	"matching_keyword": {
 		Type:     schema.TypeMap,
@@ -266,37 +257,49 @@ var RestApiMonitorSchema = map[string]*schema.Schema{
 		},
 		Description: "",
 	},
-	"custom_headers": {
-		Type:        schema.TypeMap,
-		Optional:    true,
-		Elem:        &schema.Schema{Type: schema.TypeString},
-		Description: "",
-	},
 	"match_case": {
 		Type:        schema.TypeBool,
 		Optional:    true,
-		Description: "",
+		Description: "Perform case sensitive keyword search or not.",
 	},
 	"json_schema_check": {
 		Type:        schema.TypeBool,
 		Optional:    true,
-		Description: "",
+		Description: "Enable this option to perform the JSON schema check.",
 	},
 	"use_name_server": {
 		Type:        schema.TypeBool,
 		Optional:    true,
-		Description: "",
+		Description: "Resolve the IP address using Domain Name Server.",
 	},
 	"use_alpn": {
 		Type:        schema.TypeBool,
 		Optional:    true,
 		Default:     false,
-		Description: "",
+		Description: "Enable ALPN to send supported protocols as part of the TLS handshake.",
 	},
 	"user_agent": {
 		Type:        schema.TypeString,
 		Optional:    true,
-		Description: "",
+		Description: "User Agent to be used while monitoring the website.",
+	},
+	"custom_headers": {
+		Type:        schema.TypeMap,
+		Optional:    true,
+		Elem:        &schema.Schema{Type: schema.TypeString},
+		Description: "A Map of Header name and value.",
+	},
+	"response_headers_severity": {
+		Type:         schema.TypeInt,
+		Optional:     true,
+		Default:      2,
+		ValidateFunc: validation.IntInSlice([]int{0, 2}), // 0 - Down, 2 - Trouble
+		Description:  "Alert type constant. Can be either 0 or 2. '0' denotes Down and '2' denotes Trouble",
+	},
+	"response_headers": {
+		Type:        schema.TypeMap,
+		Optional:    true,
+		Description: "A Map of Header name and value.",
 	},
 }
 
@@ -396,20 +399,6 @@ func restApiMonitorExists(d *schema.ResourceData, meta interface{}) (bool, error
 
 func resourceDataToRestApiMonitor(d *schema.ResourceData, client Client) (*api.RestApiMonitor, error) {
 
-	customHeaderMap := d.Get("custom_headers").(map[string]interface{})
-
-	keys := make([]string, 0, len(customHeaderMap))
-	for k := range customHeaderMap {
-		keys = append(keys, k)
-	}
-
-	sort.Strings(keys)
-
-	customHeaders := make([]api.Header, len(keys))
-	for i, k := range keys {
-		customHeaders[i] = api.Header{Name: k, Value: customHeaderMap[k].(string)}
-	}
-
 	var monitorGroups []string
 	for _, group := range d.Get("monitor_groups").([]interface{}) {
 		monitorGroups = append(monitorGroups, group.(string))
@@ -428,16 +417,13 @@ func resourceDataToRestApiMonitor(d *schema.ResourceData, client Client) (*api.R
 	var actionRefs []api.ActionRef
 	if actionData, ok := d.GetOk("actions"); ok {
 		actionMap := actionData.(map[string]interface{})
-
-		keys = make([]string, 0, len(actionMap))
+		actionKeys := make([]string, 0, len(actionMap))
 		for k := range actionMap {
-			keys = append(keys, k)
+			actionKeys = append(actionKeys, k)
 		}
-
-		sort.Strings(keys)
-
-		actionRefs := make([]api.ActionRef, len(keys))
-		for i, k := range keys {
+		sort.Strings(actionKeys)
+		actionRefs := make([]api.ActionRef, len(actionKeys))
+		for i, k := range actionKeys {
 			status, err := strconv.Atoi(k)
 			if err != nil {
 				return nil, err
@@ -448,6 +434,35 @@ func resourceDataToRestApiMonitor(d *schema.ResourceData, client Client) (*api.R
 				AlertType: api.Status(status),
 			}
 		}
+	}
+
+	// Custom Headers
+	customHeaderMap := d.Get("custom_headers").(map[string]interface{})
+	customHeaderKeys := make([]string, 0, len(customHeaderMap))
+	for k := range customHeaderMap {
+		customHeaderKeys = append(customHeaderKeys, k)
+	}
+	sort.Strings(customHeaderKeys)
+	customHeaders := make([]api.Header, len(customHeaderKeys))
+	for i, k := range customHeaderKeys {
+		customHeaders[i] = api.Header{Name: k, Value: customHeaderMap[k].(string)}
+	}
+
+	// HTTP Response Headers
+	var httpResponseHeader api.HTTPResponseHeader
+	responseHeaderMap := d.Get("response_headers").(map[string]interface{})
+	if len(responseHeaderMap) > 0 {
+		reponseHeaderKeys := make([]string, 0, len(responseHeaderMap))
+		for k := range responseHeaderMap {
+			reponseHeaderKeys = append(reponseHeaderKeys, k)
+		}
+		sort.Strings(reponseHeaderKeys)
+		responseHeaders := make([]api.Header, len(reponseHeaderKeys))
+		for i, k := range reponseHeaderKeys {
+			responseHeaders[i] = api.Header{Name: k, Value: responseHeaderMap[k].(string)}
+		}
+		httpResponseHeader.Severity = api.Status(d.Get("response_headers_severity").(int))
+		httpResponseHeader.Value = responseHeaders
 	}
 
 	restApiMonitor := &api.RestApiMonitor{
@@ -470,14 +485,14 @@ func resourceDataToRestApiMonitor(d *schema.ResourceData, client Client) (*api.R
 		ClientCertificatePassword: d.Get("client_certificate_password").(string),
 		JwtID:                     d.Get("jwt_id").(string),
 
-		AuthUser:        d.Get("auth_user").(string),
-		AuthPass:        d.Get("auth_pass").(string),
-		MatchCase:       d.Get("match_case").(bool),
-		JSONSchemaCheck: d.Get("json_schema_check").(bool),
-		UseNameServer:   d.Get("use_name_server").(bool),
-		UserAgent:       d.Get("user_agent").(string),
-		CustomHeaders:   customHeaders,
-
+		AuthUser:              d.Get("auth_user").(string),
+		AuthPass:              d.Get("auth_pass").(string),
+		MatchCase:             d.Get("match_case").(bool),
+		JSONSchemaCheck:       d.Get("json_schema_check").(bool),
+		UseNameServer:         d.Get("use_name_server").(bool),
+		UserAgent:             d.Get("user_agent").(string),
+		CustomHeaders:         customHeaders,
+		ResponseHeaders:       httpResponseHeader,
 		LocationProfileID:     d.Get("location_profile_id").(string),
 		NotificationProfileID: d.Get("notification_profile_id").(string),
 		ThresholdProfileID:    d.Get("threshold_profile_id").(string),
@@ -599,6 +614,7 @@ func updateRestApiMonitorResourceData(d *schema.ResourceData, monitor *api.RestA
 	d.Set("use_name_server", monitor.UseNameServer)
 	d.Set("user_agent", monitor.UserAgent)
 
+	// Custom Headers
 	customHeaders := make(map[string]interface{})
 	for _, h := range monitor.CustomHeaders {
 		if h.Name == "" {
@@ -606,8 +622,18 @@ func updateRestApiMonitorResourceData(d *schema.ResourceData, monitor *api.RestA
 		}
 		customHeaders[h.Name] = h.Value
 	}
-
 	d.Set("custom_headers", customHeaders)
+
+	// Response Headers
+	responseHeaders := make(map[string]interface{})
+	for _, h := range monitor.ResponseHeaders.Value {
+		if h.Name == "" {
+			continue
+		}
+		responseHeaders[h.Name] = h.Value
+	}
+	d.Set("response_headers", responseHeaders)
+	d.Set("response_headers_severity", monitor.ResponseHeaders.Severity)
 
 	actions := make(map[string]interface{})
 	for _, action := range monitor.ActionIDs {

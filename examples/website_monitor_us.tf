@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "0.0.1-beta.4"
+      version = "0.0.1-beta.5"
     }
   }
 }
@@ -117,11 +117,6 @@ resource "site24x7_website_monitor" "website_monitor" {
   // (Optional) User Agent to be used while monitoring the website.
   user_agent = "some user agent string"
 
-  // (Optional) Map of custom HTTP headers to send.
-  custom_headers = {
-    "Accept" = "application/json"
-  }
-
   // (Optional) Timeout for connecting to website. Range 1 - 45. Default: 10
   timeout = 10
 
@@ -165,6 +160,11 @@ resource "site24x7_website_monitor" "website_monitor" {
     "123",
   ]
 
+  // (Optional) List if tag IDs to be associated to the monitor.
+  tag_ids = [
+    "123",
+  ]
+
   // (Optional) Map of status to actions that should be performed on monitor
   // status changes. See
   // https://www.site24x7.com/help/api/#action-rule-constants for all available
@@ -178,5 +178,17 @@ resource "site24x7_website_monitor" "website_monitor" {
 
   // (Optional) Provide a comma-separated list of HTTP status codes that indicate a successful response. You can specify individual status codes, as well as ranges separated with a colon. Default: ""
   up_status_codes = "200,404"
+
+  // (Optional) Map of custom HTTP headers to send.
+  custom_headers = {
+    "Accept" = "application/json"
+  }
+
+  // (Optional) Map of HTTP response headers to check.
+  response_headers_severity = 0 // Can take values 0 or 2. '0' denotes Down and '2' denotes Trouble.
+  response_headers = {
+    "Content-Encoding" = "gzip"
+    "Connection" = "Keep-Alive"
+  }
 }
 

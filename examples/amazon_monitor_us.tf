@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "0.0.1-beta.4"
+      version = "0.0.1-beta.5"
     }
   }
 }
@@ -55,5 +55,9 @@ resource "site24x7_amazon_monitor" "aws_monitor_site24x7" {
   // (Optional) AWS services to discover. See https://www.site24x7.com/help/api/#aws_discover_services 
   // for knowing service ID.
   aws_discover_services = ["1"]
+  // (Optional) List if tag IDs to be associated to the monitor.
+  tag_ids = [
+    "123",
+  ]
 }
 
