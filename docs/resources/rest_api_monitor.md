@@ -31,6 +31,10 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
   tag_ids = [
     "123",
   ]
+  // (Optional) List of Third Party Service IDs to be associated to the monitor.
+  third_party_service_ids = [
+    "4567"
+  ]
   matching_keyword = {
  	  severity= 2
  	  value= "aaa"
@@ -66,6 +70,7 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
 * `monitor_groups` (List of String) List of monitor groups to which the monitor has to be associated.
 * `user_group_ids` (List of String) List of user groups to be notified when the monitor is down.
 * `tag_ids` (List of String) List of tags to be associated to the monitor.
+* `third_party_service_ids` (List of String) List of Third Party Service IDs to be associated to the monitor.
 * `check_frequency` (Number) Interval at which your website has to be monitored. Default value is 1 minute.
 * `timeout` (Number) Timeout for connecting to website. Default value is 10. Range 1 - 45.
 * `client_certificate_password` (String) Password of the uploaded client certificate.

@@ -81,6 +81,7 @@ type WebsiteMonitor struct {
 	MonitorGroups         []string           `json:"monitor_groups,omitempty"`
 	UserGroupIDs          []string           `json:"user_group_ids,omitempty"`
 	TagIDs                []string           `json:"tag_ids,omitempty"`
+	ThirdPartyServiceIDs  []string           `json:"third_party_services,omitempty"`
 	ActionIDs             []ActionRef        `json:"action_ids,omitempty"`
 }
 
@@ -107,6 +108,7 @@ type SSLMonitor struct {
 	MonitorGroups         []string    `json:"monitor_groups,omitempty"`
 	UserGroupIDs          []string    `json:"user_group_ids,omitempty"`
 	TagIDs                []string    `json:"tag_ids,omitempty"`
+	ThirdPartyServiceIDs  []string    `json:"third_party_services,omitempty"`
 	// ActionIDs             []ActionRef `json:"action_ids,omitempty"`
 }
 
@@ -150,6 +152,7 @@ type RestApiMonitor struct {
 	MonitorGroups             []string               `json:"monitor_groups,omitempty"`
 	UserGroupIDs              []string               `json:"user_group_ids,omitempty"`
 	TagIDs                    []string               `json:"tag_ids,omitempty"`
+	ThirdPartyServiceIDs      []string               `json:"third_party_services,omitempty"`
 	ActionIDs                 []ActionRef            `json:"action_ids,omitempty"`
 }
 
@@ -169,6 +172,7 @@ type AmazonMonitor struct {
 	NotificationProfileID string   `json:"notification_profile_id"`
 	UserGroupIDs          []string `json:"user_group_ids"`
 	TagIDs                []string `json:"tag_ids,omitempty"`
+	ThirdPartyServiceIDs  []string `json:"third_party_services,omitempty"`
 }
 
 func (amazonMonitor *AmazonMonitor) String() string {

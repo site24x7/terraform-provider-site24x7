@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "0.0.1-beta.5"
+      version = "0.0.1-beta.6"
     }
   }
 }
@@ -163,6 +163,11 @@ resource "site24x7_website_monitor" "website_monitor" {
   // (Optional) List if tag IDs to be associated to the monitor.
   tag_ids = [
     "123",
+  ]
+
+  // (Optional) List of Third Party Service IDs to be associated to the monitor.
+  third_party_service_ids = [
+    "4567"
   ]
 
   // (Optional) Map of status to actions that should be performed on monitor

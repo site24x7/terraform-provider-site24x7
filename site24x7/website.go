@@ -64,7 +64,10 @@ import (
 // 		"value": "dateheader"
 // 	}
 // 	],
-// 	"tag_ids": []
+// 	"tag_ids": [],
+//  "third_party_services": [
+//     "123456000024411001"
+//  ]
 // }
 
 var WebsiteMonitorSchema = map[string]*schema.Schema{
@@ -197,6 +200,14 @@ var WebsiteMonitorSchema = map[string]*schema.Schema{
 		},
 		Optional:    true,
 		Description: "List of Tag IDs to be associated to the monitor.",
+	},
+	"third_party_service_ids": {
+		Type: schema.TypeList,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Description: "List of Third Party Service IDs to be associated to the monitor.",
 	},
 	"actions": {
 		Type:        schema.TypeMap,
@@ -368,6 +379,11 @@ func resourceDataToWebsiteMonitor(d *schema.ResourceData, client Client) (*api.W
 		tagIDs = append(tagIDs, id.(string))
 	}
 
+	var thirdPartyServiceIDs []string
+	for _, id := range d.Get("third_party_service_ids").([]interface{}) {
+		thirdPartyServiceIDs = append(thirdPartyServiceIDs, id.(string))
+	}
+
 	var monitorGroups []string
 	for _, group := range d.Get("monitor_groups").([]interface{}) {
 		monitorGroups = append(monitorGroups, group.(string))
@@ -415,6 +431,7 @@ func resourceDataToWebsiteMonitor(d *schema.ResourceData, client Client) (*api.W
 		MonitorGroups:         monitorGroups,
 		UserGroupIDs:          userGroupIDs,
 		TagIDs:                tagIDs,
+		ThirdPartyServiceIDs:  thirdPartyServiceIDs,
 		ActionIDs:             actionRefs,
 		UseNameServer:         d.Get("use_name_server").(bool),
 		UpStatusCodes:         d.Get("up_status_codes").(string),
@@ -530,6 +547,7 @@ func updateWebsiteMonitorResourceData(d *schema.ResourceData, monitor *api.Websi
 	d.Set("monitor_groups", monitor.MonitorGroups)
 	d.Set("user_group_ids", monitor.UserGroupIDs)
 	d.Set("tag_ids", monitor.TagIDs)
+	d.Set("third_party_service_ids", monitor.ThirdPartyServiceIDs)
 
 	actions := make(map[string]interface{})
 	for _, action := range monitor.ActionIDs {

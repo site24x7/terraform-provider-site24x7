@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "0.0.1-beta.5"
+      version = "0.0.1-beta.6"
     }
   }
 }
@@ -74,12 +74,14 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
   tag_ids = [
     "123",
   ]
-
+  // (Optional) List of Third Party Service IDs to be associated to the monitor.
+  third_party_service_ids = [
+    "4567"
+  ]
   // (Optional) Map of custom HTTP headers to send.
   custom_headers = {
     "Accept" = "application/json"
   }
-
   // (Optional) Map of HTTP response headers to check.
   response_headers_severity = 0 // Can take values 0 or 2. '0' denotes Down and '2' denotes Trouble.
   response_headers = {

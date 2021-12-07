@@ -108,6 +108,14 @@ var SSLMonitorSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Description: "List of Tag IDs to be associated to the monitor.",
 	},
+	"third_party_service_ids": {
+		Type: schema.TypeList,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Description: "List of Third Party Service IDs to be associated to the monitor.",
+	},
 }
 
 func resourceSite24x7SSLMonitor() *schema.Resource {
@@ -218,6 +226,11 @@ func resourceDataToSSLMonitor(d *schema.ResourceData, client Client) (*api.SSLMo
 		tagIDs = append(tagIDs, id.(string))
 	}
 
+	var thirdPartyServiceIDs []string
+	for _, id := range d.Get("third_party_service_ids").([]interface{}) {
+		thirdPartyServiceIDs = append(thirdPartyServiceIDs, id.(string))
+	}
+
 	sslMonitor := &api.SSLMonitor{
 		MonitorID:             d.Id(),
 		DisplayName:           d.Get("display_name").(string),
@@ -236,6 +249,7 @@ func resourceDataToSSLMonitor(d *schema.ResourceData, client Client) (*api.SSLMo
 		MonitorGroups:         monitorGroups,
 		UserGroupIDs:          userGroupIDs,
 		TagIDs:                tagIDs,
+		ThirdPartyServiceIDs:  thirdPartyServiceIDs,
 	}
 
 	if sslMonitor.LocationProfileID == "" {
@@ -295,4 +309,5 @@ func updateSSLMonitorResourceData(d *schema.ResourceData, monitor *api.SSLMonito
 	d.Set("monitor_groups", monitor.MonitorGroups)
 	d.Set("user_group_ids", monitor.UserGroupIDs)
 	d.Set("tag_ids", monitor.TagIDs)
+	d.Set("third_party_service_ids", monitor.ThirdPartyServiceIDs)
 }

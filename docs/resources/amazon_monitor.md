@@ -30,6 +30,10 @@ resource "site24x7_amazon_monitor" "aws_monitor_site24x7" {
   tag_ids = [
     "123",
   ]
+  // (Optional) List of Third Party Service IDs to be associated to the monitor.
+  third_party_service_ids = [
+    "4567"
+  ]
 }
 
 ```
@@ -50,6 +54,7 @@ resource "site24x7_amazon_monitor" "aws_monitor_site24x7" {
 * `notification_profile_id` (String)
 * `user_group_ids` (List of String) List of user groups to be notified when the monitor is down.
 * `tag_ids` (List of String) List of tags to be associated to the monitor.
+* `third_party_service_ids` (List of String) List of Third Party Service IDs to be associated to the monitor.
 
 Refer [API documentation](https://www.site24x7.com/help/api/#amazon-webservice-monitor) for more information about attributes.
 

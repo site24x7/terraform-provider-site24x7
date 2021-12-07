@@ -33,12 +33,18 @@ func TestMonitors(t *testing.T) {
 							Value: "nocache",
 						},
 					},
+					ThresholdProfileID:    "123412341234123414",
+					LocationProfileID:     "123412341234123412",
+					NotificationProfileID: "123412341234123413",
 					UserGroupIDs: []string{
 						"123412341234123415",
 					},
-					LocationProfileID: "123412341234123412",
-					UserAgent:         "Mozilla Firefox",
-					Timeout:           30,
+					ThirdPartyServiceIDs: []string{
+						"456987654321012",
+						"456987654321013",
+					},
+					UserAgent: "Mozilla Firefox",
+					Timeout:   30,
 					MatchRegex: &api.ValueAndSeverity{
 						Severity: api.Down,
 						Value:    "^reg*",
@@ -49,10 +55,9 @@ func TestMonitors(t *testing.T) {
 						"123412341234123416",
 						"123412341234123417",
 					},
-					ThresholdProfileID:    "123412341234123414",
-					MatchCase:             true,
-					NotificationProfileID: "123412341234123413",
-					HTTPMethod:            "P",
+					MatchCase: true,
+
+					HTTPMethod: "P",
 					MatchingKeyword: &api.ValueAndSeverity{
 						Severity: api.Down,
 						Value:    "Title",
@@ -103,7 +108,7 @@ func TestMonitors(t *testing.T) {
 			expectedVerb: "GET",
 			expectedPath: "/monitors/123412341234123411",
 			statusCode:   200,
-			responseBody: fixture(t, "responses/get_monitor.json"),
+			responseBody: fixture(t, "responses/get_website_monitor.json"),
 			fn: func(t *testing.T, c rest.Client) {
 				monitor, err := NewMonitors(c).Get("123412341234123411")
 				require.NoError(t, err)
@@ -128,6 +133,10 @@ func TestMonitors(t *testing.T) {
 					TagIDs: []string{
 						"123456987654321012",
 						"123456987654321013",
+					},
+					ThirdPartyServiceIDs: []string{
+						"456987654321012",
+						"456987654321013",
 					},
 					LocationProfileID: "123412341234123412",
 					UserAgent:         "Mozilla Firefox",
