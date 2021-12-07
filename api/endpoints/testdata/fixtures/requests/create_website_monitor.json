@@ -26,6 +26,10 @@
     "123412341234123416",
     "123412341234123417"
   ],
+  "third_party_services":[
+    "456987654321012",
+    "456987654321013"
+  ],
   "auth_pass": "password",
   "threshold_profile_id": "123412341234123414",
   "match_case": true,

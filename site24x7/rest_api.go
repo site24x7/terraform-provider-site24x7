@@ -139,6 +139,14 @@ var RestApiMonitorSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Description: "List of Tag IDs to be associated to the monitor.",
 	},
+	"third_party_service_ids": {
+		Type: schema.TypeList,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Description: "List of Third Party Service IDs to be associated to the monitor.",
+	},
 	"http_method": {
 		Type:        schema.TypeString,
 		Optional:    true,
@@ -414,6 +422,11 @@ func resourceDataToRestApiMonitor(d *schema.ResourceData, client Client) (*api.R
 		tagIDs = append(tagIDs, id.(string))
 	}
 
+	var thirdPartyServiceIDs []string
+	for _, id := range d.Get("third_party_service_ids").([]interface{}) {
+		thirdPartyServiceIDs = append(thirdPartyServiceIDs, id.(string))
+	}
+
 	var actionRefs []api.ActionRef
 	if actionData, ok := d.GetOk("actions"); ok {
 		actionMap := actionData.(map[string]interface{})
@@ -499,6 +512,7 @@ func resourceDataToRestApiMonitor(d *schema.ResourceData, client Client) (*api.R
 		MonitorGroups:         monitorGroups,
 		UserGroupIDs:          userGroupIDs,
 		TagIDs:                tagIDs,
+		ThirdPartyServiceIDs:  thirdPartyServiceIDs,
 		ActionIDs:             actionRefs,
 	}
 
@@ -580,6 +594,7 @@ func updateRestApiMonitorResourceData(d *schema.ResourceData, monitor *api.RestA
 	d.Set("monitor_groups", monitor.MonitorGroups)
 	d.Set("user_group_ids", monitor.UserGroupIDs)
 	d.Set("tag_ids", monitor.TagIDs)
+	d.Set("third_party_service_ids", monitor.ThirdPartyServiceIDs)
 	// if monitor.MatchingKeyword != nil {
 	// 	d.Set("matching_keyword", monitor.MatchingKeyword)
 	// }
