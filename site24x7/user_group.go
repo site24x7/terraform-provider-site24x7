@@ -35,6 +35,11 @@ var UserGroupSchema = map[string]*schema.Schema{
 			Type: schema.TypeString,
 		},
 		Description: "User IDs of the users to be associated to the group.",
+		// DiffSuppressFunc: func(k, usersInState, usersInConf string, d *schema.ResourceData) bool {
+		// 	log.Println("usersInState : ", usersInState)
+		// 	log.Println("usersInConf : ", usersInConf)
+		// 	return true
+		// },
 	},
 	"product_id": {
 		Type:         schema.TypeInt,

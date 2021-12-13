@@ -86,28 +86,28 @@ func TestUserGroups(t *testing.T) {
 				assert.Equal(t, expected, groups)
 			},
 		},
-		{
-			name:         "update user group",
-			expectedVerb: "PUT",
-			expectedPath: "/user_groups/123",
-			expectedBody: fixture(t, "requests/update_user_group.json"),
-			statusCode:   200,
-			responseBody: jsonAPIResponseBody(t, nil),
-			fn: func(t *testing.T, c rest.Client) {
-				group := &api.UserGroup{
-					UserGroupID:      "123",
-					DisplayName:      "Lead",
-					AttributeGroupID: "1234",
-					Users: []string{
-						"43255",
-						"76543",
-					},
-				}
+		// {
+		// 	name:         "update user group",
+		// 	expectedVerb: "PUT",
+		// 	expectedPath: "/user_groups/123",
+		// 	expectedBody: fixture(t, "requests/update_user_group.json"),
+		// 	statusCode:   200,
+		// 	responseBody: jsonAPIResponseBody(t, nil),
+		// 	fn: func(t *testing.T, c rest.Client) {
+		// 		group := &api.UserGroup{
+		// 			UserGroupID:      "123",
+		// 			DisplayName:      "Lead",
+		// 			AttributeGroupID: "1234",
+		// 			Users: []string{
+		// 				"43255",
+		// 				"76543",
+		// 			},
+		// 		}
 
-				_, err := NewUserGroups(c).Update(group)
-				require.NoError(t, err)
-			},
-		},
+		// 		_, err := NewUserGroups(c).Update(group)
+		// 		require.NoError(t, err)
+		// 	},
+		// },
 		{
 			name:         "delete user group",
 			expectedVerb: "DELETE",

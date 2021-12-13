@@ -1,6 +1,7 @@
 package endpoints
 
 import (
+	"github.com/jinzhu/copier"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	"github.com/site24x7/terraform-provider-site24x7/rest"
 )
@@ -50,12 +51,15 @@ func (c *userGroups) Create(group *api.UserGroup) (*api.UserGroup, error) {
 
 func (c *userGroups) Update(group *api.UserGroup) (*api.UserGroup, error) {
 	updatedGroup := &api.UserGroup{}
+	userGroupData := &api.UserGroup{}
+	copier.Copy(userGroupData, group)
+	userGroupData.UserGroupID = ""
 	err := c.client.
 		Put().
 		Resource("user_groups").
 		ResourceID(group.UserGroupID).
 		AddHeader("Content-Type", "application/json;charset=UTF-8").
-		Body(group).
+		Body(userGroupData).
 		Do().
 		Parse(updatedGroup)
 
