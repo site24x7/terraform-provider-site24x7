@@ -1,6 +1,7 @@
 package endpoints
 
 import (
+	"github.com/jinzhu/copier"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	"github.com/site24x7/terraform-provider-site24x7/rest"
 )
@@ -50,12 +51,15 @@ func (c *locationProfiles) Create(profile *api.LocationProfile) (*api.LocationPr
 
 func (c *locationProfiles) Update(profile *api.LocationProfile) (*api.LocationProfile, error) {
 	updatedProfile := &api.LocationProfile{}
+	locationProfileData := &api.LocationProfile{}
+	copier.Copy(locationProfileData, profile)
+	locationProfileData.ProfileID = ""
 	err := c.client.
 		Put().
 		Resource("location_profiles").
 		ResourceID(profile.ProfileID).
 		AddHeader("Content-Type", "application/json;charset=UTF-8").
-		Body(profile).
+		Body(locationProfileData).
 		Do().
 		Parse(updatedProfile)
 

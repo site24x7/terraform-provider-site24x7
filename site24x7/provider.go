@@ -64,6 +64,7 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_monitor_group":     resourceSite24x7MonitorGroup(),
 			"site24x7_url_action":        resourceSite24x7URLAction(),
 			"site24x7_threshold_profile": resourceSite24x7ThresholdProfile(),
+			"site24x7_location_profile":  resourceSite24x7LocationProfile(),
 			"site24x7_user_group":        resourceSite24x7UserGroup(),
 			"site24x7_tag":               resourceSite24x7Tag(),
 		},

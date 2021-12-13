@@ -21,9 +21,9 @@ func TestLocationProfiles(t *testing.T) {
 			responseBody: jsonAPIResponseBody(t, nil),
 			fn: func(t *testing.T, c rest.Client) {
 				profile := &api.LocationProfile{
-					ProfileName:     "Europe_TEST_Profile",
-					PrimaryLocation: "16",
-					RestrictAltLoc:  false,
+					ProfileName:                      "Europe_TEST_Profile",
+					PrimaryLocation:                  "16",
+					RestrictAlternateLocationPolling: false,
 					SecondaryLocations: []string{
 						"3",
 						"2",
@@ -54,10 +54,10 @@ func TestLocationProfiles(t *testing.T) {
 				require.NoError(t, err)
 
 				expected := &api.LocationProfile{
-					ProfileID:       "7262465",
-					ProfileName:     "Europe_TEST_Profile",
-					PrimaryLocation: "16",
-					RestrictAltLoc:  false,
+					ProfileID:                        "7262465",
+					ProfileName:                      "Europe_TEST_Profile",
+					PrimaryLocation:                  "16",
+					RestrictAlternateLocationPolling: false,
 					SecondaryLocations: []string{
 						"3",
 						"2",
@@ -79,10 +79,10 @@ func TestLocationProfiles(t *testing.T) {
 
 				expected := []*api.LocationProfile{
 					{
-						ProfileID:       "7262465",
-						ProfileName:     "Europe_TEST_Profile",
-						PrimaryLocation: "16",
-						RestrictAltLoc:  false,
+						ProfileID:                        "7262465",
+						ProfileName:                      "Europe_TEST_Profile",
+						PrimaryLocation:                  "16",
+						RestrictAlternateLocationPolling: false,
 						SecondaryLocations: []string{
 							"3",
 							"2",

@@ -1,6 +1,6 @@
 terraform {
   # Require Terraform version 0.15.x (recommended)
-  required_version = "~> 0.13.0"
+  required_version = "~> 0.15.0"
 
   required_providers {
     site24x7 = {
@@ -42,15 +42,22 @@ provider "site24x7" {
 
 }
 
-// Site24x7 Tag API doc - https://www.site24x7.com/help/api/#tags
-resource "site24x7_tag" "tag_us" {
-  // (Required) Display Name for the Tag.
-  tag_name = "Website"
+// Site24x7 Location Profile API doc - https://www.site24x7.com/help/api/#location-profiles
+resource "site24x7_location_profile" "location_profile_us" {
+  // (Required) Display name for the location profile.
+  profile_name = "Location Profile - Terraform Update"
 
-  // (Required) Value for the Tag.
-  tag_value = "Zoho websites"
+  // (Required) Primary location for monitoring.
+  primary_location = "20"
 
-  // Color code for the Tag. Possible values are '#B7DA9E','#73C7A3','#B5DCDF','#D4ABBB','#4895A8','#DFE897','#FCEA8B','#FFC36D','#F79953','#F16B3C','#E55445','#F2E2B6','#DEC57B','#CBBD80','#AAB3D4','#7085BA','#F6BDAE','#EFAB6D','#CA765C','#999','#4A148C','#009688','#00ACC1','#0091EA','#8BC34A','#558B2F'
-  tag_color = "#B7DA9E"
+  // (Optional) List of secondary locations for monitoring.
+  secondary_locations = [
+    "106",
+	  "8",
+	  "113",
+	  # "94"
+  ]
 
+  // (Optional) Restricts polling of the resource from the selected locations alone in the Location Profile, overrides the alternate location poll logic.
+  restrict_alternate_location_polling = true
 }

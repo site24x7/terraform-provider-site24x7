@@ -282,13 +282,17 @@ func (notificationProfile *NotificationProfile) String() string {
 	return ToString(notificationProfile)
 }
 
-// LocationProfiles make it convenient to set monitoring locations consistently across many websites or monitors
+// LocationProfile make it convenient to set monitoring locations consistently across many websites or monitors
 type LocationProfile struct {
-	ProfileID          string   `json:"profile_id,omitempty"`
-	ProfileName        string   `json:"profile_name"`
-	PrimaryLocation    string   `json:"primary_location"`
-	SecondaryLocations []string `json:"secondary_locations,omitempty"`
-	RestrictAltLoc     bool     `json:"restrict_alt_loc"`
+	ProfileID                        string   `json:"profile_id,omitempty"`
+	ProfileName                      string   `json:"profile_name"`
+	PrimaryLocation                  string   `json:"primary_location"`
+	SecondaryLocations               []string `json:"secondary_locations"`
+	RestrictAlternateLocationPolling bool     `json:"restrict_alt_loc"`
+}
+
+func (locationProfile *LocationProfile) String() string {
+	return ToString(locationProfile)
 }
 
 // LocationTemplate holds locations Site24x7 performs their monitor checks
