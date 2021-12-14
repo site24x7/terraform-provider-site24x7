@@ -33,8 +33,9 @@ terraform {
   required_version = "~> 0.15.0"
   required_providers {
     site24x7 = {
-      source  = "registry.zoho.io/zoho/site24x7"
-      version = "~> 1.0.0"
+      source  = "site24x7/site24x7"
+      // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
+      version = "0.0.1-beta.7"
     }
   }
 }
@@ -48,6 +49,7 @@ A terraform provider for managing the following resources in Site24x7:
 - URL IT Automation - [site24x7_url_action](examples/it_automation_us.tf) ([Site24x7 IT Automation API doc](https://www.site24x7.com/help/api/#it-automation))
 - Monitor Group - [site24x7_monitor_group](examples/monitor_group_us.tf) ([Site24x7 Monitor Group API doc](https://www.site24x7.com/help/api/#monitor-groups))
 - Threshold Profile - [site24x7_threshold_profile](examples/threshold_profile_us.tf) ([Site24x7 Threshold Profile API doc](https://www.site24x7.com/help/api/#threshold-website))
+- Location Profile - [site24x7_location_profile](examples/location_profile_us.tf) ([Site24x7 Location Profile API doc](https://www.site24x7.com/help/api/#location-profiles))
 - User Group - [site24x7_user_group](examples/user_group_us.tf) ([Site24x7 User Group API doc](https://www.site24x7.com/help/api/#user-groups))
 - Tag - [site24x7_tag](examples/tag_us.tf) ([Site24x7 Tag API doc](https://www.site24x7.com/help/api/#tags))
 
@@ -150,7 +152,7 @@ provider_installation {
 Please refer the following links for installing custom providers.
 - [Installing Terraform Providers](https://www.terraform.io/docs/cloud/run/install-software.html)
 - [Overriding Terraform's default installation](https://www.terraform.io/docs/cli/config/config-file.html)
-- [Documentation](https://pkg.go.dev/github.com/site24x7/terraform-provider-site24x7@v0.0.0-20211004203957-b2a0f1a113f4/api)
+- [Documentation](https://pkg.go.dev/github.com/site24x7/terraform-provider-site24x7)
 
 #### Go Version Support
 
