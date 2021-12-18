@@ -1,6 +1,6 @@
 terraform {
   # Require Terraform version 0.15.x (recommended)
-  required_version = "~> 0.13.0"
+  required_version = "~> 0.15.0"
 
   required_providers {
     site24x7 = {
@@ -42,25 +42,22 @@ provider "site24x7" {
 
 }
 
-// Site24x7 SSL Certificate Monitor API doc - https://www.site24x7.com/help/api/#ssl-certificate
-resource "site24x7_ssl_monitor" "ssl_monitor_us" {
-  // (Required) Display name for the monitor
-  display_name = "Example SSL Monitor"
-  // (Required) Domain name to be verified for SSL Certificate.
-  domain_name = "www.example.com"
-  // (Optional) Name of the Location Profile that has to be associated with the monitor. 
-  // Either specify location_profile_id or location_profile_name.
-  // If location_profile_id and location_profile_name are omitted,
-  // the first profile returned by the /api/location_profiles endpoint
-  // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
-  // used.
-  location_profile_name = "North America"
-  // (Optional) List if tag IDs to be associated to the monitor.
-  tag_ids = [
-    "123",
+// Site24x7 Location Profile API doc - https://www.site24x7.com/help/api/#location-profiles
+resource "site24x7_location_profile" "location_profile_us" {
+  // (Required) Display name for the location profile.
+  profile_name = "Location Profile - Terraform Update"
+
+  // (Required) Primary location for monitoring.
+  primary_location = "20"
+
+  // (Optional) List of secondary locations for monitoring.
+  secondary_locations = [
+    "106",
+	  "8",
+	  "113",
+	  # "94"
   ]
-  // (Optional) List of Third Party Service IDs to be associated to the monitor.
-  third_party_service_ids = [
-    "4567"
-  ]
+
+  // (Optional) Restricts polling of the resource from the selected locations alone in the Location Profile, overrides the alternate location poll logic.
+  restrict_alternate_location_polling = true
 }

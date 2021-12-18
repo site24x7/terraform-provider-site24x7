@@ -35,7 +35,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "0.0.1-beta.7"
+      version = "0.0.1-beta.8"
     }
   }
 }
@@ -50,6 +50,7 @@ A terraform provider for managing the following resources in Site24x7:
 - Monitor Group - [site24x7_monitor_group](examples/monitor_group_us.tf) ([Site24x7 Monitor Group API doc](https://www.site24x7.com/help/api/#monitor-groups))
 - Threshold Profile - [site24x7_threshold_profile](examples/threshold_profile_us.tf) ([Site24x7 Threshold Profile API doc](https://www.site24x7.com/help/api/#threshold-website))
 - Location Profile - [site24x7_location_profile](examples/location_profile_us.tf) ([Site24x7 Location Profile API doc](https://www.site24x7.com/help/api/#location-profiles))
+- Notification Profile - [site24x7_notification_profile](examples/notification_profile_us.tf) ([Site24x7 Notification Profile API doc](https://www.site24x7.com/help/api/#notification-profiles))
 - User Group - [site24x7_user_group](examples/user_group_us.tf) ([Site24x7 User Group API doc](https://www.site24x7.com/help/api/#user-groups))
 - Tag - [site24x7_tag](examples/tag_us.tf) ([Site24x7 Tag API doc](https://www.site24x7.com/help/api/#tags))
 
