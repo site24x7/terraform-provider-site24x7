@@ -57,6 +57,7 @@ type ActionRef struct {
 
 // Denotes the website monitor resource in Site24x7.
 type WebsiteMonitor struct {
+	_                     struct{}           `type:"structure"` // Enforces key based initialization.
 	MonitorID             string             `json:"monitor_id,omitempty"`
 	DisplayName           string             `json:"display_name"`
 	Type                  string             `json:"type"`
@@ -91,6 +92,7 @@ func (websiteMonitor *WebsiteMonitor) String() string {
 
 // Denotes the SSL monitor resource in Site24x7.
 type SSLMonitor struct {
+	_                     struct{}    `type:"structure"` // Enforces key based initialization.
 	MonitorID             string      `json:"monitor_id,omitempty"`
 	DisplayName           string      `json:"display_name"`
 	DomainName            string      `json:"domain_name"`
@@ -118,6 +120,7 @@ func (sslMonitor *SSLMonitor) String() string {
 
 // Denotes the REST API monitor resource in Site24x7.
 type RestApiMonitor struct {
+	_                         struct{}               `type:"structure"` // Enforces key based initialization.
 	MonitorID                 string                 `json:"monitor_id,omitempty"`
 	DisplayName               string                 `json:"display_name"`
 	Type                      string                 `json:"type"`
@@ -162,6 +165,7 @@ func (restApiMonitor *RestApiMonitor) String() string {
 
 // Denotes the Amazon monitor resource in Site24x7.
 type AmazonMonitor struct {
+	_                     struct{} `type:"structure"` // Enforces key based initialization.
 	MonitorID             string   `json:"monitor_id,omitempty"`
 	DisplayName           string   `json:"display_name"`
 	Type                  string   `json:"type"`
@@ -181,6 +185,7 @@ func (amazonMonitor *AmazonMonitor) String() string {
 
 // MonitorGroup organizes monitor resources into groups.
 type MonitorGroup struct {
+	_                      struct{} `type:"structure"` // Enforces key based initialization.
 	GroupID                string   `json:"group_id,omitempty"`
 	DisplayName            string   `json:"display_name"`
 	Description            string   `json:"description,omitempty"`
@@ -197,11 +202,12 @@ func (monitorGroup *MonitorGroup) String() string {
 
 // Tags helps you to organize monitor resources and locate related items that have the same tag.
 type Tag struct {
-	TagID    string `json:"tag_id,omitempty"`
-	TagName  string `json:"tag_name"`
-	TagValue string `json:"tag_value,omitempty"`
-	TagType  int    `json:"tag_type,omitempty"`  // 1 - User Defined Tag or 2 - AWS System Generated Tag
-	TagColor string `json:"tag_color,omitempty"` // Possible Colors - '#B7DA9E','#73C7A3','#B5DCDF','#D4ABBB','#4895A8','#DFE897','#FCEA8B','#FFC36D','#F79953','#F16B3C','#E55445','#F2E2B6','#DEC57B','#CBBD80','#AAB3D4','#7085BA','#F6BDAE','#EFAB6D','#CA765C','#999','#4A148C','#009688','#00ACC1','#0091EA','#8BC34A','#558B2F'
+	_        struct{} `type:"structure"` // Enforces key based initialization.
+	TagID    string   `json:"tag_id,omitempty"`
+	TagName  string   `json:"tag_name"`
+	TagValue string   `json:"tag_value,omitempty"`
+	TagType  int      `json:"tag_type,omitempty"`  // 1 - User Defined Tag or 2 - AWS System Generated Tag
+	TagColor string   `json:"tag_color,omitempty"` // Possible Colors - '#B7DA9E','#73C7A3','#B5DCDF','#D4ABBB','#4895A8','#DFE897','#FCEA8B','#FFC36D','#F79953','#F16B3C','#E55445','#F2E2B6','#DEC57B','#CBBD80','#AAB3D4','#7085BA','#F6BDAE','#EFAB6D','#CA765C','#999','#4A148C','#009688','#00ACC1','#0091EA','#8BC34A','#558B2F'
 }
 
 func (tag *Tag) String() string {
@@ -265,6 +271,7 @@ func (thresholdProfile *ThresholdProfile) UnmarshalJSON(rawValue []byte) error {
 
 // NotificationProfile allows tweaking when alerts have to be sent out.
 type NotificationProfile struct {
+	_                           struct{} `type:"structure"` // Enforces key based initialization.
 	ProfileID                   string   `json:"profile_id,omitempty"`
 	ProfileName                 string   `json:"profile_name"`
 	RcaNeeded                   bool     `json:"rca_needed"`
@@ -273,6 +280,7 @@ type NotificationProfile struct {
 	PersistentNotification      int      `json:"persistent_notification,omitempty"`
 	EscalationUserGroupId       string   `json:"escalation_user_group_id,omitempty"`
 	EscalationWaitTime          int      `json:"escalation_wait_time"`
+	SuppressAutomation          bool     `json:"suppress_automation"`
 	EscalationAutomations       []string `json:"escalation_automations,omitempty"`
 	EscalationServices          []string `json:"escalation_services,omitempty"`
 	TemplateID                  string   `json:"template_id,omitempty"`
@@ -284,6 +292,7 @@ func (notificationProfile *NotificationProfile) String() string {
 
 // LocationProfile make it convenient to set monitoring locations consistently across many websites or monitors
 type LocationProfile struct {
+	_                                struct{} `type:"structure"` // Enforces key based initialization.
 	ProfileID                        string   `json:"profile_id,omitempty"`
 	ProfileName                      string   `json:"profile_name"`
 	PrimaryLocation                  string   `json:"primary_location"`
@@ -305,17 +314,19 @@ type LocationTemplate struct {
 // LocationID field maps to the IDs used in the PrimaryLocation and
 // SecondaryLocations fields of LocationProfile values.
 type Location struct {
-	LocationID  string `json:"location_id"`
-	CountryName string `json:"country_name"`
-	DisplayName string `json:"display_name"`
-	UseIPV6     bool   `json:"use_ipv6"`
-	CityName    string `json:"city_name"`
-	CityShort   string `json:"city_short"`
-	Continent   string `json:"continent"`
+	_           struct{} `type:"structure"` // Enforces key based initialization.
+	LocationID  string   `json:"location_id"`
+	CountryName string   `json:"country_name"`
+	DisplayName string   `json:"display_name"`
+	UseIPV6     bool     `json:"use_ipv6"`
+	CityName    string   `json:"city_name"`
+	CityShort   string   `json:"city_short"`
+	Continent   string   `json:"continent"`
 }
 
 // UserGroup help organize individuals so that they receive alerts and reports based on their responsibility.
 type UserGroup struct {
+	_                struct{} `type:"structure"` // Enforces key based initialization.
 	UserGroupID      string   `json:"user_group_id,omitempty"`
 	DisplayName      string   `json:"display_name"`
 	Users            []string `json:"users"`
@@ -330,23 +341,24 @@ func (userGroup *UserGroup) String() string {
 // URLAutomation prioritize and remediate routine actions automatically,
 // increase IT efficiency and streamline your processes to reduce performance degrade
 type URLAutomation struct {
-	ActionID               string `json:"action_id,omitempty"`
-	ActionType             int    `json:"action_type"`
-	ActionName             string `json:"action_name"`
-	ActionUrl              string `json:"action_url"`
-	ActionTimeout          int    `json:"action_timeout"`
-	ActionMethod           string `json:"action_method"`
-	SuppressAlert          bool   `json:"suppress_alert,omitempty"`
-	SendIncidentParameters bool   `json:"send_incident_parameters"`
-	SendCustomParameters   bool   `json:"send_custom_parameters"`
-	CustomParameters       string `json:"custom_parameters"`
-	SendInJsonFormat       bool   `json:"send_in_json_format"`
-	SendEmail              bool   `json:"send_mail"`
-	AuthMethod             string `json:"auth_method,omitempty"`
-	Username               string `json:"username,omitempty"`
-	Password               string `json:"password,omitempty"`
-	OAuth2Provider         string `json:"oauth2_provider,omitempty"`
-	UserAgent              string `json:"user_agent,omitempty"`
+	_                      struct{} `type:"structure"` // Enforces key based initialization.
+	ActionID               string   `json:"action_id,omitempty"`
+	ActionType             int      `json:"action_type"`
+	ActionName             string   `json:"action_name"`
+	ActionUrl              string   `json:"action_url"`
+	ActionTimeout          int      `json:"action_timeout"`
+	ActionMethod           string   `json:"action_method"`
+	SuppressAlert          bool     `json:"suppress_alert,omitempty"`
+	SendIncidentParameters bool     `json:"send_incident_parameters"`
+	SendCustomParameters   bool     `json:"send_custom_parameters"`
+	CustomParameters       string   `json:"custom_parameters"`
+	SendInJsonFormat       bool     `json:"send_in_json_format"`
+	SendEmail              bool     `json:"send_mail"`
+	AuthMethod             string   `json:"auth_method,omitempty"`
+	Username               string   `json:"username,omitempty"`
+	Password               string   `json:"password,omitempty"`
+	OAuth2Provider         string   `json:"oauth2_provider,omitempty"`
+	UserAgent              string   `json:"user_agent,omitempty"`
 }
 
 func (urlAutomation *URLAutomation) String() string {

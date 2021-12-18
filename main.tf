@@ -4,14 +4,14 @@ terraform {
 
   required_providers {
     site24x7 = {
-      source  = "site24x7/site24x7"
-      // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "0.0.1-beta.7"
+      # source  = "site24x7/site24x7"
+      # // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
+      # version = "0.0.1-beta.8"
       // Uncomment for local setup
       # source  = "registry.zoho.io/zoho/site24x7"
       # version = "1.0.0"
-      # source  = "registry.terraform.io/site24x7/site24x7"
-      # version = "1.0.0"
+      source  = "registry.terraform.io/site24x7/site24x7"
+      version = "1.0.0"
     }
   }
 }
@@ -59,69 +59,49 @@ provider "site24x7" {
 #   tag_color = "#B7DA9E"
 # }
 
-// Site24x7 Location Profile API doc - https://www.site24x7.com/help/api/#location-profiles
-resource "site24x7_location_profile" "location_profile_us" {
-  // (Required) Display name for the location profile.
-  profile_name = "Location Profile - Terraform Update"
-
-  // (Required) Primary location for monitoring.
-  primary_location = "20"
-
-  // (Optional) List of secondary locations for monitoring.
-  secondary_locations = [
-    "106",
-	  "8",
-	  "113",
-	  # "94"
-  ]
-
-  // (Optional) Restricts polling of the resource from the selected locations alone in the Location Profile, overrides the alternate location poll logic.
-  restrict_alternate_location_polling = true
+// Site24x7 notification profile doc - https://www.site24x7.com/help/api/#notification-profiles
+resource "site24x7_notification_profile" "notification_profile_us" {
+  // (Required) Display name for the notification profile.
+  profile_name = "Notification Profile - Terraform"
 }
 
-// User Group API doc: https://www.site24x7.com/help/api/#user-groups
-resource "site24x7_user_group" "user_group_us" {
-  // (Required) Display name for the user group.
-  display_name = "User Group - Terraform"
-  // (Required) User IDs of the users to be associated to the group.
-  users = [
-    "306947000000025011",
-    "306947000005937001",
-    # "306947000005937003"
+// Site24x7 notification profile API doc - https://www.site24x7.com/help/api/#notification-profiles
+resource "site24x7_notification_profile" "notification_profile_all_attributes_us" {
+  // (Required) Display name for the notification profile.
+  profile_name = "Notification Profile All Attributes - Terraform"
+
+  // (Optional) Settings to send root cause analysis when monitor goes down. Default is true.
+  rca_needed= true
+
+  // (Optional) Settings to downtime only after executing configured monitor actions.
+  notify_after_executing_actions = true
+
+  // (Optional) Configuration for delayed notification. Default value is 1. Can take values 1, 2, 3, 4, 5.
+  downtime_notification_delay = 2
+
+  // (Optional) Settings to receive persistent notification after number of errors. Can take values 1, 2, 3, 4, 5.
+  persistent_notification = 1
+
+  // (Optional) User group ID for downtime escalation.
+  escalation_user_group_id = "123456000000025005"
+
+  // (Optional) Duration of Downtime before Escalation. Mandatory if any user group is added for escalation.
+  escalation_wait_time = 30
+
+  // (Optional) Email template ID for notification
+  template_id = 123456000024578001
+
+  // (Optional) Settings to stop an automation being executed on the dependent monitors.
+  suppress_automation = true
+
+  // (Optional) Execute configured IT automations during an escalation.
+  escalation_automations = [
+    "123456000000047001"
   ]
-  // (Required) Attribute Alert Group to be associated with the User Alert group.
-  attribute_group_id = "306947000000025003"
+
+  // (Optional) Invoke and manage escalations in your preferred third party services.
+  escalation_services = [
+    "123456000008777001"
+  ]
+
 }
-
-// Website Monitor API doc: https://www.site24x7.com/help/api/#website
-# resource "site24x7_website_monitor" "website_monitor_example" {
-#   // (Required) Display name for the monitor
-#   display_name = "Example Monitor"
-
-#   // (Required) Website address to monitor.
-#   website = "https://www.example.com"
-
-#   // (Optional) Interval at which your website has to be monitored.
-#   // See https://www.site24x7.com/help/api/#check-interval for all supported values.
-#   check_frequency = 1
-
-#   // (Optional) Name of the Location Profile that has to be associated with the monitor. 
-#   // Either specify location_profile_id or location_profile_name.
-#   // If location_profile_id and location_profile_name are omitted,
-#   // the first profile returned by the /api/location_profiles endpoint
-#   // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
-#   // used.
-#   location_profile_name = "North America"
-
-#   // (Optional) Map of custom HTTP headers to send.
-#   custom_headers = {
-#     "Accept" = "application/json"
-#   }
-
-#   // (Optional) Map of HTTP response headers to check.
-#   response_headers_severity = 0 // Can take values 0 or 2. '0' denotes Down and '2' denotes Trouble.
-#   response_headers = {
-#     "Content-Encoding" = "gzip"
-#     "Connection" = "Keep-Alive"
-#   }
-# }

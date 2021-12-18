@@ -89,6 +89,7 @@ func TestNotificationProfiles(t *testing.T) {
 					RcaNeeded:                   true,
 					EscalationWaitTime:          60,
 					NotifyAfterExecutingActions: true,
+					SuppressAutomation:          false,
 				}
 
 				_, err := NewNotificationProfiles(c).Update(notificationProfile)
