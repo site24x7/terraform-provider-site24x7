@@ -42,48 +42,22 @@ provider "site24x7" {
 
 }
 
-// Site24x7 notification profile doc - https://www.site24x7.com/help/api/#notification-profiles
-resource "site24x7_notification_profile" "notification_profile_us" {
-  // (Required) Display name for the notification profile.
-  profile_name = "Notification Profile - Terraform"
-}
+// Site24x7 Location Profile API doc - https://www.site24x7.com/help/api/#location-profiles
+resource "site24x7_location_profile" "location_profile_us" {
+  // (Required) Display name for the location profile.
+  profile_name = "Location Profile - Terraform Update"
 
-// Site24x7 notification profile API doc - https://www.site24x7.com/help/api/#notification-profiles
-resource "site24x7_notification_profile" "notification_profile_all_attributes_us" {
-  // (Required) Display name for the notification profile.
-  profile_name = "Notification Profile All Attributes - Terraform"
+  // (Required) Primary location for monitoring.
+  primary_location = "20"
 
-  // (Optional) Settings to send root cause analysis when monitor goes down. Default is true.
-  rca_needed= true
-
-  // (Optional) Settings to downtime only after executing configured monitor actions.
-  notify_after_executing_actions = true
-
-  // (Optional) Configuration for delayed notification. Default value is 1. Can take values 1, 2, 3, 4, 5.
-  downtime_notification_delay = 2
-
-  // (Optional) Settings to receive persistent notification after number of errors. Can take values 1, 2, 3, 4, 5.
-  persistent_notification = 1
-
-  // (Optional) User group ID for downtime escalation.
-  escalation_user_group_id = "123456000000025005"
-
-  // (Optional) Duration of Downtime before Escalation. Mandatory if any user group is added for escalation.
-  escalation_wait_time = 30
-
-  // (Optional) Email template ID for notification
-  template_id = 123456000024578001
-
-  // (Optional) Settings to stop an automation being executed on the dependent monitors.
-  suppress_automation = true
-
-  // (Optional) Execute configured IT automations during an escalation.
-  escalation_automations = [
-    "123456000000047001"
+  // (Optional) List of secondary locations for monitoring.
+  secondary_locations = [
+    "106",
+	  "8",
+	  "113",
+	  # "94"
   ]
 
-  // (Optional) Invoke and manage escalations in your preferred third party services.
-  escalation_services = [
-    "123456000008777001"
-  ]
+  // (Optional) Restricts polling of the resource from the selected locations alone in the Location Profile, overrides the alternate location poll logic.
+  restrict_alternate_location_polling = true
 }
