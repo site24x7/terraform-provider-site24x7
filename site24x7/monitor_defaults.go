@@ -78,7 +78,6 @@ func SetNotificationProfile(client Client, d *schema.ResourceData, monitor api.S
 		monitor.SetNotificationProfileID(notificationProfile.ProfileID)
 		d.Set("notification_profile_id", notificationProfile.ProfileID)
 	} else if monitor.GetNotificationProfileID() == "" { // This will be true when notification_profile_id in the configuration file is empty during resource addition.
-		log.Println("notificationProfileNameExistsInConf +++++++++++++++++++++ ", notificationProfileNameExistsInConf)
 		notificationProfile = notificationProfiles[0]
 		monitor.SetNotificationProfileID(notificationProfile.ProfileID)
 		d.Set("notification_profile_id", notificationProfile.ProfileID)
