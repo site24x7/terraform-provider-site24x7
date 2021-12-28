@@ -10,23 +10,23 @@ var AmazonMonitorSchema = map[string]*schema.Schema{
 	"display_name": {
 		Type:        schema.TypeString,
 		Required:    true,
-		Description: "",
+		Description: "Display name for the AWS monitor.",
 	},
 	"aws_access_key": {
 		Type:        schema.TypeString,
 		Required:    true,
-		Description: "",
+		Description: "Access Key ID for the AWS account.",
 	},
 	"aws_secret_key": {
 		Type:        schema.TypeString,
 		Required:    true,
-		Description: "",
+		Description: "Secret Access key for the AWS account.",
 	},
 	"aws_discovery_frequency": {
 		Type:        schema.TypeInt,
 		Optional:    true,
 		Default:     1,
-		Description: "",
+		Description: "Rediscovery polling interval for the AWS account.",
 	},
 	"aws_discover_services": {
 		Type: schema.TypeList,
@@ -34,12 +34,17 @@ var AmazonMonitorSchema = map[string]*schema.Schema{
 			Type: schema.TypeString,
 		},
 		Optional:    true,
-		Description: "",
+		Description: "List of AWS services that needs to be discovered. https://www.site24x7.com/help/api/#aws_discover_services",
 	},
 	"notification_profile_id": {
 		Type:        schema.TypeString,
 		Optional:    true,
-		Description: "",
+		Description: "Notification profile to be associated with the monitor.",
+	},
+	"notification_profile_name": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Name of the notification profile to be associated with the monitor.",
 	},
 	"user_group_ids": {
 		Type: schema.TypeList,
@@ -173,16 +178,6 @@ func resourceDataToAmazonMonitor(d *schema.ResourceData, client Client) (*api.Am
 		awsServicesToDiscover = append(awsServicesToDiscover, id.(string))
 	}
 
-	var notificationProfileID string
-	notificationProfileID = d.Get("notification_profile_id").(string)
-	if notificationProfileID == "" {
-		profile, err := DefaultNotificationProfile(client)
-		if err != nil {
-			return nil, err
-		}
-		notificationProfileID = profile.ProfileID
-	}
-
 	if len(userGroupIDs) == 0 {
 		userGroup, err := DefaultUserGroup(client)
 		if err != nil {
@@ -191,18 +186,26 @@ func resourceDataToAmazonMonitor(d *schema.ResourceData, client Client) (*api.Am
 		userGroupIDs = append(userGroupIDs, userGroup.UserGroupID)
 	}
 
-	return &api.AmazonMonitor{
+	amazonMonitor := &api.AmazonMonitor{
 		DisplayName:           d.Get("display_name").(string),
 		Type:                  string(api.AMAZON),
 		DiscoverFrequency:     d.Get("aws_discovery_frequency").(int),
 		DiscoverServices:      awsServicesToDiscover,
 		SecretKey:             d.Get("aws_secret_key").(string),
 		AccessKey:             d.Get("aws_access_key").(string),
-		NotificationProfileID: notificationProfileID,
+		NotificationProfileID: d.Get("notification_profile_id").(string),
 		UserGroupIDs:          userGroupIDs,
 		TagIDs:                tagIDs,
 		ThirdPartyServiceIDs:  thirdPartyServiceIDs,
-	}, nil
+	}
+
+	// Notification Profile
+	_, notificationProfileErr := SetNotificationProfile(client, d, amazonMonitor)
+	if notificationProfileErr != nil {
+		return nil, notificationProfileErr
+	}
+
+	return amazonMonitor, nil
 }
 
 func updateAmazonMonitorResourceData(d *schema.ResourceData, amazonMonitor *api.AmazonMonitor) {

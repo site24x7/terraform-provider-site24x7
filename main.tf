@@ -4,14 +4,14 @@ terraform {
 
   required_providers {
     site24x7 = {
-      # source  = "site24x7/site24x7"
-      # // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      # version = "0.0.1-beta.8"
+      source  = "site24x7/site24x7"
+      // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
+      version = "0.0.1-beta.9"
       // Uncomment for local setup
       # source  = "registry.zoho.io/zoho/site24x7"
       # version = "1.0.0"
-      source  = "registry.terraform.io/site24x7/site24x7"
-      version = "1.0.0"
+      # source  = "registry.terraform.io/site24x7/site24x7"
+      # version = "1.0.0"
     }
   }
 }
@@ -65,43 +65,34 @@ resource "site24x7_notification_profile" "notification_profile_us" {
   profile_name = "Notification Profile - Terraform"
 }
 
-// Site24x7 notification profile API doc - https://www.site24x7.com/help/api/#notification-profiles
-resource "site24x7_notification_profile" "notification_profile_all_attributes_us" {
-  // (Required) Display name for the notification profile.
-  profile_name = "Notification Profile All Attributes - Terraform"
+// Website Monitor API doc: https://www.site24x7.com/help/api/#website
+resource "site24x7_website_monitor" "website_monitor_example" {
+  // (Required) Display name for the monitor
+  display_name = "Example Monitor"
 
-  // (Optional) Settings to send root cause analysis when monitor goes down. Default is true.
-  rca_needed= true
+  // (Required) Website address to monitor.
+  website = "https://www.example.com"
 
-  // (Optional) Settings to downtime only after executing configured monitor actions.
-  notify_after_executing_actions = true
+  // (Optional) Interval at which your website has to be monitored.
+  // See https://www.site24x7.com/help/api/#check-interval for all supported values.
+  check_frequency = 1
 
-  // (Optional) Configuration for delayed notification. Default value is 1. Can take values 1, 2, 3, 4, 5.
-  downtime_notification_delay = 2
+  // (Optional) Name of the location profile that has to be associated with the monitor. 
+  // Either specify location_profile_id or location_profile_name.
+  // If location_profile_id and location_profile_name are omitted,
+  // the first profile returned by the /api/location_profiles endpoint
+  // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
+  // used.
+  location_profile_name = "North America"
 
-  // (Optional) Settings to receive persistent notification after number of errors. Can take values 1, 2, 3, 4, 5.
-  persistent_notification = 1
-
-  // (Optional) User group ID for downtime escalation.
-  escalation_user_group_id = "123456000000025005"
-
-  // (Optional) Duration of Downtime before Escalation. Mandatory if any user group is added for escalation.
-  escalation_wait_time = 30
-
-  // (Optional) Email template ID for notification
-  template_id = 123456000024578001
-
-  // (Optional) Settings to stop an automation being executed on the dependent monitors.
-  suppress_automation = true
-
-  // (Optional) Execute configured IT automations during an escalation.
-  escalation_automations = [
-    "123456000000047001"
-  ]
-
-  // (Optional) Invoke and manage escalations in your preferred third party services.
-  escalation_services = [
-    "123456000008777001"
-  ]
-
+  // (Optional) Name of the notification profile that has to be associated with the monitor.
+  // Profile name matching works for both exact and partial match.
+  // Either specify notification_profile_id or notification_profile_name.
+  // If notification_profile_id and notification_profile_name are omitted,
+  // the first profile returned by the /api/notification_profiles endpoint
+  // (https://www.site24x7.com/help/api/#list-notification-profiles) will be
+  // used.
+  # notification_profile_name = "Terraform"
+  notification_profile_id="123456000000029001" // Default Notification
+  # notification_profile_id="123456000024606003" // Terraform Profile
 }
