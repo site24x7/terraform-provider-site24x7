@@ -77,6 +77,11 @@ var SSLMonitorSchema = map[string]*schema.Schema{
 		Computed:    true,
 		Description: "Notification profile to be associated with the monitor.",
 	},
+	"notification_profile_name": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Name of the notification profile to be associated with the monitor.",
+	},
 	"threshold_profile_id": {
 		Type:        schema.TypeString,
 		Optional:    true,
@@ -262,13 +267,10 @@ func resourceDataToSSLMonitor(d *schema.ResourceData, client Client) (*api.SSLMo
 		d.Set("location_profile_id", profile.ProfileID)
 	}
 
-	if sslMonitor.NotificationProfileID == "" {
-		profile, err := DefaultNotificationProfile(client)
-		if err != nil {
-			return nil, err
-		}
-		sslMonitor.NotificationProfileID = profile.ProfileID
-		d.Set("notification_profile_id", profile.ProfileID)
+	// Notification Profile
+	_, notificationProfileErr := SetNotificationProfile(client, d, sslMonitor)
+	if notificationProfileErr != nil {
+		return nil, notificationProfileErr
 	}
 
 	if sslMonitor.ThresholdProfileID == "" {

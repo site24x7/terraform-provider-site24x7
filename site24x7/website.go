@@ -104,9 +104,9 @@ var WebsiteMonitorSchema = map[string]*schema.Schema{
 		Description: "Authentication password to access the website.",
 	},
 	"matching_keyword_value": {
-		Type:     schema.TypeString,
-		Optional: true,
-		Default:  "Check for the keyword in the website response.",
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Check for the keyword in the website response.",
 	},
 	"matching_keyword_severity": {
 		Type:        schema.TypeInt,
@@ -115,9 +115,9 @@ var WebsiteMonitorSchema = map[string]*schema.Schema{
 		Description: "Severity with which alert has to raised when the matching keyword is found in the website response.",
 	},
 	"unmatching_keyword_value": {
-		Type:     schema.TypeString,
-		Optional: true,
-		Default:  "Check for the absence of the keyword in the website response.",
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Check for the absence of the keyword in the website response.",
 	},
 	"unmatching_keyword_severity": {
 		Type:        schema.TypeInt,
@@ -169,6 +169,11 @@ var WebsiteMonitorSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Computed:    true,
 		Description: "Notification profile to be associated with the monitor.",
+	},
+	"notification_profile_name": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Name of the notification profile to be associated with the monitor.",
 	},
 	"threshold_profile_id": {
 		Type:        schema.TypeString,
@@ -468,13 +473,10 @@ func resourceDataToWebsiteMonitor(d *schema.ResourceData, client Client) (*api.W
 		d.Set("location_profile_id", profile.ProfileID)
 	}
 
-	if websiteMonitor.NotificationProfileID == "" {
-		profile, err := DefaultNotificationProfile(client)
-		if err != nil {
-			return nil, err
-		}
-		websiteMonitor.NotificationProfileID = profile.ProfileID
-		d.Set("notification_profile_id", profile.ProfileID)
+	// Notification Profile
+	_, notificationProfileErr := SetNotificationProfile(client, d, websiteMonitor)
+	if notificationProfileErr != nil {
+		return nil, notificationProfileErr
 	}
 
 	if websiteMonitor.ThresholdProfileID == "" {

@@ -65,7 +65,8 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
 * `id` (String) The ID of this resource.
 * `location_profile_id` (String) Location profile to be associated with the monitor.
 * `location_profile_name` (String) Name of the location profile to be associated with the monitor.
-* `notification_profile_id` (String) Notification profile to be associated with the monitor.
+* `notification_profile_id` (String) Notification profile to be associated with the monitor. Either specify notification_profile_id or notification_profile_name. If notification_profile_id and notification_profile_name are omitted, the first profile returned by the /api/notification_profiles endpoint will be used.
+* `notification_profile_name` (String) Name of the notification profile to be associated with the monitor. Profile name matching works for both exact and partial match.
 * `threshold_profile_id` (String) Threshold profile to be associated with the monitor.
 * `monitor_groups` (List of String) List of monitor groups to which the monitor has to be associated.
 * `user_group_ids` (List of String) List of user groups to be notified when the monitor is down.

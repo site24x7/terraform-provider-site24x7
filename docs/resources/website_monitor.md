@@ -157,7 +157,8 @@ resource "site24x7_website_monitor" "website_monitor" {
 ### Optional
 
 * `id` (String) The ID of this resource.
-* `notification_profile_id` (String) Notification profile to be associated with the monitor.
+* `notification_profile_id` (String) Notification profile to be associated with the monitor. Either specify notification_profile_id or notification_profile_name. If notification_profile_id and notification_profile_name are omitted, the first profile returned by the /api/notification_profiles endpoint will be used.
+* `notification_profile_name` (String) Name of the notification profile to be associated with the monitor. Profile name matching works for both exact and partial match.
 * `threshold_profile_id` (String) Threshold profile to be associated with the monitor.
 * `location_profile_id` (String) Location profile to be associated with the monitor.
 * `location_profile_name` (String) Name of the location profile to be associated with the monitor.

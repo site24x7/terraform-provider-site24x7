@@ -46,22 +46,24 @@ resource "site24x7_ssl_monitor" "ssl_monitor_us" {
 
 ### Optional
 
-* `expire_days` (Number) Day threshold for certificate expiry notification. Range 1 - 999.
-* `http_protocol_version` (String) Version of the HTTP protocol.
 * `id` (String) The ID of this resource.
-* `ignore_domain_mismatch` (Boolean) Boolean to ignore domain name mismatch errors.
-* `ignore_trust` (Boolean) To ignore the validation of SSL/TLS certificate chain.
+* `notification_profile_id` (String) Notification profile to be associated with the monitor. Either specify notification_profile_id or notification_profile_name. If notification_profile_id and notification_profile_name are omitted, the first profile returned by the /api/notification_profiles endpoint will be used.
+* `notification_profile_name` (String) Name of the notification profile to be associated with the monitor. Profile name matching works for both exact and partial match.
+* `threshold_profile_id` (String) Threshold profile to be associated with the monitor.
 * `location_profile_id` (String) Location profile to be associated with the monitor.
 * `location_profile_name` (String) Name of the location profile to be associated with the monitor.
 * `monitor_groups` (List of String) List of monitor groups to which the monitor has to be associated.
-* `notification_profile_id` (String) Notification profile to be associated with the monitor.
-* `port` (Number) Server Port.
-* `protocol` (String) Supported protocols are HTTPS, SMTPS, POPS, IMAPS, FTPS or CUSTOM
-* `threshold_profile_id` (String) Threshold profile to be associated with the monitor.
-* `timeout` (Number) Timeout for connecting to the host. Range 1 - 45.
 * `user_group_ids` (List of String) List of user groups to be notified when the monitor is down.
 * `tag_ids` (List of String) List of tags to be associated to the monitor.
 * `third_party_service_ids` (List of String) List of Third Party Service IDs to be associated to the monitor.
+* `timeout` (Number) Timeout for connecting to the host. Range 1 - 45.
+* `expire_days` (Number) Day threshold for certificate expiry notification. Range 1 - 999.
+* `http_protocol_version` (String) Version of the HTTP protocol.
+* `ignore_domain_mismatch` (Boolean) Boolean to ignore domain name mismatch errors.
+* `ignore_trust` (Boolean) To ignore the validation of SSL/TLS certificate chain.
+* `port` (Number) Server Port.
+* `protocol` (String) Supported protocols are HTTPS, SMTPS, POPS, IMAPS, FTPS or CUSTOM
+
 
 
 Refer [API documentation](https://www.site24x7.com/help/api/#ssl-certificate) for more information about attributes.

@@ -42,16 +42,17 @@ resource "site24x7_amazon_monitor" "aws_monitor_site24x7" {
 
 ### Required
 
-* `aws_access_key` (String)
-* `aws_secret_key` (String)
-* `display_name` (String)
+* `display_name` (String) Display name for the AWS monitor.
+* `aws_access_key` (String) Access Key ID for the AWS account.
+* `aws_secret_key` (String) Secret Access key for the AWS account.
 
 ### Optional
 
-* `aws_discover_services` (List of String)
-* `aws_discovery_frequency` (Number)
 * `id` (String) The ID of this resource.
-* `notification_profile_id` (String)
+* `aws_discover_services` (List of String) List of AWS services that needs to be discovered. Please refer [API documentation](https://www.site24x7.com/help/api/#aws_discover_services) for knowing AWS service ID's.
+* `aws_discovery_frequency` (Number) Rediscovery polling interval for the AWS account. Please refer [API documentation](https://www.site24x7.com/help/api/#aws_discover_frequency) for knowing values that can be configured.
+* `notification_profile_id` (String) Notification profile to be associated with the monitor. Either specify notification_profile_id or notification_profile_name. If notification_profile_id and notification_profile_name are omitted, the first profile returned by the /api/notification_profiles endpoint will be used.
+* `notification_profile_name` (String) Name of the notification profile to be associated with the monitor. Profile name matching works for both exact and partial match.
 * `user_group_ids` (List of String) List of user groups to be notified when the monitor is down.
 * `tag_ids` (List of String) List of tags to be associated to the monitor.
 * `third_party_service_ids` (List of String) List of Third Party Service IDs to be associated to the monitor.

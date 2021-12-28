@@ -3,10 +3,10 @@ package site24x7
 import (
 	"testing"
 
+	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
 	"github.com/site24x7/terraform-provider-site24x7/fake"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -32,6 +32,19 @@ func TestSSLMonitorCreate(t *testing.T) {
 		UserGroupIDs:          []string{"123", "456"},
 	}
 
+	notificationProfiles := []*api.NotificationProfile{
+		{
+			ProfileID:   "123",
+			ProfileName: "Notifi Profile",
+			RcaNeeded:   true,
+		},
+		{
+			ProfileID:   "456",
+			ProfileName: "TEST",
+			RcaNeeded:   false,
+		},
+	}
+	c.FakeNotificationProfiles.On("List").Return(notificationProfiles, nil)
 	c.FakeSSLMonitors.On("Create", a).Return(a, nil).Once()
 
 	require.NoError(t, sslMonitorCreate(d, c))
@@ -67,6 +80,20 @@ func TestSSLMonitorUpdate(t *testing.T) {
 		MonitorGroups:         []string{"234", "567"},
 		UserGroupIDs:          []string{"123", "456"},
 	}
+
+	notificationProfiles := []*api.NotificationProfile{
+		{
+			ProfileID:   "123",
+			ProfileName: "Notifi Profile",
+			RcaNeeded:   true,
+		},
+		{
+			ProfileID:   "456",
+			ProfileName: "TEST",
+			RcaNeeded:   false,
+		},
+	}
+	c.FakeNotificationProfiles.On("List").Return(notificationProfiles, nil)
 
 	c.FakeSSLMonitors.On("Update", a).Return(a, nil).Once()
 
