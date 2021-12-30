@@ -68,6 +68,8 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_notification_profile": resourceSite24x7NotificationProfile(),
 			"site24x7_user_group":           resourceSite24x7UserGroup(),
 			"site24x7_tag":                  resourceSite24x7Tag(),
+			"site24x7_opsgenie_integration": resourceSite24x7OpsgenieIntegration(),
+			"site24x7_slack_integration":    resourceSite24x7SlackIntegration(),
 		},
 
 		ConfigureFunc: providerConfigure,

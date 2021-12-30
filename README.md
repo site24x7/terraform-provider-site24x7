@@ -53,6 +53,8 @@ A terraform provider for managing the following resources in Site24x7:
 - Notification Profile - [site24x7_notification_profile](examples/notification_profile_us.tf) ([Site24x7 Notification Profile API doc](https://www.site24x7.com/help/api/#notification-profiles))
 - User Group - [site24x7_user_group](examples/user_group_us.tf) ([Site24x7 User Group API doc](https://www.site24x7.com/help/api/#user-groups))
 - Tag - [site24x7_tag](examples/tag_us.tf) ([Site24x7 Tag API doc](https://www.site24x7.com/help/api/#tags))
+- Opsgenie integration - [site24x7_opsgenie_integration](examples/opsgenie_integration_us.tf) ([Site24x7 Opsgenie integration API doc](https://www.site24x7.com/help/api/#create-opsgenie))
+- Slack integration - [site24x7_slack_integration](examples/slack_integration_us.tf) ([Site24x7 Slack integration API doc](https://www.site24x7.com/help/api/#create-slack))
 
 
 Usage example

@@ -1,0 +1,8 @@
+{
+  "name": "Site24x7-Slack Integration",
+  "url": "https://hooks.slack.com/services/B27AG46BW/W27JLYuDE/acc3vmmJIGrNuBG9CVRwiBxU",
+  "sender_name":"Site24x7",
+  "selection_type":0,
+  "title":"$MONITOR_NAME is $STATUS",
+  "alert_tags_id": ["113770000023231001"]
+}
