@@ -11,6 +11,11 @@ const (
 	Discovery          Status = 9
 	ConfigurationError Status = 10
 
+	// ResourceType constants denotes the resource type of the third party integration.
+	AllMonitors ResourceType = 0
+	Monitor     ResourceType = 2
+	Tags        ResourceType = 3
+
 	// Type of the Site24x7 resource.
 	URL      MonitorType = "URL"
 	SSL_CERT MonitorType = "SSL_CERT"

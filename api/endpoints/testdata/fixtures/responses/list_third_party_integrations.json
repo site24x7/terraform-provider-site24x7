@@ -1,0 +1,23 @@
+{
+  "code": 0,
+  "message": "success",
+  "data": [
+    {
+      "name": "OpsGenie Integration With Site24x7",
+      "selection_type": 0,
+      "service_status": 0,
+      "service_id": "113770000023231022",
+      "trouble_alert": false,
+      "type" : 10
+    },
+    {
+      "name": "Site24x7-Slack Integration",
+      "selection_type": 0,
+      "service_status": 0,
+      "service_id": "113770000023231023",
+      "sender_name": "Site24x7",
+      "title": "$MONITORNAME is $STATUS",
+      "type": 5
+    }
+  ]
+}

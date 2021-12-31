@@ -76,6 +76,9 @@ type Client interface {
 	ThresholdProfiles() endpoints.ThresholdProfiles
 	UserGroups() endpoints.UserGroups
 	URLAutomations() endpoints.URLAutomations
+	ThirdPartyIntegrations() endpoints.ThirdpartyIntegrations
+	OpsgenieIntegration() endpoints.OpsgenieIntegration
+	SlackIntegration() endpoints.SlackIntegration
 }
 
 type client struct {
@@ -175,4 +178,19 @@ func (c *client) UserGroups() endpoints.UserGroups {
 // ItAutomations implements Client.
 func (c *client) URLAutomations() endpoints.URLAutomations {
 	return endpoints.NewURLAutomations(c.restClient)
+}
+
+// OpsgenieIntegraion implements Client.
+func (c *client) OpsgenieIntegration() endpoints.OpsgenieIntegration {
+	return endpoints.NewOpsgenie(c.restClient)
+}
+
+// SlackIntegraion implements Client.
+func (c *client) SlackIntegration() endpoints.SlackIntegration {
+	return endpoints.NewSlack(c.restClient)
+}
+
+// ThirdPartyIntegrations implements Client.
+func (c *client) ThirdPartyIntegrations() endpoints.ThirdpartyIntegrations {
+	return endpoints.NewThirdpartyIntegrations(c.restClient)
 }

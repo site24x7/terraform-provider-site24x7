@@ -8,37 +8,43 @@ import (
 // Client is an implementation of site24x7.Client that stubs out all endpoints
 // with mocks. In can be used in unit tests.
 type Client struct {
-	FakeCurrentStatus        *fake.CurrentStatus
-	FakeURLAutomations       *fake.URLAutomations
-	FakeLocationTemplate     *fake.LocationTemplate
-	FakeLocationProfiles     *fake.LocationProfiles
-	FakeMonitorGroups        *fake.MonitorGroups
-	FakeTags                 *fake.Tags
-	FakeAmazonMonitors       *fake.AmazonMonitors
-	FakeWebsiteMonitors      *fake.WebsiteMonitors
-	FakeSSLMonitors          *fake.SSLMonitors
-	FakeRestApiMonitors      *fake.RestApiMonitors
-	FakeNotificationProfiles *fake.NotificationProfiles
-	FakeThresholdProfiles    *fake.ThresholdProfiles
-	FakeUserGroups           *fake.UserGroups
+	FakeCurrentStatus          *fake.CurrentStatus
+	FakeURLAutomations         *fake.URLAutomations
+	FakeLocationTemplate       *fake.LocationTemplate
+	FakeLocationProfiles       *fake.LocationProfiles
+	FakeMonitorGroups          *fake.MonitorGroups
+	FakeTags                   *fake.Tags
+	FakeAmazonMonitors         *fake.AmazonMonitors
+	FakeWebsiteMonitors        *fake.WebsiteMonitors
+	FakeSSLMonitors            *fake.SSLMonitors
+	FakeRestApiMonitors        *fake.RestApiMonitors
+	FakeNotificationProfiles   *fake.NotificationProfiles
+	FakeThresholdProfiles      *fake.ThresholdProfiles
+	FakeUserGroups             *fake.UserGroups
+	FakeOpsgenieIntegration    *fake.OpsgenieIntegration
+	FakeSlackIntegration       *fake.SlackIntegration
+	FakeThirdPartyIntegrations *fake.ThirdPartyIntegrations
 }
 
 // NewClient creates a new fake site24x7 API client.
 func NewClient() *Client {
 	return &Client{
-		FakeCurrentStatus:        &fake.CurrentStatus{},
-		FakeURLAutomations:       &fake.URLAutomations{},
-		FakeLocationProfiles:     &fake.LocationProfiles{},
-		FakeLocationTemplate:     &fake.LocationTemplate{},
-		FakeMonitorGroups:        &fake.MonitorGroups{},
-		FakeTags:                 &fake.Tags{},
-		FakeAmazonMonitors:       &fake.AmazonMonitors{},
-		FakeSSLMonitors:          &fake.SSLMonitors{},
-		FakeWebsiteMonitors:      &fake.WebsiteMonitors{},
-		FakeRestApiMonitors:      &fake.RestApiMonitors{},
-		FakeNotificationProfiles: &fake.NotificationProfiles{},
-		FakeThresholdProfiles:    &fake.ThresholdProfiles{},
-		FakeUserGroups:           &fake.UserGroups{},
+		FakeCurrentStatus:          &fake.CurrentStatus{},
+		FakeURLAutomations:         &fake.URLAutomations{},
+		FakeLocationProfiles:       &fake.LocationProfiles{},
+		FakeLocationTemplate:       &fake.LocationTemplate{},
+		FakeMonitorGroups:          &fake.MonitorGroups{},
+		FakeTags:                   &fake.Tags{},
+		FakeAmazonMonitors:         &fake.AmazonMonitors{},
+		FakeSSLMonitors:            &fake.SSLMonitors{},
+		FakeWebsiteMonitors:        &fake.WebsiteMonitors{},
+		FakeRestApiMonitors:        &fake.RestApiMonitors{},
+		FakeNotificationProfiles:   &fake.NotificationProfiles{},
+		FakeThresholdProfiles:      &fake.ThresholdProfiles{},
+		FakeUserGroups:             &fake.UserGroups{},
+		FakeOpsgenieIntegration:    &fake.OpsgenieIntegration{},
+		FakeSlackIntegration:       &fake.SlackIntegration{},
+		FakeThirdPartyIntegrations: &fake.ThirdPartyIntegrations{},
 	}
 }
 
@@ -105,4 +111,19 @@ func (c *Client) ThresholdProfiles() endpoints.ThresholdProfiles {
 // UserGroups implements Client.
 func (c *Client) UserGroups() endpoints.UserGroups {
 	return c.FakeUserGroups
+}
+
+// OpsgenieIntegration implements Client.
+func (c *Client) OpsgenieIntegration() endpoints.OpsgenieIntegration {
+	return c.FakeOpsgenieIntegration
+}
+
+// SlackIntegration implements Client.
+func (c *Client) SlackIntegration() endpoints.SlackIntegration {
+	return c.FakeSlackIntegration
+}
+
+// ThirdPartyIntegrations implements Client.
+func (c *Client) ThirdPartyIntegrations() endpoints.ThirdpartyIntegrations {
+	return c.FakeThirdPartyIntegrations
 }
