@@ -3,6 +3,8 @@ package api
 type Site24x7Monitor interface {
 	SetNotificationProfileID(notificationProfileID string)
 	GetNotificationProfileID() string
+	SetUserGroupIDs(userGroupIDs []string)
+	GetUserGroupIDs() []string
 	String() string
 }
 
@@ -45,6 +47,14 @@ func (websiteMonitor *WebsiteMonitor) GetNotificationProfileID() string {
 	return websiteMonitor.NotificationProfileID
 }
 
+func (websiteMonitor *WebsiteMonitor) SetUserGroupIDs(userGroupIDs []string) {
+	websiteMonitor.UserGroupIDs = userGroupIDs
+}
+
+func (websiteMonitor *WebsiteMonitor) GetUserGroupIDs() []string {
+	return websiteMonitor.UserGroupIDs
+}
+
 func (websiteMonitor *WebsiteMonitor) String() string {
 	return ToString(websiteMonitor)
 }
@@ -79,6 +89,14 @@ func (sslMonitor *SSLMonitor) SetNotificationProfileID(notificationProfileID str
 
 func (sslMonitor *SSLMonitor) GetNotificationProfileID() string {
 	return sslMonitor.NotificationProfileID
+}
+
+func (sslMonitor *SSLMonitor) SetUserGroupIDs(userGroupIDs []string) {
+	sslMonitor.UserGroupIDs = userGroupIDs
+}
+
+func (sslMonitor *SSLMonitor) GetUserGroupIDs() []string {
+	return sslMonitor.UserGroupIDs
 }
 
 func (sslMonitor *SSLMonitor) String() string {
@@ -134,6 +152,14 @@ func (restApiMonitor *RestApiMonitor) GetNotificationProfileID() string {
 	return restApiMonitor.NotificationProfileID
 }
 
+func (restApiMonitor *RestApiMonitor) SetUserGroupIDs(userGroupIDs []string) {
+	restApiMonitor.UserGroupIDs = userGroupIDs
+}
+
+func (restApiMonitor *RestApiMonitor) GetUserGroupIDs() []string {
+	return restApiMonitor.UserGroupIDs
+}
+
 func (restApiMonitor *RestApiMonitor) String() string {
 	return ToString(restApiMonitor)
 }
@@ -160,6 +186,14 @@ func (amazonMonitor *AmazonMonitor) SetNotificationProfileID(notificationProfile
 
 func (amazonMonitor *AmazonMonitor) GetNotificationProfileID() string {
 	return amazonMonitor.NotificationProfileID
+}
+
+func (amazonMonitor *AmazonMonitor) SetUserGroupIDs(userGroupIDs []string) {
+	amazonMonitor.UserGroupIDs = userGroupIDs
+}
+
+func (amazonMonitor *AmazonMonitor) GetUserGroupIDs() []string {
+	return amazonMonitor.UserGroupIDs
 }
 
 func (amazonMonitor *AmazonMonitor) String() string {

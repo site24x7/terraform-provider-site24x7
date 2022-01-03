@@ -54,6 +54,14 @@ var AmazonMonitorSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Description: "List of user groups to be notified when the monitor is down.",
 	},
+	"user_group_names": {
+		Type: schema.TypeList,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Description: "Name of the user groups to be associated with the monitor.",
+	},
 	"tag_ids": {
 		Type: schema.TypeList,
 		Elem: &schema.Schema{
@@ -203,6 +211,12 @@ func resourceDataToAmazonMonitor(d *schema.ResourceData, client Client) (*api.Am
 	_, notificationProfileErr := SetNotificationProfile(client, d, amazonMonitor)
 	if notificationProfileErr != nil {
 		return nil, notificationProfileErr
+	}
+
+	// User Alert Groups
+	_, userAlertGroupErr := SetUserGroup(client, d, amazonMonitor)
+	if userAlertGroupErr != nil {
+		return nil, userAlertGroupErr
 	}
 
 	return amazonMonitor, nil

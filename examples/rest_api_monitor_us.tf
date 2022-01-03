@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "0.0.1-beta.10"
+      version = "0.0.1-beta.11"
     }
   }
 }
@@ -63,33 +63,58 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
   // (https://www.site24x7.com/help/api/#list-notification-profiles) will be
   // used.
   notification_profile_name = "Terraform Profile"
+
+  // (Optional) List if user group IDs to be notified on down. 
+  // Either specify user_group_ids or user_group_names. If omitted, the
+  // first user group returned by the /api/user_groups endpoint
+  // (https://www.site24x7.com/help/api/#list-of-all-user-groups) will be used.
+  user_group_ids = [
+    "123",
+  ]
+
+  // (Optional) List if user group names to be notified on down. 
+  // Either specify user_group_ids or user_group_names. If omitted, the
+  // first user group returned by the /api/user_groups endpoint
+  // (https://www.site24x7.com/help/api/#list-of-all-user-groups) will be used.
+  user_group_names = [
+    "Terraform",
+    "Network",
+    "Admin",
+  ]
+
+  // (Optional) List if tag IDs to be associated to the monitor.
+  tag_ids = [
+    "123",
+  ]
+  
+  // (Optional) List of Third Party Service IDs to be associated to the monitor.
+  third_party_service_ids = [
+    "4567"
+  ]
+
+  // (Optional) Map of custom HTTP headers to send.
+  custom_headers = {
+    "Accept" = "application/json"
+  }
+
   // (Optional) Check for the keyword in the website response.
   matching_keyword = {
  	  severity= 2
  	  value= "aaa"
  	}
+  
   // (Optional) Check for non existence of keyword in the website response.
   unmatching_keyword = {
  	  severity= 2
  	  value= "bbb"
  	}
+  
   // (Optional) Match the regular expression in the website response.
   match_regex = {
  	  severity= 2
  	  value= ".*aaa.*"
  	}
-  // (Optional) List if tag IDs to be associated to the monitor.
-  tag_ids = [
-    "123",
-  ]
-  // (Optional) List of Third Party Service IDs to be associated to the monitor.
-  third_party_service_ids = [
-    "4567"
-  ]
-  // (Optional) Map of custom HTTP headers to send.
-  custom_headers = {
-    "Accept" = "application/json"
-  }
+  
   // (Optional) Map of HTTP response headers to check.
   response_headers_severity = 0 // Can take values 0 or 2. '0' denotes Down and '2' denotes Trouble.
   response_headers = {

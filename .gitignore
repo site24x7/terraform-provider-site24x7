@@ -7,7 +7,7 @@
 *.dylib
 .idea
 .vscode
-.terraform
+.terraform*
 terraform*
 
 # Test binary, built with `go test -c`

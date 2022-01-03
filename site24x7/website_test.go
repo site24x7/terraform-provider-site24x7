@@ -69,6 +69,22 @@ func TestWebsiteMonitorCreate(t *testing.T) {
 	}
 	c.FakeNotificationProfiles.On("List").Return(notificationProfiles, nil)
 
+	userGroups := []*api.UserGroup{
+		{
+			DisplayName:      "Admin Group",
+			Users:            []string{"123", "456"},
+			AttributeGroupID: "789",
+			ProductID:        0,
+		},
+		{
+			DisplayName:      "Network Group",
+			Users:            []string{"123", "456"},
+			AttributeGroupID: "345",
+			ProductID:        0,
+		},
+	}
+	c.FakeUserGroups.On("List").Return(userGroups, nil)
+
 	c.FakeWebsiteMonitors.On("Create", a).Return(a, nil).Once()
 
 	require.NoError(t, websiteMonitorCreate(d, c))
@@ -139,6 +155,22 @@ func TestWebsiteMonitorUpdate(t *testing.T) {
 		},
 	}
 	c.FakeNotificationProfiles.On("List").Return(notificationProfiles, nil)
+
+	userGroups := []*api.UserGroup{
+		{
+			DisplayName:      "Admin Group",
+			Users:            []string{"123", "456"},
+			AttributeGroupID: "789",
+			ProductID:        0,
+		},
+		{
+			DisplayName:      "Network Group",
+			Users:            []string{"123", "456"},
+			AttributeGroupID: "345",
+			ProductID:        0,
+		},
+	}
+	c.FakeUserGroups.On("List").Return(userGroups, nil)
 
 	c.FakeWebsiteMonitors.On("Update", a).Return(a, nil).Once()
 
