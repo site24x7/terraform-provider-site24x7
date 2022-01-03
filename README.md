@@ -35,7 +35,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "0.0.1-beta.9"
+      version = "0.0.1-beta.10"
     }
   }
 }
@@ -183,7 +183,7 @@ Contributions are what make the open source community such an amazing place to l
 
 ## License
 
-Copyright (c) 2021 Zoho Corporation Private Limited
+Copyright (c) 2022 Zoho Corporation Private Limited
 
 This project is licensed under the MIT License - see [LICENSE](https://github.com/site24x7/terraform-provider-site24x7/blob/main/LICENSE) file for details.
 
