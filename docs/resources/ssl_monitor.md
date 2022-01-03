@@ -53,7 +53,8 @@ resource "site24x7_ssl_monitor" "ssl_monitor_us" {
 * `location_profile_id` (String) Location profile to be associated with the monitor.
 * `location_profile_name` (String) Name of the location profile to be associated with the monitor.
 * `monitor_groups` (List of String) List of monitor groups to which the monitor has to be associated.
-* `user_group_ids` (List of String) List of user groups to be notified when the monitor is down.
+* `user_group_ids` (List of String) List of user groups to be notified when the monitor is down. Either specify user_group_ids or user_group_names. If omitted, the first user group returned by the /api/user_groups endpoint will be used.
+* `user_group_names` (List of String) List of user group names to be notified when the monitor is down. Either specify user_group_ids or user_group_names. If omitted, the first user group returned by the /api/user_groups endpoint will be used.
 * `tag_ids` (List of String) List of tags to be associated to the monitor.
 * `third_party_service_ids` (List of String) List of Third Party Service IDs to be associated to the monitor.
 * `timeout` (Number) Timeout for connecting to the host. Range 1 - 45.

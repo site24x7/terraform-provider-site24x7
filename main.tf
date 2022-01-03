@@ -4,14 +4,14 @@ terraform {
 
   required_providers {
     site24x7 = {
-      source  = "site24x7/site24x7"
-      // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "0.0.1-beta.10"
+      # source  = "site24x7/site24x7"
+      # // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
+      # version = "0.0.1-beta.11"
       // Uncomment for local setup
       # source  = "registry.zoho.io/zoho/site24x7"
       # version = "1.0.0"
-      # source  = "registry.terraform.io/site24x7/site24x7"
-      # version = "1.0.0"
+      source  = "registry.terraform.io/site24x7/site24x7"
+      version = "1.0.0"
     }
   }
 }
@@ -65,6 +65,8 @@ resource "site24x7_notification_profile" "notification_profile_us" {
   profile_name = "Notification Profile - Terraform"
 }
 
+// Destroy command --> terraform destroy -target site24x7_website_monitor.website_monitor_example
+
 // Website Monitor API doc: https://www.site24x7.com/help/api/#website
 resource "site24x7_website_monitor" "website_monitor_example" {
   // (Required) Display name for the monitor
@@ -92,7 +94,25 @@ resource "site24x7_website_monitor" "website_monitor_example" {
   // the first profile returned by the /api/notification_profiles endpoint
   // (https://www.site24x7.com/help/api/#list-notification-profiles) will be
   // used.
-  # notification_profile_name = "Terraform"
-  notification_profile_id="123456000000029001" // Default Notification
+  notification_profile_name = "Terraform"
+  # notification_profile_id="123456000000029001" // Default Notification
   # notification_profile_id="123456000024606003" // Terraform Profile
+
+  // (Optional) List if user group names to be notified on down. 
+  // Either specify user_group_ids or user_group_names. If omitted, the
+  // first user group returned by the /api/user_groups endpoint
+  // (https://www.site24x7.com/help/api/#list-of-all-user-groups) will be used.
+  user_group_names = [
+    "Terraform",
+    "Network",
+    "Admin",
+  ]
+
+  // (Optional) List if user group IDs to be notified on down. If omitted, the
+  // first user group returned by the /api/user_groups endpoint
+  // (https://www.site24x7.com/help/api/#list-of-all-user-groups) will be used.
+  # user_group_ids = [
+  #   "123456000000025005", // Admin
+  #   "123456000000025007", // Network
+  # ]
 }

@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "0.0.1-beta.10"
+      version = "0.0.1-beta.11"
     }
   }
 }
@@ -162,11 +162,22 @@ resource "site24x7_website_monitor" "website_monitor" {
     "456"
   ]
 
-  // (Optional) List if user group IDs to be notified on down. If omitted, the
+  // (Optional) List if user group IDs to be notified on down. 
+  // Either specify user_group_ids or user_group_names. If omitted, the
   // first user group returned by the /api/user_groups endpoint
   // (https://www.site24x7.com/help/api/#list-of-all-user-groups) will be used.
   user_group_ids = [
     "123",
+  ]
+
+  // (Optional) List if user group names to be notified on down. 
+  // Either specify user_group_ids or user_group_names. If omitted, the
+  // first user group returned by the /api/user_groups endpoint
+  // (https://www.site24x7.com/help/api/#list-of-all-user-groups) will be used.
+  user_group_names = [
+    "Terraform",
+    "Network",
+    "Admin",
   ]
 
   // (Optional) List if tag IDs to be associated to the monitor.

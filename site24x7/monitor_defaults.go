@@ -123,3 +123,44 @@ func DefaultUserGroup(client Client) (*api.UserGroup, error) {
 
 	return userGroups[0], nil
 }
+
+func SetUserGroup(client Client, d *schema.ResourceData, monitor api.Site24x7Monitor) ([]string, error) {
+	var userGroupNamesInConf []string
+	var userGroupIDs []string
+	userGroups, err := client.UserGroups().List()
+	if err != nil {
+		return nil, err
+	}
+	if len(userGroups) == 0 {
+		return nil, errors.New("Unable to find user groups in Site24x7. Please configure them by visiting Admin -> User & Alert Management -> User Alert Group")
+	}
+
+	// If user_group_names are defined we try to find a match in Site24x7 and override user_group_ids else raise an error.
+	if _, userGroupNamesExistsInConf := d.GetOk("user_group_names"); userGroupNamesExistsInConf {
+		for _, userGrpName := range d.Get("user_group_names").([]interface{}) {
+			userGroupNamesInConf = append(userGroupNamesInConf, userGrpName.(string))
+		}
+		log.Println("Finding match for the user group names : [" + strings.Join(userGroupNamesInConf, ", ") + "] in Site24x7")
+		for _, userGroupName := range userGroupNamesInConf {
+			if userGroupName != "" {
+				for _, userGroup := range userGroups {
+					if strings.Contains(userGroup.DisplayName, userGroupName) {
+						userGroupIDs = append(userGroupIDs, userGroup.UserGroupID)
+						log.Println("Match found for user group name : " + userGroupName + ", user group id : " + userGroup.UserGroupID)
+					}
+				}
+			}
+		}
+
+		if len(userGroupIDs) == 0 {
+			return nil, errors.New("Unable to find user group matching the List : \"" + strings.Join(userGroupNamesInConf, ", ") + "\" in Site24x7. Please configure a valid value for the argument \"user_group_names\"")
+		}
+		monitor.SetUserGroupIDs(userGroupIDs)
+		d.Set("user_group_ids", userGroupIDs)
+	} else if len(monitor.GetUserGroupIDs()) == 0 { // This will be true when user_group_ids in the configuration file is empty during resource addition.
+		userGroup := userGroups[0]
+		monitor.SetUserGroupIDs([]string{userGroup.UserGroupID})
+		d.Set("user_group_id", []string{userGroup.UserGroupID})
+	}
+	return userGroupIDs, nil
+}

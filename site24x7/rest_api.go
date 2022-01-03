@@ -136,6 +136,14 @@ var RestApiMonitorSchema = map[string]*schema.Schema{
 		Computed:    true,
 		Description: "List of user groups to be notified when the monitor is down.",
 	},
+	"user_group_names": {
+		Type: schema.TypeList,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Description: "Name of the user groups to be associated with the monitor.",
+	},
 	"tag_ids": {
 		Type: schema.TypeList,
 		Elem: &schema.Schema{
@@ -549,6 +557,12 @@ func resourceDataToRestApiMonitor(d *schema.ResourceData, client Client) (*api.R
 		return nil, notificationProfileErr
 	}
 
+	// User Alert Groups
+	_, userAlertGroupErr := SetUserGroup(client, d, restApiMonitor)
+	if userAlertGroupErr != nil {
+		return nil, userAlertGroupErr
+	}
+
 	if restApiMonitor.ThresholdProfileID == "" {
 		profile, err := DefaultThresholdProfile(client, api.RESTAPI)
 		if err != nil {
@@ -556,15 +570,6 @@ func resourceDataToRestApiMonitor(d *schema.ResourceData, client Client) (*api.R
 		}
 		restApiMonitor.ThresholdProfileID = profile.ProfileID
 		d.Set("threshold_profile_id", profile)
-	}
-
-	if len(restApiMonitor.UserGroupIDs) == 0 {
-		userGroup, err := DefaultUserGroup(client)
-		if err != nil {
-			return nil, err
-		}
-		restApiMonitor.UserGroupIDs = []string{userGroup.UserGroupID}
-		d.Set("user_group_ids", []string{userGroup.UserGroupID})
 	}
 
 	return restApiMonitor, nil
