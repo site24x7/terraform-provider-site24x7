@@ -30,6 +30,9 @@
     "123",
     "456"
   ],
+  "tag_ids": [
+    "123"
+  ],
   "use_name_server": true,
   "json_schema_check": false,
   "response_headers_check": {

@@ -212,7 +212,16 @@ var WebsiteMonitorSchema = map[string]*schema.Schema{
 			Type: schema.TypeString,
 		},
 		Optional:    true,
-		Description: "List of Tag IDs to be associated to the monitor.",
+		Computed:    true,
+		Description: "List of tag IDs to be associated to the monitor.",
+	},
+	"tag_names": {
+		Type: schema.TypeList,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Description: "List of tag names to be associated to the monitor.",
 	},
 	"third_party_service_ids": {
 		Type: schema.TypeList,
@@ -491,6 +500,12 @@ func resourceDataToWebsiteMonitor(d *schema.ResourceData, client Client) (*api.W
 	_, userAlertGroupErr := SetUserGroup(client, d, websiteMonitor)
 	if userAlertGroupErr != nil {
 		return nil, userAlertGroupErr
+	}
+
+	// Tags
+	_, tagsErr := SetTags(client, d, websiteMonitor)
+	if tagsErr != nil {
+		return nil, tagsErr
 	}
 
 	if websiteMonitor.ThresholdProfileID == "" {

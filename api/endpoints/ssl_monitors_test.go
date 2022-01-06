@@ -33,6 +33,7 @@ func TestSSLMonitors(t *testing.T) {
 					ThresholdProfileID:    "012",
 					MonitorGroups:         []string{"234", "567"},
 					UserGroupIDs:          []string{"123", "456"},
+					TagIDs:                []string{"123"},
 				}
 
 				_, err := NewSSLMonitors(c).Create(sslMonitor)
@@ -139,6 +140,7 @@ func TestSSLMonitors(t *testing.T) {
 					ThresholdProfileID:    "012",
 					MonitorGroups:         []string{"234", "567"},
 					UserGroupIDs:          []string{"123", "456"},
+					TagIDs:                []string{"123"},
 				}
 
 				_, err := NewSSLMonitors(c).Update(sslMonitor)

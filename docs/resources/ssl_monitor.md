@@ -55,7 +55,8 @@ resource "site24x7_ssl_monitor" "ssl_monitor_us" {
 * `monitor_groups` (List of String) List of monitor groups to which the monitor has to be associated.
 * `user_group_ids` (List of String) List of user groups to be notified when the monitor is down. Either specify user_group_ids or user_group_names. If omitted, the first user group returned by the /api/user_groups endpoint will be used.
 * `user_group_names` (List of String) List of user group names to be notified when the monitor is down. Either specify user_group_ids or user_group_names. If omitted, the first user group returned by the /api/user_groups endpoint will be used.
-* `tag_ids` (List of String) List of tags to be associated to the monitor.
+* `tag_ids` (List of String) List of tags IDs to be associated to the monitor. Either specify tag_ids or tag_names.
+* `tag_names` (List of String) List of tag names to be associated to the monitor. Tag name matching works for both exact and partial match. Either specify tag_ids or tag_names.
 * `third_party_service_ids` (List of String) List of Third Party Service IDs to be associated to the monitor.
 * `timeout` (Number) Timeout for connecting to the host. Range 1 - 45.
 * `expire_days` (Number) Day threshold for certificate expiry notification. Range 1 - 999.

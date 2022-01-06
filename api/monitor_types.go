@@ -5,6 +5,8 @@ type Site24x7Monitor interface {
 	GetNotificationProfileID() string
 	SetUserGroupIDs(userGroupIDs []string)
 	GetUserGroupIDs() []string
+	SetTagIDs(tagIDs []string)
+	GetTagIDs() []string
 	String() string
 }
 
@@ -55,6 +57,14 @@ func (websiteMonitor *WebsiteMonitor) GetUserGroupIDs() []string {
 	return websiteMonitor.UserGroupIDs
 }
 
+func (websiteMonitor *WebsiteMonitor) SetTagIDs(tagIDs []string) {
+	websiteMonitor.TagIDs = tagIDs
+}
+
+func (websiteMonitor *WebsiteMonitor) GetTagIDs() []string {
+	return websiteMonitor.TagIDs
+}
+
 func (websiteMonitor *WebsiteMonitor) String() string {
 	return ToString(websiteMonitor)
 }
@@ -97,6 +107,14 @@ func (sslMonitor *SSLMonitor) SetUserGroupIDs(userGroupIDs []string) {
 
 func (sslMonitor *SSLMonitor) GetUserGroupIDs() []string {
 	return sslMonitor.UserGroupIDs
+}
+
+func (sslMonitor *SSLMonitor) SetTagIDs(tagIDs []string) {
+	sslMonitor.TagIDs = tagIDs
+}
+
+func (sslMonitor *SSLMonitor) GetTagIDs() []string {
+	return sslMonitor.TagIDs
 }
 
 func (sslMonitor *SSLMonitor) String() string {
@@ -160,6 +178,14 @@ func (restApiMonitor *RestApiMonitor) GetUserGroupIDs() []string {
 	return restApiMonitor.UserGroupIDs
 }
 
+func (restApiMonitor *RestApiMonitor) SetTagIDs(tagIDs []string) {
+	restApiMonitor.TagIDs = tagIDs
+}
+
+func (restApiMonitor *RestApiMonitor) GetTagIDs() []string {
+	return restApiMonitor.TagIDs
+}
+
 func (restApiMonitor *RestApiMonitor) String() string {
 	return ToString(restApiMonitor)
 }
@@ -194,6 +220,14 @@ func (amazonMonitor *AmazonMonitor) SetUserGroupIDs(userGroupIDs []string) {
 
 func (amazonMonitor *AmazonMonitor) GetUserGroupIDs() []string {
 	return amazonMonitor.UserGroupIDs
+}
+
+func (amazonMonitor *AmazonMonitor) SetTagIDs(tagIDs []string) {
+	amazonMonitor.TagIDs = tagIDs
+}
+
+func (amazonMonitor *AmazonMonitor) GetTagIDs() []string {
+	return amazonMonitor.TagIDs
 }
 
 func (amazonMonitor *AmazonMonitor) String() string {

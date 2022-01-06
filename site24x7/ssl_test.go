@@ -30,6 +30,7 @@ func TestSSLMonitorCreate(t *testing.T) {
 		ThresholdProfileID:    "012",
 		MonitorGroups:         []string{"234", "567"},
 		UserGroupIDs:          []string{"123", "456"},
+		TagIDs:                []string{"123"},
 	}
 
 	notificationProfiles := []*api.NotificationProfile{
@@ -61,6 +62,22 @@ func TestSSLMonitorCreate(t *testing.T) {
 		},
 	}
 	c.FakeUserGroups.On("List").Return(userGroups, nil)
+
+	tags := []*api.Tag{
+		{
+			TagID:    "123",
+			TagName:  "aws tag",
+			TagValue: "baz",
+			TagColor: "#B7DA9E",
+		},
+		{
+			TagID:    "456",
+			TagName:  "website tag",
+			TagValue: "baz 1",
+			TagColor: "#B7DA9E",
+		},
+	}
+	c.FakeTags.On("List").Return(tags, nil)
 
 	c.FakeSSLMonitors.On("Create", a).Return(a, nil).Once()
 
@@ -96,6 +113,7 @@ func TestSSLMonitorUpdate(t *testing.T) {
 		ThresholdProfileID:    "012",
 		MonitorGroups:         []string{"234", "567"},
 		UserGroupIDs:          []string{"123", "456"},
+		TagIDs:                []string{"123"},
 	}
 
 	notificationProfiles := []*api.NotificationProfile{
@@ -127,6 +145,22 @@ func TestSSLMonitorUpdate(t *testing.T) {
 		},
 	}
 	c.FakeUserGroups.On("List").Return(userGroups, nil)
+
+	tags := []*api.Tag{
+		{
+			TagID:    "123",
+			TagName:  "aws tag",
+			TagValue: "baz",
+			TagColor: "#B7DA9E",
+		},
+		{
+			TagID:    "456",
+			TagName:  "website tag",
+			TagValue: "baz 1",
+			TagColor: "#B7DA9E",
+		},
+	}
+	c.FakeTags.On("List").Return(tags, nil)
 
 	c.FakeSSLMonitors.On("Update", a).Return(a, nil).Once()
 

@@ -4,14 +4,14 @@ terraform {
 
   required_providers {
     site24x7 = {
-      # source  = "site24x7/site24x7"
-      # // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      # version = "0.0.1-beta.11"
+      source  = "site24x7/site24x7"
+      // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
+      version = "0.0.1-beta.12"
       // Uncomment for local setup
       # source  = "registry.zoho.io/zoho/site24x7"
       # version = "1.0.0"
-      source  = "registry.terraform.io/site24x7/site24x7"
-      version = "1.0.0"
+      # source  = "registry.terraform.io/site24x7/site24x7"
+      # version = "1.0.0"
     }
   }
 }
@@ -114,5 +114,20 @@ resource "site24x7_website_monitor" "website_monitor_example" {
   # user_group_ids = [
   #   "123456000000025005", // Admin
   #   "123456000000025007", // Network
+  # ]
+
+  // (Optional) List of tag names to be associated to the monitor. Tag name matching works for both exact and 
+  //  partial match. Either specify tag_ids or tag_names.
+  # tag_names = [
+  #   "Terraform",
+  #   "Network",
+  # ]
+
+  // (Optional) List of tags IDs to be associated to the monitor. Either specify tag_ids or tag_names.
+  # tag_ids = [
+  #   # "306947000024829001", // Terraform
+  #   # "306947000024829005", // Network
+  #   "306947000024829007", // Server
+  #   "306947000024829003", // Website
   # ]
 }

@@ -42,6 +42,7 @@ func TestRestApiMonitorCreate(t *testing.T) {
 		UserAgent:                 "firefox",
 		MonitorGroups:             []string{"234", "567"},
 		UserGroupIDs:              []string{"123", "456"},
+		TagIDs:                    []string{"123"},
 		AuthUser:                  "username",
 		AuthPass:                  "password",
 		CustomHeaders: []api.Header{
@@ -108,6 +109,23 @@ func TestRestApiMonitorCreate(t *testing.T) {
 		},
 	}
 	c.FakeUserGroups.On("List").Return(userGroups, nil)
+
+	tags := []*api.Tag{
+		{
+			TagID:    "123",
+			TagName:  "aws tag",
+			TagValue: "baz",
+			TagColor: "#B7DA9E",
+		},
+		{
+			TagID:    "456",
+			TagName:  "website tag",
+			TagValue: "baz 1",
+			TagColor: "#B7DA9E",
+		},
+	}
+
+	c.FakeTags.On("List").Return(tags, nil)
 
 	c.FakeRestApiMonitors.On("Create", a).Return(a, nil).Once()
 
@@ -153,6 +171,7 @@ func TestRestApiMonitorUpdate(t *testing.T) {
 		UserAgent:                 "firefox",
 		MonitorGroups:             []string{"234", "567"},
 		UserGroupIDs:              []string{"123", "456"},
+		TagIDs:                    []string{"123"},
 		AuthUser:                  "username",
 		AuthPass:                  "password",
 		CustomHeaders: []api.Header{
@@ -218,6 +237,22 @@ func TestRestApiMonitorUpdate(t *testing.T) {
 		},
 	}
 	c.FakeUserGroups.On("List").Return(userGroups, nil)
+
+	tags := []*api.Tag{
+		{
+			TagID:    "123",
+			TagName:  "aws tag",
+			TagValue: "baz",
+			TagColor: "#B7DA9E",
+		},
+		{
+			TagID:    "456",
+			TagName:  "website tag",
+			TagValue: "baz 1",
+			TagColor: "#B7DA9E",
+		},
+	}
+	c.FakeTags.On("List").Return(tags, nil)
 
 	c.FakeRestApiMonitors.On("Update", a).Return(a, nil).Once()
 
