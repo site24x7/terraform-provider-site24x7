@@ -1,0 +1,19 @@
+{
+  "name": "webhook_cloud",
+  "url": "http://example.com",
+  "method": "P",
+  "send_incident_parameters": false,
+  "timeout": 30,
+  "is_poller_webhook": false,
+  "auth_method": "B",
+  "manage_tickets": false,
+  "username": "username",
+  "password": "password",
+  "send_custom_parameters": true,
+  "send_in_json_format": true,
+  "custom_parameters": "{\"test\":\"abcd\"}",
+  "selection_type": 0,
+  "alert_tags_id": [
+    "113770000023231001"
+  ]
+}

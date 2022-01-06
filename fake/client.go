@@ -23,6 +23,7 @@ type Client struct {
 	FakeUserGroups             *fake.UserGroups
 	FakeOpsgenieIntegration    *fake.OpsgenieIntegration
 	FakeSlackIntegration       *fake.SlackIntegration
+	FakeWebhookIntegration     *fake.WebhookIntegration
 	FakeThirdPartyIntegrations *fake.ThirdPartyIntegrations
 }
 
@@ -44,6 +45,7 @@ func NewClient() *Client {
 		FakeUserGroups:             &fake.UserGroups{},
 		FakeOpsgenieIntegration:    &fake.OpsgenieIntegration{},
 		FakeSlackIntegration:       &fake.SlackIntegration{},
+		FakeWebhookIntegration:     &fake.WebhookIntegration{},
 		FakeThirdPartyIntegrations: &fake.ThirdPartyIntegrations{},
 	}
 }
@@ -121,6 +123,11 @@ func (c *Client) OpsgenieIntegration() endpoints.OpsgenieIntegration {
 // SlackIntegration implements Client.
 func (c *Client) SlackIntegration() endpoints.SlackIntegration {
 	return c.FakeSlackIntegration
+}
+
+// WebhookIntegration implements Client.
+func (c *Client) WebhookIntegration() endpoints.WebhookIntegration {
+	return c.FakeWebhookIntegration
 }
 
 // ThirdPartyIntegrations implements Client.
