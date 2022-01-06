@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "0.0.1-beta.11"
+      version = "0.0.1-beta.12"
     }
   }
 }
@@ -86,6 +86,14 @@ resource "site24x7_amazon_monitor" "aws_monitor_site24x7" {
   tag_ids = [
     "123",
   ]
+
+  // (Optional) List of tag names to be associated to the monitor. Tag name matching works for both exact and 
+  //  partial match. Either specify tag_ids or tag_names.
+  tag_names = [
+    "Terraform",
+    "Network",
+  ]
+
   // (Optional) List of Third Party Service IDs to be associated to the monitor.
   third_party_service_ids = [
     "4567"

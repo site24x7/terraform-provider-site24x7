@@ -160,7 +160,48 @@ func SetUserGroup(client Client, d *schema.ResourceData, monitor api.Site24x7Mon
 	} else if len(monitor.GetUserGroupIDs()) == 0 { // This will be true when user_group_ids in the configuration file is empty during resource addition.
 		userGroup := userGroups[0]
 		monitor.SetUserGroupIDs([]string{userGroup.UserGroupID})
-		d.Set("user_group_id", []string{userGroup.UserGroupID})
+		d.Set("user_group_ids", []string{userGroup.UserGroupID})
 	}
 	return userGroupIDs, nil
+}
+
+func SetTags(client Client, d *schema.ResourceData, monitor api.Site24x7Monitor) ([]string, error) {
+	var tagNamesInConf []string
+	var tagIDs []string
+	tagsList, err := client.Tags().List()
+	if err != nil {
+		return nil, err
+	}
+	if len(tagsList) == 0 {
+		return nil, errors.New("Unable to find tags in Site24x7. Please configure them by visiting Admin -> Tags -> Add Tag")
+	}
+
+	// If tag_names are defined we try to find a match in Site24x7 and override tag_ids else raise an error.
+	if _, tagNamesExistsInConf := d.GetOk("tag_names"); tagNamesExistsInConf {
+		for _, tName := range d.Get("tag_names").([]interface{}) {
+			tagNamesInConf = append(tagNamesInConf, tName.(string))
+		}
+		log.Println("Finding match for the tag names : [" + strings.Join(tagNamesInConf, ", ") + "] in Site24x7")
+		for _, tagName := range tagNamesInConf {
+			if tagName != "" {
+				for _, tag := range tagsList {
+					if strings.Contains(tag.TagName, tagName) {
+						tagIDs = append(tagIDs, tag.TagID)
+						log.Println("Match found for tag name : " + tagName + ", tag id : " + tag.TagID)
+					}
+				}
+			}
+		}
+
+		if len(tagIDs) == 0 {
+			return nil, errors.New("Unable to find tag matching the List : \"" + strings.Join(tagNamesInConf, ", ") + "\" in Site24x7. Please configure a valid value for the argument \"tag_names\"")
+		}
+		monitor.SetTagIDs(tagIDs)
+		d.Set("tag_ids", tagIDs)
+	} else if len(monitor.GetTagIDs()) == 0 { // This will be true when tag_ids in the configuration file is empty during resource addition.
+		tag := tagsList[0]
+		monitor.SetTagIDs([]string{tag.TagID})
+		d.Set("tag_ids", []string{tag.TagID})
+	}
+	return tagIDs, nil
 }

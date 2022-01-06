@@ -45,6 +45,7 @@ func TestRestApiMonitors(t *testing.T) {
 					UserAgent:                 "firefox",
 					MonitorGroups:             []string{"234", "567"},
 					UserGroupIDs:              []string{"123", "456"},
+					TagIDs:                    []string{"123"},
 					AuthUser:                  "username",
 					AuthPass:                  "password",
 					ResponseHeaders: api.HTTPResponseHeader{
@@ -221,6 +222,7 @@ func TestRestApiMonitors(t *testing.T) {
 					UserAgent:                 "firefox",
 					MonitorGroups:             []string{"234", "567"},
 					UserGroupIDs:              []string{"123", "456"},
+					TagIDs:                    []string{"123"},
 					AuthUser:                  "username",
 					AuthPass:                  "password",
 					ResponseHeaders: api.HTTPResponseHeader{

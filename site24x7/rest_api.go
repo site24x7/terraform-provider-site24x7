@@ -150,7 +150,16 @@ var RestApiMonitorSchema = map[string]*schema.Schema{
 			Type: schema.TypeString,
 		},
 		Optional:    true,
+		Computed:    true,
 		Description: "List of Tag IDs to be associated to the monitor.",
+	},
+	"tag_names": {
+		Type: schema.TypeList,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Description: "List of tag names to be associated to the monitor.",
 	},
 	"third_party_service_ids": {
 		Type: schema.TypeList,
@@ -561,6 +570,12 @@ func resourceDataToRestApiMonitor(d *schema.ResourceData, client Client) (*api.R
 	_, userAlertGroupErr := SetUserGroup(client, d, restApiMonitor)
 	if userAlertGroupErr != nil {
 		return nil, userAlertGroupErr
+	}
+
+	// Tags
+	_, tagsErr := SetTags(client, d, restApiMonitor)
+	if tagsErr != nil {
+		return nil, tagsErr
 	}
 
 	if restApiMonitor.ThresholdProfileID == "" {
