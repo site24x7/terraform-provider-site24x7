@@ -55,6 +55,7 @@ A terraform provider for managing the following resources in Site24x7:
 - Tag - [site24x7_tag](examples/tag_us.tf) ([Site24x7 Tag API doc](https://www.site24x7.com/help/api/#tags))
 - Opsgenie integration - [site24x7_opsgenie_integration](examples/opsgenie_integration_us.tf) ([Site24x7 Opsgenie integration API doc](https://www.site24x7.com/help/api/#create-opsgenie))
 - Slack integration - [site24x7_slack_integration](examples/slack_integration_us.tf) ([Site24x7 Slack integration API doc](https://www.site24x7.com/help/api/#create-slack))
+- Webhook integration - [site24x7_webhook_integration](examples/webhook_integration_us.tf) ([Site24x7 Webhook integration API doc](https://www.site24x7.com/help/api/#create-webhook))
 
 
 Usage example
