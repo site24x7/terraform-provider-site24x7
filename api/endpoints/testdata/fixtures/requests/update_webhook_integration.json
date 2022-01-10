@@ -1,0 +1,26 @@
+{
+  "service_id": "113770000023231022",
+  "name": "Test WebHook",
+  "url": "http://requestb.in",
+  "is_poller_webhook": false,
+  "timeout": 30,
+  "method": "P",
+  "auth_method": "B",
+  "username": "username",
+  "password": "password",
+  "send_custom_parameters": true,
+  "manage_tickets": false,
+  "custom_parameters": "param=value",
+  "send_incident_parameters": true,
+  "send_in_json_format": true,
+  "user_agent": "Mozilla",
+  "selection_type": 2,
+  "monitors": [
+    "113770000023231032",
+    "113770000023231043"
+  ],
+  "alert_tags_id": [
+    "113770000023231001",
+    "113770000023231002"
+  ]
+}

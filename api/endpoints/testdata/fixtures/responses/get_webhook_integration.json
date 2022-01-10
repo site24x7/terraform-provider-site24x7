@@ -1,0 +1,25 @@
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "service_id": "113770000023231022",
+    "service_status": 0,
+    "name": "Test WebHook",
+    "url": "http://requestb.in",
+    "is_poller_webhook": false,
+    "timeout": 30,
+    "method": "P",
+    "auth_method": "B",
+    "username": "username",
+    "password": "password",
+    "send_custom_parameters": true,
+    "custom_parameters": "param=value",
+    "send_incident_parameters": true,
+    "send_in_json_format": true,
+    "user_agent": "Mozilla",
+    "selection_type": 0,
+    "alert_tags_id": [
+      "113770000023231001"
+    ]
+  }
+}

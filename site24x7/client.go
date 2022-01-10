@@ -79,6 +79,7 @@ type Client interface {
 	ThirdPartyIntegrations() endpoints.ThirdpartyIntegrations
 	OpsgenieIntegration() endpoints.OpsgenieIntegration
 	SlackIntegration() endpoints.SlackIntegration
+	WebhookIntegration() endpoints.WebhookIntegration
 }
 
 type client struct {
@@ -188,6 +189,11 @@ func (c *client) OpsgenieIntegration() endpoints.OpsgenieIntegration {
 // SlackIntegraion implements Client.
 func (c *client) SlackIntegration() endpoints.SlackIntegration {
 	return endpoints.NewSlack(c.restClient)
+}
+
+// WebhookIntegration implements Client.
+func (c *client) WebhookIntegration() endpoints.WebhookIntegration {
+	return endpoints.NewWebhook(c.restClient)
 }
 
 // ThirdPartyIntegrations implements Client.

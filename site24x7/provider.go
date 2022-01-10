@@ -70,6 +70,7 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_tag":                  resourceSite24x7Tag(),
 			"site24x7_opsgenie_integration": resourceSite24x7OpsgenieIntegration(),
 			"site24x7_slack_integration":    resourceSite24x7SlackIntegration(),
+			"site24x7_webhook_integration":  resourceSite24x7WebhookIntegration(),
 		},
 
 		ConfigureFunc: providerConfigure,
