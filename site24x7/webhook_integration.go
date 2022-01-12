@@ -44,12 +44,12 @@ var WebhookIntegrationSchema = map[string]*schema.Schema{
 	},
 	"send_incident_parameters": {
 		Type:        schema.TypeBool,
-		Optional:    true,
+		Required:    true,
 		Description: "Configuration to send incident parameters while executing the action.",
 	},
 	"send_custom_parameters": {
 		Type:        schema.TypeBool,
-		Optional:    true,
+		Required:    true,
 		Description: "Configuration to send custom parameters while executing the action.",
 	},
 	"custom_parameters": {
@@ -112,12 +112,12 @@ var WebhookIntegrationSchema = map[string]*schema.Schema{
 	},
 	"update_send_incident_parameters": {
 		Type:        schema.TypeBool,
-		Optional:    true,
+		Required:    true,
 		Description: "Configuration to send incident parameters while executing the action.",
 	},
 	"update_send_custom_parameters": {
 		Type:        schema.TypeBool,
-		Optional:    true,
+		Required:    true,
 		Description: "Configuration to send custom parameters while executing the action.",
 	},
 	"update_custom_parameters": {
@@ -137,12 +137,12 @@ var WebhookIntegrationSchema = map[string]*schema.Schema{
 	},
 	"close_send_incident_parameters": {
 		Type:        schema.TypeBool,
-		Optional:    true,
+		Required:    true,
 		Description: "Configuration to send incident parameters while executing the action.",
 	},
 	"close_send_custom_parameters": {
 		Type:        schema.TypeBool,
-		Optional:    true,
+		Required:    true,
 		Description: "Configuration to send custom parameters while executing the action.",
 	},
 	"close_custom_parameters": {
@@ -270,7 +270,7 @@ func resourceDataToWebhookIntegration(d *schema.ResourceData) (*api.WebhookInteg
 		Poller:                       d.Get("poller").(string),
 		SendIncidentParameters:       d.Get("send_incident_parameters").(bool),
 		SendCustomParameters:         d.Get("send_custom_parameters").(bool),
-		CustomParameters:             d.Get("custom_parameters").(string),
+		CustomParameters:             d.Get("custom_parameters"),
 		SendInJsonFormat:             d.Get("send_in_json_format").(bool),
 		AuthMethod:                   d.Get("auth_method").(string),
 		Username:                     d.Get("username").(string),
@@ -283,13 +283,25 @@ func resourceDataToWebhookIntegration(d *schema.ResourceData) (*api.WebhookInteg
 		UpdateMethod:                 d.Get("update_method").(string),
 		UpdateSendIncidentParameters: d.Get("update_send_incident_parameters").(bool),
 		UpdateSendCustomParameters:   d.Get("update_send_custom_parameters").(bool),
-		UpdateCustomParameters:       d.Get("update_custom_parameters").(string),
+		UpdateCustomParameters:       d.Get("update_custom_parameters"),
 		CloseURL:                     d.Get("close_url").(string),
 		CloseMethod:                  d.Get("close_method").(string),
 		CloseSendIncidentParameters:  d.Get("close_send_incident_parameters").(bool),
 		CloseSendCustomParameters:    d.Get("close_send_custom_parameters").(bool),
-		CloseCustomParameters:        d.Get("close_custom_parameters").(string),
+		CloseCustomParameters:        d.Get("close_custom_parameters"),
 		AlertTagIDs:                  alertTagIDs,
+	}
+
+	if _, ok := d.GetOk("custom_parameters"); !webhookIntegration.SendCustomParameters && !ok {
+		webhookIntegration.CustomParameters = nil
+	}
+
+	if _, ok := d.GetOk("update_custom_parameters"); !webhookIntegration.UpdateSendCustomParameters && !ok {
+		webhookIntegration.UpdateCustomParameters = nil
+	}
+
+	if _, ok := d.GetOk("close_custom_parameters"); !webhookIntegration.CloseSendCustomParameters && !ok {
+		webhookIntegration.CloseCustomParameters = nil
 	}
 
 	return webhookIntegration, nil

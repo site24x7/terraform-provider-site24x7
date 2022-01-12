@@ -10,8 +10,12 @@
   "username": "username",
   "password": "password",
   "send_custom_parameters": true,
-  "send_in_json_format": true,
   "custom_parameters": "{\"test\":\"abcd\"}",
+  "send_in_json_format": true,
+  "update_send_incident_parameters": false,
+  "update_send_custom_parameters": false,
+  "close_send_incident_parameters": false,
+  "close_send_custom_parameters": false,
   "selection_type": 0,
   "alert_tags_id": [
     "113770000023231001"
