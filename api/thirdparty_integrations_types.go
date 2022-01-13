@@ -80,9 +80,9 @@ type WebhookIntegration struct {
 	IsPollerWebhook              bool         `json:"is_poller_webhook"`
 	Poller                       string       `json:"poller,omitempty"`
 	SendIncidentParameters       bool         `json:"send_incident_parameters"`
-	SendCustomParameters         bool         `json:"send_custom_parameters,omitempty"`
-	CustomParameters             string       `json:"custom_parameters,omitempty"`
-	SendInJsonFormat             bool         `json:"send_in_json_format,omitempty"`
+	SendCustomParameters         bool         `json:"send_custom_parameters"`
+	CustomParameters             interface{}  `json:"custom_parameters,omitempty"`
+	SendInJsonFormat             bool         `json:"send_in_json_format"`
 	AuthMethod                   string       `json:"auth_method,omitempty"`
 	Username                     string       `json:"username,omitempty"`
 	Password                     string       `json:"password,omitempty"`
@@ -92,13 +92,17 @@ type WebhookIntegration struct {
 	ManageTickets                bool         `json:"manage_tickets"`
 	UpdateURL                    string       `json:"update_url,omitempty"`
 	UpdateMethod                 string       `json:"update_method,omitempty"`
-	UpdateSendIncidentParameters bool         `json:"update_send_incident_parameters,omitempty"`
-	UpdateSendCustomParameters   bool         `json:"update_send_custom_parameters,omitempty"`
-	UpdateCustomParameters       string       `json:"update_custom_parameters,omitempty"`
+	UpdateSendIncidentParameters bool         `json:"update_send_incident_parameters"`
+	UpdateSendCustomParameters   bool         `json:"update_send_custom_parameters"`
+	UpdateCustomParameters       interface{}  `json:"update_custom_parameters,omitempty"`
 	CloseURL                     string       `json:"close_url,omitempty"`
 	CloseMethod                  string       `json:"close_method,omitempty"`
-	CloseSendIncidentParameters  bool         `json:"close_send_incident_parameters,omitempty"`
-	CloseSendCustomParameters    bool         `json:"close_send_custom_parameters,omitempty"`
-	CloseCustomParameters        string       `json:"close_custom_parameters,omitempty"`
+	CloseSendIncidentParameters  bool         `json:"close_send_incident_parameters"`
+	CloseSendCustomParameters    bool         `json:"close_send_custom_parameters"`
+	CloseCustomParameters        interface{}  `json:"close_custom_parameters,omitempty"`
 	AlertTagIDs                  []string     `json:"alert_tags_id,omitempty"`
+}
+
+func (webhookIntegration *WebhookIntegration) String() string {
+	return ToString(webhookIntegration)
 }
