@@ -203,6 +203,7 @@ func resourceDataToPagerDutyIntegration(d *schema.ResourceData) (*api.PagerDutyI
 		TroubleAlert:         d.Get("trouble_alert").(bool),
 		CriticalAlert:        d.Get("critical_alert").(bool),
 		DownAlert:            d.Get("down_alert").(bool),
+		ManualResolve:        d.Get("manual_resolve").(bool),
 		SendCustomParameters: d.Get("send_custom_parameters").(bool),
 		CustomParameters:     d.Get("custom_parameters").(string),
 		Monitors:             monitorsIDs,
@@ -222,6 +223,7 @@ func updatePagerDutyIntegrationResourceData(d *schema.ResourceData, pagerDutyInt
 	d.Set("trouble_alert", pagerDutyIntegration.TroubleAlert)
 	d.Set("critical_alert", pagerDutyIntegration.CriticalAlert)
 	d.Set("down_alert", pagerDutyIntegration.DownAlert)
+	d.Set("manual_resolve", pagerDutyIntegration.ManualResolve)
 	d.Set("send_custom_parameters", pagerDutyIntegration.SendCustomParameters)
 	d.Set("custom_parameters", pagerDutyIntegration.CustomParameters)
 	d.Set("tags", pagerDutyIntegration.Tags)

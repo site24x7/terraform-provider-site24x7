@@ -35,7 +35,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "0.0.1-beta.12"
+      version = "0.0.1-beta.13"
     }
   }
 }
@@ -54,6 +54,7 @@ A terraform provider for managing the following resources in Site24x7:
 - User Group - [site24x7_user_group](examples/user_group_us.tf) ([Site24x7 User Group API doc](https://www.site24x7.com/help/api/#user-groups))
 - Tag - [site24x7_tag](examples/tag_us.tf) ([Site24x7 Tag API doc](https://www.site24x7.com/help/api/#tags))
 - Opsgenie integration - [site24x7_opsgenie_integration](examples/opsgenie_integration_us.tf) ([Site24x7 Opsgenie integration API doc](https://www.site24x7.com/help/api/#create-opsgenie))
+- PagerDuty integration - [site24x7_pagerduty_integration](examples/pagerduty_integration_us.tf) ([Site24x7 PagerDuty integration API doc](https://www.site24x7.com/help/api/#create-pagerduty))
 - Slack integration - [site24x7_slack_integration](examples/slack_integration_us.tf) ([Site24x7 Slack integration API doc](https://www.site24x7.com/help/api/#create-slack))
 - Webhook integration - [site24x7_webhook_integration](examples/webhook_integration_us.tf) ([Site24x7 Webhook integration API doc](https://www.site24x7.com/help/api/#create-webhook))
 
