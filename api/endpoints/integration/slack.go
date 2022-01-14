@@ -1,4 +1,4 @@
-package endpoints
+package integration
 
 import (
 	"github.com/site24x7/terraform-provider-site24x7/api"

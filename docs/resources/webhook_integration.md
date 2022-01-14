@@ -93,29 +93,29 @@ resource "site24x7_webhook_integration" "webhook_integration" {
 * `timeout` (Number) The amount of time a connection waits to time out.Range 1 - 45.
 * `method` (String) Resource Type associated with this integration.Please refer [API documentation](https://www.site24x7.com/help/api/#http_methods).
 * `selection_type` (Number) Resource Type associated with this integration.Monitor Group not supported.Please refer [API documentation](https://www.site24x7.com/help/api/#resource_type_constants).
-* `is_poller_webhook` (Bool) URL to be invoked from an On-Premise Poller agent.
-* `manage_tickets` (Bool) Configuration to handle ticketing based integration.
-* `send_incident_parameters` (Bool) Configuration to send incident parameters while executing the action.
-* `send_custom_parameters` (Bool) Configuration to send custom parameters while executing the action.
-* `update_send_incident_parameters` (Bool) Configuration to send incident parameters while executing the action.
-* `update_send_custom_parameters` (Bool) Configuration to send custom parameters while executing the action.
-* `close_send_incident_parameters` (Bool) Configuration to send incident parameters while executing the action.
-* `close_send_custom_parameters` (Bool) Configuration to send custom parameters while executing the action.
+* `is_poller_webhook` (Boolean) URL to be invoked from an On-Premise Poller agent.
+* `manage_tickets` (Boolean) Configuration to handle ticketing based integration.
+* `send_incident_parameters` (Boolean) Configuration to send incident parameters while executing the action.
+* `send_custom_parameters` (Boolean) Configuration to send custom parameters while executing the action.
+* `update_send_incident_parameters` (Boolean) Configuration to send incident parameters while executing the action.
+* `update_send_custom_parameters` (Boolean) Configuration to send custom parameters while executing the action.
+* `close_send_incident_parameters` (Boolean) Configuration to send incident parameters while executing the action.
+* `close_send_custom_parameters` (Boolean) Configuration to send custom parameters while executing the action.
 
 
 ### Optional
 
 * `id` (String) The ID of this resource.
 * `poller` (String) Denotes On-Premise Poller ID.
-* `custom_parameters` (String) Mandatory when `send_custom_parameters` is set as true.Custom parameters to be passed while accessing the URL.
-* `send_in_json_format` (Bool) Configuration to enable json format for post parameters.
+* `custom_parameters` (String) Mandatory when `send_custom_parameters` is set as true. Custom parameters to be passed while accessing the URL.
+* `send_in_json_format` (Boolean) Configuration to enable json format for post parameters.
 * `auth_method` (String) Authentication method to access the action url.Please refer [API documentation](https://www.site24x7.com/help/api/#auth_method).
 * `username` (String) Username for Authentication.
 * `password` (String) Password for Authentication.
 * `oauth2_provider` (String) Provider ID of the OAuth Provider to be associated with the action.Please refer [API documentation](https://www.site24x7.com/help/api/#list-oauth-providers).
 * `user_agent` (String) User Agent to be used while monitoring the website.
 * `monitors` (List of String) Monitors associated with the integration.
-* `manage_tickets` (Bool) Configuration to handle ticketing based integration.
+* `manage_tickets` (Boolean) Configuration to handle ticketing based integration.
 * `update_url` (String) URL to be invoked to update the request.
 * `update_method` (String) HTTP Method to access the URL.Please refer [API documentation](https://www.site24x7.com/help/api/#http_methods).
 * `update_custom_parameters` (String) Mandatory when `update_send_custom_parameters` is set as true.Custom parameters to be passed while accessing the URL.

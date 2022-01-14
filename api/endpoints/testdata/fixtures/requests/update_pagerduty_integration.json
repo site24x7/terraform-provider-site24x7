@@ -1,0 +1,14 @@
+{
+  "name": "Site24x7-PagerDuty Integration",
+  "service_id": "123",
+  "sender_name":"Site24x7",
+  "service_key": "service_key",
+  "trouble_alert": true,
+  "critical_alert": false,
+  "down_alert": false,
+  "manual_resolve": false,
+  "selection_type":2,
+  "monitors":["113770000023231032","113770000023231043"],
+  "title":"$MONITOR_NAME is $STATUS",
+  "alert_tags_id": ["113770000023231001", "113770000023231002"]
+}

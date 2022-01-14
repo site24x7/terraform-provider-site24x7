@@ -5,20 +5,21 @@ import (
 
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	"github.com/site24x7/terraform-provider-site24x7/rest"
+	"github.com/site24x7/terraform-provider-site24x7/validation"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestNotificationProfiles(t *testing.T) {
-	runTests(t, []*endpointTest{
+	validation.RunTests(t, []*validation.EndpointTest{
 		{
-			name:         "create notification profile",
-			expectedVerb: "POST",
-			expectedPath: "/notification_profiles",
-			expectedBody: fixture(t, "requests/create_notification_profile.json"),
-			statusCode:   200,
-			responseBody: jsonAPIResponseBody(t, nil),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "create notification profile",
+			ExpectedVerb: "POST",
+			ExpectedPath: "/notification_profiles",
+			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/create_notification_profile.json"),
+			StatusCode:   200,
+			ResponseBody: validation.JsonAPIResponseBody(t, nil),
+			Fn: func(t *testing.T, c rest.Client) {
 				notificationProfile := &api.NotificationProfile{
 					RcaNeeded:                   true,
 					NotifyAfterExecutingActions: true,
@@ -31,12 +32,12 @@ func TestNotificationProfiles(t *testing.T) {
 			},
 		},
 		{
-			name:         "get notification profile",
-			expectedVerb: "GET",
-			expectedPath: "/notification_profiles/123",
-			statusCode:   200,
-			responseBody: fixture(t, "responses/get_notification_profile.json"),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "get notification profile",
+			ExpectedVerb: "GET",
+			ExpectedPath: "/notification_profiles/123",
+			StatusCode:   200,
+			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/get_notification_profile.json"),
+			Fn: func(t *testing.T, c rest.Client) {
 				notificationProfile, err := NewNotificationProfiles(c).Get("123")
 				require.NoError(t, err)
 
@@ -50,12 +51,12 @@ func TestNotificationProfiles(t *testing.T) {
 			},
 		},
 		{
-			name:         "list notification profiles",
-			expectedVerb: "GET",
-			expectedPath: "/notification_profiles",
-			statusCode:   200,
-			responseBody: fixture(t, "responses/list_notification_profiles.json"),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "list notification profiles",
+			ExpectedVerb: "GET",
+			ExpectedPath: "/notification_profiles",
+			StatusCode:   200,
+			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/list_notification_profiles.json"),
+			Fn: func(t *testing.T, c rest.Client) {
 				notificationProfiles, err := NewNotificationProfiles(c).List()
 				require.NoError(t, err)
 
@@ -76,13 +77,13 @@ func TestNotificationProfiles(t *testing.T) {
 			},
 		},
 		{
-			name:         "update notification profile",
-			expectedVerb: "PUT",
-			expectedPath: "/notification_profiles/123",
-			expectedBody: fixture(t, "requests/update_notification_profile.json"),
-			statusCode:   200,
-			responseBody: jsonAPIResponseBody(t, nil),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "update notification profile",
+			ExpectedVerb: "PUT",
+			ExpectedPath: "/notification_profiles/123",
+			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/update_notification_profile.json"),
+			StatusCode:   200,
+			ResponseBody: validation.JsonAPIResponseBody(t, nil),
+			Fn: func(t *testing.T, c rest.Client) {
 				notificationProfile := &api.NotificationProfile{
 					ProfileID:                   "123",
 					ProfileName:                 "Notifi Profile",
@@ -97,11 +98,11 @@ func TestNotificationProfiles(t *testing.T) {
 			},
 		},
 		{
-			name:         "delete notification profile",
-			expectedVerb: "DELETE",
-			expectedPath: "/notification_profiles/123",
-			statusCode:   200,
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "delete notification profile",
+			ExpectedVerb: "DELETE",
+			ExpectedPath: "/notification_profiles/123",
+			StatusCode:   200,
+			Fn: func(t *testing.T, c rest.Client) {
 				require.NoError(t, NewNotificationProfiles(c).Delete("123"))
 			},
 		},

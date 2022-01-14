@@ -1,24 +1,25 @@
-package endpoints
+package integration
 
 import (
 	"testing"
 
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	"github.com/site24x7/terraform-provider-site24x7/rest"
+	"github.com/site24x7/terraform-provider-site24x7/validation"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestWebhookIntegration(t *testing.T) {
-	runTests(t, []*endpointTest{
+	validation.RunTests(t, []*validation.EndpointTest{
 		{
-			name:         "create webhook integration",
-			expectedVerb: "POST",
-			expectedPath: "/integration/webhooks",
-			expectedBody: fixture(t, "requests/create_webhook_integration.json"),
-			statusCode:   200,
-			responseBody: jsonAPIResponseBody(t, nil),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "create webhook integration",
+			ExpectedVerb: "POST",
+			ExpectedPath: "/integration/webhooks",
+			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/create_webhook_integration.json"),
+			StatusCode:   200,
+			ResponseBody: validation.JsonAPIResponseBody(t, nil),
+			Fn: func(t *testing.T, c rest.Client) {
 				webhookIntegration := &api.WebhookIntegration{
 					Name:                         "webhook_cloud",
 					URL:                          "http://example.com",
@@ -46,12 +47,12 @@ func TestWebhookIntegration(t *testing.T) {
 			},
 		},
 		{
-			name:         "get webhook integration",
-			expectedVerb: "GET",
-			expectedPath: "/integration/webhooks/113770000023231022",
-			statusCode:   200,
-			responseBody: fixture(t, "responses/get_webhook_integration.json"),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "get webhook integration",
+			ExpectedVerb: "GET",
+			ExpectedPath: "/integration/webhooks/113770000023231022",
+			StatusCode:   200,
+			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/get_webhook_integration.json"),
+			Fn: func(t *testing.T, c rest.Client) {
 				webhook_integration, err := NewWebhook(c).Get("113770000023231022")
 				require.NoError(t, err)
 
@@ -83,13 +84,13 @@ func TestWebhookIntegration(t *testing.T) {
 			},
 		},
 		{
-			name:         "update webhook integration",
-			expectedVerb: "PUT",
-			expectedPath: "/integration/webhooks/113770000023231022",
-			expectedBody: fixture(t, "requests/update_webhook_integration.json"),
-			statusCode:   200,
-			responseBody: jsonAPIResponseBody(t, nil),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "update webhook integration",
+			ExpectedVerb: "PUT",
+			ExpectedPath: "/integration/webhooks/113770000023231022",
+			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/update_webhook_integration.json"),
+			StatusCode:   200,
+			ResponseBody: validation.JsonAPIResponseBody(t, nil),
+			Fn: func(t *testing.T, c rest.Client) {
 				webhook_integration := &api.WebhookIntegration{
 					Name:                         "Test WebHook",
 					URL:                          "http://requestb.in",

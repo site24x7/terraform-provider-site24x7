@@ -5,20 +5,21 @@ import (
 
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	"github.com/site24x7/terraform-provider-site24x7/rest"
+	"github.com/site24x7/terraform-provider-site24x7/validation"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestMonitorGroups(t *testing.T) {
-	runTests(t, []*endpointTest{
+	validation.RunTests(t, []*validation.EndpointTest{
 		{
-			name:         "create monitor group",
-			expectedVerb: "POST",
-			expectedPath: "/monitor_groups",
-			expectedBody: fixture(t, "requests/create_monitor_group.json"),
-			statusCode:   200,
-			responseBody: jsonAPIResponseBody(t, nil),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "create monitor group",
+			ExpectedVerb: "POST",
+			ExpectedPath: "/monitor_groups",
+			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/create_monitor_group.json"),
+			StatusCode:   200,
+			ResponseBody: validation.JsonAPIResponseBody(t, nil),
+			Fn: func(t *testing.T, c rest.Client) {
 				group := &api.MonitorGroup{
 					DisplayName: "foo group",
 					Description: "This is foo group",
@@ -36,12 +37,12 @@ func TestMonitorGroups(t *testing.T) {
 			},
 		},
 		{
-			name:         "get monitor group",
-			expectedVerb: "GET",
-			expectedPath: "/monitor_groups/113770000041271035",
-			statusCode:   200,
-			responseBody: fixture(t, "responses/get_monitor_group.json"),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "get monitor group",
+			ExpectedVerb: "GET",
+			ExpectedPath: "/monitor_groups/113770000041271035",
+			StatusCode:   200,
+			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/get_monitor_group.json"),
+			Fn: func(t *testing.T, c rest.Client) {
 				group, err := NewMonitorGroups(c).Get("113770000041271035")
 				require.NoError(t, err)
 
@@ -62,12 +63,12 @@ func TestMonitorGroups(t *testing.T) {
 			},
 		},
 		{
-			name:         "list monitor groups",
-			expectedVerb: "GET",
-			expectedPath: "/monitor_groups",
-			statusCode:   200,
-			responseBody: fixture(t, "responses/list_monitor_groups.json"),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "list monitor groups",
+			ExpectedVerb: "GET",
+			ExpectedPath: "/monitor_groups",
+			StatusCode:   200,
+			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/list_monitor_groups.json"),
+			Fn: func(t *testing.T, c rest.Client) {
 				groups, err := NewMonitorGroups(c).List()
 				require.NoError(t, err)
 
@@ -100,13 +101,13 @@ func TestMonitorGroups(t *testing.T) {
 			},
 		},
 		// {
-		// 	name:         "update monitor group",
-		// 	expectedVerb: "PUT",
-		// 	expectedPath: "/monitor_groups/123",
-		// 	expectedBody: fixture(t, "requests/update_monitor_groups.json"),
-		// 	statusCode:   200,
-		// 	responseBody: jsonAPIResponseBody(t, nil),
-		// 	fn: func(t *testing.T, c rest.Client) {
+		// 	Name:         "update monitor group",
+		// 	ExpectedVerb: "PUT",
+		// 	ExpectedPath: "/monitor_groups/123",
+		// 	ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/update_monitor_groups.json"),
+		// 	StatusCode:   200,
+		// 	ResponseBody: validation.JsonAPIResponseBody(t, nil),
+		// 	Fn: func(t *testing.T, c rest.Client) {
 		// 		group := &api.MonitorGroup{
 		// 			GroupID:     "123",
 		// 			DisplayName: "foo",
@@ -117,11 +118,11 @@ func TestMonitorGroups(t *testing.T) {
 		// 	},
 		// },
 		{
-			name:         "delete monitor group",
-			expectedVerb: "DELETE",
-			expectedPath: "/monitor_groups/123",
-			statusCode:   200,
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "delete monitor group",
+			ExpectedVerb: "DELETE",
+			ExpectedPath: "/monitor_groups/123",
+			StatusCode:   200,
+			Fn: func(t *testing.T, c rest.Client) {
 				require.NoError(t, NewMonitorGroups(c).Delete("123"))
 			},
 		},

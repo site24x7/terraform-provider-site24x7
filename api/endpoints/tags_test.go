@@ -5,20 +5,21 @@ import (
 
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	"github.com/site24x7/terraform-provider-site24x7/rest"
+	"github.com/site24x7/terraform-provider-site24x7/validation"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestTags(t *testing.T) {
-	runTests(t, []*endpointTest{
+	validation.RunTests(t, []*validation.EndpointTest{
 		{
-			name:         "create tags",
-			expectedVerb: "POST",
-			expectedPath: "/tags",
-			expectedBody: fixture(t, "requests/create_tag.json"),
-			statusCode:   200,
-			responseBody: jsonAPIResponseBody(t, nil),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "create tags",
+			ExpectedVerb: "POST",
+			ExpectedPath: "/tags",
+			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/create_tag.json"),
+			StatusCode:   200,
+			ResponseBody: validation.JsonAPIResponseBody(t, nil),
+			Fn: func(t *testing.T, c rest.Client) {
 				tagCreate := &api.Tag{
 					TagName:  "foobar",
 					TagValue: "baz",
@@ -30,12 +31,12 @@ func TestTags(t *testing.T) {
 			},
 		},
 		{
-			name:         "get tags",
-			expectedVerb: "GET",
-			expectedPath: "/tags/113770000041271035",
-			statusCode:   200,
-			responseBody: fixture(t, "responses/get_tag.json"),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "get tags",
+			ExpectedVerb: "GET",
+			ExpectedPath: "/tags/113770000041271035",
+			StatusCode:   200,
+			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/get_tag.json"),
+			Fn: func(t *testing.T, c rest.Client) {
 				group, err := NewTags(c).Get("113770000041271035")
 				require.NoError(t, err)
 
@@ -50,12 +51,12 @@ func TestTags(t *testing.T) {
 			},
 		},
 		{
-			name:         "list tags",
-			expectedVerb: "GET",
-			expectedPath: "/tags",
-			statusCode:   200,
-			responseBody: fixture(t, "responses/list_tags.json"),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "list tags",
+			ExpectedVerb: "GET",
+			ExpectedPath: "/tags",
+			StatusCode:   200,
+			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/list_tags.json"),
+			Fn: func(t *testing.T, c rest.Client) {
 				groups, err := NewTags(c).List()
 				require.NoError(t, err)
 
@@ -84,13 +85,13 @@ func TestTags(t *testing.T) {
 			},
 		},
 		{
-			name:         "update tags",
-			expectedVerb: "PUT",
-			expectedPath: "/tags/123",
-			expectedBody: fixture(t, "requests/update_tag.json"),
-			statusCode:   200,
-			responseBody: jsonAPIResponseBody(t, nil),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "update tags",
+			ExpectedVerb: "PUT",
+			ExpectedPath: "/tags/123",
+			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/update_tag.json"),
+			StatusCode:   200,
+			ResponseBody: validation.JsonAPIResponseBody(t, nil),
+			Fn: func(t *testing.T, c rest.Client) {
 				tagUpdate := &api.Tag{
 					TagID:    "123",
 					TagName:  "foobar",
@@ -103,11 +104,11 @@ func TestTags(t *testing.T) {
 			},
 		},
 		{
-			name:         "delete tags",
-			expectedVerb: "DELETE",
-			expectedPath: "/tags/123",
-			statusCode:   200,
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "delete tags",
+			ExpectedVerb: "DELETE",
+			ExpectedPath: "/tags/123",
+			StatusCode:   200,
+			Fn: func(t *testing.T, c rest.Client) {
 				require.NoError(t, NewTags(c).Delete("123"))
 			},
 		},

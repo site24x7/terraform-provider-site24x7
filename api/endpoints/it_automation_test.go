@@ -6,20 +6,21 @@ import (
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
 	"github.com/site24x7/terraform-provider-site24x7/rest"
+	"github.com/site24x7/terraform-provider-site24x7/validation"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestURLAutomations(t *testing.T) {
-	runTests(t, []*endpointTest{
+	validation.RunTests(t, []*validation.EndpointTest{
 		{
-			name:         "create it_automation",
-			expectedVerb: "POST",
-			expectedPath: "/it_automation",
-			expectedBody: fixture(t, "requests/create_it_automation.json"),
-			statusCode:   200,
-			responseBody: jsonAPIResponseBody(t, nil),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "create it_automation",
+			ExpectedVerb: "POST",
+			ExpectedPath: "/it_automation",
+			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/create_it_automation.json"),
+			StatusCode:   200,
+			ResponseBody: validation.JsonAPIResponseBody(t, nil),
+			Fn: func(t *testing.T, c rest.Client) {
 				automation := &api.URLAutomation{
 					ActionType:    2,
 					ActionTimeout: 30,
@@ -32,21 +33,21 @@ func TestURLAutomations(t *testing.T) {
 			},
 		},
 		{
-			name:         "create it_automation error",
-			statusCode:   500,
-			responseBody: []byte("whoops"),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "create it_automation error",
+			StatusCode:   500,
+			ResponseBody: []byte("whoops"),
+			Fn: func(t *testing.T, c rest.Client) {
 				_, err := NewURLAutomations(c).Create(&api.URLAutomation{})
 				assert.True(t, apierrors.HasStatusCode(err, 500))
 			},
 		},
 		{
-			name:         "get it_automation",
-			expectedVerb: "GET",
-			expectedPath: "/it_automation/123",
-			statusCode:   200,
-			responseBody: fixture(t, "responses/get_it_automation.json"),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "get it_automation",
+			ExpectedVerb: "GET",
+			ExpectedPath: "/it_automation/123",
+			StatusCode:   200,
+			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/get_it_automation.json"),
+			Fn: func(t *testing.T, c rest.Client) {
 				urlAutomation, err := NewURLAutomations(c).Get("123")
 				require.NoError(t, err)
 
@@ -66,12 +67,12 @@ func TestURLAutomations(t *testing.T) {
 			},
 		},
 		{
-			name:         "list it_automations",
-			expectedVerb: "GET",
-			expectedPath: "/it_automation",
-			statusCode:   200,
-			responseBody: fixture(t, "responses/list_it_automations.json"),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "list it_automations",
+			ExpectedVerb: "GET",
+			ExpectedPath: "/it_automation",
+			StatusCode:   200,
+			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/list_it_automations.json"),
+			Fn: func(t *testing.T, c rest.Client) {
 				urlAutomations, err := NewURLAutomations(c).List()
 				require.NoError(t, err)
 
@@ -103,12 +104,12 @@ func TestURLAutomations(t *testing.T) {
 			},
 		},
 		{
-			name:         "update it_automation",
-			expectedVerb: "PUT",
-			expectedPath: "/it_automation/123",
-			statusCode:   200,
-			responseBody: jsonAPIResponseBody(t, nil),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "update it_automation",
+			ExpectedVerb: "PUT",
+			ExpectedPath: "/it_automation/123",
+			StatusCode:   200,
+			ResponseBody: validation.JsonAPIResponseBody(t, nil),
+			Fn: func(t *testing.T, c rest.Client) {
 				urlAutomation := &api.URLAutomation{
 					ActionID:               "123",
 					ActionType:             1,
@@ -126,31 +127,31 @@ func TestURLAutomations(t *testing.T) {
 			},
 		},
 		{
-			name:       "update create_it_automation error",
-			statusCode: 400,
-			responseBody: jsonBody(t, &api.ErrorResponse{
+			Name:       "update create_it_automation error",
+			StatusCode: 400,
+			ResponseBody: validation.JsonBody(t, &api.ErrorResponse{
 				ErrorCode: 123,
 				Message:   "bad request",
 				ErrorInfo: map[string]interface{}{"foo": "bar"},
 			}),
-			fn: func(t *testing.T, c rest.Client) {
+			Fn: func(t *testing.T, c rest.Client) {
 				_, err := NewURLAutomations(c).Update(&api.URLAutomation{})
 				assert.True(t, apierrors.HasStatusCode(err, 400))
 			},
 		},
 		{
-			name:         "delete it_automation",
-			expectedVerb: "DELETE",
-			expectedPath: "/it_automation/123",
-			statusCode:   200,
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "delete it_automation",
+			ExpectedVerb: "DELETE",
+			ExpectedPath: "/it_automation/123",
+			StatusCode:   200,
+			Fn: func(t *testing.T, c rest.Client) {
 				require.NoError(t, NewURLAutomations(c).Delete("123"))
 			},
 		},
 		{
-			name:       "delete it_automation not found",
-			statusCode: 404,
-			fn: func(t *testing.T, c rest.Client) {
+			Name:       "delete it_automation not found",
+			StatusCode: 404,
+			Fn: func(t *testing.T, c rest.Client) {
 				err := NewURLAutomations(c).Delete("123")
 				assert.True(t, apierrors.IsNotFound(err))
 			},

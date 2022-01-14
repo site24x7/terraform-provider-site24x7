@@ -5,20 +5,21 @@ import (
 
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	"github.com/site24x7/terraform-provider-site24x7/rest"
+	"github.com/site24x7/terraform-provider-site24x7/validation"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestRestApiMonitors(t *testing.T) {
-	runTests(t, []*endpointTest{
+	validation.RunTests(t, []*validation.EndpointTest{
 		{
-			name:         "create rest api monitor",
-			expectedVerb: "POST",
-			expectedPath: "/monitors",
-			expectedBody: fixture(t, "requests/create_rest_api_monitor.json"),
-			statusCode:   200,
-			responseBody: jsonAPIResponseBody(t, nil),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "create rest api monitor",
+			ExpectedVerb: "POST",
+			ExpectedPath: "/monitors",
+			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/create_rest_api_monitor.json"),
+			StatusCode:   200,
+			ResponseBody: validation.JsonAPIResponseBody(t, nil),
+			Fn: func(t *testing.T, c rest.Client) {
 				restApiMonitor := &api.RestApiMonitor{
 					DisplayName:               "foo",
 					Type:                      string(api.RESTAPI),
@@ -68,12 +69,12 @@ func TestRestApiMonitors(t *testing.T) {
 			},
 		},
 		{
-			name:         "get rest api monitor",
-			expectedVerb: "GET",
-			expectedPath: "/monitors/897654345678",
-			statusCode:   200,
-			responseBody: fixture(t, "responses/get_rest_api_monitor.json"),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "get rest api monitor",
+			ExpectedVerb: "GET",
+			ExpectedPath: "/monitors/897654345678",
+			StatusCode:   200,
+			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/get_rest_api_monitor.json"),
+			Fn: func(t *testing.T, c rest.Client) {
 				restApiMonitor, err := NewRestApiMonitors(c).Get("897654345678")
 				require.NoError(t, err)
 
@@ -112,12 +113,12 @@ func TestRestApiMonitors(t *testing.T) {
 			},
 		},
 		{
-			name:         "list rest api monitors",
-			expectedVerb: "GET",
-			expectedPath: "/monitors",
-			statusCode:   200,
-			responseBody: fixture(t, "responses/list_rest_api_monitors.json"),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "list rest api monitors",
+			ExpectedVerb: "GET",
+			ExpectedPath: "/monitors",
+			StatusCode:   200,
+			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/list_rest_api_monitors.json"),
+			Fn: func(t *testing.T, c rest.Client) {
 				restApiMonitors, err := NewRestApiMonitors(c).List()
 				require.NoError(t, err)
 
@@ -188,13 +189,13 @@ func TestRestApiMonitors(t *testing.T) {
 			},
 		},
 		{
-			name:         "update rest api monitor",
-			expectedVerb: "PUT",
-			expectedPath: "/monitors/123",
-			expectedBody: fixture(t, "requests/update_rest_api_monitor.json"),
-			statusCode:   200,
-			responseBody: jsonAPIResponseBody(t, nil),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "update rest api monitor",
+			ExpectedVerb: "PUT",
+			ExpectedPath: "/monitors/123",
+			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/update_rest_api_monitor.json"),
+			StatusCode:   200,
+			ResponseBody: validation.JsonAPIResponseBody(t, nil),
+			Fn: func(t *testing.T, c rest.Client) {
 				restApiMonitor := &api.RestApiMonitor{
 					MonitorID:                 "123",
 					DisplayName:               "foo",
@@ -245,11 +246,11 @@ func TestRestApiMonitors(t *testing.T) {
 			},
 		},
 		{
-			name:         "delete rest api monitor",
-			expectedVerb: "DELETE",
-			expectedPath: "/monitors/123",
-			statusCode:   200,
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "delete rest api monitor",
+			ExpectedVerb: "DELETE",
+			ExpectedPath: "/monitors/123",
+			StatusCode:   200,
+			Fn: func(t *testing.T, c rest.Client) {
 				require.NoError(t, NewRestApiMonitors(c).Delete("123"))
 			},
 		},
