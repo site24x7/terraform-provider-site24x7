@@ -3,6 +3,7 @@ package fake
 import (
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints"
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/fake"
+	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/integration"
 )
 
 // Client is an implementation of site24x7.Client that stubs out all endpoints
@@ -24,6 +25,7 @@ type Client struct {
 	FakeOpsgenieIntegration    *fake.OpsgenieIntegration
 	FakeSlackIntegration       *fake.SlackIntegration
 	FakeWebhookIntegration     *fake.WebhookIntegration
+	FakePagerDutyIntegration   *fake.PagerDutyIntegration
 	FakeThirdPartyIntegrations *fake.ThirdPartyIntegrations
 }
 
@@ -45,6 +47,7 @@ func NewClient() *Client {
 		FakeUserGroups:             &fake.UserGroups{},
 		FakeOpsgenieIntegration:    &fake.OpsgenieIntegration{},
 		FakeSlackIntegration:       &fake.SlackIntegration{},
+		FakePagerDutyIntegration:   &fake.PagerDutyIntegration{},
 		FakeWebhookIntegration:     &fake.WebhookIntegration{},
 		FakeThirdPartyIntegrations: &fake.ThirdPartyIntegrations{},
 	}
@@ -116,21 +119,26 @@ func (c *Client) UserGroups() endpoints.UserGroups {
 }
 
 // OpsgenieIntegration implements Client.
-func (c *Client) OpsgenieIntegration() endpoints.OpsgenieIntegration {
+func (c *Client) OpsgenieIntegration() integration.OpsgenieIntegration {
 	return c.FakeOpsgenieIntegration
 }
 
 // SlackIntegration implements Client.
-func (c *Client) SlackIntegration() endpoints.SlackIntegration {
+func (c *Client) SlackIntegration() integration.SlackIntegration {
 	return c.FakeSlackIntegration
 }
 
+// PagerDuty implements Client.
+func (c *Client) PagerDutyIntegration() integration.PagerDutyIntegration {
+	return c.FakePagerDutyIntegration
+}
+
 // WebhookIntegration implements Client.
-func (c *Client) WebhookIntegration() endpoints.WebhookIntegration {
+func (c *Client) WebhookIntegration() integration.WebhookIntegration {
 	return c.FakeWebhookIntegration
 }
 
 // ThirdPartyIntegrations implements Client.
-func (c *Client) ThirdPartyIntegrations() endpoints.ThirdpartyIntegrations {
+func (c *Client) ThirdPartyIntegrations() integration.ThirdpartyIntegrations {
 	return c.FakeThirdPartyIntegrations
 }

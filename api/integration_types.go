@@ -106,3 +106,28 @@ type WebhookIntegration struct {
 func (webhookIntegration *WebhookIntegration) String() string {
 	return ToString(webhookIntegration)
 }
+
+// Denotes PagerDuty integration resource in Site24x7.
+type PagerDutyIntegration struct {
+	_                    struct{}     `type:"structure"` // Enforces key based initialization.
+	ServiceID            string       `json:"service_id,omitempty"`
+	ServiceStatus        int          `json:"service_status,omitempty"`
+	Name                 string       `json:"name"`
+	ServiceKey           string       `json:"service_key"`
+	SelectionType        ResourceType `json:"selection_type"`
+	SenderName           string       `json:"sender_name"`
+	Title                string       `json:"title"`
+	TroubleAlert         bool         `json:"trouble_alert"`
+	CriticalAlert        bool         `json:"critical_alert"`
+	DownAlert            bool         `json:"down_alert"`
+	ManualResolve        bool         `json:"manual_resolve"`
+	SendCustomParameters bool         `json:"send_custom_parameters,omitempty"`
+	CustomParameters     string       `json:"custom_parameters,omitempty"`
+	Tags                 []string     `json:"tags,omitempty"`
+	Monitors             []string     `json:"monitors,omitempty"`
+	AlertTagIDs          []string     `json:"alert_tags_id,omitempty"`
+}
+
+func (pagerDutyIntegration *PagerDutyIntegration) String() string {
+	return ToString(pagerDutyIntegration)
+}

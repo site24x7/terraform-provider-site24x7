@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints"
+	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/integration"
 	"github.com/site24x7/terraform-provider-site24x7/backoff"
 	"github.com/site24x7/terraform-provider-site24x7/oauth"
 	"github.com/site24x7/terraform-provider-site24x7/rest"
@@ -76,10 +77,11 @@ type Client interface {
 	ThresholdProfiles() endpoints.ThresholdProfiles
 	UserGroups() endpoints.UserGroups
 	URLAutomations() endpoints.URLAutomations
-	ThirdPartyIntegrations() endpoints.ThirdpartyIntegrations
-	OpsgenieIntegration() endpoints.OpsgenieIntegration
-	SlackIntegration() endpoints.SlackIntegration
-	WebhookIntegration() endpoints.WebhookIntegration
+	ThirdPartyIntegrations() integration.ThirdpartyIntegrations
+	OpsgenieIntegration() integration.OpsgenieIntegration
+	SlackIntegration() integration.SlackIntegration
+	WebhookIntegration() integration.WebhookIntegration
+	PagerDutyIntegration() integration.PagerDutyIntegration
 }
 
 type client struct {
@@ -182,21 +184,26 @@ func (c *client) URLAutomations() endpoints.URLAutomations {
 }
 
 // OpsgenieIntegraion implements Client.
-func (c *client) OpsgenieIntegration() endpoints.OpsgenieIntegration {
-	return endpoints.NewOpsgenie(c.restClient)
+func (c *client) OpsgenieIntegration() integration.OpsgenieIntegration {
+	return integration.NewOpsgenie(c.restClient)
 }
 
 // SlackIntegraion implements Client.
-func (c *client) SlackIntegration() endpoints.SlackIntegration {
-	return endpoints.NewSlack(c.restClient)
+func (c *client) SlackIntegration() integration.SlackIntegration {
+	return integration.NewSlack(c.restClient)
 }
 
 // WebhookIntegration implements Client.
-func (c *client) WebhookIntegration() endpoints.WebhookIntegration {
-	return endpoints.NewWebhook(c.restClient)
+func (c *client) WebhookIntegration() integration.WebhookIntegration {
+	return integration.NewWebhook(c.restClient)
+}
+
+// PagerDutyIntegration implements Client.
+func (c *client) PagerDutyIntegration() integration.PagerDutyIntegration {
+	return integration.NewPagerDuty(c.restClient)
 }
 
 // ThirdPartyIntegrations implements Client.
-func (c *client) ThirdPartyIntegrations() endpoints.ThirdpartyIntegrations {
-	return endpoints.NewThirdpartyIntegrations(c.restClient)
+func (c *client) ThirdPartyIntegrations() integration.ThirdpartyIntegrations {
+	return integration.NewThirdpartyIntegrations(c.restClient)
 }

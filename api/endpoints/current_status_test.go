@@ -6,19 +6,20 @@ import (
 
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	"github.com/site24x7/terraform-provider-site24x7/rest"
+	"github.com/site24x7/terraform-provider-site24x7/validation"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestCurrentStatus(t *testing.T) {
-	runTests(t, []*endpointTest{
+	validation.RunTests(t, []*validation.EndpointTest{
 		{
-			name:         "list current status",
-			expectedVerb: "GET",
-			expectedPath: "/current_status",
-			statusCode:   200,
-			responseBody: fixture(t, "responses/list_current_status.json"),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "list current status",
+			ExpectedVerb: "GET",
+			ExpectedPath: "/current_status",
+			StatusCode:   200,
+			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/list_current_status.json"),
+			Fn: func(t *testing.T, c rest.Client) {
 				status, err := NewCurrentStatus(c).List(nil)
 				require.NoError(t, err)
 
@@ -55,12 +56,12 @@ func TestCurrentStatus(t *testing.T) {
 			},
 		},
 		{
-			name:         "list current status with options",
-			expectedVerb: "GET",
-			expectedPath: "/current_status?apm_required=false&status_required=0%2C2&suspended_required=true",
-			statusCode:   200,
-			responseBody: fixture(t, "responses/list_current_status.json"),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "list current status with options",
+			ExpectedVerb: "GET",
+			ExpectedPath: "/current_status?apm_required=false&status_required=0%2C2&suspended_required=true",
+			StatusCode:   200,
+			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/list_current_status.json"),
+			Fn: func(t *testing.T, c rest.Client) {
 				options := &api.CurrentStatusListOptions{
 					APMRequired:       api.Bool(false),
 					SuspendedRequired: api.Bool(true),

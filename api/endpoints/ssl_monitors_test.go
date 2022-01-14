@@ -5,20 +5,21 @@ import (
 
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	"github.com/site24x7/terraform-provider-site24x7/rest"
+	"github.com/site24x7/terraform-provider-site24x7/validation"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestSSLMonitors(t *testing.T) {
-	runTests(t, []*endpointTest{
+	validation.RunTests(t, []*validation.EndpointTest{
 		{
-			name:         "create ssl monitor",
-			expectedVerb: "POST",
-			expectedPath: "/monitors",
-			expectedBody: fixture(t, "requests/create_ssl_monitor.json"),
-			statusCode:   200,
-			responseBody: jsonAPIResponseBody(t, nil),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "create ssl monitor",
+			ExpectedVerb: "POST",
+			ExpectedPath: "/monitors",
+			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/create_ssl_monitor.json"),
+			StatusCode:   200,
+			ResponseBody: validation.JsonAPIResponseBody(t, nil),
+			Fn: func(t *testing.T, c rest.Client) {
 				sslMonitor := &api.SSLMonitor{
 					DisplayName:           "foo",
 					DomainName:            "www.example.com",
@@ -41,12 +42,12 @@ func TestSSLMonitors(t *testing.T) {
 			},
 		},
 		{
-			name:         "get ssl monitor",
-			expectedVerb: "GET",
-			expectedPath: "/monitors/897654345678",
-			statusCode:   200,
-			responseBody: fixture(t, "responses/get_ssl_monitor.json"),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "get ssl monitor",
+			ExpectedVerb: "GET",
+			ExpectedPath: "/monitors/897654345678",
+			StatusCode:   200,
+			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/get_ssl_monitor.json"),
+			Fn: func(t *testing.T, c rest.Client) {
 				sslMonitor, err := NewSSLMonitors(c).Get("897654345678")
 				require.NoError(t, err)
 
@@ -70,12 +71,12 @@ func TestSSLMonitors(t *testing.T) {
 			},
 		},
 		{
-			name:         "list ssl monitors",
-			expectedVerb: "GET",
-			expectedPath: "/monitors",
-			statusCode:   200,
-			responseBody: fixture(t, "responses/list_ssl_monitors.json"),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "list ssl monitors",
+			ExpectedVerb: "GET",
+			ExpectedPath: "/monitors",
+			StatusCode:   200,
+			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/list_ssl_monitors.json"),
+			Fn: func(t *testing.T, c rest.Client) {
 				sslMonitors, err := NewSSLMonitors(c).List()
 				require.NoError(t, err)
 
@@ -118,13 +119,13 @@ func TestSSLMonitors(t *testing.T) {
 			},
 		},
 		{
-			name:         "update ssl monitor",
-			expectedVerb: "PUT",
-			expectedPath: "/monitors/123",
-			expectedBody: fixture(t, "requests/update_ssl_monitor.json"),
-			statusCode:   200,
-			responseBody: jsonAPIResponseBody(t, nil),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "update ssl monitor",
+			ExpectedVerb: "PUT",
+			ExpectedPath: "/monitors/123",
+			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/update_ssl_monitor.json"),
+			StatusCode:   200,
+			ResponseBody: validation.JsonAPIResponseBody(t, nil),
+			Fn: func(t *testing.T, c rest.Client) {
 				sslMonitor := &api.SSLMonitor{
 					MonitorID:             "123",
 					DisplayName:           "foo",
@@ -148,11 +149,11 @@ func TestSSLMonitors(t *testing.T) {
 			},
 		},
 		{
-			name:         "delete ssl monitor",
-			expectedVerb: "DELETE",
-			expectedPath: "/monitors/123",
-			statusCode:   200,
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "delete ssl monitor",
+			ExpectedVerb: "DELETE",
+			ExpectedPath: "/monitors/123",
+			StatusCode:   200,
+			Fn: func(t *testing.T, c rest.Client) {
 				require.NoError(t, NewSSLMonitors(c).Delete("123"))
 			},
 		},

@@ -1,24 +1,25 @@
-package endpoints
+package integration
 
 import (
 	"testing"
 
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	"github.com/site24x7/terraform-provider-site24x7/rest"
+	"github.com/site24x7/terraform-provider-site24x7/validation"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestSlackIntegration(t *testing.T) {
-	runTests(t, []*endpointTest{
+	validation.RunTests(t, []*validation.EndpointTest{
 		{
-			name:         "create slack integration",
-			expectedVerb: "POST",
-			expectedPath: "/integration/slack",
-			expectedBody: fixture(t, "requests/create_slack_integration.json"),
-			statusCode:   200,
-			responseBody: jsonAPIResponseBody(t, nil),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "create slack integration",
+			ExpectedVerb: "POST",
+			ExpectedPath: "/integration/slack",
+			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/create_slack_integration.json"),
+			StatusCode:   200,
+			ResponseBody: validation.JsonAPIResponseBody(t, nil),
+			Fn: func(t *testing.T, c rest.Client) {
 				slackIntegration := &api.SlackIntegration{
 					Name:          "Site24x7-Slack Integration",
 					URL:           "https://hooks.slack.com/services/B27AG46BW/W27JLYuDE/acc3vmmJIGrNuBG9CVRwiBxU",
@@ -33,12 +34,12 @@ func TestSlackIntegration(t *testing.T) {
 			},
 		},
 		{
-			name:         "get slack integration",
-			expectedVerb: "GET",
-			expectedPath: "/integration/slack/113770000023231022",
-			statusCode:   200,
-			responseBody: fixture(t, "responses/get_slack_integration.json"),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "get slack integration",
+			ExpectedVerb: "GET",
+			ExpectedPath: "/integration/slack/113770000023231022",
+			StatusCode:   200,
+			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/get_slack_integration.json"),
+			Fn: func(t *testing.T, c rest.Client) {
 				slack_integration, err := NewSlack(c).Get("113770000023231022")
 				require.NoError(t, err)
 
@@ -57,13 +58,13 @@ func TestSlackIntegration(t *testing.T) {
 			},
 		},
 		{
-			name:         "update slack integration",
-			expectedVerb: "PUT",
-			expectedPath: "/integration/slack/123",
-			expectedBody: fixture(t, "requests/update_slack_integration.json"),
-			statusCode:   200,
-			responseBody: jsonAPIResponseBody(t, nil),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "update slack integration",
+			ExpectedVerb: "PUT",
+			ExpectedPath: "/integration/slack/123",
+			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/update_slack_integration.json"),
+			StatusCode:   200,
+			ResponseBody: validation.JsonAPIResponseBody(t, nil),
+			Fn: func(t *testing.T, c rest.Client) {
 				slack_integration := &api.SlackIntegration{
 					Name:          "Site24x7-Slack Integration",
 					URL:           "https://hooks.slack.com/services/B27AG46BW/W27JLYuDE/acc3vmmJIGrNuBG9CVRwiBxU",

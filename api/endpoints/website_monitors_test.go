@@ -6,20 +6,21 @@ import (
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
 	"github.com/site24x7/terraform-provider-site24x7/rest"
+	"github.com/site24x7/terraform-provider-site24x7/validation"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestMonitors(t *testing.T) {
-	runTests(t, []*endpointTest{
+	validation.RunTests(t, []*validation.EndpointTest{
 		{
-			name:         "create monitor",
-			expectedVerb: "POST",
-			expectedPath: "/monitors",
-			expectedBody: fixture(t, "requests/create_website_monitor.json"),
-			statusCode:   200,
-			responseBody: jsonAPIResponseBody(t, nil),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "create monitor",
+			ExpectedVerb: "POST",
+			ExpectedPath: "/monitors",
+			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/create_website_monitor.json"),
+			StatusCode:   200,
+			ResponseBody: validation.JsonAPIResponseBody(t, nil),
+			Fn: func(t *testing.T, c rest.Client) {
 				monitor := &api.WebsiteMonitor{
 					Website: "http://www.example.com",
 					Type:    "URL",
@@ -95,21 +96,21 @@ func TestMonitors(t *testing.T) {
 			},
 		},
 		{
-			name:         "create monitor error",
-			statusCode:   500,
-			responseBody: []byte("whoops"),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "create monitor error",
+			StatusCode:   500,
+			ResponseBody: []byte("whoops"),
+			Fn: func(t *testing.T, c rest.Client) {
 				_, err := NewMonitors(c).Create(&api.WebsiteMonitor{})
 				assert.True(t, apierrors.HasStatusCode(err, 500))
 			},
 		},
 		{
-			name:         "get monitor",
-			expectedVerb: "GET",
-			expectedPath: "/monitors/123412341234123411",
-			statusCode:   200,
-			responseBody: fixture(t, "responses/get_website_monitor.json"),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "get monitor",
+			ExpectedVerb: "GET",
+			ExpectedPath: "/monitors/123412341234123411",
+			StatusCode:   200,
+			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/get_website_monitor.json"),
+			Fn: func(t *testing.T, c rest.Client) {
 				monitor, err := NewMonitors(c).Get("123412341234123411")
 				require.NoError(t, err)
 
@@ -179,12 +180,12 @@ func TestMonitors(t *testing.T) {
 			},
 		},
 		{
-			name:         "list monitors",
-			expectedVerb: "GET",
-			expectedPath: "/monitors",
-			statusCode:   200,
-			responseBody: fixture(t, "responses/list_monitors.json"),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "list monitors",
+			ExpectedVerb: "GET",
+			ExpectedPath: "/monitors",
+			StatusCode:   200,
+			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/list_monitors.json"),
+			Fn: func(t *testing.T, c rest.Client) {
 				monitor, err := NewMonitors(c).List()
 				require.NoError(t, err)
 
@@ -265,15 +266,15 @@ func TestMonitors(t *testing.T) {
 			},
 		},
 		{
-			name:         "update monitor",
-			expectedVerb: "PUT",
-			expectedPath: "/monitors/456",
-			statusCode:   200,
-			responseBody: jsonAPIResponseBody(t, map[string]interface{}{
+			Name:         "update monitor",
+			ExpectedVerb: "PUT",
+			ExpectedPath: "/monitors/456",
+			StatusCode:   200,
+			ResponseBody: validation.JsonAPIResponseBody(t, map[string]interface{}{
 				"monitor_id":   "456",
 				"display_name": "bar",
 			}),
-			fn: func(t *testing.T, c rest.Client) {
+			Fn: func(t *testing.T, c rest.Client) {
 				monitor := &api.WebsiteMonitor{MonitorID: "456", DisplayName: "bar"}
 
 				monitor, err := NewMonitors(c).Update(monitor)
@@ -288,31 +289,31 @@ func TestMonitors(t *testing.T) {
 			},
 		},
 		{
-			name:       "update monitor error",
-			statusCode: 400,
-			responseBody: jsonBody(t, &api.ErrorResponse{
+			Name:       "update monitor error",
+			StatusCode: 400,
+			ResponseBody: validation.JsonBody(t, &api.ErrorResponse{
 				ErrorCode: 123,
 				Message:   "bad request",
 				ErrorInfo: map[string]interface{}{"foo": "bar"},
 			}),
-			fn: func(t *testing.T, c rest.Client) {
+			Fn: func(t *testing.T, c rest.Client) {
 				_, err := NewMonitors(c).Update(&api.WebsiteMonitor{})
 				assert.True(t, apierrors.HasStatusCode(err, 400))
 			},
 		},
 		{
-			name:         "delete monitor",
-			expectedVerb: "DELETE",
-			expectedPath: "/monitors/123",
-			statusCode:   200,
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "delete monitor",
+			ExpectedVerb: "DELETE",
+			ExpectedPath: "/monitors/123",
+			StatusCode:   200,
+			Fn: func(t *testing.T, c rest.Client) {
 				require.NoError(t, NewMonitors(c).Delete("123"))
 			},
 		},
 		{
-			name:       "delete monitor not found",
-			statusCode: 404,
-			fn: func(t *testing.T, c rest.Client) {
+			Name:       "delete monitor not found",
+			StatusCode: 404,
+			Fn: func(t *testing.T, c rest.Client) {
 				err := NewMonitors(c).Delete("123")
 				assert.True(t, apierrors.IsNotFound(err))
 			},

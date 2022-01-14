@@ -2,11 +2,11 @@ package fake
 
 import (
 	"github.com/site24x7/terraform-provider-site24x7/api"
-	"github.com/site24x7/terraform-provider-site24x7/api/endpoints"
+	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/integration"
 	"github.com/stretchr/testify/mock"
 )
 
-var _ endpoints.OpsgenieIntegration = &OpsgenieIntegration{}
+var _ integration.OpsgenieIntegration = &OpsgenieIntegration{}
 
 type OpsgenieIntegration struct {
 	mock.Mock

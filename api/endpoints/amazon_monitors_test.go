@@ -5,20 +5,21 @@ import (
 
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	"github.com/site24x7/terraform-provider-site24x7/rest"
+	"github.com/site24x7/terraform-provider-site24x7/validation"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestAmazonMonitors(t *testing.T) {
-	runTests(t, []*endpointTest{
+	validation.RunTests(t, []*validation.EndpointTest{
 		{
-			name:         "create amazon monitor",
-			expectedVerb: "POST",
-			expectedPath: "/monitors",
-			expectedBody: fixture(t, "requests/create_amazon_monitor.json"),
-			statusCode:   200,
-			responseBody: jsonAPIResponseBody(t, nil),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "create amazon monitor",
+			ExpectedVerb: "POST",
+			ExpectedPath: "/monitors",
+			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/create_amazon_monitor.json"),
+			StatusCode:   200,
+			ResponseBody: validation.JsonAPIResponseBody(t, nil),
+			Fn: func(t *testing.T, c rest.Client) {
 				amazonMonitor := &api.AmazonMonitor{
 					DisplayName:           "Amazon Monitor Display Name",
 					Type:                  "AMAZON",
@@ -37,12 +38,12 @@ func TestAmazonMonitors(t *testing.T) {
 			},
 		},
 		{
-			name:         "get amazon monitor",
-			expectedVerb: "GET",
-			expectedPath: "/monitors/113770000041271035",
-			statusCode:   200,
-			responseBody: fixture(t, "responses/get_amazon_monitor.json"),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "get amazon monitor",
+			ExpectedVerb: "GET",
+			ExpectedPath: "/monitors/113770000041271035",
+			StatusCode:   200,
+			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/get_amazon_monitor.json"),
+			Fn: func(t *testing.T, c rest.Client) {
 				amazon_monitor, err := NewAmazonMonitors(c).Get("113770000041271035")
 				require.NoError(t, err)
 
@@ -63,12 +64,12 @@ func TestAmazonMonitors(t *testing.T) {
 			},
 		},
 		{
-			name:         "list amazon monitors",
-			expectedVerb: "GET",
-			expectedPath: "/monitors",
-			statusCode:   200,
-			responseBody: fixture(t, "responses/list_amazon_monitors.json"),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "list amazon monitors",
+			ExpectedVerb: "GET",
+			ExpectedPath: "/monitors",
+			StatusCode:   200,
+			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/list_amazon_monitors.json"),
+			Fn: func(t *testing.T, c rest.Client) {
 				amazonMonitor, err := NewAmazonMonitors(c).List()
 				require.NoError(t, err)
 
@@ -105,13 +106,13 @@ func TestAmazonMonitors(t *testing.T) {
 			},
 		},
 		{
-			name:         "update amazon monitor",
-			expectedVerb: "PUT",
-			expectedPath: "/monitors/123",
-			expectedBody: fixture(t, "requests/update_amazon_monitor.json"),
-			statusCode:   200,
-			responseBody: jsonAPIResponseBody(t, nil),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "update amazon monitor",
+			ExpectedVerb: "PUT",
+			ExpectedPath: "/monitors/123",
+			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/update_amazon_monitor.json"),
+			StatusCode:   200,
+			ResponseBody: validation.JsonAPIResponseBody(t, nil),
+			Fn: func(t *testing.T, c rest.Client) {
 				amazon_monitor := &api.AmazonMonitor{
 					MonitorID:             "123",
 					DisplayName:           "foo",
@@ -131,11 +132,11 @@ func TestAmazonMonitors(t *testing.T) {
 			},
 		},
 		{
-			name:         "delete amazon monitor",
-			expectedVerb: "DELETE",
-			expectedPath: "/monitors/123",
-			statusCode:   200,
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "delete amazon monitor",
+			ExpectedVerb: "DELETE",
+			ExpectedPath: "/monitors/123",
+			StatusCode:   200,
+			Fn: func(t *testing.T, c rest.Client) {
 				require.NoError(t, NewAmazonMonitors(c).Delete("123"))
 			},
 		},

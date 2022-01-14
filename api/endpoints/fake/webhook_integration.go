@@ -2,11 +2,11 @@ package fake
 
 import (
 	"github.com/site24x7/terraform-provider-site24x7/api"
-	"github.com/site24x7/terraform-provider-site24x7/api/endpoints"
+	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/integration"
 	"github.com/stretchr/testify/mock"
 )
 
-var _ endpoints.WebhookIntegration = &WebhookIntegration{}
+var _ integration.WebhookIntegration = &WebhookIntegration{}
 
 type WebhookIntegration struct {
 	mock.Mock

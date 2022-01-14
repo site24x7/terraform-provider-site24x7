@@ -1,0 +1,13 @@
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "service_id": "113770000023231022",
+    "service_status ": 0,
+    "name": "Site24x7-PagerDuty Integration",
+    "sender_name":"Site24x7",
+    "selection_type":0,
+    "title":"$MONITOR_NAME is $STATUS",
+    "alert_tags_id": ["113770000023231001"]
+  }
+}

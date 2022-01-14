@@ -5,20 +5,21 @@ import (
 
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	"github.com/site24x7/terraform-provider-site24x7/rest"
+	"github.com/site24x7/terraform-provider-site24x7/validation"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 func TestUserGroups(t *testing.T) {
-	runTests(t, []*endpointTest{
+	validation.RunTests(t, []*validation.EndpointTest{
 		{
-			name:         "create user group",
-			expectedVerb: "POST",
-			expectedPath: "/user_groups",
-			expectedBody: fixture(t, "requests/create_user_group.json"),
-			statusCode:   200,
-			responseBody: jsonAPIResponseBody(t, nil),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "create user group",
+			ExpectedVerb: "POST",
+			ExpectedPath: "/user_groups",
+			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/create_user_group.json"),
+			StatusCode:   200,
+			ResponseBody: validation.JsonAPIResponseBody(t, nil),
+			Fn: func(t *testing.T, c rest.Client) {
 				group := &api.UserGroup{
 					DisplayName:      "FooUserGroup",
 					Users:            []string{"123", "987654", "987"},
@@ -30,12 +31,12 @@ func TestUserGroups(t *testing.T) {
 			},
 		},
 		{
-			name:         "get user group",
-			expectedVerb: "GET",
-			expectedPath: "/user_groups/897654345678",
-			statusCode:   200,
-			responseBody: fixture(t, "responses/get_user_group.json"),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "get user group",
+			ExpectedVerb: "GET",
+			ExpectedPath: "/user_groups/897654345678",
+			StatusCode:   200,
+			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/get_user_group.json"),
+			Fn: func(t *testing.T, c rest.Client) {
 				group, err := NewUserGroups(c).Get("897654345678")
 				require.NoError(t, err)
 
@@ -50,12 +51,12 @@ func TestUserGroups(t *testing.T) {
 			},
 		},
 		{
-			name:         "list user groups",
-			expectedVerb: "GET",
-			expectedPath: "/user_groups",
-			statusCode:   200,
-			responseBody: fixture(t, "responses/list_user_groups.json"),
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "list user groups",
+			ExpectedVerb: "GET",
+			ExpectedPath: "/user_groups",
+			StatusCode:   200,
+			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/list_user_groups.json"),
+			Fn: func(t *testing.T, c rest.Client) {
 				groups, err := NewUserGroups(c).List()
 				require.NoError(t, err)
 
@@ -87,13 +88,13 @@ func TestUserGroups(t *testing.T) {
 			},
 		},
 		// {
-		// 	name:         "update user group",
-		// 	expectedVerb: "PUT",
-		// 	expectedPath: "/user_groups/123",
-		// 	expectedBody: fixture(t, "requests/update_user_group.json"),
-		// 	statusCode:   200,
-		// 	responseBody: jsonAPIResponseBody(t, nil),
-		// 	fn: func(t *testing.T, c rest.Client) {
+		// 	Name:         "update user group",
+		// 	ExpectedVerb: "PUT",
+		// 	ExpectedPath: "/user_groups/123",
+		// 	ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/update_user_group.json"),
+		// 	StatusCode:   200,
+		// 	ResponseBody: validation.JsonAPIResponseBody(t, nil),
+		// 	Fn: func(t *testing.T, c rest.Client) {
 		// 		group := &api.UserGroup{
 		// 			UserGroupID:      "123",
 		// 			DisplayName:      "Lead",
@@ -109,11 +110,11 @@ func TestUserGroups(t *testing.T) {
 		// 	},
 		// },
 		{
-			name:         "delete user group",
-			expectedVerb: "DELETE",
-			expectedPath: "/user_groups/123",
-			statusCode:   200,
-			fn: func(t *testing.T, c rest.Client) {
+			Name:         "delete user group",
+			ExpectedVerb: "DELETE",
+			ExpectedPath: "/user_groups/123",
+			StatusCode:   200,
+			Fn: func(t *testing.T, c rest.Client) {
 				require.NoError(t, NewUserGroups(c).Delete("123"))
 			},
 		},
