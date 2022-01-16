@@ -6,6 +6,7 @@ import (
 
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints"
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/integration"
+	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/monitors"
 	"github.com/site24x7/terraform-provider-site24x7/backoff"
 	"github.com/site24x7/terraform-provider-site24x7/oauth"
 	"github.com/site24x7/terraform-provider-site24x7/rest"
@@ -69,10 +70,10 @@ type Client interface {
 	LocationTemplate() endpoints.LocationTemplate
 	MonitorGroups() endpoints.MonitorGroups
 	Tags() endpoints.Tags
-	WebsiteMonitors() endpoints.WebsiteMonitors
-	SSLMonitors() endpoints.SSLMonitors
-	RestApiMonitors() endpoints.RestApiMonitors
-	AmazonMonitors() endpoints.AmazonMonitors
+	WebsiteMonitors() monitors.WebsiteMonitors
+	SSLMonitors() monitors.SSLMonitors
+	RestApiMonitors() monitors.RestApiMonitors
+	AmazonMonitors() monitors.AmazonMonitors
 	NotificationProfiles() endpoints.NotificationProfiles
 	ThresholdProfiles() endpoints.ThresholdProfiles
 	UserGroups() endpoints.UserGroups
@@ -134,23 +135,23 @@ func (c *client) LocationTemplate() endpoints.LocationTemplate {
 }
 
 // AmazonMonitors implements Client.
-func (c *client) AmazonMonitors() endpoints.AmazonMonitors {
-	return endpoints.NewAmazonMonitors(c.restClient)
+func (c *client) AmazonMonitors() monitors.AmazonMonitors {
+	return monitors.NewAmazonMonitors(c.restClient)
 }
 
 // WebsiteMonitors implements Client.
-func (c *client) WebsiteMonitors() endpoints.WebsiteMonitors {
-	return endpoints.NewMonitors(c.restClient)
+func (c *client) WebsiteMonitors() monitors.WebsiteMonitors {
+	return monitors.NewMonitors(c.restClient)
 }
 
 // SSLMonitors implements Client.
-func (c *client) SSLMonitors() endpoints.SSLMonitors {
-	return endpoints.NewSSLMonitors(c.restClient)
+func (c *client) SSLMonitors() monitors.SSLMonitors {
+	return monitors.NewSSLMonitors(c.restClient)
 }
 
 // RestApiMonitors implements Client.
-func (c *client) RestApiMonitors() endpoints.RestApiMonitors {
-	return endpoints.NewRestApiMonitors(c.restClient)
+func (c *client) RestApiMonitors() monitors.RestApiMonitors {
+	return monitors.NewRestApiMonitors(c.restClient)
 }
 
 // MonitorGroups implements Client.

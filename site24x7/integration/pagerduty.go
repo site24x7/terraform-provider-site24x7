@@ -1,12 +1,13 @@
-package site24x7
+package integration
 
 import (
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
+	"github.com/site24x7/terraform-provider-site24x7/site24x7"
 )
 
-var PagerDutyIntegrationSchema = map[string]*schema.Schema{
+var pagerDutyIntegrationSchema = map[string]*schema.Schema{
 	"name": {
 		Type:        schema.TypeString,
 		Required:    true,
@@ -89,7 +90,7 @@ var PagerDutyIntegrationSchema = map[string]*schema.Schema{
 	},
 }
 
-func resourceSite24x7PagerDutyIntegration() *schema.Resource {
+func ResourceSite24x7PagerDutyIntegration() *schema.Resource {
 	return &schema.Resource{
 		Create: pagerDutyIntegrationCreate,
 		Read:   pagerDutyIntegrationRead,
@@ -97,12 +98,12 @@ func resourceSite24x7PagerDutyIntegration() *schema.Resource {
 		Delete: pagerDutyIntegrationDelete,
 		Exists: pagerDutyIntegrationExists,
 
-		Schema: PagerDutyIntegrationSchema,
+		Schema: pagerDutyIntegrationSchema,
 	}
 }
 
 func pagerDutyIntegrationCreate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	pagerDutyIntegration, err := resourceDataToPagerDutyIntegration(d)
 	if err != nil {
@@ -120,7 +121,7 @@ func pagerDutyIntegrationCreate(d *schema.ResourceData, meta interface{}) error 
 }
 
 func pagerDutyIntegrationRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	pagerDutyIntegration, err := client.PagerDutyIntegration().Get(d.Id())
 	if err != nil {
@@ -133,7 +134,7 @@ func pagerDutyIntegrationRead(d *schema.ResourceData, meta interface{}) error {
 }
 
 func pagerDutyIntegrationUpdate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	pagerDutyIntegration, err := resourceDataToPagerDutyIntegration(d)
 	if err != nil {
@@ -151,7 +152,7 @@ func pagerDutyIntegrationUpdate(d *schema.ResourceData, meta interface{}) error 
 }
 
 func pagerDutyIntegrationDelete(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	err := client.ThirdPartyIntegrations().Delete(d.Id())
 	if apierrors.IsNotFound(err) {
@@ -162,7 +163,7 @@ func pagerDutyIntegrationDelete(d *schema.ResourceData, meta interface{}) error 
 }
 
 func pagerDutyIntegrationExists(d *schema.ResourceData, meta interface{}) (bool, error) {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	_, err := client.PagerDutyIntegration().Get(d.Id())
 	if apierrors.IsNotFound(err) {

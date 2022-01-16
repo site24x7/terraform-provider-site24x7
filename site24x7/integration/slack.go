@@ -1,9 +1,10 @@
-package site24x7
+package integration
 
 import (
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
+	"github.com/site24x7/terraform-provider-site24x7/site24x7"
 )
 
 var SlackIntegrationSchema = map[string]*schema.Schema{
@@ -50,7 +51,7 @@ var SlackIntegrationSchema = map[string]*schema.Schema{
 	},
 }
 
-func resourceSite24x7SlackIntegration() *schema.Resource {
+func ResourceSite24x7SlackIntegration() *schema.Resource {
 	return &schema.Resource{
 		Create: slackIntegrationCreate,
 		Read:   slackIntegrationRead,
@@ -63,7 +64,7 @@ func resourceSite24x7SlackIntegration() *schema.Resource {
 }
 
 func slackIntegrationCreate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	slackIntegration, err := resourceDataToSlackIntegration(d)
 	if err != nil {
@@ -81,7 +82,7 @@ func slackIntegrationCreate(d *schema.ResourceData, meta interface{}) error {
 }
 
 func slackIntegrationRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	slackIntegration, err := client.SlackIntegration().Get(d.Id())
 	if err != nil {
@@ -94,7 +95,7 @@ func slackIntegrationRead(d *schema.ResourceData, meta interface{}) error {
 }
 
 func slackIntegrationUpdate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	slackIntegration, err := resourceDataToSlackIntegration(d)
 	if err != nil {
@@ -112,7 +113,7 @@ func slackIntegrationUpdate(d *schema.ResourceData, meta interface{}) error {
 }
 
 func slackIntegrationDelete(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	err := client.ThirdPartyIntegrations().Delete(d.Id())
 	if apierrors.IsNotFound(err) {
@@ -123,7 +124,7 @@ func slackIntegrationDelete(d *schema.ResourceData, meta interface{}) error {
 }
 
 func slackIntegrationExists(d *schema.ResourceData, meta interface{}) (bool, error) {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	_, err := client.SlackIntegration().Get(d.Id())
 	if apierrors.IsNotFound(err) {

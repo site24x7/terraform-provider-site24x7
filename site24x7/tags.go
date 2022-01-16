@@ -24,7 +24,7 @@ var TagSchema = map[string]*schema.Schema{
 	},
 }
 
-func resourceSite24x7Tag() *schema.Resource {
+func ResourceSite24x7Tag() *schema.Resource {
 	return &schema.Resource{
 		Create: tagCreate,
 		Read:   tagRead,

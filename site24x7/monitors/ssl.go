@@ -1,9 +1,10 @@
-package site24x7
+package monitors
 
 import (
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
+	"github.com/site24x7/terraform-provider-site24x7/site24x7"
 )
 
 var SSLMonitorSchema = map[string]*schema.Schema{
@@ -140,7 +141,7 @@ var SSLMonitorSchema = map[string]*schema.Schema{
 	},
 }
 
-func resourceSite24x7SSLMonitor() *schema.Resource {
+func ResourceSite24x7SSLMonitor() *schema.Resource {
 	return &schema.Resource{
 		Create: sslMonitorCreate,
 		Read:   sslMonitorRead,
@@ -156,7 +157,7 @@ func resourceSite24x7SSLMonitor() *schema.Resource {
 }
 
 func sslMonitorCreate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	sslMonitor, err := resourceDataToSSLMonitor(d, client)
 	if err != nil {
@@ -174,7 +175,7 @@ func sslMonitorCreate(d *schema.ResourceData, meta interface{}) error {
 }
 
 func sslMonitorRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	sslMonitor, err := client.SSLMonitors().Get(d.Id())
 	if err != nil {
@@ -187,7 +188,7 @@ func sslMonitorRead(d *schema.ResourceData, meta interface{}) error {
 }
 
 func sslMonitorUpdate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	sslMonitor, err := resourceDataToSSLMonitor(d, client)
 	if err != nil {
@@ -206,7 +207,7 @@ func sslMonitorUpdate(d *schema.ResourceData, meta interface{}) error {
 }
 
 func sslMonitorDelete(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	err := client.SSLMonitors().Delete(d.Id())
 	if apierrors.IsNotFound(err) {
@@ -217,7 +218,7 @@ func sslMonitorDelete(d *schema.ResourceData, meta interface{}) error {
 }
 
 func sslMonitorExists(d *schema.ResourceData, meta interface{}) (bool, error) {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	_, err := client.SSLMonitors().Get(d.Id())
 	if apierrors.IsNotFound(err) {
@@ -231,7 +232,7 @@ func sslMonitorExists(d *schema.ResourceData, meta interface{}) (bool, error) {
 	return true, nil
 }
 
-func resourceDataToSSLMonitor(d *schema.ResourceData, client Client) (*api.SSLMonitor, error) {
+func resourceDataToSSLMonitor(d *schema.ResourceData, client site24x7.Client) (*api.SSLMonitor, error) {
 
 	var monitorGroups []string
 	for _, group := range d.Get("monitor_groups").([]interface{}) {
@@ -276,7 +277,7 @@ func resourceDataToSSLMonitor(d *schema.ResourceData, client Client) (*api.SSLMo
 
 	if sslMonitor.LocationProfileID == "" {
 		locationProfileNameToMatch := d.Get("location_profile_name").(string)
-		profile, err := DefaultLocationProfile(client, locationProfileNameToMatch)
+		profile, err := site24x7.DefaultLocationProfile(client, locationProfileNameToMatch)
 		if err != nil {
 			return nil, err
 		}
@@ -285,25 +286,25 @@ func resourceDataToSSLMonitor(d *schema.ResourceData, client Client) (*api.SSLMo
 	}
 
 	// Notification Profile
-	_, notificationProfileErr := SetNotificationProfile(client, d, sslMonitor)
+	_, notificationProfileErr := site24x7.SetNotificationProfile(client, d, sslMonitor)
 	if notificationProfileErr != nil {
 		return nil, notificationProfileErr
 	}
 
 	// User Alert Groups
-	_, userAlertGroupErr := SetUserGroup(client, d, sslMonitor)
+	_, userAlertGroupErr := site24x7.SetUserGroup(client, d, sslMonitor)
 	if userAlertGroupErr != nil {
 		return nil, userAlertGroupErr
 	}
 
 	// Tags
-	_, tagsErr := SetTags(client, d, sslMonitor)
+	_, tagsErr := site24x7.SetTags(client, d, sslMonitor)
 	if tagsErr != nil {
 		return nil, tagsErr
 	}
 
 	if sslMonitor.ThresholdProfileID == "" {
-		profile, err := DefaultThresholdProfile(client, api.SSL_CERT)
+		profile, err := site24x7.DefaultThresholdProfile(client, api.SSL_CERT)
 		if err != nil {
 			return nil, err
 		}

@@ -50,7 +50,7 @@ var UserGroupSchema = map[string]*schema.Schema{
 	},
 }
 
-func resourceSite24x7UserGroup() *schema.Resource {
+func ResourceSite24x7UserGroup() *schema.Resource {
 	return &schema.Resource{
 		Create: userGroupCreate,
 		Read:   userGroupRead,

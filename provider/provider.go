@@ -1,4 +1,4 @@
-package site24x7
+package provider
 
 import (
 	"os"
@@ -8,6 +8,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/terraform"
 	log "github.com/sirupsen/logrus"
 	"github.com/site24x7/terraform-provider-site24x7/backoff"
+	"github.com/site24x7/terraform-provider-site24x7/site24x7"
+	"github.com/site24x7/terraform-provider-site24x7/site24x7/integration"
+	"github.com/site24x7/terraform-provider-site24x7/site24x7/monitors"
 )
 
 func Provider() terraform.ResourceProvider {
@@ -57,21 +60,21 @@ func Provider() terraform.ResourceProvider {
 		},
 
 		ResourcesMap: map[string]*schema.Resource{
-			"site24x7_website_monitor":       resourceSite24x7WebsiteMonitor(),
-			"site24x7_ssl_monitor":           resourceSite24x7SSLMonitor(),
-			"site24x7_rest_api_monitor":      resourceSite24x7RestApiMonitor(),
-			"site24x7_amazon_monitor":        resourceSite24x7AmazonMonitor(),
-			"site24x7_monitor_group":         resourceSite24x7MonitorGroup(),
-			"site24x7_url_action":            resourceSite24x7URLAction(),
-			"site24x7_threshold_profile":     resourceSite24x7ThresholdProfile(),
-			"site24x7_location_profile":      resourceSite24x7LocationProfile(),
-			"site24x7_notification_profile":  resourceSite24x7NotificationProfile(),
-			"site24x7_user_group":            resourceSite24x7UserGroup(),
-			"site24x7_tag":                   resourceSite24x7Tag(),
-			"site24x7_opsgenie_integration":  resourceSite24x7OpsgenieIntegration(),
-			"site24x7_slack_integration":     resourceSite24x7SlackIntegration(),
-			"site24x7_webhook_integration":   resourceSite24x7WebhookIntegration(),
-			"site24x7_pagerduty_integration": resourceSite24x7PagerDutyIntegration(),
+			"site24x7_website_monitor":       monitors.ResourceSite24x7WebsiteMonitor(),
+			"site24x7_ssl_monitor":           monitors.ResourceSite24x7SSLMonitor(),
+			"site24x7_rest_api_monitor":      monitors.ResourceSite24x7RestApiMonitor(),
+			"site24x7_amazon_monitor":        monitors.ResourceSite24x7AmazonMonitor(),
+			"site24x7_monitor_group":         site24x7.ResourceSite24x7MonitorGroup(),
+			"site24x7_url_action":            site24x7.ResourceSite24x7URLAction(),
+			"site24x7_threshold_profile":     site24x7.ResourceSite24x7ThresholdProfile(),
+			"site24x7_location_profile":      site24x7.ResourceSite24x7LocationProfile(),
+			"site24x7_notification_profile":  site24x7.ResourceSite24x7NotificationProfile(),
+			"site24x7_user_group":            site24x7.ResourceSite24x7UserGroup(),
+			"site24x7_tag":                   site24x7.ResourceSite24x7Tag(),
+			"site24x7_opsgenie_integration":  integration.ResourceSite24x7OpsgenieIntegration(),
+			"site24x7_slack_integration":     integration.ResourceSite24x7SlackIntegration(),
+			"site24x7_webhook_integration":   integration.ResourceSite24x7WebhookIntegration(),
+			"site24x7_pagerduty_integration": integration.ResourceSite24x7PagerDutyIntegration(),
 		},
 
 		ConfigureFunc: providerConfigure,
@@ -83,10 +86,10 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 	if tfLog == "DEBUG" || tfLog == "TRACE" {
 		log.SetLevel(log.DebugLevel)
 	}
-	dataCenter := GetDataCenter(d.Get("data_center").(string))
+	dataCenter := site24x7.GetDataCenter(d.Get("data_center").(string))
 	log.Println("GetAPIBaseURL : ", dataCenter.GetAPIBaseURL())
 	log.Println("GetTokenURL : ", dataCenter.GetTokenURL())
-	config := Config{
+	config := site24x7.Config{
 		ClientID:     d.Get("oauth2_client_id").(string),
 		ClientSecret: d.Get("oauth2_client_secret").(string),
 		RefreshToken: d.Get("oauth2_refresh_token").(string),
@@ -99,5 +102,5 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 		},
 	}
 
-	return New(config), nil
+	return site24x7.New(config), nil
 }

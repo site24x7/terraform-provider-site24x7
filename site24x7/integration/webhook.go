@@ -1,9 +1,10 @@
-package site24x7
+package integration
 
 import (
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
+	"github.com/site24x7/terraform-provider-site24x7/site24x7"
 )
 
 var WebhookIntegrationSchema = map[string]*schema.Schema{
@@ -160,7 +161,7 @@ var WebhookIntegrationSchema = map[string]*schema.Schema{
 	},
 }
 
-func resourceSite24x7WebhookIntegration() *schema.Resource {
+func ResourceSite24x7WebhookIntegration() *schema.Resource {
 	return &schema.Resource{
 		Create: webhookIntegrationCreate,
 		Read:   webhookIntegrationRead,
@@ -173,7 +174,7 @@ func resourceSite24x7WebhookIntegration() *schema.Resource {
 }
 
 func webhookIntegrationCreate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	webhookIntegration, err := resourceDataToWebhookIntegration(d)
 	if err != nil {
@@ -191,7 +192,7 @@ func webhookIntegrationCreate(d *schema.ResourceData, meta interface{}) error {
 }
 
 func webhookIntegrationRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	webhookIntegration, err := client.WebhookIntegration().Get(d.Id())
 	if err != nil {
@@ -204,7 +205,7 @@ func webhookIntegrationRead(d *schema.ResourceData, meta interface{}) error {
 }
 
 func webhookIntegrationUpdate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	webhookIntegration, err := resourceDataToWebhookIntegration(d)
 	if err != nil {
@@ -222,7 +223,7 @@ func webhookIntegrationUpdate(d *schema.ResourceData, meta interface{}) error {
 }
 
 func webhookIntegrationDelete(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	err := client.ThirdPartyIntegrations().Delete(d.Id())
 	if apierrors.IsNotFound(err) {
@@ -233,7 +234,7 @@ func webhookIntegrationDelete(d *schema.ResourceData, meta interface{}) error {
 }
 
 func webhookIntegrationExists(d *schema.ResourceData, meta interface{}) (bool, error) {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	_, err := client.WebhookIntegration().Get(d.Id())
 	if apierrors.IsNotFound(err) {

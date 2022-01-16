@@ -1,32 +1,32 @@
-package endpoints
+package monitors
 
 import (
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	"github.com/site24x7/terraform-provider-site24x7/rest"
 )
 
-type SSLMonitors interface {
-	Get(monitorID string) (*api.SSLMonitor, error)
-	Create(monitor *api.SSLMonitor) (*api.SSLMonitor, error)
-	Update(monitor *api.SSLMonitor) (*api.SSLMonitor, error)
+type AmazonMonitors interface {
+	Get(monitorID string) (*api.AmazonMonitor, error)
+	Create(monitor *api.AmazonMonitor) (*api.AmazonMonitor, error)
+	Update(monitor *api.AmazonMonitor) (*api.AmazonMonitor, error)
 	Delete(monitorID string) error
-	List() ([]*api.SSLMonitor, error)
+	List() ([]*api.AmazonMonitor, error)
 	Activate(monitorID string) error
 	Suspend(monitorID string) error
 }
 
-type sslmonitors struct {
+type amazonMonitors struct {
 	client rest.Client
 }
 
-func NewSSLMonitors(client rest.Client) SSLMonitors {
-	return &sslmonitors{
+func NewAmazonMonitors(client rest.Client) AmazonMonitors {
+	return &amazonMonitors{
 		client: client,
 	}
 }
 
-func (c *sslmonitors) Get(monitorID string) (*api.SSLMonitor, error) {
-	monitor := &api.SSLMonitor{}
+func (c *amazonMonitors) Get(monitorID string) (*api.AmazonMonitor, error) {
+	monitor := &api.AmazonMonitor{}
 	err := c.client.
 		Get().
 		Resource("monitors").
@@ -37,8 +37,8 @@ func (c *sslmonitors) Get(monitorID string) (*api.SSLMonitor, error) {
 	return monitor, err
 }
 
-func (c *sslmonitors) Create(monitor *api.SSLMonitor) (*api.SSLMonitor, error) {
-	newMonitor := &api.SSLMonitor{}
+func (c *amazonMonitors) Create(monitor *api.AmazonMonitor) (*api.AmazonMonitor, error) {
+	newMonitor := &api.AmazonMonitor{}
 	err := c.client.
 		Post().
 		Resource("monitors").
@@ -50,8 +50,8 @@ func (c *sslmonitors) Create(monitor *api.SSLMonitor) (*api.SSLMonitor, error) {
 	return newMonitor, err
 }
 
-func (c *sslmonitors) Update(monitor *api.SSLMonitor) (*api.SSLMonitor, error) {
-	updatedMonitor := &api.SSLMonitor{}
+func (c *amazonMonitors) Update(monitor *api.AmazonMonitor) (*api.AmazonMonitor, error) {
+	updatedMonitor := &api.AmazonMonitor{}
 	err := c.client.
 		Put().
 		Resource("monitors").
@@ -64,7 +64,7 @@ func (c *sslmonitors) Update(monitor *api.SSLMonitor) (*api.SSLMonitor, error) {
 	return updatedMonitor, err
 }
 
-func (c *sslmonitors) Delete(monitorID string) error {
+func (c *amazonMonitors) Delete(monitorID string) error {
 	return c.client.
 		Delete().
 		Resource("monitors").
@@ -73,18 +73,18 @@ func (c *sslmonitors) Delete(monitorID string) error {
 		Err()
 }
 
-func (c *sslmonitors) List() ([]*api.SSLMonitor, error) {
-	sslmonitors := []*api.SSLMonitor{}
+func (c *amazonMonitors) List() ([]*api.AmazonMonitor, error) {
+	monitors := []*api.AmazonMonitor{}
 	err := c.client.
 		Get().
 		Resource("monitors").
 		Do().
-		Parse(&sslmonitors)
+		Parse(&monitors)
 
-	return sslmonitors, err
+	return monitors, err
 }
 
-func (c *sslmonitors) Activate(monitorID string) error {
+func (c *amazonMonitors) Activate(monitorID string) error {
 	return c.client.
 		Put().
 		Resource("monitors/activate").
@@ -93,7 +93,7 @@ func (c *sslmonitors) Activate(monitorID string) error {
 		Err()
 }
 
-func (c *sslmonitors) Suspend(monitorID string) error {
+func (c *amazonMonitors) Suspend(monitorID string) error {
 	return c.client.
 		Put().
 		Resource("monitors/suspend").

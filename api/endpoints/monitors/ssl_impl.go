@@ -1,32 +1,32 @@
-package endpoints
+package monitors
 
 import (
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	"github.com/site24x7/terraform-provider-site24x7/rest"
 )
 
-type WebsiteMonitors interface {
-	Get(monitorID string) (*api.WebsiteMonitor, error)
-	Create(monitor *api.WebsiteMonitor) (*api.WebsiteMonitor, error)
-	Update(monitor *api.WebsiteMonitor) (*api.WebsiteMonitor, error)
+type SSLMonitors interface {
+	Get(monitorID string) (*api.SSLMonitor, error)
+	Create(monitor *api.SSLMonitor) (*api.SSLMonitor, error)
+	Update(monitor *api.SSLMonitor) (*api.SSLMonitor, error)
 	Delete(monitorID string) error
-	List() ([]*api.WebsiteMonitor, error)
+	List() ([]*api.SSLMonitor, error)
 	Activate(monitorID string) error
 	Suspend(monitorID string) error
 }
 
-type websitemonitors struct {
+type sslmonitors struct {
 	client rest.Client
 }
 
-func NewMonitors(client rest.Client) WebsiteMonitors {
-	return &websitemonitors{
+func NewSSLMonitors(client rest.Client) SSLMonitors {
+	return &sslmonitors{
 		client: client,
 	}
 }
 
-func (c *websitemonitors) Get(monitorID string) (*api.WebsiteMonitor, error) {
-	monitor := &api.WebsiteMonitor{}
+func (c *sslmonitors) Get(monitorID string) (*api.SSLMonitor, error) {
+	monitor := &api.SSLMonitor{}
 	err := c.client.
 		Get().
 		Resource("monitors").
@@ -37,8 +37,8 @@ func (c *websitemonitors) Get(monitorID string) (*api.WebsiteMonitor, error) {
 	return monitor, err
 }
 
-func (c *websitemonitors) Create(monitor *api.WebsiteMonitor) (*api.WebsiteMonitor, error) {
-	newMonitor := &api.WebsiteMonitor{}
+func (c *sslmonitors) Create(monitor *api.SSLMonitor) (*api.SSLMonitor, error) {
+	newMonitor := &api.SSLMonitor{}
 	err := c.client.
 		Post().
 		Resource("monitors").
@@ -50,8 +50,8 @@ func (c *websitemonitors) Create(monitor *api.WebsiteMonitor) (*api.WebsiteMonit
 	return newMonitor, err
 }
 
-func (c *websitemonitors) Update(monitor *api.WebsiteMonitor) (*api.WebsiteMonitor, error) {
-	updatedMonitor := &api.WebsiteMonitor{}
+func (c *sslmonitors) Update(monitor *api.SSLMonitor) (*api.SSLMonitor, error) {
+	updatedMonitor := &api.SSLMonitor{}
 	err := c.client.
 		Put().
 		Resource("monitors").
@@ -64,7 +64,7 @@ func (c *websitemonitors) Update(monitor *api.WebsiteMonitor) (*api.WebsiteMonit
 	return updatedMonitor, err
 }
 
-func (c *websitemonitors) Delete(monitorID string) error {
+func (c *sslmonitors) Delete(monitorID string) error {
 	return c.client.
 		Delete().
 		Resource("monitors").
@@ -73,18 +73,18 @@ func (c *websitemonitors) Delete(monitorID string) error {
 		Err()
 }
 
-func (c *websitemonitors) List() ([]*api.WebsiteMonitor, error) {
-	monitors := []*api.WebsiteMonitor{}
+func (c *sslmonitors) List() ([]*api.SSLMonitor, error) {
+	sslmonitors := []*api.SSLMonitor{}
 	err := c.client.
 		Get().
 		Resource("monitors").
 		Do().
-		Parse(&monitors)
+		Parse(&sslmonitors)
 
-	return monitors, err
+	return sslmonitors, err
 }
 
-func (c *websitemonitors) Activate(monitorID string) error {
+func (c *sslmonitors) Activate(monitorID string) error {
 	return c.client.
 		Put().
 		Resource("monitors/activate").
@@ -93,7 +93,7 @@ func (c *websitemonitors) Activate(monitorID string) error {
 		Err()
 }
 
-func (c *websitemonitors) Suspend(monitorID string) error {
+func (c *sslmonitors) Suspend(monitorID string) error {
 	return c.client.
 		Put().
 		Resource("monitors/suspend").

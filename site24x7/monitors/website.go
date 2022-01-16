@@ -1,4 +1,4 @@
-package site24x7
+package monitors
 
 import (
 	"fmt"
@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
+	"github.com/site24x7/terraform-provider-site24x7/site24x7"
 )
 
 // SAMPLE POST JSON
@@ -70,7 +71,7 @@ import (
 //  ]
 // }
 
-var WebsiteMonitorSchema = map[string]*schema.Schema{
+var websiteMonitorSchema = map[string]*schema.Schema{
 	"display_name": {
 		Type:        schema.TypeString,
 		Required:    true,
@@ -268,7 +269,7 @@ var WebsiteMonitorSchema = map[string]*schema.Schema{
 	},
 }
 
-func resourceSite24x7WebsiteMonitor() *schema.Resource {
+func ResourceSite24x7WebsiteMonitor() *schema.Resource {
 	return &schema.Resource{
 		Create: websiteMonitorCreate,
 		Read:   websiteMonitorRead,
@@ -279,12 +280,12 @@ func resourceSite24x7WebsiteMonitor() *schema.Resource {
 			State: schema.ImportStatePassthrough,
 		},
 
-		Schema: WebsiteMonitorSchema,
+		Schema: websiteMonitorSchema,
 	}
 }
 
 func websiteMonitorCreate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	websiteMonitor, err := resourceDataToWebsiteMonitor(d, client)
 	if err != nil {
@@ -303,7 +304,7 @@ func websiteMonitorCreate(d *schema.ResourceData, meta interface{}) error {
 }
 
 func websiteMonitorRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	websiteMonitor, err := client.WebsiteMonitors().Get(d.Id())
 	if err != nil {
@@ -316,7 +317,7 @@ func websiteMonitorRead(d *schema.ResourceData, meta interface{}) error {
 }
 
 func websiteMonitorUpdate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	websiteMonitor, err := resourceDataToWebsiteMonitor(d, client)
 	if err != nil {
@@ -335,7 +336,7 @@ func websiteMonitorUpdate(d *schema.ResourceData, meta interface{}) error {
 }
 
 func websiteMonitorDelete(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	err := client.WebsiteMonitors().Delete(d.Id())
 	if apierrors.IsNotFound(err) {
@@ -346,7 +347,7 @@ func websiteMonitorDelete(d *schema.ResourceData, meta interface{}) error {
 }
 
 func websiteMonitorExists(d *schema.ResourceData, meta interface{}) (bool, error) {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	_, err := client.WebsiteMonitors().Get(d.Id())
 	if apierrors.IsNotFound(err) {
@@ -360,7 +361,7 @@ func websiteMonitorExists(d *schema.ResourceData, meta interface{}) (bool, error
 	return true, nil
 }
 
-func resourceDataToWebsiteMonitor(d *schema.ResourceData, client Client) (*api.WebsiteMonitor, error) {
+func resourceDataToWebsiteMonitor(d *schema.ResourceData, client site24x7.Client) (*api.WebsiteMonitor, error) {
 
 	// Custom Headers
 	customHeaderMap := d.Get("custom_headers").(map[string]interface{})
@@ -482,7 +483,7 @@ func resourceDataToWebsiteMonitor(d *schema.ResourceData, client Client) (*api.W
 
 	if websiteMonitor.LocationProfileID == "" {
 		locationProfileNameToMatch := d.Get("location_profile_name").(string)
-		profile, err := DefaultLocationProfile(client, locationProfileNameToMatch)
+		profile, err := site24x7.DefaultLocationProfile(client, locationProfileNameToMatch)
 		if err != nil {
 			return nil, err
 		}
@@ -491,25 +492,25 @@ func resourceDataToWebsiteMonitor(d *schema.ResourceData, client Client) (*api.W
 	}
 
 	// Notification Profile
-	_, notificationProfileErr := SetNotificationProfile(client, d, websiteMonitor)
+	_, notificationProfileErr := site24x7.SetNotificationProfile(client, d, websiteMonitor)
 	if notificationProfileErr != nil {
 		return nil, notificationProfileErr
 	}
 
 	// User Alert Groups
-	_, userAlertGroupErr := SetUserGroup(client, d, websiteMonitor)
+	_, userAlertGroupErr := site24x7.SetUserGroup(client, d, websiteMonitor)
 	if userAlertGroupErr != nil {
 		return nil, userAlertGroupErr
 	}
 
 	// Tags
-	_, tagsErr := SetTags(client, d, websiteMonitor)
+	_, tagsErr := site24x7.SetTags(client, d, websiteMonitor)
 	if tagsErr != nil {
 		return nil, tagsErr
 	}
 
 	if websiteMonitor.ThresholdProfileID == "" {
-		profile, err := DefaultThresholdProfile(client, api.URL)
+		profile, err := site24x7.DefaultThresholdProfile(client, api.URL)
 		if err != nil {
 			return nil, err
 		}

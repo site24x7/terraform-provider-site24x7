@@ -1,4 +1,4 @@
-package site24x7
+package monitors
 
 import (
 	"fmt"
@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
+	"github.com/site24x7/terraform-provider-site24x7/site24x7"
 )
 
 // Sample RESTAPI POST JSON
@@ -333,7 +334,7 @@ var RestApiMonitorSchema = map[string]*schema.Schema{
 	},
 }
 
-func resourceSite24x7RestApiMonitor() *schema.Resource {
+func ResourceSite24x7RestApiMonitor() *schema.Resource {
 	return &schema.Resource{
 		Create: restApiMonitorCreate,
 		Read:   restApiMonitorRead,
@@ -349,7 +350,7 @@ func resourceSite24x7RestApiMonitor() *schema.Resource {
 }
 
 func restApiMonitorCreate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	restApiMonitor, err := resourceDataToRestApiMonitor(d, client)
 	if err != nil {
@@ -368,7 +369,7 @@ func restApiMonitorCreate(d *schema.ResourceData, meta interface{}) error {
 }
 
 func restApiMonitorRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	restApiMonitor, err := client.RestApiMonitors().Get(d.Id())
 
@@ -382,7 +383,7 @@ func restApiMonitorRead(d *schema.ResourceData, meta interface{}) error {
 }
 
 func restApiMonitorUpdate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	restApiMonitor, err := resourceDataToRestApiMonitor(d, client)
 
@@ -402,7 +403,7 @@ func restApiMonitorUpdate(d *schema.ResourceData, meta interface{}) error {
 }
 
 func restApiMonitorDelete(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	err := client.RestApiMonitors().Delete(d.Id())
 	if apierrors.IsNotFound(err) {
@@ -413,7 +414,7 @@ func restApiMonitorDelete(d *schema.ResourceData, meta interface{}) error {
 }
 
 func restApiMonitorExists(d *schema.ResourceData, meta interface{}) (bool, error) {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	_, err := client.RestApiMonitors().Get(d.Id())
 	if apierrors.IsNotFound(err) {
@@ -427,7 +428,7 @@ func restApiMonitorExists(d *schema.ResourceData, meta interface{}) (bool, error
 	return true, nil
 }
 
-func resourceDataToRestApiMonitor(d *schema.ResourceData, client Client) (*api.RestApiMonitor, error) {
+func resourceDataToRestApiMonitor(d *schema.ResourceData, client site24x7.Client) (*api.RestApiMonitor, error) {
 
 	var monitorGroups []string
 	for _, group := range d.Get("monitor_groups").([]interface{}) {
@@ -552,7 +553,7 @@ func resourceDataToRestApiMonitor(d *schema.ResourceData, client Client) (*api.R
 
 	if restApiMonitor.LocationProfileID == "" {
 		locationProfileNameToMatch := d.Get("location_profile_name").(string)
-		profile, err := DefaultLocationProfile(client, locationProfileNameToMatch)
+		profile, err := site24x7.DefaultLocationProfile(client, locationProfileNameToMatch)
 		if err != nil {
 			return nil, err
 		}
@@ -561,25 +562,25 @@ func resourceDataToRestApiMonitor(d *schema.ResourceData, client Client) (*api.R
 	}
 
 	// Notification Profile
-	_, notificationProfileErr := SetNotificationProfile(client, d, restApiMonitor)
+	_, notificationProfileErr := site24x7.SetNotificationProfile(client, d, restApiMonitor)
 	if notificationProfileErr != nil {
 		return nil, notificationProfileErr
 	}
 
 	// User Alert Groups
-	_, userAlertGroupErr := SetUserGroup(client, d, restApiMonitor)
+	_, userAlertGroupErr := site24x7.SetUserGroup(client, d, restApiMonitor)
 	if userAlertGroupErr != nil {
 		return nil, userAlertGroupErr
 	}
 
 	// Tags
-	_, tagsErr := SetTags(client, d, restApiMonitor)
+	_, tagsErr := site24x7.SetTags(client, d, restApiMonitor)
 	if tagsErr != nil {
 		return nil, tagsErr
 	}
 
 	if restApiMonitor.ThresholdProfileID == "" {
-		profile, err := DefaultThresholdProfile(client, api.RESTAPI)
+		profile, err := site24x7.DefaultThresholdProfile(client, api.RESTAPI)
 		if err != nil {
 			return nil, err
 		}

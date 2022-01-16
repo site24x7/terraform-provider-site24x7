@@ -176,7 +176,7 @@ var ThresholdProfileSchema = map[string]*schema.Schema{
 	// },
 }
 
-func resourceSite24x7ThresholdProfile() *schema.Resource {
+func ResourceSite24x7ThresholdProfile() *schema.Resource {
 	return &schema.Resource{
 		Create: thresholdProfileCreate,
 		Read:   thresholdProfileRead,
