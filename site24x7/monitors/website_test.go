@@ -1,4 +1,4 @@
-package site24x7
+package monitors
 
 import (
 	"testing"
@@ -278,7 +278,7 @@ func TestWebsiteMonitorExists(t *testing.T) {
 }
 
 func websiteMonitorTestResourceData(t *testing.T) *schema.ResourceData {
-	return schema.TestResourceDataRaw(t, WebsiteMonitorSchema, map[string]interface{}{
+	return schema.TestResourceDataRaw(t, websiteMonitorSchema, map[string]interface{}{
 		"display_name":    "foo",
 		"type":            "URL",
 		"website":         "www.test.tld",

@@ -1,4 +1,4 @@
-package site24x7
+package monitors
 
 import (
 	"testing"

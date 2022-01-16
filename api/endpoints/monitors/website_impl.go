@@ -1,32 +1,32 @@
-package endpoints
+package monitors
 
 import (
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	"github.com/site24x7/terraform-provider-site24x7/rest"
 )
 
-type AmazonMonitors interface {
-	Get(monitorID string) (*api.AmazonMonitor, error)
-	Create(monitor *api.AmazonMonitor) (*api.AmazonMonitor, error)
-	Update(monitor *api.AmazonMonitor) (*api.AmazonMonitor, error)
+type WebsiteMonitors interface {
+	Get(monitorID string) (*api.WebsiteMonitor, error)
+	Create(monitor *api.WebsiteMonitor) (*api.WebsiteMonitor, error)
+	Update(monitor *api.WebsiteMonitor) (*api.WebsiteMonitor, error)
 	Delete(monitorID string) error
-	List() ([]*api.AmazonMonitor, error)
+	List() ([]*api.WebsiteMonitor, error)
 	Activate(monitorID string) error
 	Suspend(monitorID string) error
 }
 
-type amazonMonitors struct {
+type websitemonitors struct {
 	client rest.Client
 }
 
-func NewAmazonMonitors(client rest.Client) AmazonMonitors {
-	return &amazonMonitors{
+func NewMonitors(client rest.Client) WebsiteMonitors {
+	return &websitemonitors{
 		client: client,
 	}
 }
 
-func (c *amazonMonitors) Get(monitorID string) (*api.AmazonMonitor, error) {
-	monitor := &api.AmazonMonitor{}
+func (c *websitemonitors) Get(monitorID string) (*api.WebsiteMonitor, error) {
+	monitor := &api.WebsiteMonitor{}
 	err := c.client.
 		Get().
 		Resource("monitors").
@@ -37,8 +37,8 @@ func (c *amazonMonitors) Get(monitorID string) (*api.AmazonMonitor, error) {
 	return monitor, err
 }
 
-func (c *amazonMonitors) Create(monitor *api.AmazonMonitor) (*api.AmazonMonitor, error) {
-	newMonitor := &api.AmazonMonitor{}
+func (c *websitemonitors) Create(monitor *api.WebsiteMonitor) (*api.WebsiteMonitor, error) {
+	newMonitor := &api.WebsiteMonitor{}
 	err := c.client.
 		Post().
 		Resource("monitors").
@@ -50,8 +50,8 @@ func (c *amazonMonitors) Create(monitor *api.AmazonMonitor) (*api.AmazonMonitor,
 	return newMonitor, err
 }
 
-func (c *amazonMonitors) Update(monitor *api.AmazonMonitor) (*api.AmazonMonitor, error) {
-	updatedMonitor := &api.AmazonMonitor{}
+func (c *websitemonitors) Update(monitor *api.WebsiteMonitor) (*api.WebsiteMonitor, error) {
+	updatedMonitor := &api.WebsiteMonitor{}
 	err := c.client.
 		Put().
 		Resource("monitors").
@@ -64,7 +64,7 @@ func (c *amazonMonitors) Update(monitor *api.AmazonMonitor) (*api.AmazonMonitor,
 	return updatedMonitor, err
 }
 
-func (c *amazonMonitors) Delete(monitorID string) error {
+func (c *websitemonitors) Delete(monitorID string) error {
 	return c.client.
 		Delete().
 		Resource("monitors").
@@ -73,8 +73,8 @@ func (c *amazonMonitors) Delete(monitorID string) error {
 		Err()
 }
 
-func (c *amazonMonitors) List() ([]*api.AmazonMonitor, error) {
-	monitors := []*api.AmazonMonitor{}
+func (c *websitemonitors) List() ([]*api.WebsiteMonitor, error) {
+	monitors := []*api.WebsiteMonitor{}
 	err := c.client.
 		Get().
 		Resource("monitors").
@@ -84,7 +84,7 @@ func (c *amazonMonitors) List() ([]*api.AmazonMonitor, error) {
 	return monitors, err
 }
 
-func (c *amazonMonitors) Activate(monitorID string) error {
+func (c *websitemonitors) Activate(monitorID string) error {
 	return c.client.
 		Put().
 		Resource("monitors/activate").
@@ -93,7 +93,7 @@ func (c *amazonMonitors) Activate(monitorID string) error {
 		Err()
 }
 
-func (c *amazonMonitors) Suspend(monitorID string) error {
+func (c *websitemonitors) Suspend(monitorID string) error {
 	return c.client.
 		Put().
 		Resource("monitors/suspend").

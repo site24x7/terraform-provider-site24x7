@@ -1,9 +1,10 @@
-package site24x7
+package integration
 
 import (
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
+	"github.com/site24x7/terraform-provider-site24x7/site24x7"
 )
 
 var OpsgenieIntegrationSchema = map[string]*schema.Schema{
@@ -50,7 +51,7 @@ var OpsgenieIntegrationSchema = map[string]*schema.Schema{
 	},
 }
 
-func resourceSite24x7OpsgenieIntegration() *schema.Resource {
+func ResourceSite24x7OpsgenieIntegration() *schema.Resource {
 	return &schema.Resource{
 		Create: opsgenieIntegrationCreate,
 		Read:   opsgenieIntegrationRead,
@@ -63,7 +64,7 @@ func resourceSite24x7OpsgenieIntegration() *schema.Resource {
 }
 
 func opsgenieIntegrationCreate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	opsgenieIntegration, err := resourceDataToOpsgenieIntegration(d)
 	if err != nil {
@@ -81,7 +82,7 @@ func opsgenieIntegrationCreate(d *schema.ResourceData, meta interface{}) error {
 }
 
 func opsgenieIntegrationRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	opsgenieIntegration, err := client.OpsgenieIntegration().Get(d.Id())
 	if err != nil {
@@ -94,7 +95,7 @@ func opsgenieIntegrationRead(d *schema.ResourceData, meta interface{}) error {
 }
 
 func opsgenieIntegrationUpdate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	opsgenieIntegration, err := resourceDataToOpsgenieIntegration(d)
 	if err != nil {
@@ -112,7 +113,7 @@ func opsgenieIntegrationUpdate(d *schema.ResourceData, meta interface{}) error {
 }
 
 func opsgenieIntegrationDelete(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	err := client.ThirdPartyIntegrations().Delete(d.Id())
 	if apierrors.IsNotFound(err) {
@@ -123,7 +124,7 @@ func opsgenieIntegrationDelete(d *schema.ResourceData, meta interface{}) error {
 }
 
 func opsgenieIntegrationExists(d *schema.ResourceData, meta interface{}) (bool, error) {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	_, err := client.OpsgenieIntegration().Get(d.Id())
 	if apierrors.IsNotFound(err) {

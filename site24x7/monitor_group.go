@@ -47,7 +47,7 @@ var MonitorGroupSchema = map[string]*schema.Schema{
 	},
 }
 
-func resourceSite24x7MonitorGroup() *schema.Resource {
+func ResourceSite24x7MonitorGroup() *schema.Resource {
 	return &schema.Resource{
 		Create: monitorGroupCreate,
 		Read:   monitorGroupRead,

@@ -2,11 +2,11 @@ package fake
 
 import (
 	"github.com/site24x7/terraform-provider-site24x7/api"
-	"github.com/site24x7/terraform-provider-site24x7/api/endpoints"
+	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/monitors"
 	"github.com/stretchr/testify/mock"
 )
 
-var _ endpoints.WebsiteMonitors = &WebsiteMonitors{}
+var _ monitors.WebsiteMonitors = &WebsiteMonitors{}
 
 type WebsiteMonitors struct {
 	mock.Mock

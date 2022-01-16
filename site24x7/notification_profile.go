@@ -97,7 +97,7 @@ var NotificationProfileSchema = map[string]*schema.Schema{
 	},
 }
 
-func resourceSite24x7NotificationProfile() *schema.Resource {
+func ResourceSite24x7NotificationProfile() *schema.Resource {
 	return &schema.Resource{
 		Create: notificationProfileCreate,
 		Read:   notificationProfileRead,

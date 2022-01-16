@@ -1,4 +1,4 @@
-package site24x7
+package integration
 
 import (
 	"testing"
@@ -130,7 +130,7 @@ func TestPagerDutyIntegrationExists(t *testing.T) {
 }
 
 func pagerDutyIntegrationTestResourceData(t *testing.T) *schema.ResourceData {
-	return schema.TestResourceDataRaw(t, PagerDutyIntegrationSchema, map[string]interface{}{
+	return schema.TestResourceDataRaw(t, pagerDutyIntegrationSchema, map[string]interface{}{
 		"name":           "foo",
 		"service_key":    "service_key",
 		"selection_type": 0,

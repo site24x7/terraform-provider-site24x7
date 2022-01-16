@@ -4,6 +4,7 @@ import (
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints"
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/fake"
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/integration"
+	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/monitors"
 )
 
 // Client is an implementation of site24x7.Client that stubs out all endpoints
@@ -74,22 +75,22 @@ func (c *Client) LocationTemplate() endpoints.LocationTemplate {
 }
 
 // Monitors implements Client.
-func (c *Client) WebsiteMonitors() endpoints.WebsiteMonitors {
+func (c *Client) WebsiteMonitors() monitors.WebsiteMonitors {
 	return c.FakeWebsiteMonitors
 }
 
 // SSLMonitors implements Client.
-func (c *Client) SSLMonitors() endpoints.SSLMonitors {
+func (c *Client) SSLMonitors() monitors.SSLMonitors {
 	return c.FakeSSLMonitors
 }
 
 // RestApiMonitors implements Client.
-func (c *Client) RestApiMonitors() endpoints.RestApiMonitors {
+func (c *Client) RestApiMonitors() monitors.RestApiMonitors {
 	return c.FakeRestApiMonitors
 }
 
 // Monitors implements Client.
-func (c *Client) AmazonMonitors() endpoints.AmazonMonitors {
+func (c *Client) AmazonMonitors() monitors.AmazonMonitors {
 	return c.FakeAmazonMonitors
 }
 

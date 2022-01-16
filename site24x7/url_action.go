@@ -91,7 +91,7 @@ var URLActionSchema = map[string]*schema.Schema{
 	},
 }
 
-func resourceSite24x7URLAction() *schema.Resource {
+func ResourceSite24x7URLAction() *schema.Resource {
 	return &schema.Resource{
 		Create: urlActionCreate,
 		Read:   urlActionRead,

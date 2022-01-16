@@ -1,9 +1,10 @@
-package site24x7
+package monitors
 
 import (
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
+	"github.com/site24x7/terraform-provider-site24x7/site24x7"
 )
 
 var AmazonMonitorSchema = map[string]*schema.Schema{
@@ -89,7 +90,7 @@ var AmazonMonitorSchema = map[string]*schema.Schema{
 	},
 }
 
-func resourceSite24x7AmazonMonitor() *schema.Resource {
+func ResourceSite24x7AmazonMonitor() *schema.Resource {
 	return &schema.Resource{
 		Create: amazonMonitorCreate,
 		Read:   amazonMonitorRead,
@@ -102,7 +103,7 @@ func resourceSite24x7AmazonMonitor() *schema.Resource {
 }
 
 func amazonMonitorCreate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	amazonMonitor, err := resourceDataToAmazonMonitor(d, client)
 
@@ -117,7 +118,7 @@ func amazonMonitorCreate(d *schema.ResourceData, meta interface{}) error {
 }
 
 func amazonMonitorRead(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	AmazonMonitor, err := client.AmazonMonitors().Get(d.Id())
 	if err != nil {
@@ -130,7 +131,7 @@ func amazonMonitorRead(d *schema.ResourceData, meta interface{}) error {
 }
 
 func amazonMonitorUpdate(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	amazonMonitor, err := resourceDataToAmazonMonitor(d, client)
 	if err != nil {
@@ -148,7 +149,7 @@ func amazonMonitorUpdate(d *schema.ResourceData, meta interface{}) error {
 }
 
 func amazonMonitorDelete(d *schema.ResourceData, meta interface{}) error {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	err := client.AmazonMonitors().Delete(d.Id())
 	if apierrors.IsNotFound(err) {
@@ -159,7 +160,7 @@ func amazonMonitorDelete(d *schema.ResourceData, meta interface{}) error {
 }
 
 func amazonMonitorExists(d *schema.ResourceData, meta interface{}) (bool, error) {
-	client := meta.(Client)
+	client := meta.(site24x7.Client)
 
 	_, err := client.AmazonMonitors().Get(d.Id())
 	if apierrors.IsNotFound(err) {
@@ -173,7 +174,7 @@ func amazonMonitorExists(d *schema.ResourceData, meta interface{}) (bool, error)
 	return true, nil
 }
 
-func resourceDataToAmazonMonitor(d *schema.ResourceData, client Client) (*api.AmazonMonitor, error) {
+func resourceDataToAmazonMonitor(d *schema.ResourceData, client site24x7.Client) (*api.AmazonMonitor, error) {
 
 	var userGroupIDs []string
 	for _, id := range d.Get("user_group_ids").([]interface{}) {
@@ -196,7 +197,7 @@ func resourceDataToAmazonMonitor(d *schema.ResourceData, client Client) (*api.Am
 	}
 
 	if len(userGroupIDs) == 0 {
-		userGroup, err := DefaultUserGroup(client)
+		userGroup, err := site24x7.DefaultUserGroup(client)
 		if err != nil {
 			return nil, err
 		}
@@ -217,19 +218,19 @@ func resourceDataToAmazonMonitor(d *schema.ResourceData, client Client) (*api.Am
 	}
 
 	// Notification Profile
-	_, notificationProfileErr := SetNotificationProfile(client, d, amazonMonitor)
+	_, notificationProfileErr := site24x7.SetNotificationProfile(client, d, amazonMonitor)
 	if notificationProfileErr != nil {
 		return nil, notificationProfileErr
 	}
 
 	// User Alert Groups
-	_, userAlertGroupErr := SetUserGroup(client, d, amazonMonitor)
+	_, userAlertGroupErr := site24x7.SetUserGroup(client, d, amazonMonitor)
 	if userAlertGroupErr != nil {
 		return nil, userAlertGroupErr
 	}
 
 	// Tags
-	_, tagsErr := SetTags(client, d, amazonMonitor)
+	_, tagsErr := site24x7.SetTags(client, d, amazonMonitor)
 	if tagsErr != nil {
 		return nil, tagsErr
 	}

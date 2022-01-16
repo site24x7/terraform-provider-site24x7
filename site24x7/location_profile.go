@@ -50,7 +50,7 @@ var LocationProfileSchema = map[string]*schema.Schema{
 	},
 }
 
-func resourceSite24x7LocationProfile() *schema.Resource {
+func ResourceSite24x7LocationProfile() *schema.Resource {
 	return &schema.Resource{
 		Create: locationProfileCreate,
 		Read:   locationProfileRead,
