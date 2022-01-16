@@ -17,7 +17,7 @@ func TestLocationProfiles(t *testing.T) {
 			Name:         "create location_profile",
 			ExpectedVerb: "POST",
 			ExpectedPath: "/location_profiles",
-			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/create_location_profile.json"),
+			ExpectedBody: validation.Fixture(t, "requests/create_location_profile.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
@@ -49,7 +49,7 @@ func TestLocationProfiles(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/location_profiles/12341234",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/get_location_profile.json"),
+			ResponseBody: validation.Fixture(t, "responses/get_location_profile.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				locationProfile, err := NewLocationProfiles(c).Get("12341234")
 				require.NoError(t, err)
@@ -73,7 +73,7 @@ func TestLocationProfiles(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/location_profiles",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/list_location_profiles.json"),
+			ResponseBody: validation.Fixture(t, "responses/list_location_profiles.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				locationProfiles, err := NewLocationProfiles(c).List()
 				require.NoError(t, err)

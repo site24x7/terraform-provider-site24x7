@@ -16,7 +16,7 @@ func TestMonitorGroups(t *testing.T) {
 			Name:         "create monitor group",
 			ExpectedVerb: "POST",
 			ExpectedPath: "/monitor_groups",
-			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/create_monitor_group.json"),
+			ExpectedBody: validation.Fixture(t, "requests/create_monitor_group.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
@@ -41,7 +41,7 @@ func TestMonitorGroups(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/monitor_groups/113770000041271035",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/get_monitor_group.json"),
+			ResponseBody: validation.Fixture(t, "responses/get_monitor_group.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				group, err := NewMonitorGroups(c).Get("113770000041271035")
 				require.NoError(t, err)
@@ -67,7 +67,7 @@ func TestMonitorGroups(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/monitor_groups",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/list_monitor_groups.json"),
+			ResponseBody: validation.Fixture(t, "responses/list_monitor_groups.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				groups, err := NewMonitorGroups(c).List()
 				require.NoError(t, err)
@@ -104,7 +104,7 @@ func TestMonitorGroups(t *testing.T) {
 		// 	Name:         "update monitor group",
 		// 	ExpectedVerb: "PUT",
 		// 	ExpectedPath: "/monitor_groups/123",
-		// 	ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/update_monitor_groups.json"),
+		// 	ExpectedBody: validation.Fixture(t, "requests/update_monitor_groups.json"),
 		// 	StatusCode:   200,
 		// 	ResponseBody: validation.JsonAPIResponseBody(t, nil),
 		// 	Fn: func(t *testing.T, c rest.Client) {

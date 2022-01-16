@@ -16,7 +16,7 @@ func TestPagerDuty(t *testing.T) {
 			Name:         "create pagerduty integration",
 			ExpectedVerb: "POST",
 			ExpectedPath: "/integration/pager_duty",
-			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/create_pagerduty_integration.json"),
+			ExpectedBody: validation.Fixture(t, "requests/create_pagerduty_integration.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
@@ -42,7 +42,7 @@ func TestPagerDuty(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/integration/pager_duty/113770000023231022",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/get_pagerduty_integration.json"),
+			ResponseBody: validation.Fixture(t, "responses/get_pagerduty_integration.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				pagerduty_integration, err := NewPagerDuty(c).Get("113770000023231022")
 				require.NoError(t, err)
@@ -64,7 +64,7 @@ func TestPagerDuty(t *testing.T) {
 			Name:         "update pagerduty integration",
 			ExpectedVerb: "PUT",
 			ExpectedPath: "/integration/pager_duty/123",
-			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/update_pagerduty_integration.json"),
+			ExpectedBody: validation.Fixture(t, "requests/update_pagerduty_integration.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {

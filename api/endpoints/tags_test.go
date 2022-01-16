@@ -16,7 +16,7 @@ func TestTags(t *testing.T) {
 			Name:         "create tags",
 			ExpectedVerb: "POST",
 			ExpectedPath: "/tags",
-			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/create_tag.json"),
+			ExpectedBody: validation.Fixture(t, "requests/create_tag.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
@@ -35,7 +35,7 @@ func TestTags(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/tags/113770000041271035",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/get_tag.json"),
+			ResponseBody: validation.Fixture(t, "responses/get_tag.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				group, err := NewTags(c).Get("113770000041271035")
 				require.NoError(t, err)
@@ -55,7 +55,7 @@ func TestTags(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/tags",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/list_tags.json"),
+			ResponseBody: validation.Fixture(t, "responses/list_tags.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				groups, err := NewTags(c).List()
 				require.NoError(t, err)
@@ -88,7 +88,7 @@ func TestTags(t *testing.T) {
 			Name:         "update tags",
 			ExpectedVerb: "PUT",
 			ExpectedPath: "/tags/123",
-			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/update_tag.json"),
+			ExpectedBody: validation.Fixture(t, "requests/update_tag.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {

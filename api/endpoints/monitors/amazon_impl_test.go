@@ -16,7 +16,7 @@ func TestAmazonMonitors(t *testing.T) {
 			Name:         "create amazon monitor",
 			ExpectedVerb: "POST",
 			ExpectedPath: "/monitors",
-			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/create_amazon_monitor.json"),
+			ExpectedBody: validation.Fixture(t, "requests/create_amazon_monitor.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
@@ -42,7 +42,7 @@ func TestAmazonMonitors(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/monitors/113770000041271035",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/get_amazon_monitor.json"),
+			ResponseBody: validation.Fixture(t, "responses/get_amazon_monitor.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				amazon_monitor, err := NewAmazonMonitors(c).Get("113770000041271035")
 				require.NoError(t, err)
@@ -68,7 +68,7 @@ func TestAmazonMonitors(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/monitors",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/list_amazon_monitors.json"),
+			ResponseBody: validation.Fixture(t, "responses/list_amazon_monitors.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				amazonMonitor, err := NewAmazonMonitors(c).List()
 				require.NoError(t, err)
@@ -109,7 +109,7 @@ func TestAmazonMonitors(t *testing.T) {
 			Name:         "update amazon monitor",
 			ExpectedVerb: "PUT",
 			ExpectedPath: "/monitors/123",
-			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/update_amazon_monitor.json"),
+			ExpectedBody: validation.Fixture(t, "requests/update_amazon_monitor.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {

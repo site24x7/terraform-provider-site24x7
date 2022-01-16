@@ -16,7 +16,7 @@ func TestThresholdProfiles(t *testing.T) {
 			Name:         "create threshold profile",
 			ExpectedVerb: "POST",
 			ExpectedPath: "/threshold_profiles",
-			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/create_threshold_profile.json"),
+			ExpectedBody: validation.Fixture(t, "requests/create_threshold_profile.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
@@ -38,7 +38,7 @@ func TestThresholdProfiles(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/threshold_profiles/123",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/get_threshold_profile.json"),
+			ResponseBody: validation.Fixture(t, "responses/get_threshold_profile.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				thresholdProfile, err := NewThresholdProfiles(c).Get("123")
 				require.NoError(t, err)
@@ -58,7 +58,7 @@ func TestThresholdProfiles(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/threshold_profiles",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/list_threshold_profiles.json"),
+			ResponseBody: validation.Fixture(t, "responses/list_threshold_profiles.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				thresholdProfiles, err := NewThresholdProfiles(c).List()
 				require.NoError(t, err)
@@ -85,7 +85,7 @@ func TestThresholdProfiles(t *testing.T) {
 			Name:         "update threshold profile",
 			ExpectedVerb: "PUT",
 			ExpectedPath: "/threshold_profiles/123",
-			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/update_threshold_profile.json"),
+			ExpectedBody: validation.Fixture(t, "requests/update_threshold_profile.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {

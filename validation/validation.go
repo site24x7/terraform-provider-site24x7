@@ -91,7 +91,7 @@ func JsonAPIResponseBody(t *testing.T, v interface{}) []byte {
 
 func Fixture(t *testing.T, filename string) []byte {
 	_, dir, _, _ := runtime.Caller(0)
-	path := strings.ReplaceAll(dir, "validation/validation.go", "")
+	path := strings.ReplaceAll(dir, "validation/validation.go", "api/endpoints/testdata/fixtures/")
 	buf, err := ioutil.ReadFile(path + filename)
 	if err != nil {
 		t.Fatal(err)

@@ -16,7 +16,7 @@ func TestOpsgenieIntegration(t *testing.T) {
 			Name:         "create opsgenie integration",
 			ExpectedVerb: "POST",
 			ExpectedPath: "/integration/opsgenie",
-			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/create_opsgenie_integration.json"),
+			ExpectedBody: validation.Fixture(t, "requests/create_opsgenie_integration.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
@@ -39,7 +39,7 @@ func TestOpsgenieIntegration(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/integration/opsgenie/113770000041271035",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/get_opsgenie_integration.json"),
+			ResponseBody: validation.Fixture(t, "responses/get_opsgenie_integration.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				opsgenie_integration, err := NewOpsgenie(c).Get("113770000041271035")
 				require.NoError(t, err)
@@ -63,7 +63,7 @@ func TestOpsgenieIntegration(t *testing.T) {
 			Name:         "update opsgenie integration",
 			ExpectedVerb: "PUT",
 			ExpectedPath: "/integration/opsgenie/123",
-			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/update_opsgenie_integration.json"),
+			ExpectedBody: validation.Fixture(t, "requests/update_opsgenie_integration.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
