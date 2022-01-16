@@ -16,7 +16,7 @@ func TestNotificationProfiles(t *testing.T) {
 			Name:         "create notification profile",
 			ExpectedVerb: "POST",
 			ExpectedPath: "/notification_profiles",
-			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/create_notification_profile.json"),
+			ExpectedBody: validation.Fixture(t, "requests/create_notification_profile.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
@@ -36,7 +36,7 @@ func TestNotificationProfiles(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/notification_profiles/123",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/get_notification_profile.json"),
+			ResponseBody: validation.Fixture(t, "responses/get_notification_profile.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				notificationProfile, err := NewNotificationProfiles(c).Get("123")
 				require.NoError(t, err)
@@ -55,7 +55,7 @@ func TestNotificationProfiles(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/notification_profiles",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/list_notification_profiles.json"),
+			ResponseBody: validation.Fixture(t, "responses/list_notification_profiles.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				notificationProfiles, err := NewNotificationProfiles(c).List()
 				require.NoError(t, err)
@@ -80,7 +80,7 @@ func TestNotificationProfiles(t *testing.T) {
 			Name:         "update notification profile",
 			ExpectedVerb: "PUT",
 			ExpectedPath: "/notification_profiles/123",
-			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/update_notification_profile.json"),
+			ExpectedBody: validation.Fixture(t, "requests/update_notification_profile.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {

@@ -16,7 +16,7 @@ func TestUserGroups(t *testing.T) {
 			Name:         "create user group",
 			ExpectedVerb: "POST",
 			ExpectedPath: "/user_groups",
-			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/create_user_group.json"),
+			ExpectedBody: validation.Fixture(t, "requests/create_user_group.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
@@ -35,7 +35,7 @@ func TestUserGroups(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/user_groups/897654345678",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/get_user_group.json"),
+			ResponseBody: validation.Fixture(t, "responses/get_user_group.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				group, err := NewUserGroups(c).Get("897654345678")
 				require.NoError(t, err)
@@ -55,7 +55,7 @@ func TestUserGroups(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/user_groups",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/list_user_groups.json"),
+			ResponseBody: validation.Fixture(t, "responses/list_user_groups.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				groups, err := NewUserGroups(c).List()
 				require.NoError(t, err)
@@ -91,7 +91,7 @@ func TestUserGroups(t *testing.T) {
 		// 	Name:         "update user group",
 		// 	ExpectedVerb: "PUT",
 		// 	ExpectedPath: "/user_groups/123",
-		// 	ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/update_user_group.json"),
+		// 	ExpectedBody: validation.Fixture(t, "requests/update_user_group.json"),
 		// 	StatusCode:   200,
 		// 	ResponseBody: validation.JsonAPIResponseBody(t, nil),
 		// 	Fn: func(t *testing.T, c rest.Client) {

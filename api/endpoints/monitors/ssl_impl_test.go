@@ -16,7 +16,7 @@ func TestSSLMonitors(t *testing.T) {
 			Name:         "create ssl monitor",
 			ExpectedVerb: "POST",
 			ExpectedPath: "/monitors",
-			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/create_ssl_monitor.json"),
+			ExpectedBody: validation.Fixture(t, "requests/create_ssl_monitor.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
@@ -46,7 +46,7 @@ func TestSSLMonitors(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/monitors/897654345678",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/get_ssl_monitor.json"),
+			ResponseBody: validation.Fixture(t, "responses/get_ssl_monitor.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				sslMonitor, err := NewSSLMonitors(c).Get("897654345678")
 				require.NoError(t, err)
@@ -75,7 +75,7 @@ func TestSSLMonitors(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/monitors",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/list_ssl_monitors.json"),
+			ResponseBody: validation.Fixture(t, "responses/list_ssl_monitors.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				sslMonitors, err := NewSSLMonitors(c).List()
 				require.NoError(t, err)
@@ -122,7 +122,7 @@ func TestSSLMonitors(t *testing.T) {
 			Name:         "update ssl monitor",
 			ExpectedVerb: "PUT",
 			ExpectedPath: "/monitors/123",
-			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/update_ssl_monitor.json"),
+			ExpectedBody: validation.Fixture(t, "requests/update_ssl_monitor.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {

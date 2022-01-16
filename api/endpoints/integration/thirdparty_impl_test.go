@@ -17,7 +17,7 @@ func TestThirdPartyIntegrations(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/third_party_services",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/list_third_party_integrations.json"),
+			ResponseBody: validation.Fixture(t, "responses/list_third_party_integrations.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				thirdPartyIntegrations, err := NewThirdpartyIntegrations(c).List()
 				require.NoError(t, err)

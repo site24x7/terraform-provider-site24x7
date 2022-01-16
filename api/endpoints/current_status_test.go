@@ -18,7 +18,7 @@ func TestCurrentStatus(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/current_status",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/list_current_status.json"),
+			ResponseBody: validation.Fixture(t, "responses/list_current_status.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				status, err := NewCurrentStatus(c).List(nil)
 				require.NoError(t, err)
@@ -60,7 +60,7 @@ func TestCurrentStatus(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/current_status?apm_required=false&status_required=0%2C2&suspended_required=true",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/list_current_status.json"),
+			ResponseBody: validation.Fixture(t, "responses/list_current_status.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				options := &api.CurrentStatusListOptions{
 					APMRequired:       api.Bool(false),

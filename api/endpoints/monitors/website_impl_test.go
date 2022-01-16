@@ -17,7 +17,7 @@ func TestMonitors(t *testing.T) {
 			Name:         "create monitor",
 			ExpectedVerb: "POST",
 			ExpectedPath: "/monitors",
-			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/create_website_monitor.json"),
+			ExpectedBody: validation.Fixture(t, "requests/create_website_monitor.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
@@ -109,7 +109,7 @@ func TestMonitors(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/monitors/123412341234123411",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/get_website_monitor.json"),
+			ResponseBody: validation.Fixture(t, "responses/get_website_monitor.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				monitor, err := NewMonitors(c).Get("123412341234123411")
 				require.NoError(t, err)
@@ -184,7 +184,7 @@ func TestMonitors(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/monitors",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/list_monitors.json"),
+			ResponseBody: validation.Fixture(t, "responses/list_monitors.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				monitor, err := NewMonitors(c).List()
 				require.NoError(t, err)

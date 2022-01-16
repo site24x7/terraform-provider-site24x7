@@ -16,7 +16,7 @@ func TestWebhookIntegration(t *testing.T) {
 			Name:         "create webhook integration",
 			ExpectedVerb: "POST",
 			ExpectedPath: "/integration/webhooks",
-			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/create_webhook_integration.json"),
+			ExpectedBody: validation.Fixture(t, "requests/create_webhook_integration.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
@@ -51,7 +51,7 @@ func TestWebhookIntegration(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/integration/webhooks/113770000023231022",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/get_webhook_integration.json"),
+			ResponseBody: validation.Fixture(t, "responses/get_webhook_integration.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				webhook_integration, err := NewWebhook(c).Get("113770000023231022")
 				require.NoError(t, err)
@@ -87,7 +87,7 @@ func TestWebhookIntegration(t *testing.T) {
 			Name:         "update webhook integration",
 			ExpectedVerb: "PUT",
 			ExpectedPath: "/integration/webhooks/113770000023231022",
-			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/update_webhook_integration.json"),
+			ExpectedBody: validation.Fixture(t, "requests/update_webhook_integration.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {

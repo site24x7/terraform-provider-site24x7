@@ -17,7 +17,7 @@ func TestURLAutomations(t *testing.T) {
 			Name:         "create it_automation",
 			ExpectedVerb: "POST",
 			ExpectedPath: "/it_automation",
-			ExpectedBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/requests/create_it_automation.json"),
+			ExpectedBody: validation.Fixture(t, "requests/create_it_automation.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
@@ -46,7 +46,7 @@ func TestURLAutomations(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/it_automation/123",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/get_it_automation.json"),
+			ResponseBody: validation.Fixture(t, "responses/get_it_automation.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				urlAutomation, err := NewURLAutomations(c).Get("123")
 				require.NoError(t, err)
@@ -71,7 +71,7 @@ func TestURLAutomations(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/it_automation",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "api/endpoints/testdata/fixtures/responses/list_it_automations.json"),
+			ResponseBody: validation.Fixture(t, "responses/list_it_automations.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				urlAutomations, err := NewURLAutomations(c).List()
 				require.NoError(t, err)
