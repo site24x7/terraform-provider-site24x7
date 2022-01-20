@@ -22,6 +22,9 @@ func TestWebhookIntegrationCreate(t *testing.T) {
 		Timeout:                      30,
 		Method:                       "P",
 		SelectionType:                0,
+		TroubleAlert:                 true,
+		CriticalAlert:                false,
+		DownAlert:                    false,
 		IsPollerWebhook:              false,
 		UserAgent:                    "Mozilla",
 		ManageTickets:                false,
@@ -35,6 +38,16 @@ func TestWebhookIntegrationCreate(t *testing.T) {
 		CustomParameters:             "{\"test\":\"abcd\"}",
 		Monitors:                     []string{"234", "567"},
 		AlertTagIDs:                  []string{"123", "456"},
+		CustomHeaders: []api.Header{
+			{
+				Name:  "Accept",
+				Value: "application/json",
+			},
+			{
+				Name:  "Cache-Control",
+				Value: "nocache",
+			},
+		},
 	}
 
 	c.FakeWebhookIntegration.On("Create", a).Return(a, nil).Once()
@@ -61,6 +74,9 @@ func TestWebhookIntegrationUpdate(t *testing.T) {
 		Timeout:                      30,
 		Method:                       "P",
 		SelectionType:                0,
+		TroubleAlert:                 true,
+		CriticalAlert:                false,
+		DownAlert:                    false,
 		IsPollerWebhook:              false,
 		UserAgent:                    "Mozilla",
 		ManageTickets:                false,
@@ -74,6 +90,16 @@ func TestWebhookIntegrationUpdate(t *testing.T) {
 		CustomParameters:             "{\"test\":\"abcd\"}",
 		Monitors:                     []string{"234", "567"},
 		AlertTagIDs:                  []string{"123", "456"},
+		CustomHeaders: []api.Header{
+			{
+				Name:  "Accept",
+				Value: "application/json",
+			},
+			{
+				Name:  "Cache-Control",
+				Value: "nocache",
+			},
+		},
 	}
 
 	c.FakeWebhookIntegration.On("Update", a).Return(a, nil).Once()
@@ -154,6 +180,9 @@ func webhookIntegrationTestResourceData(t *testing.T) *schema.ResourceData {
 		"timeout":                         30,
 		"method":                          "P",
 		"selection_type":                  0,
+		"trouble_alert":                   true,
+		"critical_alert":                  false,
+		"down_alert":                      false,
 		"is_poller_webhook":               false,
 		"send_incident_parameters":        false,
 		"send_in_json_format":             true,
@@ -165,6 +194,10 @@ func webhookIntegrationTestResourceData(t *testing.T) *schema.ResourceData {
 		"send_custom_parameters":          true,
 		"custom_parameters":               "{\"test\":\"abcd\"}",
 		"user_agent":                      "Mozilla",
+		"custom_headers": map[string]interface{}{
+			"Accept":        "application/json",
+			"Cache-Control": "nocache",
+		},
 		"monitors": []interface{}{
 			"234",
 			"567",

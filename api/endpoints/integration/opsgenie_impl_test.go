@@ -25,7 +25,9 @@ func TestOpsgenieIntegration(t *testing.T) {
 					URL:           "https://api.opsgenie.com/v1/json/site24x7?apiKey=a19y1cdd-bz7a-455a-z4b1-c1528323502s",
 					SelectionType: 0,
 					Monitors:      []string{"6111000000000068", "6111000000000130", "6111000000015045", "6111000000015057", "6111000000015069", "6111000000015083"},
-					TroubleAlert:  false,
+					TroubleAlert:  true,
+					CriticalAlert: false,
+					DownAlert:     false,
 					ManualResolve: true,
 					AlertTagIDs:   []string{"113770000023231001"},
 				}
@@ -73,7 +75,9 @@ func TestOpsgenieIntegration(t *testing.T) {
 					ServiceID:     "123",
 					SelectionType: 2,
 					Monitors:      []string{"6111000000000068", "6111000000000130", "6111000000015045"},
-					TroubleAlert:  false,
+					TroubleAlert:  true,
+					CriticalAlert: false,
+					DownAlert:     false,
 					ManualResolve: true,
 					AlertTagIDs:   []string{"113770000023231001", "113770000023231002"},
 				}
