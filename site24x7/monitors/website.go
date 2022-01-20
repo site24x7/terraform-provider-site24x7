@@ -92,7 +92,7 @@ var websiteMonitorSchema = map[string]*schema.Schema{
 		Type:        schema.TypeString,
 		Optional:    true,
 		Default:     "G",
-		Description: "HTTP Method to be used for accessing the website. PUT, PATCH and DELETE are not supported",
+		Description: "HTTP Method to be used for accessing the website. PUT, PATCH and DELETE are not supported. Default value is 'G'.",
 	},
 	"auth_user": {
 		Type:        schema.TypeString,

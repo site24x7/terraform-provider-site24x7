@@ -41,16 +41,21 @@ type ThirdPartyIntegrations struct {
 
 // Denotes opsgenie integration resource in Site24x7.
 type OpsgenieIntegration struct {
-	_             struct{}     `type:"structure"` // Enforces key based initialization.
-	ServiceID     string       `json:"service_id,omitempty"`
-	ServiceStatus int          `json:"service_status,omitempty"`
-	Name          string       `json:"name"`
-	URL           string       `json:"url"`
-	SelectionType ResourceType `json:"selection_type"`
-	Monitors      []string     `json:"monitors,omitempty"`
-	TroubleAlert  bool         `json:"trouble_alert"`
-	ManualResolve bool         `json:"manual_resolve"`
-	AlertTagIDs   []string     `json:"alert_tags_id,omitempty"`
+	_                    struct{}     `type:"structure"` // Enforces key based initialization.
+	ServiceID            string       `json:"service_id,omitempty"`
+	ServiceStatus        int          `json:"service_status,omitempty"`
+	Name                 string       `json:"name"`
+	URL                  string       `json:"url"`
+	SelectionType        ResourceType `json:"selection_type"`
+	TroubleAlert         bool         `json:"trouble_alert"`
+	CriticalAlert        bool         `json:"critical_alert"`
+	DownAlert            bool         `json:"down_alert"`
+	ManualResolve        bool         `json:"manual_resolve"`
+	SendCustomParameters bool         `json:"send_custom_parameters,omitempty"`
+	CustomParameters     string       `json:"custom_parameters,omitempty"`
+	Tags                 []string     `json:"tags,omitempty"`
+	Monitors             []string     `json:"monitors,omitempty"`
+	AlertTagIDs          []string     `json:"alert_tags_id,omitempty"`
 }
 
 // Denotes slack integration resource in Site24x7.
@@ -60,9 +65,13 @@ type SlackIntegration struct {
 	ServiceStatus int          `json:"service_status,omitempty"`
 	Name          string       `json:"name"`
 	URL           string       `json:"url"`
-	SelectionType ResourceType `json:"selection_type"`
 	SenderName    string       `json:"sender_name"`
 	Title         string       `json:"title"`
+	SelectionType ResourceType `json:"selection_type"`
+	TroubleAlert  bool         `json:"trouble_alert"`
+	CriticalAlert bool         `json:"critical_alert"`
+	DownAlert     bool         `json:"down_alert"`
+	Tags          []string     `json:"tags,omitempty"`
 	Monitors      []string     `json:"monitors,omitempty"`
 	AlertTagIDs   []string     `json:"alert_tags_id,omitempty"`
 }
@@ -77,6 +86,9 @@ type WebhookIntegration struct {
 	Timeout                      int          `json:"timeout"`
 	Method                       string       `json:"method"`
 	SelectionType                ResourceType `json:"selection_type"`
+	TroubleAlert                 bool         `json:"trouble_alert"`
+	CriticalAlert                bool         `json:"critical_alert"`
+	DownAlert                    bool         `json:"down_alert"`
 	IsPollerWebhook              bool         `json:"is_poller_webhook"`
 	Poller                       string       `json:"poller,omitempty"`
 	SendIncidentParameters       bool         `json:"send_incident_parameters"`
@@ -88,19 +100,23 @@ type WebhookIntegration struct {
 	Password                     string       `json:"password,omitempty"`
 	OauthProvider                string       `json:"oauth2_provider,omitempty"`
 	UserAgent                    string       `json:"user_agent,omitempty"`
+	CustomHeaders                []Header     `json:"custom_headers,omitempty"`
+	Tags                         []string     `json:"tags,omitempty"`
 	Monitors                     []string     `json:"monitors,omitempty"`
+	AlertTagIDs                  []string     `json:"alert_tags_id,omitempty"`
 	ManageTickets                bool         `json:"manage_tickets"`
 	UpdateURL                    string       `json:"update_url,omitempty"`
 	UpdateMethod                 string       `json:"update_method,omitempty"`
 	UpdateSendIncidentParameters bool         `json:"update_send_incident_parameters"`
 	UpdateSendCustomParameters   bool         `json:"update_send_custom_parameters"`
 	UpdateCustomParameters       interface{}  `json:"update_custom_parameters,omitempty"`
+	UpdateSendInJsonFormat       bool         `json:"update_send_in_json_format"`
 	CloseURL                     string       `json:"close_url,omitempty"`
 	CloseMethod                  string       `json:"close_method,omitempty"`
 	CloseSendIncidentParameters  bool         `json:"close_send_incident_parameters"`
 	CloseSendCustomParameters    bool         `json:"close_send_custom_parameters"`
 	CloseCustomParameters        interface{}  `json:"close_custom_parameters,omitempty"`
-	AlertTagIDs                  []string     `json:"alert_tags_id,omitempty"`
+	CloseSendInJsonFormat        bool         `json:"close_send_in_json_format"`
 }
 
 func (webhookIntegration *WebhookIntegration) String() string {

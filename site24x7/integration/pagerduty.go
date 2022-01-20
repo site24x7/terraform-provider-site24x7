@@ -18,12 +18,6 @@ var pagerDutyIntegrationSchema = map[string]*schema.Schema{
 		Required:    true,
 		Description: "Unique integration key provided by PagerDuty to facilitate incident creation in PagerDuty.",
 	},
-	"selection_type": {
-		Type:        schema.TypeInt,
-		Optional:    true,
-		Default:     0,
-		Description: "Resource Type associated with this integration. Can take values 0|2|3. '0' denotes 'All Monitors', '2' denotes 'Monitors', '3' denotes 'Tags'",
-	},
 	"sender_name": {
 		Type:        schema.TypeString,
 		Required:    true,
@@ -34,10 +28,17 @@ var pagerDutyIntegrationSchema = map[string]*schema.Schema{
 		Required:    true,
 		Description: "Title of the incident.",
 	},
+	"selection_type": {
+		Type:        schema.TypeInt,
+		Optional:    true,
+		Default:     0,
+		Description: "Resource Type associated with this integration. Default value is '0'. Can take values 0|2|3. '0' denotes 'All Monitors', '2' denotes 'Monitors', '3' denotes 'Tags'",
+	},
 	"trouble_alert": {
 		Type:        schema.TypeBool,
 		Optional:    true,
-		Description: "Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Trouble'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.",
+		Default:     true,
+		Description: "Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Trouble'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications. Default value is 'true'",
 	},
 	"critical_alert": {
 		Type:        schema.TypeBool,
@@ -198,9 +199,9 @@ func resourceDataToPagerDutyIntegration(d *schema.ResourceData) (*api.PagerDutyI
 		ServiceID:            d.Id(),
 		Name:                 d.Get("name").(string),
 		ServiceKey:           d.Get("service_key").(string),
-		SelectionType:        api.ResourceType(d.Get("selection_type").(int)),
 		SenderName:           d.Get("sender_name").(string),
 		Title:                d.Get("title").(string),
+		SelectionType:        api.ResourceType(d.Get("selection_type").(int)),
 		TroubleAlert:         d.Get("trouble_alert").(bool),
 		CriticalAlert:        d.Get("critical_alert").(bool),
 		DownAlert:            d.Get("down_alert").(bool),
@@ -218,9 +219,9 @@ func resourceDataToPagerDutyIntegration(d *schema.ResourceData) (*api.PagerDutyI
 func updatePagerDutyIntegrationResourceData(d *schema.ResourceData, pagerDutyIntegration *api.PagerDutyIntegration) {
 	d.Set("name", pagerDutyIntegration.Name)
 	d.Set("service_key", pagerDutyIntegration.ServiceKey)
-	d.Set("selection_type", pagerDutyIntegration.SelectionType)
 	d.Set("sender_name", pagerDutyIntegration.SenderName)
 	d.Set("title", pagerDutyIntegration.Title)
+	d.Set("selection_type", pagerDutyIntegration.SelectionType)
 	d.Set("trouble_alert", pagerDutyIntegration.TroubleAlert)
 	d.Set("critical_alert", pagerDutyIntegration.CriticalAlert)
 	d.Set("down_alert", pagerDutyIntegration.DownAlert)

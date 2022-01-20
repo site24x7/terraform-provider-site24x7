@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest
-      version = "0.0.1-beta.13"
+      version = "0.0.1-beta.14"
     }
   }
 }
@@ -42,21 +42,40 @@ provider "site24x7" {
 
 }
 
+// Opsgenie Integration API doc: https://www.site24x7.com/help/api/#create-opsgenie
+resource "site24x7_opsgenie_integration" "opsgenie_integration_basic" {
+  // (Required) Display name for the integration
+  name           = "OpsGenie Integration With Site24x7"
+  // (Required) URL to be invoked for action execution
+  url            = "https://api.opsgenie.com/v1/json/site24x7?apiKey=a19y1cdd323502s"
+}
+
+// Opsgenie Integration API doc: https://www.site24x7.com/help/api/#create-opsgenie
 resource "site24x7_opsgenie_integration" "opsgenie_integration" {
   // (Required) Display name for the integration
   name           = "OpsGenie Integration With Site24x7"
   // (Required) URL to be invoked for action execution
-  url            = "https://api.opsgenie.com/v1/json/site24x7?apiKey=a19y1cdd-bz7a-455a-z4b1-c1528323502s"
+  url            = "https://api.opsgenie.com/v1/json/site24x7?apiKey=a19y1cdd-bz3502s"
   // (Required) Resource Type associated with this integration
   // https://www.site24x7.com/help/api/#resource_type_constants
-  // Monitor Group not supported
-  selection_type = 2
-  // (Optional) Monitors associated with the integration
-  monitors       = ["4567"]
-  // (Optional) Configuration to create an incident during a TROUBLE alert
-  trouble_alert  = false
-  // (Optional) Configuration to resolve the incidents manually when the monitor changes to UP status
-  manual_resolve = true
+  // (Optional) Resource Type associated with this integration. Default value is '0'. Can take values 0|2|3. '0' denotes 'All Monitors', '2' denotes 'Monitors', '3' denotes 'Tags'
+  selection_type = 0
+  // (Optional) Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Trouble'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications. Default value is 'true'.
+  trouble_alert = true
+  // (Optional) Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Critical'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.
+  critical_alert = false
+  // (Optional) Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Down'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.
+  down_alert = false
+  // (Optional) Configuration to resolve the incidents manually when the monitor changes to UP status.
+  manual_resolve = false
+  // (Optional) Configuration to send custom parameters while executing the action.
+  send_custom_parameters = true
+  // (Optional) Mandatory, if send_custom_parameters is set as true. Custom parameters to be passed while accessing the URL.
+  custom_parameters               = "{\"test\":\"abcd\"}"
+  // (Optional) Monitors to be associated with the integration when the selection_type = 2.
+  monitors                        = ["756"]
+  // (Optional) Tags to be associated with the integration when the selection_type = 3.
+  tags                        = ["345"]
   // (Optional) List of tag IDs to be associated with the integration
   alert_tags_id  = ["123"]
 }

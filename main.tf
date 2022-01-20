@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "0.0.1-beta.13"
+      version = "0.0.1-beta.14"
       // Uncomment for local setup
       # source  = "registry.zoho.io/zoho/site24x7"
       # version = "1.0.0"
@@ -130,17 +130,4 @@ resource "site24x7_website_monitor" "website_monitor_example" {
   #   "123456000024829007", // Server
   #   "123456000024829003", // Website
   # ]
-}
-
-resource "site24x7_pagerduty_integration" "pagerduty_integration_example" {
-  // (Required) Display name for the PagerDuty Integration.
-  name = "PageDuty Integration - Terraform"
-  // (Required) Unique integration key provided by PagerDuty to facilitate incident creation in PagerDuty.
-  service_key = "service_key"
-  // (Required) Name of the service who posted the incident.
-  sender_name = "Site24x7 - Terraform"
-  // (Required) Title of the incident.
-  title = "$MONITORNAME is $STATUS"
-  // (Optional) Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Trouble'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.
-  trouble_alert = true
 }

@@ -57,7 +57,7 @@ func TestWebhookIntegration(t *testing.T) {
 				require.NoError(t, err)
 
 				expected := &api.WebhookIntegration{
-					Name:                         "Test WebHook",
+					Name:                         "Test Webhook",
 					ServiceID:                    "113770000023231022",
 					ServiceStatus:                0,
 					URL:                          "http://requestb.in",
@@ -92,7 +92,7 @@ func TestWebhookIntegration(t *testing.T) {
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
 				webhook_integration := &api.WebhookIntegration{
-					Name:                         "Test WebHook",
+					Name:                         "Test Webhook",
 					URL:                          "http://requestb.in",
 					IsPollerWebhook:              false,
 					Timeout:                      30,

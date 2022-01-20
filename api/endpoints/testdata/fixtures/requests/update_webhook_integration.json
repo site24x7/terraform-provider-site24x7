@@ -1,6 +1,6 @@
 {
   "service_id": "113770000023231022",
-  "name": "Test WebHook",
+  "name": "Test Webhook",
   "url": "http://requestb.in",
   "is_poller_webhook": false,
   "timeout": 30,
