@@ -4,6 +4,10 @@
   "method": "P",
   "send_incident_parameters": false,
   "timeout": 30,
+  "selection_type": 0,
+  "trouble_alert":true,
+  "critical_alert":false,
+  "down_alert":false,
   "is_poller_webhook": false,
   "auth_method": "B",
   "manage_tickets": false,
@@ -14,9 +18,10 @@
   "send_in_json_format": true,
   "update_send_incident_parameters": false,
   "update_send_custom_parameters": false,
+  "update_send_in_json_format": false,
   "close_send_incident_parameters": false,
   "close_send_custom_parameters": false,
-  "selection_type": 0,
+  "close_send_in_json_format": false,
   "alert_tags_id": [
     "113770000023231001"
   ]
