@@ -18,19 +18,6 @@ var SlackIntegrationSchema = map[string]*schema.Schema{
 		Required:    true,
 		Description: "Hook URL to which the message will be posted.",
 	},
-	"selection_type": {
-		Type:        schema.TypeInt,
-		Required:    true,
-		Description: "Resource Type associated with this integration.Monitor Group not supported.",
-	},
-	"monitors": {
-		Type: schema.TypeList,
-		Elem: &schema.Schema{
-			Type: schema.TypeString,
-		},
-		Optional:    true,
-		Description: "Monitors associated with the integration.",
-	},
 	"sender_name": {
 		Type:        schema.TypeString,
 		Required:    true,
@@ -40,6 +27,44 @@ var SlackIntegrationSchema = map[string]*schema.Schema{
 		Type:        schema.TypeString,
 		Required:    true,
 		Description: "Title of the incident.",
+	},
+	"selection_type": {
+		Type:        schema.TypeInt,
+		Optional:    true,
+		Default:     0,
+		Description: "Resource Type associated with this integration. Default value is '0'. Can take values 0|2|3. '0' denotes 'All Monitors', '2' denotes 'Monitors', '3' denotes 'Tags'",
+	},
+	"trouble_alert": {
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Default:     true,
+		Description: "Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Trouble'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications. Default value is 'true'",
+	},
+	"critical_alert": {
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Description: "Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Critical'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.",
+	},
+	"down_alert": {
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Description: "Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Down'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.",
+	},
+	"monitors": {
+		Type: schema.TypeList,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Description: "Monitors to be associated with the integration when the selection_type = 2.",
+	},
+	"tags": {
+		Type: schema.TypeList,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Description: "Tags to be associated with the integration when the selection_type = 3.",
 	},
 	"alert_tags_id": {
 		Type: schema.TypeList,
@@ -145,6 +170,11 @@ func resourceDataToSlackIntegration(d *schema.ResourceData) (*api.SlackIntegrati
 		monitorsIDs = append(monitorsIDs, id.(string))
 	}
 
+	var tagIDs []string
+	for _, id := range d.Get("tags").([]interface{}) {
+		tagIDs = append(tagIDs, id.(string))
+	}
+
 	var alertTagIDs []string
 	for _, id := range d.Get("alert_tags_id").([]interface{}) {
 		alertTagIDs = append(alertTagIDs, id.(string))
@@ -154,10 +184,14 @@ func resourceDataToSlackIntegration(d *schema.ResourceData) (*api.SlackIntegrati
 		ServiceID:     d.Id(),
 		Name:          d.Get("name").(string),
 		URL:           d.Get("url").(string),
-		SelectionType: api.ResourceType(d.Get("selection_type").(int)),
-		Monitors:      monitorsIDs,
 		SenderName:    d.Get("sender_name").(string),
 		Title:         d.Get("title").(string),
+		SelectionType: api.ResourceType(d.Get("selection_type").(int)),
+		TroubleAlert:  d.Get("trouble_alert").(bool),
+		CriticalAlert: d.Get("critical_alert").(bool),
+		DownAlert:     d.Get("down_alert").(bool),
+		Monitors:      monitorsIDs,
+		Tags:          tagIDs,
 		AlertTagIDs:   alertTagIDs,
 	}
 
@@ -167,9 +201,13 @@ func resourceDataToSlackIntegration(d *schema.ResourceData) (*api.SlackIntegrati
 func updateSlackIntegrationResourceData(d *schema.ResourceData, slackIntegration *api.SlackIntegration) {
 	d.Set("name", slackIntegration.Name)
 	d.Set("url", slackIntegration.URL)
-	d.Set("selection_type", slackIntegration.SelectionType)
-	d.Set("monitors", slackIntegration.Monitors)
 	d.Set("sender_name", slackIntegration.SenderName)
 	d.Set("title", slackIntegration.Title)
+	d.Set("selection_type", slackIntegration.SelectionType)
+	d.Set("trouble_alert", slackIntegration.TroubleAlert)
+	d.Set("critical_alert", slackIntegration.CriticalAlert)
+	d.Set("down_alert", slackIntegration.DownAlert)
+	d.Set("tags", slackIntegration.Tags)
+	d.Set("monitors", slackIntegration.Monitors)
 	d.Set("alert_tags_id", slackIntegration.AlertTagIDs)
 }

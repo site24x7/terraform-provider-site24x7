@@ -20,8 +20,48 @@ var OpsgenieIntegrationSchema = map[string]*schema.Schema{
 	},
 	"selection_type": {
 		Type:        schema.TypeInt,
-		Required:    true,
-		Description: "Resource Type associated with this integration.Monitor Group not supported.",
+		Optional:    true,
+		Default:     0,
+		Description: "Resource Type associated with this integration. Default value is '0'. Can take values 0|2|3. '0' denotes 'All Monitors', '2' denotes 'Monitors', '3' denotes 'Tags'",
+	},
+	"trouble_alert": {
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Default:     true,
+		Description: "Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Trouble'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications. Default value is 'true'",
+	},
+	"critical_alert": {
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Description: "Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Critical'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.",
+	},
+	"down_alert": {
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Description: "Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Down'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.",
+	},
+	"manual_resolve": {
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Description: "Configuration to resolve the incidents manually when the monitor changes to UP status.",
+	},
+	"send_custom_parameters": {
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Description: "Configuration to send custom parameters while executing the action.",
+	},
+	"custom_parameters": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Mandatory, if send_custom_parameters is set as true. Custom parameters to be passed while accessing the URL.",
+	},
+	"tags": {
+		Type: schema.TypeList,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Description: "Tags to be associated with the integration when the selection_type = 3.",
 	},
 	"monitors": {
 		Type: schema.TypeList,
@@ -29,17 +69,7 @@ var OpsgenieIntegrationSchema = map[string]*schema.Schema{
 			Type: schema.TypeString,
 		},
 		Optional:    true,
-		Description: "Monitors associated with the integration.",
-	},
-	"trouble_alert": {
-		Type:        schema.TypeBool,
-		Optional:    true,
-		Description: "Configuration to create an incident during a TROUBLE alert.",
-	},
-	"manual_resolve": {
-		Type:        schema.TypeBool,
-		Optional:    true,
-		Description: "Configuration to resolve the incidents manually when the monitor changes to UP status.",
+		Description: "Monitors to be associated with the integration when the selection_type = 2.",
 	},
 	"alert_tags_id": {
 		Type: schema.TypeList,
@@ -145,20 +175,30 @@ func resourceDataToOpsgenieIntegration(d *schema.ResourceData) (*api.OpsgenieInt
 		monitorsIDs = append(monitorsIDs, id.(string))
 	}
 
+	var tagIDs []string
+	for _, id := range d.Get("tags").([]interface{}) {
+		tagIDs = append(tagIDs, id.(string))
+	}
+
 	var alertTagIDs []string
 	for _, id := range d.Get("alert_tags_id").([]interface{}) {
 		alertTagIDs = append(alertTagIDs, id.(string))
 	}
 
 	opsgenieIntegration := &api.OpsgenieIntegration{
-		ServiceID:     d.Id(),
-		Name:          d.Get("name").(string),
-		URL:           d.Get("url").(string),
-		SelectionType: api.ResourceType(d.Get("selection_type").(int)),
-		Monitors:      monitorsIDs,
-		TroubleAlert:  d.Get("trouble_alert").(bool),
-		ManualResolve: d.Get("manual_resolve").(bool),
-		AlertTagIDs:   alertTagIDs,
+		ServiceID:            d.Id(),
+		Name:                 d.Get("name").(string),
+		URL:                  d.Get("url").(string),
+		SelectionType:        api.ResourceType(d.Get("selection_type").(int)),
+		TroubleAlert:         d.Get("trouble_alert").(bool),
+		CriticalAlert:        d.Get("critical_alert").(bool),
+		DownAlert:            d.Get("down_alert").(bool),
+		ManualResolve:        d.Get("manual_resolve").(bool),
+		SendCustomParameters: d.Get("send_custom_parameters").(bool),
+		CustomParameters:     d.Get("custom_parameters").(string),
+		Monitors:             monitorsIDs,
+		Tags:                 tagIDs,
+		AlertTagIDs:          alertTagIDs,
 	}
 
 	return opsgenieIntegration, nil
@@ -168,8 +208,13 @@ func updateOpsgenieIntegrationResourceData(d *schema.ResourceData, opsgenieInteg
 	d.Set("name", opsgenieIntegration.Name)
 	d.Set("url", opsgenieIntegration.URL)
 	d.Set("selection_type", opsgenieIntegration.SelectionType)
-	d.Set("monitors", opsgenieIntegration.Monitors)
 	d.Set("trouble_alert", opsgenieIntegration.TroubleAlert)
+	d.Set("critical_alert", opsgenieIntegration.CriticalAlert)
+	d.Set("down_alert", opsgenieIntegration.DownAlert)
 	d.Set("manual_resolve", opsgenieIntegration.ManualResolve)
+	d.Set("send_custom_parameters", opsgenieIntegration.SendCustomParameters)
+	d.Set("custom_parameters", opsgenieIntegration.CustomParameters)
+	d.Set("tags", opsgenieIntegration.Tags)
+	d.Set("monitors", opsgenieIntegration.Monitors)
 	d.Set("alert_tags_id", opsgenieIntegration.AlertTagIDs)
 }

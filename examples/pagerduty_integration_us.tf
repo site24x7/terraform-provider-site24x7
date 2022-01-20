@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "0.0.1-beta.13"
+      version = "0.0.1-beta.14"
     }
   }
 }
@@ -52,12 +52,10 @@ resource "site24x7_pagerduty_integration" "pagerduty_integration_basic" {
   sender_name = "Site24x7 - Terraform"
   // (Required) Title of the incident.
   title = "$MONITORNAME is $STATUS"
-  // (Optional) Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Trouble'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.
-  trouble_alert = true
 }
 
 // PagerDuty API doc: https://www.site24x7.com/help/api/#create-pagerduty
-resource "site24x7_pagerduty_integration" "pagerduty_integration_example" {
+resource "site24x7_pagerduty_integration" "pagerduty_integration" {
   // (Required) Display name for the PagerDuty Integration.
   name = "PageDuty Integration - Terraform"
   // (Required) Unique integration key provided by PagerDuty to facilitate incident creation in PagerDuty.
@@ -66,9 +64,9 @@ resource "site24x7_pagerduty_integration" "pagerduty_integration_example" {
   sender_name = "Site24x7 - Terraform"
   // (Required) Title of the incident.
   title = "$MONITORNAME is $STATUS"
-  // (Optional) Resource Type associated with this integration. Can take values 0|2|3. '0' denotes 'All Monitors', '2' denotes 'Monitors', '3' denotes 'Tags'
+  // (Optional) Resource Type associated with this integration. Default value is '0'. Can take values 0|2|3. '0' denotes 'All Monitors', '2' denotes 'Monitors', '3' denotes 'Tags'
   selection_type = 0
-  // (Optional) Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Trouble'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.
+  // (Optional) Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Trouble'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications. Default value is 'true'.
   trouble_alert = true
   // (Optional) Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Critical'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.
   critical_alert = false

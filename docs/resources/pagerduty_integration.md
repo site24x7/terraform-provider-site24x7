@@ -23,9 +23,9 @@ resource "site24x7_pagerduty_integration" "pagerduty_integration_example" {
   sender_name = "Site24x7 - Terraform"
   // (Required) Title of the incident.
   title = "$MONITORNAME is $STATUS"
-  // (Optional) Resource Type associated with this integration. Can take values 0|2|3. '0' denotes 'All Monitors', '2' denotes 'Monitors', '3' denotes 'Tags'
+  // (Optional) Resource Type associated with this integration. Default value is '0'. Can take values 0|2|3. '0' denotes 'All Monitors', '2' denotes 'Monitors', '3' denotes 'Tags'
   selection_type = 0
-  // (Optional) Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Trouble'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.
+  // (Optional) Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Trouble'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications. Default value is 'true'.
   trouble_alert = true
   // (Optional) Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Critical'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.
   critical_alert = false
@@ -60,9 +60,9 @@ resource "site24x7_pagerduty_integration" "pagerduty_integration_example" {
 ### Optional
 
 * `id` (String) The ID of this resource.
-* `selection_type` (Number) Resource Type associated with this integration. Can take values 0|2|3. '0' denotes 'All Monitors', '2' denotes 'Monitors', '3' denotes 'Tags'. Please refer [API documentation](https://www.site24x7.com/help/api/#resource_type_constants).
+* `selection_type` (Number) Resource Type associated with this integration. Default value is '0'. Can take values 0|2|3. '0' denotes 'All Monitors', '2' denotes 'Monitors', '3' denotes 'Tags'. Please refer [API documentation](https://www.site24x7.com/help/api/#resource_type_constants).
+* `trouble_alert` (Boolean) Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Trouble'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.  Default value is 'true'.
 * `critical_alert` (Boolean) Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Critical'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.
-* `trouble_alert` (Boolean) Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Trouble'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.
 * `down_alert` (Boolean) Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Down'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.
 * `manual_resolve` (Boolean) Configuration to resolve the incidents manually when the monitor changes to UP status.
 * `send_custom_parameters` (Boolean) Configuration to send custom parameters while executing the action.
