@@ -27,6 +27,7 @@ type Client struct {
 	FakeSlackIntegration       *fake.SlackIntegration
 	FakeWebhookIntegration     *fake.WebhookIntegration
 	FakePagerDutyIntegration   *fake.PagerDutyIntegration
+	FakeServiceNowIntegration  *fake.ServiceNowIntegration
 	FakeThirdPartyIntegrations *fake.ThirdPartyIntegrations
 }
 
@@ -49,6 +50,7 @@ func NewClient() *Client {
 		FakeOpsgenieIntegration:    &fake.OpsgenieIntegration{},
 		FakeSlackIntegration:       &fake.SlackIntegration{},
 		FakePagerDutyIntegration:   &fake.PagerDutyIntegration{},
+		FakeServiceNowIntegration:  &fake.ServiceNowIntegration{},
 		FakeWebhookIntegration:     &fake.WebhookIntegration{},
 		FakeThirdPartyIntegrations: &fake.ThirdPartyIntegrations{},
 	}
@@ -132,6 +134,11 @@ func (c *Client) SlackIntegration() integration.SlackIntegration {
 // PagerDuty implements Client.
 func (c *Client) PagerDutyIntegration() integration.PagerDutyIntegration {
 	return c.FakePagerDutyIntegration
+}
+
+// PagerDuty implements Client.
+func (c *Client) ServiceNowIntegration() integration.ServiceNowIntegration {
+	return c.FakeServiceNowIntegration
 }
 
 // WebhookIntegration implements Client.

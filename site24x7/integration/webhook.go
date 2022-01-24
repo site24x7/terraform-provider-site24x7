@@ -42,17 +42,17 @@ var WebhookIntegrationSchema = map[string]*schema.Schema{
 		Type:        schema.TypeBool,
 		Optional:    true,
 		Default:     true,
-		Description: "Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Trouble'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications. Default value is 'true'",
+		Description: "Setting this to 'true' will send alert notifications to this third-party integration when the monitor status changes to 'Trouble'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications. Default value is 'true'",
 	},
 	"critical_alert": {
 		Type:        schema.TypeBool,
 		Optional:    true,
-		Description: "Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Critical'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.",
+		Description: "Setting this to 'true' will send alert notifications to this third-party integration when the monitor status changes to 'Critical'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.",
 	},
 	"down_alert": {
 		Type:        schema.TypeBool,
 		Optional:    true,
-		Description: "Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Down'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.",
+		Description: "Setting this to 'true' will send alert notifications to this third-party integration when the monitor status changes to 'Down'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.",
 	},
 	"is_poller_webhook": {
 		Type:        schema.TypeBool,
@@ -90,15 +90,19 @@ var WebhookIntegrationSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Description: "Authentication method to access the action url.",
 	},
-	"username": {
+	"user_name": {
 		Type:        schema.TypeString,
 		Optional:    true,
-		Description: "Username for Authentication.",
+		Description: "User name for authentication.",
 	},
 	"password": {
 		Type:        schema.TypeString,
 		Optional:    true,
-		Description: "Password for Authentication.",
+		Description: "Password for authentication.",
+		DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
+			// As password in API response is encrypted we are suppressing diff.
+			return true
+		},
 	},
 	"oauth2_provider": {
 		Type:        schema.TypeString,
@@ -339,7 +343,7 @@ func resourceDataToWebhookIntegration(d *schema.ResourceData) (*api.WebhookInteg
 		CustomParameters:             d.Get("custom_parameters"),
 		SendInJsonFormat:             d.Get("send_in_json_format").(bool),
 		AuthMethod:                   d.Get("auth_method").(string),
-		Username:                     d.Get("username").(string),
+		UserName:                     d.Get("user_name").(string),
 		Password:                     d.Get("password").(string),
 		OauthProvider:                d.Get("oauth2_provider").(string),
 		UserAgent:                    d.Get("user_agent").(string),
@@ -400,7 +404,7 @@ func updateWebhookIntegrationResourceData(d *schema.ResourceData, webhookIntegra
 	d.Set("custom_parameters", webhookIntegration.CustomParameters)
 	d.Set("send_in_json_format", webhookIntegration.SendInJsonFormat)
 	d.Set("auth_method", webhookIntegration.AuthMethod)
-	d.Set("username", webhookIntegration.Username)
+	d.Set("user_name", webhookIntegration.UserName)
 	d.Set("password", webhookIntegration.Password)
 	d.Set("oauth2_provider", webhookIntegration.OauthProvider)
 	d.Set("user_agent", webhookIntegration.UserAgent)

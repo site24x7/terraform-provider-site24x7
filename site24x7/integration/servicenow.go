@@ -7,26 +7,40 @@ import (
 	"github.com/site24x7/terraform-provider-site24x7/site24x7"
 )
 
-var pagerDutyIntegrationSchema = map[string]*schema.Schema{
+var serviceNowIntegrationSchema = map[string]*schema.Schema{
 	"name": {
 		Type:        schema.TypeString,
 		Required:    true,
-		Description: "Display name for the PagerDuty Integration.",
+		Description: "Display name for the ServiceNow Integration.",
 	},
-	"service_key": {
+	"instance_url": {
 		Type:        schema.TypeString,
 		Required:    true,
-		Description: "Unique integration key provided by PagerDuty to facilitate incident creation in PagerDuty.",
+		Description: "ServiceNow instance URL.",
+	},
+	"title": {
+		Type:        schema.TypeString,
+		Required:    true,
+		Description: "Title of the incident.",
 	},
 	"sender_name": {
 		Type:        schema.TypeString,
 		Required:    true,
 		Description: "Name of the service who posted the incident.",
 	},
-	"title": {
+	"user_name": {
 		Type:        schema.TypeString,
 		Required:    true,
-		Description: "Title of the incident.",
+		Description: "User name for authentication.",
+	},
+	"password": {
+		Type:        schema.TypeString,
+		Required:    true,
+		Description: "Password for authentication.",
+		DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
+			// As password in API response is encrypted we are suppressing diff.
+			return true
+		},
 	},
 	"selection_type": {
 		Type:        schema.TypeInt,
@@ -49,11 +63,6 @@ var pagerDutyIntegrationSchema = map[string]*schema.Schema{
 		Type:        schema.TypeBool,
 		Optional:    true,
 		Description: "Setting this to 'true' will send alert notifications to this third-party integration when the monitor status changes to 'Down'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.",
-	},
-	"manual_resolve": {
-		Type:        schema.TypeBool,
-		Optional:    true,
-		Description: "Configuration to resolve the incidents manually when the monitor changes to UP status.",
 	},
 	"send_custom_parameters": {
 		Type:        schema.TypeBool,
@@ -91,68 +100,68 @@ var pagerDutyIntegrationSchema = map[string]*schema.Schema{
 	},
 }
 
-func ResourceSite24x7PagerDutyIntegration() *schema.Resource {
+func ResourceSite24x7ServiceNowIntegration() *schema.Resource {
 	return &schema.Resource{
-		Create: pagerDutyIntegrationCreate,
-		Read:   pagerDutyIntegrationRead,
-		Update: pagerDutyIntegrationUpdate,
-		Delete: pagerDutyIntegrationDelete,
-		Exists: pagerDutyIntegrationExists,
+		Create: serviceNowIntegrationCreate,
+		Read:   serviceNowIntegrationRead,
+		Update: serviceNowIntegrationUpdate,
+		Delete: serviceNowIntegrationDelete,
+		Exists: serviceNowIntegrationExists,
 
-		Schema: pagerDutyIntegrationSchema,
+		Schema: serviceNowIntegrationSchema,
 	}
 }
 
-func pagerDutyIntegrationCreate(d *schema.ResourceData, meta interface{}) error {
+func serviceNowIntegrationCreate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(site24x7.Client)
 
-	pagerDutyIntegration, err := resourceDataToPagerDutyIntegration(d)
+	serviceNowIntegration, err := resourceDataToServiceNowIntegration(d)
 	if err != nil {
 		return err
 	}
 
-	pagerDutyIntegration, err = client.PagerDutyIntegration().Create(pagerDutyIntegration)
+	serviceNowIntegration, err = client.ServiceNowIntegration().Create(serviceNowIntegration)
 	if err != nil {
 		return err
 	}
 
-	d.SetId(pagerDutyIntegration.ServiceID)
+	d.SetId(serviceNowIntegration.ServiceID)
 
 	return nil
 }
 
-func pagerDutyIntegrationRead(d *schema.ResourceData, meta interface{}) error {
+func serviceNowIntegrationRead(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(site24x7.Client)
 
-	pagerDutyIntegration, err := client.PagerDutyIntegration().Get(d.Id())
+	serviceNowIntegration, err := client.ServiceNowIntegration().Get(d.Id())
 	if err != nil {
 		return err
 	}
 
-	updatePagerDutyIntegrationResourceData(d, pagerDutyIntegration)
+	updateServiceNowIntegrationResourceData(d, serviceNowIntegration)
 
 	return nil
 }
 
-func pagerDutyIntegrationUpdate(d *schema.ResourceData, meta interface{}) error {
+func serviceNowIntegrationUpdate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(site24x7.Client)
 
-	pagerDutyIntegration, err := resourceDataToPagerDutyIntegration(d)
+	serviceNowIntegration, err := resourceDataToServiceNowIntegration(d)
 	if err != nil {
 		return err
 	}
 
-	pagerDutyIntegration, err = client.PagerDutyIntegration().Update(pagerDutyIntegration)
+	serviceNowIntegration, err = client.ServiceNowIntegration().Update(serviceNowIntegration)
 	if err != nil {
 		return err
 	}
 
-	d.SetId(pagerDutyIntegration.ServiceID)
+	d.SetId(serviceNowIntegration.ServiceID)
 
 	return nil
 }
 
-func pagerDutyIntegrationDelete(d *schema.ResourceData, meta interface{}) error {
+func serviceNowIntegrationDelete(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(site24x7.Client)
 
 	err := client.ThirdPartyIntegrations().Delete(d.Id())
@@ -163,10 +172,10 @@ func pagerDutyIntegrationDelete(d *schema.ResourceData, meta interface{}) error 
 	return err
 }
 
-func pagerDutyIntegrationExists(d *schema.ResourceData, meta interface{}) (bool, error) {
+func serviceNowIntegrationExists(d *schema.ResourceData, meta interface{}) (bool, error) {
 	client := meta.(site24x7.Client)
 
-	_, err := client.PagerDutyIntegration().Get(d.Id())
+	_, err := client.ServiceNowIntegration().Get(d.Id())
 	if apierrors.IsNotFound(err) {
 		return false, nil
 	}
@@ -178,7 +187,7 @@ func pagerDutyIntegrationExists(d *schema.ResourceData, meta interface{}) (bool,
 	return true, nil
 }
 
-func resourceDataToPagerDutyIntegration(d *schema.ResourceData) (*api.PagerDutyIntegration, error) {
+func resourceDataToServiceNowIntegration(d *schema.ResourceData) (*api.ServiceNowIntegration, error) {
 
 	var monitorsIDs []string
 	for _, id := range d.Get("monitors").([]interface{}) {
@@ -195,17 +204,18 @@ func resourceDataToPagerDutyIntegration(d *schema.ResourceData) (*api.PagerDutyI
 		alertTagIDs = append(alertTagIDs, id.(string))
 	}
 
-	pagerDutyIntegration := &api.PagerDutyIntegration{
+	serviceNowIntegration := &api.ServiceNowIntegration{
 		ServiceID:            d.Id(),
 		Name:                 d.Get("name").(string),
-		ServiceKey:           d.Get("service_key").(string),
+		InstanceURL:          d.Get("instance_url").(string),
 		SenderName:           d.Get("sender_name").(string),
 		Title:                d.Get("title").(string),
+		UserName:             d.Get("user_name").(string),
+		Password:             d.Get("password").(string),
 		SelectionType:        api.ResourceType(d.Get("selection_type").(int)),
 		TroubleAlert:         d.Get("trouble_alert").(bool),
 		CriticalAlert:        d.Get("critical_alert").(bool),
 		DownAlert:            d.Get("down_alert").(bool),
-		ManualResolve:        d.Get("manual_resolve").(bool),
 		SendCustomParameters: d.Get("send_custom_parameters").(bool),
 		CustomParameters:     d.Get("custom_parameters").(string),
 		Monitors:             monitorsIDs,
@@ -213,22 +223,23 @@ func resourceDataToPagerDutyIntegration(d *schema.ResourceData) (*api.PagerDutyI
 		AlertTagIDs:          alertTagIDs,
 	}
 
-	return pagerDutyIntegration, nil
+	return serviceNowIntegration, nil
 }
 
-func updatePagerDutyIntegrationResourceData(d *schema.ResourceData, pagerDutyIntegration *api.PagerDutyIntegration) {
-	d.Set("name", pagerDutyIntegration.Name)
-	d.Set("service_key", pagerDutyIntegration.ServiceKey)
-	d.Set("sender_name", pagerDutyIntegration.SenderName)
-	d.Set("title", pagerDutyIntegration.Title)
-	d.Set("selection_type", pagerDutyIntegration.SelectionType)
-	d.Set("trouble_alert", pagerDutyIntegration.TroubleAlert)
-	d.Set("critical_alert", pagerDutyIntegration.CriticalAlert)
-	d.Set("down_alert", pagerDutyIntegration.DownAlert)
-	d.Set("manual_resolve", pagerDutyIntegration.ManualResolve)
-	d.Set("send_custom_parameters", pagerDutyIntegration.SendCustomParameters)
-	d.Set("custom_parameters", pagerDutyIntegration.CustomParameters)
-	d.Set("tags", pagerDutyIntegration.Tags)
-	d.Set("monitors", pagerDutyIntegration.Monitors)
-	d.Set("alert_tags_id", pagerDutyIntegration.AlertTagIDs)
+func updateServiceNowIntegrationResourceData(d *schema.ResourceData, serviceNowIntegration *api.ServiceNowIntegration) {
+	d.Set("name", serviceNowIntegration.Name)
+	d.Set("instance_url", serviceNowIntegration.InstanceURL)
+	d.Set("sender_name", serviceNowIntegration.SenderName)
+	d.Set("title", serviceNowIntegration.Title)
+	d.Set("user_name", serviceNowIntegration.UserName)
+	d.Set("password", serviceNowIntegration.Password)
+	d.Set("selection_type", serviceNowIntegration.SelectionType)
+	d.Set("trouble_alert", serviceNowIntegration.TroubleAlert)
+	d.Set("critical_alert", serviceNowIntegration.CriticalAlert)
+	d.Set("down_alert", serviceNowIntegration.DownAlert)
+	d.Set("send_custom_parameters", serviceNowIntegration.SendCustomParameters)
+	d.Set("custom_parameters", serviceNowIntegration.CustomParameters)
+	d.Set("tags", serviceNowIntegration.Tags)
+	d.Set("monitors", serviceNowIntegration.Monitors)
+	d.Set("alert_tags_id", serviceNowIntegration.AlertTagIDs)
 }

@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "0.0.1-beta.14"
+      version = "0.0.1-beta.15"
       // Uncomment for local setup
       # source  = "registry.zoho.io/zoho/site24x7"
       # version = "1.0.0"
@@ -130,4 +130,20 @@ resource "site24x7_website_monitor" "website_monitor_example" {
   #   "123456000024829007", // Server
   #   "123456000024829003", // Website
   # ]
+}
+
+// ServiceNow API doc - https://www.site24x7.com/help/api/#create-servicenow
+resource "site24x7_servicenow_integration" "servicenow_integration_basic" {
+  // (Required) Display name for the ServiceNow Integration.
+  name = "ServiceNow Integration - Terraform"
+  // (Required) ServiceNow instance URL.
+  instance_url = "https://www.example.com"
+  // (Required) Name of the service who posted the incident.
+  sender_name = "Site24x7 - Terraform"
+  // (Required) Title of the incident.
+  title = "$MONITORNAME is $STATUS"
+  // (Required) User name for authentication
+  user_name                        = "username"
+  // (Required) Password for authentication
+  password                        = "password"
 }

@@ -27,11 +27,11 @@ resource "site24x7_webhook_integration" "webhook_integration" {
   method                          = "P"
   // (Optional) Resource Type associated with this integration. Default value is '0'. Can take values 0|2|3. '0' denotes 'All Monitors', '2' denotes 'Monitors', '3' denotes 'Tags'
   selection_type = 0
-  // (Optional) Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Trouble'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications. Default value is 'true'.
+  // (Optional) Setting this to 'true' will send alert notifications to this third-party integration when the monitor status changes to 'Trouble'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications. Default value is 'true'.
   trouble_alert = true
-  // (Optional) Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Critical'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.
+  // (Optional) Setting this to 'true' will send alert notifications to this third-party integration when the monitor status changes to 'Critical'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.
   critical_alert = false
-  // (Optional) Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Down'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.
+  // (Optional) Setting this to 'true' will send alert notifications to this third-party integration when the monitor status changes to 'Down'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.
   down_alert = false
   // (Optional) URL to be invoked from an On-Premise Poller agent
   is_poller_webhook               = false
@@ -41,16 +41,16 @@ resource "site24x7_webhook_integration" "webhook_integration" {
   send_incident_parameters        = false
   // (Optional) Configuration to send custom parameters while executing the action
   send_custom_parameters          = true
-  // (Optional) Mandatory when send_custom_parameters is set as true.Custom parameters to be passed while accessing the URL
+  // (Optional) Mandatory when send_custom_parameters is set as true. Custom parameters to be passed while accessing the URL
   custom_parameters               = "{\"test\":\"abcd\"}"
   // (Optional) Configuration to enable json format for post parameters
   send_in_json_format             = true
   // (Optional) Authentication method to access the action url.
   // https://www.site24x7.com/help/api/#auth_method
   auth_method                     = "B"
-  // (Optional) Username for Authentication
-  username                        = "username"
-  // (Optional) Password for Authentication
+  // (Optional) User name for authentication
+  user_name                        = "username"
+  // (Optional) Password for authentication
   password                        = "password"
   // (Optional) Provider ID of the OAuth Provider to be associated with the action
   // https://www.site24x7.com/help/api/#list-oauth-providers
@@ -78,7 +78,7 @@ resource "site24x7_webhook_integration" "webhook_integration" {
   update_send_incident_parameters = false
   // (Optional) Configuration to send custom parameters while updating the ticket.
   update_send_custom_parameters   = false
-  // (Optional) Mandatory when update_send_custom_parameters is set as true.Custom parameters to be passed while accessing the URL
+  // (Optional) Mandatory when update_send_custom_parameters is set as true. Custom parameters to be passed while accessing the URL
   update_custom_parameters        = "param=value"
   // (Optional) Configuration to post in JSON format while updating the ticket.
   update_send_in_json_format = true
@@ -91,7 +91,7 @@ resource "site24x7_webhook_integration" "webhook_integration" {
   close_send_incident_parameters  = false
   // (Optional) Configuration to send custom parameters while closing the ticket.
   close_send_custom_parameters    = false
-  // (Optional) Mandatory when close_send_custom_parameters is set as true.Custom parameters to be passed while accessing the URL
+  // (Optional) Mandatory when close_send_custom_parameters is set as true. Custom parameters to be passed while accessing the URL
   close_custom_parameters         = "param=value"
   // (Optional) Configuration to post in JSON format while closing the ticket.
   close_send_in_json_format = true
@@ -112,9 +112,9 @@ resource "site24x7_webhook_integration" "webhook_integration" {
 * `timeout` (Number) The amount of time a connection waits to time out. Default value is 30. Range 1 - 45.
 * `method` (String) HTTP Method to be used for accessing the website. PUT, PATCH and DELETE are not supported. Default value is 'G'. Please refer [API documentation](https://www.site24x7.com/help/api/#http_methods).
 * `selection_type` (Number) Resource Type associated with this integration. Default value is '0'. Can take values 0|2|3. '0' denotes 'All Monitors', '2' denotes 'Monitors', '3' denotes 'Tags'. Please refer [API documentation](https://www.site24x7.com/help/api/#resource_type_constants).
-* `trouble_alert` (Boolean) Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Trouble'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.  Default value is 'true'.
-* `critical_alert` (Boolean) Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Critical'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.
-* `down_alert` (Boolean) Setting this to 'true' will send alert notifications through this third-party integration when the monitor status changes to 'Down'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.
+* `trouble_alert` (Boolean) Setting this to 'true' will send alert notifications to this third-party integration when the monitor status changes to 'Trouble'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.  Default value is 'true'.
+* `critical_alert` (Boolean) Setting this to 'true' will send alert notifications to this third-party integration when the monitor status changes to 'Critical'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.
+* `down_alert` (Boolean) Setting this to 'true' will send alert notifications to this third-party integration when the monitor status changes to 'Down'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.
 * `is_poller_webhook` (Boolean) Boolean indicating whether it is an On-Premise Poller based Webhook.
 * `poller` (String) Denotes On-Premise Poller ID.
 * `send_incident_parameters` (Boolean) Configuration to send incident parameters while executing the action.
@@ -122,8 +122,8 @@ resource "site24x7_webhook_integration" "webhook_integration" {
 * `custom_parameters` (String) Mandatory when `send_custom_parameters` is set as true. Custom parameters to be passed while accessing the URL.
 * `send_in_json_format` (Boolean) Configuration to enable json format for post parameters.
 * `auth_method` (String) Authentication method to access the action url. Please refer [API documentation](https://www.site24x7.com/help/api/#auth_method).
-* `username` (String) Username for Authentication.
-* `password` (String) Password for Authentication.
+* `user_name` (String) User name for authentication.
+* `password` (String) Password for authentication.
 * `oauth2_provider` (String) Provider ID of the OAuth Provider to be associated with the action. Please refer [API documentation](https://www.site24x7.com/help/api/#list-oauth-providers).
 * `user_agent` (String) User Agent to be used while monitoring the website.
 * `custom_headers` (Map of String) A Map of Header name and value.
@@ -135,13 +135,13 @@ resource "site24x7_webhook_integration" "webhook_integration" {
 * `update_method` (String) HTTP Method to access the URL.Please refer [API documentation](https://www.site24x7.com/help/api/#http_methods).
 * `update_send_incident_parameters` (Boolean) Configuration to send incident parameters while updating the ticket.
 * `update_send_custom_parameters` (Boolean) Configuration to send custom parameters while updating the ticket.
-* `update_custom_parameters` (String) Mandatory when `update_send_custom_parameters` is set as true.Custom parameters to be passed while accessing the URL.
+* `update_custom_parameters` (String) Mandatory when `update_send_custom_parameters` is set as true. Custom parameters to be passed while accessing the URL.
 * `update_send_in_json_format` (Boolean) Configuration to post in JSON format while updating the ticket.
 * `close_url` (String) URL to be invoked to close the request.
 * `close_method` (String) HTTP Method to access the URL.Please refer [API documentation](https://www.site24x7.com/help/api/#http_methods).
 * `close_send_incident_parameters` (Boolean) Configuration to send incident parameters while closing the ticket.
 * `close_send_custom_parameters` (Boolean) Configuration to send custom parameters while closing the ticket.
-* `close_custom_parameters` (String) Mandatory when `close_send_custom_parameters` is set as true.Custom parameters to be passed while accessing the URL.
+* `close_custom_parameters` (String) Mandatory when `close_send_custom_parameters` is set as true. Custom parameters to be passed while accessing the URL.
 * `close_send_in_json_format` (Boolean) Configuration to post in JSON format while closing the ticket.
 
 

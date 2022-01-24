@@ -83,6 +83,7 @@ type Client interface {
 	SlackIntegration() integration.SlackIntegration
 	WebhookIntegration() integration.WebhookIntegration
 	PagerDutyIntegration() integration.PagerDutyIntegration
+	ServiceNowIntegration() integration.ServiceNowIntegration
 }
 
 type client struct {
@@ -202,6 +203,11 @@ func (c *client) WebhookIntegration() integration.WebhookIntegration {
 // PagerDutyIntegration implements Client.
 func (c *client) PagerDutyIntegration() integration.PagerDutyIntegration {
 	return integration.NewPagerDuty(c.restClient)
+}
+
+// ServiceNowIntegration implements Client.
+func (c *client) ServiceNowIntegration() integration.ServiceNowIntegration {
+	return integration.NewServiceNow(c.restClient)
 }
 
 // ThirdPartyIntegrations implements Client.

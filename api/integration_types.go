@@ -96,7 +96,7 @@ type WebhookIntegration struct {
 	CustomParameters             interface{}  `json:"custom_parameters,omitempty"`
 	SendInJsonFormat             bool         `json:"send_in_json_format"`
 	AuthMethod                   string       `json:"auth_method,omitempty"`
-	Username                     string       `json:"username,omitempty"`
+	UserName                     string       `json:"username,omitempty"`
 	Password                     string       `json:"password,omitempty"`
 	OauthProvider                string       `json:"oauth2_provider,omitempty"`
 	UserAgent                    string       `json:"user_agent,omitempty"`
@@ -146,4 +146,30 @@ type PagerDutyIntegration struct {
 
 func (pagerDutyIntegration *PagerDutyIntegration) String() string {
 	return ToString(pagerDutyIntegration)
+}
+
+// Denotes ServiceNow integration resource in Site24x7.
+type ServiceNowIntegration struct {
+	_                    struct{}     `type:"structure"` // Enforces key based initialization.
+	ServiceID            string       `json:"service_id,omitempty"`
+	ServiceStatus        int          `json:"service_status,omitempty"`
+	Name                 string       `json:"name"`
+	InstanceURL          string       `json:"instance_url"`
+	SenderName           string       `json:"sender_name"`
+	Title                string       `json:"title"`
+	UserName             string       `json:"username"`
+	Password             string       `json:"password"`
+	SelectionType        ResourceType `json:"selection_type"`
+	TroubleAlert         bool         `json:"trouble_alert"`
+	CriticalAlert        bool         `json:"critical_alert"`
+	DownAlert            bool         `json:"down_alert"`
+	SendCustomParameters bool         `json:"send_custom_parameters,omitempty"`
+	CustomParameters     string       `json:"custom_parameters,omitempty"`
+	Tags                 []string     `json:"tags,omitempty"`
+	Monitors             []string     `json:"monitors,omitempty"`
+	AlertTagIDs          []string     `json:"alert_tags_id,omitempty"`
+}
+
+func (serviceNowIntegration *ServiceNowIntegration) String() string {
+	return ToString(serviceNowIntegration)
 }
