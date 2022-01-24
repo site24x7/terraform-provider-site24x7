@@ -5,7 +5,7 @@ terraform {
   required_providers {
     site24x7 = {
       source  = "site24x7/site24x7"
-      # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest
+      # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
       version = "0.0.1-beta.15"
     }
   }
@@ -42,28 +42,37 @@ provider "site24x7" {
 
 }
 
-// Slack Integration API doc: https://www.site24x7.com/help/api/#create-slack
-resource "site24x7_slack_integration" "slack_integration_basic" {
-  // (Required) Display name for the integration
-  name           = "Slack Integration With Site24x7"
-  // (Required) Hook URL to which the message will be posted
-  url            = "https://hooks.slack.com/services/TM5L0/B1N0/7Vk7I53J4euf6"
-  // (Required) Name of the service who posted the message
-  sender_name    = "Site24x7"
-  // (Required) Title of the incident
-  title          = "$MONITORNAME is $STATUS"
+// ServiceNow API doc - https://www.site24x7.com/help/api/#create-servicenow
+resource "site24x7_servicenow_integration" "servicenow_integration_basic" {
+  // (Required) Display name for the ServiceNow Integration.
+  name = "ServiceNow Integration - Terraform"
+  // (Required) ServiceNow instance URL.
+  instance_url = "https://www.example.com"
+  // (Required) Name of the service who posted the incident.
+  sender_name = "Site24x7 - Terraform"
+  // (Required) Title of the incident.
+  title = "$MONITORNAME is $STATUS"
+  // (Required) User name for authentication
+  user_name                        = "username"
+  // (Required) Password for authentication
+  password                        = "password"
 }
 
-// Slack Integration API doc: https://www.site24x7.com/help/api/#create-slack
-resource "site24x7_slack_integration" "slack_integration" {
-  // (Required) Display name for the integration
-  name           = "Slack Integration With Site24x7"
-  // (Required) Hook URL to which the message will be posted
-  url            = "https://hooks.slack.com/services/TM5L0/B91N0/7Vk7I5J4euf6"
-  // (Required) Name of the service who posted the message
-  sender_name    = "Site24x7"
-  // (Required) Title of the incident
-  title          = "$MONITORNAME is $STATUS"
+
+// ServiceNow API doc - https://www.site24x7.com/help/api/#create-servicenow
+resource "site24x7_servicenow_integration" "servicenow_integration" {
+  // (Required) Display name for the ServiceNow Integration.
+  name = "ServiceNow Integration - Terraform"
+  // (Required) ServiceNow instance URL.
+  instance_url = "https://www.example.com"
+  // (Required) Name of the service who posted the incident.
+  sender_name = "Site24x7 - Terraform"
+  // (Required) Title of the incident.
+  title = "$MONITORNAME is $STATUS"
+  // (Required) User name for authentication
+  user_name                        = "username"
+  // (Required) Password for authentication
+  password                        = "password"
   // (Optional) Resource Type associated with this integration. Default value is '0'. Can take values 0|2|3. '0' denotes 'All Monitors', '2' denotes 'Monitors', '3' denotes 'Tags'
   selection_type = 0
   // (Optional) Setting this to 'true' will send alert notifications to this third-party integration when the monitor status changes to 'Trouble'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications. Default value is 'true'.
@@ -72,10 +81,14 @@ resource "site24x7_slack_integration" "slack_integration" {
   critical_alert = false
   // (Optional) Setting this to 'true' will send alert notifications to this third-party integration when the monitor status changes to 'Down'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.
   down_alert = false
+  // (Optional) Configuration to send custom parameters while executing the action.
+  send_custom_parameters = true
+  // (Optional) Mandatory, if send_custom_parameters is set as true. Custom parameters to be passed while accessing the URL.
+  custom_parameters               = "{\"test\":\"abcd\"}"
   // (Optional) Monitors to be associated with the integration when the selection_type = 2.
   monitors                        = ["756"]
   // (Optional) Tags to be associated with the integration when the selection_type = 3.
   tags                        = ["345"]
-  // (Optional) List of tag IDs to be associated with the integration
-  alert_tags_id  = ["123"]
+  // (Optional) List of tag IDs to be associated with the integration.
+  alert_tags_id                   = ["123"]
 }

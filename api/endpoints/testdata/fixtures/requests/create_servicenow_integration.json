@@ -1,0 +1,15 @@
+{
+  "name": "Site24x7-ServiceNow Integration",
+  "instance_url": "https://www.example.com",
+  "trouble_alert": true,
+  "critical_alert": false,
+  "down_alert": false,
+  "sender_name": "Site24x7",
+  "selection_type": 0,
+  "username":"username",
+  "password":"password",
+  "title": "$MONITOR_NAME is $STATUS",
+  "alert_tags_id": [
+    "113770000023231001"
+  ]
+}
