@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "0.0.1-beta.15"
+      version = "1.0.0"
       // Uncomment for local setup
       # source  = "registry.zoho.io/zoho/site24x7"
       # version = "1.0.0"
@@ -68,7 +68,7 @@ provider "site24x7" {
 // Destroy command --> terraform destroy -target site24x7_website_monitor.website_monitor_example
 
 // Website Monitor API doc: https://www.site24x7.com/help/api/#website
-resource "site24x7_website_monitor" "website_monitor_example" {
+resource "site24x7_website_monitor" "website_monitor_us" {
   // (Required) Display name for the monitor
   display_name = "Example Monitor"
 
@@ -132,18 +132,22 @@ resource "site24x7_website_monitor" "website_monitor_example" {
   # ]
 }
 
-// ServiceNow API doc - https://www.site24x7.com/help/api/#create-servicenow
-resource "site24x7_servicenow_integration" "servicenow_integration_basic" {
-  // (Required) Display name for the ServiceNow Integration.
-  name = "ServiceNow Integration - Terraform"
-  // (Required) ServiceNow instance URL.
-  instance_url = "https://www.example.com"
-  // (Required) Name of the service who posted the incident.
-  sender_name = "Site24x7 - Terraform"
-  // (Required) Title of the incident.
-  title = "$MONITORNAME is $STATUS"
-  // (Required) User name for authentication
-  user_name                        = "username"
-  // (Required) Password for authentication
-  password                        = "password"
+// Site24x7 Rest API Monitor API doc - https://www.site24x7.com/help/api/#rest-api
+resource "site24x7_rest_api_monitor" "rest_api_monitor_basic" {
+  // (Required) Display name for the monitor
+  display_name = "REST API Monitor - terraform"
+  // (Required) Website address to monitor.
+  website = "https://dummy.restapiexample.com/"
+  // (Optional) Name of the Location Profile that has to be associated with the monitor. 
+  // Either specify location_profile_id or location_profile_name.
+  // If location_profile_id and location_profile_name are omitted,
+  // the first profile returned by the /api/location_profiles endpoint
+  // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
+  // used.
+  location_profile_name = "North America"
+  // (Optional) Provide a comma-separated list of HTTP status codes that indicate a successful response. 
+  // You can specify individual status codes, as well as ranges separated with a colon.
+  up_status_codes = "400:500"
+
 }
+

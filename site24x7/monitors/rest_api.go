@@ -234,6 +234,11 @@ var RestApiMonitorSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Description: "Token ID of the Web Token to be associated with the monitor.",
 	},
+	"up_status_codes": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Provide a comma-separated list of HTTP status codes that indicate a successful response. You can specify individual status codes, as well as ranges separated with a colon.",
+	},
 	"matching_keyword": {
 		Type:     schema.TypeMap,
 		Optional: true,
@@ -537,6 +542,8 @@ func resourceDataToRestApiMonitor(d *schema.ResourceData, client site24x7.Client
 		TagIDs:                tagIDs,
 		ThirdPartyServiceIDs:  thirdPartyServiceIDs,
 		ActionIDs:             actionRefs,
+		// HTTP Configuration
+		UpStatusCodes: d.Get("up_status_codes").(string),
 	}
 
 	if matchingRegex, ok := d.GetOk("match_regex"); ok {
@@ -679,4 +686,7 @@ func updateRestApiMonitorResourceData(d *schema.ResourceData, monitor *api.RestA
 	}
 
 	d.Set("actions", actions)
+
+	// HTTP Configuration
+	d.Set("up_status_codes", monitor.UpStatusCodes)
 }

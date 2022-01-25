@@ -160,6 +160,8 @@ type RestApiMonitor struct {
 	TagIDs                    []string               `json:"tag_ids,omitempty"`
 	ThirdPartyServiceIDs      []string               `json:"third_party_services,omitempty"`
 	ActionIDs                 []ActionRef            `json:"action_ids,omitempty"`
+	// HTTP Configuration
+	UpStatusCodes string `json:"up_status_codes,omitempty"`
 }
 
 func (restApiMonitor *RestApiMonitor) SetNotificationProfileID(notificationProfileID string) {
