@@ -13,10 +13,11 @@ Use this resource to create, update, and delete a REST API monitor in Site24x7.
 ## Example Usage
 
 ```hcl
+
 // Site24x7 Rest API Monitor API doc - https://www.site24x7.com/help/api/#rest-api
 resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
   // (Required) Display name for the monitor
-  display_name = "rest api - terraform"
+  display_name = "REST API Monitor - terraform"
   // (Required) Website address to monitor.
   website = "https://dummy.restapiexample.com/"
   // (Optional) Name of the Location Profile that has to be associated with the monitor. 
@@ -26,30 +27,87 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
   // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
   // used.
   location_profile_name = "North America"
-  // (Optional) Check for the keyword in the website response.
+  // (Optional) Name of the notification profile that has to be associated with the monitor.
+  // Profile name matching works for both exact and partial match.
+  // Either specify notification_profile_id or notification_profile_name.
+  // If notification_profile_id and notification_profile_name are omitted,
+  // the first profile returned by the /api/notification_profiles endpoint
+  // (https://www.site24x7.com/help/api/#list-notification-profiles) will be
+  // used.
+  notification_profile_name = "Terraform Profile"
+
+  // (Optional) List if user group IDs to be notified on down. 
+  // Either specify user_group_ids or user_group_names. If omitted, the
+  // first user group returned by the /api/user_groups endpoint
+  // (https://www.site24x7.com/help/api/#list-of-all-user-groups) will be used.
+  user_group_ids = [
+    "123",
+  ]
+
+  // (Optional) List if user group names to be notified on down. 
+  // Either specify user_group_ids or user_group_names. If omitted, the
+  // first user group returned by the /api/user_groups endpoint
+  // (https://www.site24x7.com/help/api/#list-of-all-user-groups) will be used.
+  user_group_names = [
+    "Terraform",
+    "Network",
+    "Admin",
+  ]
+
   // (Optional) List if tag IDs to be associated to the monitor.
   tag_ids = [
     "123",
   ]
+
+  // (Optional) List of tag names to be associated to the monitor. Tag name matching works for both exact and 
+  //  partial match. Either specify tag_ids or tag_names.
+  tag_names = [
+    "Terraform",
+    "Network",
+  ]
+  
   // (Optional) List of Third Party Service IDs to be associated to the monitor.
   third_party_service_ids = [
     "4567"
   ]
+
+  // (Optional) Map of custom HTTP headers to send.
+  custom_headers = {
+    "Accept" = "application/json"
+  }
+
+  // (Optional) Check for the keyword in the website response.
   matching_keyword = {
  	  severity= 2
  	  value= "aaa"
  	}
+  
   // (Optional) Check for non existence of keyword in the website response.
   unmatching_keyword = {
  	  severity= 2
  	  value= "bbb"
  	}
+  
   // (Optional) Match the regular expression in the website response.
   match_regex = {
  	  severity= 2
  	  value= ".*aaa.*"
  	}
+  
+  // (Optional) Map of HTTP response headers to check.
+  response_headers_severity = 0 // Can take values 0 or 2. '0' denotes Down and '2' denotes Trouble.
+  response_headers = {
+    "Content-Encoding" = "gzip"
+    "Connection" = "Keep-Alive"
+  }
+
+  // HTTP Configuration
+  // (Optional) Provide a comma-separated list of HTTP status codes that indicate a successful response. 
+  // You can specify individual status codes, as well as ranges separated with a colon.
+  up_status_codes = "400-500"
 }
+
+
 ```
 
 ## Attributes Reference
@@ -84,6 +142,7 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
 * `oauth2_provider` (String) Provider ID of the OAuth Provider to be associated with the monitor.
 * `json_schema_check` (Boolean) Enable this option to perform the JSON schema check.
 * `jwt_id` (String) Token ID of the Web Token to be associated with the monitor.
+* `up_status_codes` (String) Provide a comma-separated list of HTTP status codes that indicate a successful response. You can specify individual status codes, as well as ranges separated with a colon.
 * `match_case` (Boolean) Perform case sensitive keyword search or not.
 * `match_regex` (Map of String) Match the regular expression in the website response.
 * `matching_keyword` (Map of String) Check for the keyword in the website response.

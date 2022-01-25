@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "0.0.1-beta.15"
+      version = "1.0.0"
     }
   }
 }
@@ -40,6 +40,21 @@ provider "site24x7" {
   // Maximum number of Site24x7 API request retries to perform until giving up.
   max_retries = 4
 
+}
+
+// Site24x7 Rest API Monitor API doc - https://www.site24x7.com/help/api/#rest-api
+resource "site24x7_rest_api_monitor" "rest_api_monitor_basic" {
+  // (Required) Display name for the monitor
+  display_name = "REST API Monitor - terraform"
+  // (Required) Website address to monitor.
+  website = "https://dummy.restapiexample.com/"
+  // (Optional) Name of the Location Profile that has to be associated with the monitor. 
+  // Either specify location_profile_id or location_profile_name.
+  // If location_profile_id and location_profile_name are omitted,
+  // the first profile returned by the /api/location_profiles endpoint
+  // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
+  // used.
+  location_profile_name = "North America"
 }
 
 // Site24x7 Rest API Monitor API doc - https://www.site24x7.com/help/api/#rest-api
@@ -128,4 +143,9 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
     "Content-Encoding" = "gzip"
     "Connection" = "Keep-Alive"
   }
+
+  // HTTP Configuration
+  // (Optional) Provide a comma-separated list of HTTP status codes that indicate a successful response. 
+  // You can specify individual status codes, as well as ranges separated with a colon.
+  up_status_codes = "400:500"
 }
