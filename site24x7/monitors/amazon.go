@@ -17,11 +17,19 @@ var AmazonMonitorSchema = map[string]*schema.Schema{
 		Type:        schema.TypeString,
 		Required:    true,
 		Description: "Access Key ID for the AWS account.",
+		DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
+			// We are suppressing diff since aws_access_key in API response is encrypted.
+			return true
+		},
 	},
 	"aws_secret_key": {
 		Type:        schema.TypeString,
 		Required:    true,
 		Description: "Secret Access key for the AWS account.",
+		DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
+			// We are suppressing diff since aws_secret_key in API response is encrypted.
+			return true
+		},
 	},
 	"aws_discovery_frequency": {
 		Type:        schema.TypeInt,

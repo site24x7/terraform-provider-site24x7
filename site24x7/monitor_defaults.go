@@ -58,7 +58,7 @@ func SetNotificationProfile(client Client, d *schema.ResourceData, monitor api.S
 		return nil, err
 	}
 	if len(notificationProfiles) == 0 {
-		return nil, errors.New("Unable to find notification profiles in Site24x7. Please configure them by visiting Admin -> Configuration Profiles -> Notification Profiles")
+		return nil, errors.New("Unable to find notification profiles in Site24x7! Please configure them by visiting Admin -> Configuration Profiles -> Notification Profiles")
 	}
 	// notification_profile_id will be set for existing resources.
 	// If notification_profile_name is defined we try to find a match in Site24x7 and override notification_profile_id else raise an error.
@@ -96,13 +96,18 @@ func DefaultThresholdProfile(client Client, monitorType api.MonitorType) (*api.T
 	}
 
 	if len(profiles) == 0 {
-		return nil, errors.New("No Threshold Profiles Configured")
+		return nil, errors.New("Unable to find threshold profiles in Site24x7! Please configure threshold profile for the monitor type : " + string(monitorType) + " by visiting Admin -> Configuration Profiles -> Threshold and Availability")
 	}
-
+	var thresholdProf *api.ThresholdProfile
 	for _, p := range profiles {
 		if p.Type == string(monitorType) {
+			thresholdProf = p
 			return p, nil
 		}
+	}
+	// Below condition will be true when Threshold Profile is not present in Site24x7 for the given monitor type.
+	if thresholdProf == nil {
+		return nil, errors.New("Please configure threshold profile for the monitor type : " + string(monitorType) + " by visiting Admin -> Configuration Profiles -> Threshold and Availability")
 	}
 
 	return profiles[0], nil
@@ -118,7 +123,7 @@ func DefaultUserGroup(client Client) (*api.UserGroup, error) {
 	}
 
 	if len(userGroups) == 0 {
-		return nil, errors.New("No User Groups Configured")
+		return nil, errors.New("Unable to find user groups in Site24x7! Please configure user groups by visiting Admin -> User & Alert Management -> User Alert Group")
 	}
 
 	return userGroups[0], nil
@@ -132,7 +137,7 @@ func SetUserGroup(client Client, d *schema.ResourceData, monitor api.Site24x7Mon
 		return nil, err
 	}
 	if len(userGroups) == 0 {
-		return nil, errors.New("Unable to find user groups in Site24x7. Please configure them by visiting Admin -> User & Alert Management -> User Alert Group")
+		return nil, errors.New("Unable to find user groups in Site24x7! Please configure user groups by visiting Admin -> User & Alert Management -> User Alert Group")
 	}
 
 	// If user_group_names are defined we try to find a match in Site24x7 and override user_group_ids else raise an error.
@@ -172,12 +177,12 @@ func SetTags(client Client, d *schema.ResourceData, monitor api.Site24x7Monitor)
 	if err != nil {
 		return nil, err
 	}
-	if len(tagsList) == 0 {
-		return nil, errors.New("Unable to find tags in Site24x7. Please configure them by visiting Admin -> Tags -> Add Tag")
-	}
 
 	// If tag_names are defined we try to find a match in Site24x7 and override tag_ids else raise an error.
 	if _, tagNamesExistsInConf := d.GetOk("tag_names"); tagNamesExistsInConf {
+		if len(tagsList) == 0 {
+			return nil, errors.New("Unable to find tags in Site24x7! Please configure tags by visiting Admin -> Tags -> Add Tag")
+		}
 		for _, tName := range d.Get("tag_names").([]interface{}) {
 			tagNamesInConf = append(tagNamesInConf, tName.(string))
 		}
@@ -199,6 +204,10 @@ func SetTags(client Client, d *schema.ResourceData, monitor api.Site24x7Monitor)
 		monitor.SetTagIDs(tagIDs)
 		d.Set("tag_ids", tagIDs)
 	} else if len(monitor.GetTagIDs()) == 0 { // This will be true when tag_ids in the configuration file is empty during resource addition.
+		if len(tagsList) == 0 {
+			// Tags are not mandatory for successful monitor addition.
+			return tagIDs, nil
+		}
 		tag := tagsList[0]
 		monitor.SetTagIDs([]string{tag.TagID})
 		d.Set("tag_ids", []string{tag.TagID})
