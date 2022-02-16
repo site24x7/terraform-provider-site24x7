@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "1.0.1"
+      version = "1.0.2"
     }
   }
 }
@@ -50,7 +50,7 @@ resource "site24x7_threshold_profile" "website_threshold_profile_us" {
   type = "URL"
   // (Optional) Threshold profile types - https://www.site24x7.com/help/api/#threshold_profile_types
   profile_type = 1
-  // (Optional) Triggers alert when the monitor is down from configured number of locations.
+  // (Optional) Triggers alert when the monitor is down from configured number of locations. Default value is '3'
   down_location_threshold = 1
   // (Optional) Triggers alert when Website content is modified.
   website_content_modified = false
@@ -62,6 +62,70 @@ resource "site24x7_threshold_profile" "website_threshold_profile_us" {
   website_content_changes {
     severity     = 3
     value = 95
+  }
+  // (Optional) Response time threshold configuration
+  primary_response_time_trouble_threshold = {
+    // https://www.site24x7.com/help/api/#threshold_severity
+    // 2 - Trouble
+    severity = 4
+    // https://www.site24x7.com/help/api/#constants
+    // 1 - Greater than (>), 2 - Less than (<), 3 - Greater than or equal to (>=), 4 - Less than or equal to (<=), 5 - Equal to (=), 6 - Not Equal to (≠)
+    comparison_operator = 2
+    // Attribute Threshold Value
+    value               = 1000
+    // https://www.site24x7.com/help/api/#threshold_strategy
+    // 1 - Poll Count, 2 - Poll Average, 3 - Time Range, 4 - Average Time
+    strategy            = 2
+    // Poll Check Value
+    polls_check         = 5
+  }
+
+  primary_response_time_critical_threshold = {
+    // https://www.site24x7.com/help/api/#threshold_severity
+    // 3 - Critical
+    severity = 3
+    // https://www.site24x7.com/help/api/#constants
+    // 1 - Greater than (>), 2 - Less than (<), 3 - Greater than or equal to (>=), 4 - Less than or equal to (<=), 5 - Equal to (=), 6 - Not Equal to (≠)
+    comparison_operator = 1
+    // Attribute Threshold Value
+    value               = 2000
+    // https://www.site24x7.com/help/api/#threshold_strategy
+    // 1 - Poll Count, 2 - Poll Average, 3 - Time Range, 4 - Average Time
+    strategy            = 2
+    // Poll Check Value
+    polls_check         = 5
+  }
+
+  secondary_response_time_trouble_threshold = {
+    // https://www.site24x7.com/help/api/#threshold_severity
+    // 2 - Trouble
+    severity = 2
+    // https://www.site24x7.com/help/api/#constants
+    // 1 - Greater than (>), 2 - Less than (<), 3 - Greater than or equal to (>=), 4 - Less than or equal to (<=), 5 - Equal to (=), 6 - Not Equal to (≠)
+    comparison_operator = 1
+    // Attribute Threshold Value
+    value               = 3000
+    // https://www.site24x7.com/help/api/#threshold_strategy
+    // 1 - Poll Count, 2 - Poll Average, 3 - Time Range, 4 - Average Time
+    strategy            = 2
+    // Poll Check Value
+    polls_check         = 5
+  }
+
+  secondary_response_time_critical_threshold = {
+    // https://www.site24x7.com/help/api/#threshold_severity
+    // 3 - Critical
+    severity = 3
+    // https://www.site24x7.com/help/api/#constants
+    // 1 - Greater than (>), 2 - Less than (<), 3 - Greater than or equal to (>=), 4 - Less than or equal to (<=), 5 - Equal to (=), 6 - Not Equal to (≠)
+    comparison_operator = 1
+    // Attribute Threshold Value
+    value               = 4000
+    // https://www.site24x7.com/help/api/#threshold_strategy
+    // 1 - Poll Count, 2 - Poll Average, 3 - Time Range, 4 - Average Time
+    strategy            = 2
+    // Poll Check Value
+    polls_check         = 5
   }
 
 }
