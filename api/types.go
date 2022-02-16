@@ -94,7 +94,7 @@ type ThresholdProfile struct {
 	ProfileName            string                   `json:"profile_name"`
 	ProfileType            int                      `json:"profile_type"` // 1 - Static Threshold or 2 - AI-based Threshold
 	DownLocationThreshold  int                      `json:"down_location_threshold"`
-	WebsiteContentModified bool                     `json:"website_content_modified"`
+	WebsiteContentModified bool                     `json:"website_content_modified,omitempty"`
 	WebsiteContentChanges  []map[string]interface{} `json:"website_content_changes,omitempty"`
 	ResponseTimeThreshold  map[string]interface{}   `json:"response_time_threshold,omitempty"`
 }

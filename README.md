@@ -35,7 +35,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "1.0.1"
+      version = "1.0.2"
     }
   }
 }
@@ -136,20 +136,17 @@ cd terraform-provider-site24x7
 ```
 
 This will build the `terraform-provider-site24x7` binary and install it into
-the `$HOME/.terraform.d/plugins/registry.zoho.io/zoho/site24x7/1.0.0/linux_amd64` directory.
+the `$HOME/.terraform.d/plugins/registry.terraform.io/site24x7/1.0.0/linux_amd64` directory.
 
 Place the below content in ~/.terraformrc
 
 ```sh
 
 provider_installation {
-  filesystem_mirror {
-    path = "$HOME/.terraform.d/plugins/"
-    include = ["registry.zoho.io/*/*"]
-  }
-  direct {
-    exclude = ["registry.zoho.io/*/*"]
-  }
+	filesystem_mirror {
+	  path = "$HOME/.terraform.d/plugins"
+	  include = ["registry.terraform.io/site24x7/*"]
+	}
 }
 
 ```
