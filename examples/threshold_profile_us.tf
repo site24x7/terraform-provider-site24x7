@@ -46,7 +46,7 @@ provider "site24x7" {
 resource "site24x7_threshold_profile" "website_threshold_profile_us" {
   // (Required) Name of the profile
   profile_name = "URL Threshold Profile - Terraform"
-  // (Required) Type of the profile - Denotes monitor type
+  // (Required) Type of the profile - Denotes monitor type (eg) RESTAPI, SSL_CERT
   type = "URL"
   // (Optional) Threshold profile types - https://www.site24x7.com/help/api/#threshold_profile_types
   profile_type = 1
@@ -67,7 +67,7 @@ resource "site24x7_threshold_profile" "website_threshold_profile_us" {
   primary_response_time_trouble_threshold = {
     // https://www.site24x7.com/help/api/#threshold_severity
     // 2 - Trouble
-    severity = 4
+    severity = 2
     // https://www.site24x7.com/help/api/#constants
     // 1 - Greater than (>), 2 - Less than (<), 3 - Greater than or equal to (>=), 4 - Less than or equal to (<=), 5 - Equal to (=), 6 - Not Equal to (≠)
     comparison_operator = 2
