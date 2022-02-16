@@ -17,7 +17,7 @@ Use this resource to create, update, and delete a threshold profile in Site24x7.
 resource "site24x7_threshold_profile" "website_threshold_profile_us" {
   // (Required) Name of the profile
   profile_name = "URL Threshold Profile - Terraform"
-  // (Required) Type of the profile - Denotes monitor type
+  // (Required) Type of the profile - Denotes monitor type (eg) RESTAPI, SSL_CERT
   type = "URL"
   // (Optional) Threshold profile types - https://www.site24x7.com/help/api/#threshold_profile_types
   profile_type = 1
@@ -38,7 +38,7 @@ resource "site24x7_threshold_profile" "website_threshold_profile_us" {
   primary_response_time_trouble_threshold = {
     // https://www.site24x7.com/help/api/#threshold_severity
     // 2 - Trouble
-    severity = 4
+    severity = 2
     // https://www.site24x7.com/help/api/#constants
     // 1 - Greater than (>), 2 - Less than (<), 3 - Greater than or equal to (>=), 4 - Less than or equal to (<=), 5 - Equal to (=), 6 - Not Equal to (≠)
     comparison_operator = 2
@@ -106,7 +106,7 @@ resource "site24x7_threshold_profile" "website_threshold_profile_us" {
 ### Required
 
 * `profile_name` (String) Display Name for the threshold profile
-* `type` (String) Type of the monitor for which the threshold profile is being created.
+* `type` (String) Type of the monitor for which the threshold profile is being created. Refer [API documentation](https://www.site24x7.com/help/api/#threshold-parameters) for more information about type.
 
 ### Optional
 
@@ -123,19 +123,19 @@ resource "site24x7_threshold_profile" "website_threshold_profile_us" {
 <a id="nestedblock--website_content_changes"></a>
 ### Nested Schema for `website_content_changes`
 
-Required:
+### Required
 
 * `severity` (Number) Trouble(2), Critical(3). Refer [API documentation](https://www.site24x7.com/help/api/#threshold_severity) for more information about threshold severity.
 * `value` (Number) Attribute Threshold Value
 
-Optional:
+### Optional
 
-* `comparison_operator` (Number)
+* `comparison_operator` (Number) 1 - Greater than (>), 2 - Less than (<), 3 - Greater than or equal to (>=), 4 - Less than or equal to (<=), 5 - Equal to (=), 6 - Not Equal to (≠). Refer [API documentation](https://www.site24x7.com/help/api/#constants) for more information about comparison operator.
 
 <a id="nestedblock--response_time_threshold"></a>
 ### Map Schema for `primary_response_time_trouble_threshold`, `primary_response_time_critical_threshold`, `secondary_response_time_trouble_threshold`, `secondary_response_time_critical_threshold`
 
-Required:
+### Required
 
 * `severity` (Number) Trouble(2), Critical(3). Refer [API documentation](https://www.site24x7.com/help/api/#threshold_severity) for more information about threshold severity.
 * `comparison_operator` (Number) 1 - Greater than (>), 2 - Less than (<), 3 - Greater than or equal to (>=), 4 - Less than or equal to (<=), 5 - Equal to (=), 6 - Not Equal to (≠). Refer [API documentation](https://www.site24x7.com/help/api/#constants) for more information about comparison operator.
