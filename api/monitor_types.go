@@ -134,7 +134,7 @@ type RestApiMonitor struct {
 	HttpProtocol              string                 `json:"http_protocol,omitempty"`
 	SslProtocol               string                 `json:"ssl_protocol,omitempty"`
 	RequestContentType        string                 `json:"request_content_type,omitempty"`
-	ResponseContentType       string                 `json:"response_type,omitempty"`
+	ResponseContentType       string                 `json:"response_type"`
 	RequestParam              string                 `json:"request_param,omitempty"`
 	AuthUser                  string                 `json:"auth_user,omitempty"`
 	AuthPass                  string                 `json:"auth_pass,omitempty"`
@@ -144,10 +144,12 @@ type RestApiMonitor struct {
 	MatchingKeyword           map[string]interface{} `json:"matching_keyword,omitempty"`
 	UnmatchingKeyword         map[string]interface{} `json:"unmatching_keyword,omitempty"`
 	MatchRegex                map[string]interface{} `json:"match_regex,omitempty"`
+	MatchJSON                 map[string]interface{} `json:"match_json,omitempty"`
+	JSONSchema                map[string]interface{} `json:"json_schema,omitempty"`
+	JSONSchemaCheck           bool                   `json:"json_schema_check,omitempty"`
 	UseAlpn                   bool                   `json:"use_alpn"`
 	UseIPV6                   bool                   `json:"use_ipv6"`
 	MatchCase                 bool                   `json:"match_case"`
-	JSONSchemaCheck           bool                   `json:"json_schema_check"`
 	UseNameServer             bool                   `json:"use_name_server"`
 	UserAgent                 string                 `json:"user_agent"`
 	CustomHeaders             []Header               `json:"custom_headers,omitempty"`

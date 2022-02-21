@@ -202,7 +202,7 @@ var RestApiMonitorSchema = map[string]*schema.Schema{
 		Type:        schema.TypeString,
 		Optional:    true,
 		Default:     "T",
-		Description: "Response content type.",
+		Description: "Response content type. Default value is 'T'. 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML",
 	},
 	"request_param": {
 		Type:        schema.TypeString,
@@ -255,7 +255,7 @@ var RestApiMonitorSchema = map[string]*schema.Schema{
 				},
 			},
 		},
-		Description: "",
+		Description: "Check for the keyword in the website response.",
 	},
 	"unmatching_keyword": {
 		Type:     schema.TypeMap,
@@ -273,7 +273,7 @@ var RestApiMonitorSchema = map[string]*schema.Schema{
 				},
 			},
 		},
-		Description: "",
+		Description: "Check for non existence of keyword in the website response.",
 	},
 	"match_regex": {
 		Type:     schema.TypeMap,
@@ -291,17 +291,12 @@ var RestApiMonitorSchema = map[string]*schema.Schema{
 				},
 			},
 		},
-		Description: "",
+		Description: "Match the regular expression in the website response.",
 	},
 	"match_case": {
 		Type:        schema.TypeBool,
 		Optional:    true,
 		Description: "Perform case sensitive keyword search or not.",
-	},
-	"json_schema_check": {
-		Type:        schema.TypeBool,
-		Optional:    true,
-		Description: "Enable this option to perform the JSON schema check.",
 	},
 	"use_name_server": {
 		Type:        schema.TypeBool,
@@ -336,6 +331,38 @@ var RestApiMonitorSchema = map[string]*schema.Schema{
 		Type:        schema.TypeMap,
 		Optional:    true,
 		Description: "A Map of Header name and value.",
+	},
+	"match_json_path": {
+		Type: schema.TypeList,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Description: "Provide multiple JSON Path expressions to enable evaluation of JSON Path expression assertions. The assertions must successfully parse the JSON Path in the JSON. JSON expression assertions fails if the expressions does not match.",
+	},
+	"match_json_path_severity": {
+		Type:         schema.TypeInt,
+		Optional:     true,
+		Default:      2,
+		ValidateFunc: validation.IntInSlice([]int{0, 2}), // 0 - Down, 2 - Trouble
+		Description:  "Trigger an alert when the JSON path assertion fails during a test. Alert type constant. Can be either 0 or 2. '0' denotes Down and '2' denotes Trouble. Default value is 2.",
+	},
+	"json_schema": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "JSON schema to be validated against the JSON response.",
+	},
+	"json_schema_severity": {
+		Type:         schema.TypeInt,
+		Optional:     true,
+		Default:      2,
+		ValidateFunc: validation.IntInSlice([]int{0, 2}), // 0 - Down, 2 - Trouble
+		Description:  "Trigger an alert when the JSON schema assertion fails during a test. Alert type constant. Can be either 0 or 2. '0' denotes Down and '2' denotes Trouble. Default value is 2.",
+	},
+	"json_schema_check": {
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Description: "JSON Schema check allows you to annotate and validate all JSON endpoints for your web service.",
 	},
 }
 
@@ -525,23 +552,22 @@ func resourceDataToRestApiMonitor(d *schema.ResourceData, client site24x7.Client
 		OAuth2Provider:            d.Get("oauth2_provider").(string),
 		ClientCertificatePassword: d.Get("client_certificate_password").(string),
 		JwtID:                     d.Get("jwt_id").(string),
-
-		AuthUser:              d.Get("auth_user").(string),
-		AuthPass:              d.Get("auth_pass").(string),
-		MatchCase:             d.Get("match_case").(bool),
-		JSONSchemaCheck:       d.Get("json_schema_check").(bool),
-		UseNameServer:         d.Get("use_name_server").(bool),
-		UserAgent:             d.Get("user_agent").(string),
-		CustomHeaders:         customHeaders,
-		ResponseHeaders:       httpResponseHeader,
-		LocationProfileID:     d.Get("location_profile_id").(string),
-		NotificationProfileID: d.Get("notification_profile_id").(string),
-		ThresholdProfileID:    d.Get("threshold_profile_id").(string),
-		MonitorGroups:         monitorGroups,
-		UserGroupIDs:          userGroupIDs,
-		TagIDs:                tagIDs,
-		ThirdPartyServiceIDs:  thirdPartyServiceIDs,
-		ActionIDs:             actionRefs,
+		AuthUser:                  d.Get("auth_user").(string),
+		AuthPass:                  d.Get("auth_pass").(string),
+		MatchCase:                 d.Get("match_case").(bool),
+		JSONSchemaCheck:           d.Get("json_schema_check").(bool),
+		UseNameServer:             d.Get("use_name_server").(bool),
+		UserAgent:                 d.Get("user_agent").(string),
+		CustomHeaders:             customHeaders,
+		ResponseHeaders:           httpResponseHeader,
+		LocationProfileID:         d.Get("location_profile_id").(string),
+		NotificationProfileID:     d.Get("notification_profile_id").(string),
+		ThresholdProfileID:        d.Get("threshold_profile_id").(string),
+		MonitorGroups:             monitorGroups,
+		UserGroupIDs:              userGroupIDs,
+		TagIDs:                    tagIDs,
+		ThirdPartyServiceIDs:      thirdPartyServiceIDs,
+		ActionIDs:                 actionRefs,
 		// HTTP Configuration
 		UpStatusCodes: d.Get("up_status_codes").(string),
 	}
@@ -556,6 +582,26 @@ func resourceDataToRestApiMonitor(d *schema.ResourceData, client site24x7.Client
 
 	if unmatchingKeyword, ok := d.GetOk("unmatching_keyword"); ok {
 		restApiMonitor.UnmatchingKeyword = unmatchingKeyword.(map[string]interface{})
+	}
+
+	if matchJSONPath, ok := d.GetOk("match_json_path"); ok {
+		var jsonPathList []map[string]interface{}
+		for _, jsonPath := range matchJSONPath.([]interface{}) {
+			matchPathMap := make(map[string]interface{})
+			matchPathMap["name"] = jsonPath.(string)
+			jsonPathList = append(jsonPathList, matchPathMap)
+		}
+		matchJSONData := make(map[string]interface{})
+		matchJSONData["jsonpath"] = jsonPathList
+		matchJSONData["severity"] = d.Get("match_json_path_severity").(int)
+		restApiMonitor.MatchJSON = matchJSONData
+	}
+
+	if jsonSchema, ok := d.GetOk("json_schema"); ok {
+		jsonSchemaData := make(map[string]interface{})
+		jsonSchemaData["severity"] = d.Get("json_schema_severity").(int)
+		jsonSchemaData["schema_value"] = jsonSchema.(string)
+		restApiMonitor.JSONSchema = jsonSchemaData
 	}
 
 	if restApiMonitor.LocationProfileID == "" {
@@ -625,15 +671,6 @@ func updateRestApiMonitorResourceData(d *schema.ResourceData, monitor *api.RestA
 	d.Set("user_group_ids", monitor.UserGroupIDs)
 	d.Set("tag_ids", monitor.TagIDs)
 	d.Set("third_party_service_ids", monitor.ThirdPartyServiceIDs)
-	// if monitor.MatchingKeyword != nil {
-	// 	d.Set("matching_keyword", monitor.MatchingKeyword)
-	// }
-	// if monitor.UnmatchingKeyword != nil {
-	// 	d.Set("unmatching_keyword", monitor.UnmatchingKeyword)
-	// }
-	// if monitor.MatchRegex != nil {
-	// 	d.Set("match_regex", monitor.MatchRegex)
-	// }
 
 	if monitor.MatchingKeyword != nil {
 		matchingKeywordMap := make(map[string]interface{})
@@ -652,6 +689,21 @@ func updateRestApiMonitorResourceData(d *schema.ResourceData, monitor *api.RestA
 		matchRegexMap["severity"] = int(monitor.MatchRegex["severity"].(float64))
 		matchRegexMap["value"] = monitor.MatchRegex["value"].(string)
 		d.Set("match_regex", matchRegexMap)
+	}
+	if monitor.MatchJSON != nil {
+		d.Set("match_json_path_severity", int(monitor.MatchJSON["severity"].(float64)))
+		jsonPathMapArr := monitor.MatchJSON["jsonpath"].([]interface{})
+		var jsonPathArr []string
+		for _, jsonPathData := range jsonPathMapArr {
+			jsonPathMap := jsonPathData.(map[string]interface{})
+			jsonPath := jsonPathMap["name"].(string)
+			jsonPathArr = append(jsonPathArr, jsonPath)
+		}
+		d.Set("match_json_path", jsonPathArr)
+	}
+	if monitor.JSONSchema != nil {
+		d.Set("json_schema", monitor.JSONSchema["schema_value"].(string))
+		d.Set("json_schema_severity", int(monitor.JSONSchema["severity"].(float64)))
 	}
 
 	d.Set("match_case", monitor.MatchCase)

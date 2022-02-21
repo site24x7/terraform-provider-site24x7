@@ -3,10 +3,10 @@ package site24x7
 import (
 	"testing"
 
+	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
 	"github.com/site24x7/terraform-provider-site24x7/fake"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -21,7 +21,7 @@ func TestThresholdProfileCreate(t *testing.T) {
 		Type:                   "URL",
 		ProfileType:            1,
 		DownLocationThreshold:  1,
-		WebsiteContentModified: false,
+		WebsiteContentModified: true,
 		//WebsiteContentChanges:  websiteContentChanges,
 	}
 
@@ -48,7 +48,7 @@ func TestThresholdProfileUpdate(t *testing.T) {
 		Type:                   "URL",
 		ProfileType:            1,
 		DownLocationThreshold:  1,
-		WebsiteContentModified: false,
+		WebsiteContentModified: true,
 		//WebsiteContentChanges:  websiteContentChanges,
 
 	}
@@ -130,6 +130,6 @@ func thresholdProfileTestResourceData(t *testing.T) *schema.ResourceData {
 		"type":                     "URL",
 		"profile_type":             1,
 		"down_location_threshold":  1,
-		"website_content_modified": false,
+		"website_content_modified": true,
 	})
 }

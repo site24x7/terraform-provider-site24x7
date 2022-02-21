@@ -140,7 +140,6 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
 * `auth_pass` (String) Authentication user name to access the website.
 * `auth_user` (String) Authentication password to access the website.
 * `oauth2_provider` (String) Provider ID of the OAuth Provider to be associated with the monitor.
-* `json_schema_check` (Boolean) Enable this option to perform the JSON schema check.
 * `jwt_id` (String) Token ID of the Web Token to be associated with the monitor.
 * `up_status_codes` (String) Provide a comma-separated list of HTTP status codes that indicate a successful response. You can specify individual status codes, as well as ranges separated with a colon.
 * `match_case` (Boolean) Perform case sensitive keyword search or not.
@@ -149,7 +148,12 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
 * `unmatching_keyword` (Map of String) Check for non existence of keyword in the website response.
 * `request_content_type` (String) Provide content type for request params.
 * `request_param` (String) Provide parameters to be passed while accessing the website.
-* `response_content_type` (String) Response content type.
+* `response_content_type` (String) Response content type. Default value is 'T'. 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML. Refer [API documentation](https://www.site24x7.com/help/api/#res_content_type) for more information.
+* `match_json_path` (List of String) Provide multiple JSON Path expressions to enable evaluation of JSON Path expression assertions. The assertions must successfully parse the JSON Path in the JSON. JSON expression assertions fails if the expressions does not match.
+* `match_json_path_severity` (Number) Trigger an alert when the JSON path assertion fails during a test. Alert type constant. Can be either 0 or 2. '0' denotes Down and '2' denotes Trouble. Default value is 2.
+* `json_schema` (String) JSON schema to be validated against the JSON response.
+* `json_schema_severity` (Number) Trigger an alert when the JSON schema assertion fails during a test. Alert type constant. Can be either 0 or 2. '0' denotes Down and '2' denotes Trouble. Default value is 2.
+* `json_schema_check` (Boolean) Enable this option to perform the JSON schema check. JSON Schema check allows you to annotate and validate all JSON endpoints for your web service.
 * `ssl_protocol` (String) Specify the version of the SSL protocol. If you are not sure about the version, use Auto.
 * `use_alpn` (Boolean) Enable ALPN to send supported protocols as part of the TLS handshake.
 * `use_ipv6` (Boolean) Select IPv6 for monitoring the websites hosted with IPv6 address. If you choose non IPv6 supported locations, monitoring will happen through IPv4.
