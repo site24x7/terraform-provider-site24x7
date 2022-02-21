@@ -75,7 +75,7 @@ func TestDefaultThresholdProfile(t *testing.T) {
 
 	_, err = DefaultThresholdProfile(client, api.URL)
 
-	require.Equal(t, errors.New("No Threshold Profiles Configured"), err)
+	require.Equal(t, errors.New("Unable to find threshold profiles in Site24x7! Please configure threshold profile for the monitor type : "+string(api.URL)+" by visiting Admin -> Configuration Profiles -> Threshold and Availability"), err)
 
 	client.FakeThresholdProfiles.On("List").Return([]*api.ThresholdProfile{
 		{ProfileID: "456"},
@@ -101,7 +101,7 @@ func TestDefaultUserGroup(t *testing.T) {
 
 	_, err = DefaultUserGroup(client)
 
-	require.Equal(t, errors.New("No User Groups Configured"), err)
+	require.Equal(t, errors.New("Unable to find user groups in Site24x7! Please configure user groups by visiting Admin -> User & Alert Management -> User Alert Group"), err)
 
 	client.FakeUserGroups.On("List").Return([]*api.UserGroup{
 		{UserGroupID: "456"},

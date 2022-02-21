@@ -34,7 +34,6 @@
     "123"
   ],
   "use_name_server": true,
-  "json_schema_check": false,
   "response_headers_check": {
     "severity": 2,
     "value": [

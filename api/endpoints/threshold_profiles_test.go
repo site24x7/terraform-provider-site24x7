@@ -21,12 +21,11 @@ func TestThresholdProfiles(t *testing.T) {
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
 				thresholdProfile := &api.ThresholdProfile{
-					ProfileID:              "123",
-					ProfileName:            "URL profile",
-					Type:                   "URL",
-					ProfileType:            0,
-					DownLocationThreshold:  8,
-					WebsiteContentModified: false,
+					ProfileID:             "123",
+					ProfileName:           "URL profile",
+					Type:                  "URL",
+					ProfileType:           0,
+					DownLocationThreshold: 8,
 				}
 
 				_, err := NewThresholdProfiles(c).Create(thresholdProfile)
@@ -90,12 +89,11 @@ func TestThresholdProfiles(t *testing.T) {
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
 				thresholdProfile := &api.ThresholdProfile{
-					ProfileID:              "123",
-					ProfileName:            "URL profile",
-					Type:                   "URL",
-					ProfileType:            0,
-					DownLocationThreshold:  8,
-					WebsiteContentModified: false,
+					ProfileID:             "123",
+					ProfileName:           "URL profile",
+					Type:                  "URL",
+					ProfileType:           0,
+					DownLocationThreshold: 8,
 				}
 
 				_, err := NewThresholdProfiles(c).Update(thresholdProfile)
