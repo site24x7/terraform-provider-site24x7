@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "1.0.3"
+      version = "1.0.4"
       # source  = "registry.terraform.io/site24x7/site24x7"
       # version = "1.0.0"
     }
@@ -65,24 +65,24 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_basic" {
   // (Optional) Response content type. Default value is 'T'
   // 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML
   // https://www.site24x7.com/help/api/#res_content_type
-  # response_content_type = "J"
-  # // (Optional) Provide multiple JSON Path expressions to enable evaluation of JSON Path expression assertions. 
-  # // The assertions must successfully parse the JSON Path in the JSON. JSON expression assertions fails if the expressions does not match.
-  # match_json_path = [
-  #   "json/path1",
-  #   "json/path2",
-  #   "json/path3"
-  # ]
-  # // (Optional) Trigger an alert when the JSON path assertion fails during a test. 
-  # // Alert type constant. Can be either 0 or 2. '0' denotes Down and '2' denotes Trouble. Default value is 2.
-  # match_json_path_severity = 0
-  # // (Optional) JSON schema to be validated against the JSON response.
-  # json_schema = "{\"test\":\"abcd\"}"
-  # // (Optional) Trigger an alert when the JSON schema assertion fails during a test. 
-  # // Alert type constant. Can be either 0 or 2. '0' denotes Down and '2' denotes Trouble. Default value is 2.
-  # json_schema_severity = 2
-  # // (Optional) JSON Schema check allows you to annotate and validate all JSON endpoints for your web service.
-  # json_schema_check = true
+  response_content_type = "J"
+  // (Optional) Provide multiple JSON Path expressions to enable evaluation of JSON Path expression assertions. 
+  // The assertions must successfully parse the JSON Path in the JSON. JSON expression assertions fails if the expressions does not match.
+  match_json_path = [
+    "$.store.book[*].author",
+    "$..author",
+    "$.store.*"
+  ]
+  // (Optional) Trigger an alert when the JSON path assertion fails during a test. 
+  // Alert type constant. Can be either 0 or 2. '0' denotes Down and '2' denotes Trouble. Default value is 2.
+  match_json_path_severity = 0
+  // (Optional) JSON schema to be validated against the JSON response.
+  json_schema = "{\"test\":\"abcd\"}"
+  // (Optional) Trigger an alert when the JSON schema assertion fails during a test. 
+  // Alert type constant. Can be either 0 or 2. '0' denotes Down and '2' denotes Trouble. Default value is 2.
+  json_schema_severity = 2
+  // (Optional) JSON Schema check allows you to annotate and validate all JSON endpoints for your web service.
+  json_schema_check = true
   // JSON ASSERTION ATTRIBUTES ================
 }
 
