@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "1.0.3"
+      version = "1.0.4"
     }
   }
 }
@@ -157,9 +157,9 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
   // (Optional) Provide multiple JSON Path expressions to enable evaluation of JSON Path expression assertions. 
   // The assertions must successfully parse the JSON Path in the JSON. JSON expression assertions fails if the expressions does not match.
   match_json_path = [
-    "json/path1",
-    "json/path2",
-    "json/path3"
+    "$.store.book[*].author",
+    "$..author",
+    "$.store.*"
   ]
   // (Optional) Trigger an alert when the JSON path assertion fails during a test. 
   // Alert type constant. Can be either 0 or 2. '0' denotes Down and '2' denotes Trouble. Default value is 2.
