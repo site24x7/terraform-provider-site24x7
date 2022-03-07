@@ -76,12 +76,17 @@ func (c *monitorGroups) Delete(groupID string) error {
 }
 
 func (c *monitorGroups) List() ([]*api.MonitorGroup, error) {
-	monitorGroups := []*api.MonitorGroup{}
-	err := c.client.
-		Get().
-		Resource("monitor_groups").
-		Do().
-		Parse(&monitorGroups)
-
-	return monitorGroups, err
+	api.MonitorGroupsLock.Lock()
+	defer api.MonitorGroupsLock.Unlock()
+	var err error
+	if len(api.MonitorGroups) == 0 {
+		monitorGroups := []*api.MonitorGroup{}
+		err = c.client.
+			Get().
+			Resource("monitor_groups").
+			Do().
+			Parse(&monitorGroups)
+		api.MonitorGroups = monitorGroups
+	}
+	return api.MonitorGroups, err
 }

@@ -72,12 +72,17 @@ func (c *thresholdProfiles) Delete(profileID string) error {
 }
 
 func (c *thresholdProfiles) List() ([]*api.ThresholdProfile, error) {
-	thresholdProfiles := []*api.ThresholdProfile{}
-	err := c.client.
-		Get().
-		Resource("threshold_profiles").
-		Do().
-		Parse(&thresholdProfiles)
-
-	return thresholdProfiles, err
+	api.ThresholdProfilesLock.Lock()
+	defer api.ThresholdProfilesLock.Unlock()
+	var err error
+	if len(api.ThresholdProfiles) == 0 {
+		thresholdProfiles := []*api.ThresholdProfile{}
+		err = c.client.
+			Get().
+			Resource("threshold_profiles").
+			Do().
+			Parse(&thresholdProfiles)
+		api.ThresholdProfiles = thresholdProfiles
+	}
+	return api.ThresholdProfiles, err
 }

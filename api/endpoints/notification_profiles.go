@@ -72,12 +72,17 @@ func (c *notificationProfiles) Delete(profileID string) error {
 }
 
 func (c *notificationProfiles) List() ([]*api.NotificationProfile, error) {
-	notificationProfiles := []*api.NotificationProfile{}
-	err := c.client.
-		Get().
-		Resource("notification_profiles").
-		Do().
-		Parse(&notificationProfiles)
-
-	return notificationProfiles, err
+	api.NotificationProfilesLock.Lock()
+	defer api.NotificationProfilesLock.Unlock()
+	var err error
+	if len(api.NotificationProfiles) == 0 {
+		notificationProfiles := []*api.NotificationProfile{}
+		err = c.client.
+			Get().
+			Resource("notification_profiles").
+			Do().
+			Parse(&notificationProfiles)
+		api.NotificationProfiles = notificationProfiles
+	}
+	return api.NotificationProfiles, err
 }

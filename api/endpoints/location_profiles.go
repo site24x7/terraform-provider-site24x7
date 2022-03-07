@@ -76,12 +76,17 @@ func (c *locationProfiles) Delete(profileID string) error {
 }
 
 func (c *locationProfiles) List() ([]*api.LocationProfile, error) {
-	profiles := []*api.LocationProfile{}
-	err := c.client.
-		Get().
-		Resource("location_profiles").
-		Do().
-		Parse(&profiles)
-
-	return profiles, err
+	api.LocationProfilesLock.Lock()
+	defer api.LocationProfilesLock.Unlock()
+	var err error
+	if len(api.LocationProfiles) == 0 {
+		profiles := []*api.LocationProfile{}
+		err = c.client.
+			Get().
+			Resource("location_profiles").
+			Do().
+			Parse(&profiles)
+		api.LocationProfiles = profiles
+	}
+	return api.LocationProfiles, err
 }
