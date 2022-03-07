@@ -76,12 +76,17 @@ func (c *userGroups) Delete(groupID string) error {
 }
 
 func (c *userGroups) List() ([]*api.UserGroup, error) {
-	userGroups := []*api.UserGroup{}
-	err := c.client.
-		Get().
-		Resource("user_groups").
-		Do().
-		Parse(&userGroups)
-
-	return userGroups, err
+	api.UserGroupsLock.Lock()
+	defer api.UserGroupsLock.Unlock()
+	var err error
+	if len(api.UserGroups) == 0 {
+		userGroups := []*api.UserGroup{}
+		err = c.client.
+			Get().
+			Resource("user_groups").
+			Do().
+			Parse(&userGroups)
+		api.UserGroups = userGroups
+	}
+	return api.UserGroups, err
 }

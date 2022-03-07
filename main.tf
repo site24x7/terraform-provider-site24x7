@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "1.0.4"
+      version = "1.0.5"
       # source  = "registry.terraform.io/site24x7/site24x7"
       # version = "1.0.0"
     }
@@ -41,6 +41,28 @@ provider "site24x7" {
 
   // Maximum number of Site24x7 API request retries to perform until giving up.
   max_retries = 4
+
+}
+
+// Website Monitor API doc: https://www.site24x7.com/help/api/#website
+resource "site24x7_website_monitor" "website_monitor_example" {
+  // (Required) Display name for the monitor
+  display_name = "Example Monitor"
+
+  // (Required) Website address to monitor.
+  website = "https://www.example.com"
+
+  // (Optional) Interval at which your website has to be monitored.
+  // See https://www.site24x7.com/help/api/#check-interval for all supported values.
+  check_frequency = 1
+
+  // (Optional) Name of the Location Profile that has to be associated with the monitor. 
+  // Either specify location_profile_id or location_profile_name.
+  // If location_profile_id and location_profile_name are omitted,
+  // the first profile returned by the /api/location_profiles endpoint
+  // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
+  // used.
+  location_profile_name = "North America"
 
 }
 

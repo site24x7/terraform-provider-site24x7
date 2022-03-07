@@ -72,12 +72,17 @@ func (c *tags) Delete(tagID string) error {
 }
 
 func (c *tags) List() ([]*api.Tag, error) {
-	tags := []*api.Tag{}
-	err := c.client.
-		Get().
-		Resource("tags").
-		Do().
-		Parse(&tags)
-
-	return tags, err
+	api.TagsListLock.Lock()
+	defer api.TagsListLock.Unlock()
+	var err error
+	if len(api.TagsList) == 0 {
+		tags := []*api.Tag{}
+		err = c.client.
+			Get().
+			Resource("tags").
+			Do().
+			Parse(&tags)
+		api.TagsList = tags
+	}
+	return api.TagsList, err
 }
