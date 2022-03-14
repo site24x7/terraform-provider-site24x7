@@ -10,6 +10,49 @@ type Site24x7Monitor interface {
 	String() string
 }
 
+// Generic type for denoting a resource in Site24x7.
+type GenericMonitor struct {
+	_                     struct{} `type:"structure"` // Enforces key based initialization.
+	MonitorID             string   `json:"monitor_id,omitempty"`
+	DisplayName           string   `json:"display_name"`
+	Type                  string   `json:"type"`
+	LocationProfileID     string   `json:"location_profile_id"`
+	NotificationProfileID string   `json:"notification_profile_id"`
+	ThresholdProfileID    string   `json:"threshold_profile_id"`
+	MonitorGroups         []string `json:"monitor_groups,omitempty"`
+	UserGroupIDs          []string `json:"user_group_ids,omitempty"`
+	TagIDs                []string `json:"tag_ids,omitempty"`
+	ThirdPartyServiceIDs  []string `json:"third_party_services,omitempty"`
+}
+
+func (monitor *GenericMonitor) SetNotificationProfileID(notificationProfileID string) {
+	monitor.NotificationProfileID = notificationProfileID
+}
+
+func (monitor *GenericMonitor) GetNotificationProfileID() string {
+	return monitor.NotificationProfileID
+}
+
+func (monitor *GenericMonitor) SetUserGroupIDs(userGroupIDs []string) {
+	monitor.UserGroupIDs = userGroupIDs
+}
+
+func (monitor *GenericMonitor) GetUserGroupIDs() []string {
+	return monitor.UserGroupIDs
+}
+
+func (monitor *GenericMonitor) SetTagIDs(tagIDs []string) {
+	monitor.TagIDs = tagIDs
+}
+
+func (monitor *GenericMonitor) GetTagIDs() []string {
+	return monitor.TagIDs
+}
+
+func (monitor *GenericMonitor) String() string {
+	return ToString(monitor)
+}
+
 // Denotes the website monitor resource in Site24x7.
 type WebsiteMonitor struct {
 	_                     struct{}           `type:"structure"` // Enforces key based initialization.

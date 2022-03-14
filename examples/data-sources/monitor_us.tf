@@ -42,32 +42,32 @@ provider "site24x7" {
 
 }
 
-// Site24x7 IT Automation API doc - https://www.site24x7.com/help/api/#it-automation
-resource "site24x7_url_action" "action_us" {
-  // (Required) Display name for the action.
-  name = "IT Action"
-
-  // (Required) URL to be invoked for action execution.
-  url = "https://www.example.com"
-
-  // (Optional) HTTP Method to access the URL. Default: "P". See
-  // https://www.site24x7.com/help/api/#http_methods for allowed values.
-  method = "G"
-
-  // (Optional) If send_custom_parameters is set as true. Custom parameters to
-  // be passed while accessing the URL.
-  custom_parameters = "param=value"
-
-  // (Optional) Configuration to send custom parameters while executing the action.
-  send_custom_parameters = true
-
-  // (Optional) Configuration to enable json format for post parameters.
-  send_in_json_format = true
-
-  // (Optional) Configuration to send incident parameters while executing the action.
-  send_incident_parameters = true
-
-  // (Optional) The amount of time a connection waits to time out. Range 1 - 90. Default: 30.
-  timeout = 10
+// Data source to fetch URL monitor starting with the name "REST" and is of the monitor type "RESTAPI"
+data "site24x7_monitor" "s247monitor" {
+  // (Optional) Regular expression denoting the name of the monitor.
+  name_regex = "^REST"
+  // (Optional) Type of the monitor. (eg) RESTAPI, SSL_CERT, URL, SERVER etc.
+  monitor_type = "RESTAPI"
 }
 
+
+// Displays the monitor ID
+output "s247monitor_monitor_id" {
+  description = "Monitor ID ============================ "
+  value       = data.site24x7_monitor.s247monitor.id
+}
+// Displays the name
+output "s247monitor_display_name" {
+  description = "Monitor Display Name ============================ "
+  value       = data.site24x7_monitor.s247monitor.display_name
+}
+// Displays the user group IDs associated to the monitor
+output "monitor_user_group_ids" {
+  description = "Monitor User Group IDs ============================ "
+  value       = data.site24x7_monitor.s247monitor.user_group_ids
+}
+// Displays the notification profile ID associated to the monitor
+output "s247monitor_notification_profile_id" {
+  description = "Monitor Notification Profile ID ============================ "
+  value       = data.site24x7_monitor.s247monitor.notification_profile_id
+}
