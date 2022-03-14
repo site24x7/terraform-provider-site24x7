@@ -42,32 +42,38 @@ provider "site24x7" {
 
 }
 
-// Site24x7 IT Automation API doc - https://www.site24x7.com/help/api/#it-automation
-resource "site24x7_url_action" "action_us" {
-  // (Required) Display name for the action.
-  name = "IT Action"
-
-  // (Required) URL to be invoked for action execution.
-  url = "https://www.example.com"
-
-  // (Optional) HTTP Method to access the URL. Default: "P". See
-  // https://www.site24x7.com/help/api/#http_methods for allowed values.
-  method = "G"
-
-  // (Optional) If send_custom_parameters is set as true. Custom parameters to
-  // be passed while accessing the URL.
-  custom_parameters = "param=value"
-
-  // (Optional) Configuration to send custom parameters while executing the action.
-  send_custom_parameters = true
-
-  // (Optional) Configuration to enable json format for post parameters.
-  send_in_json_format = true
-
-  // (Optional) Configuration to send incident parameters while executing the action.
-  send_incident_parameters = true
-
-  // (Optional) The amount of time a connection waits to time out. Range 1 - 90. Default: 30.
-  timeout = 10
+// Data source to fetch all URL monitors
+data "site24x7_monitors" "s247monitors" {
+  // (Optional) Type of the monitor. (eg) RESTAPI, SSL_CERT, URL, SERVER etc.
+  monitor_type = "URL"
+}
+// Displays the monitor IDs
+output "s247monitors_ids" {
+  description = "Monitor IDs ============================ "
+  value       = data.site24x7_monitors.s247monitors.ids
+}
+// Displays the monitor IDs and names of the monitors
+output "s247monitors_ids_and_names" {
+  description = "Monitor IDs and Names ============================ "
+  value       = data.site24x7_monitors.s247monitors.ids_and_names
 }
 
+// Data source to fetch URL monitors starting with the name "zylker"
+data "site24x7_monitors" "zylkerMonitorIDs" {
+  // (Optional) Regular expression denoting the name of the monitor.
+  name_regex = "^zylker"
+  // (Optional) Type of the monitor. (eg) RESTAPI, SSL_CERT, URL, SERVER etc.
+  monitor_type = "URL"
+}
+
+// Displays the monitor IDs
+output "zylkerMonitorIDs_monitor_id" {
+  description = "Zylker Monitor IDs ============================ "
+  value       = data.site24x7_monitors.zylkerMonitorIDs.ids
+}
+
+// Displays the monitor IDs and names of the monitors
+output "zylkerMonitorIDs_monitor_id_and_names" {
+  description = "Zylker Monitor IDs and Names ============================ "
+  value       = data.site24x7_monitors.zylkerMonitorIDs.ids_and_names
+}

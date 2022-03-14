@@ -8,14 +8,46 @@ import (
 	"strings"
 )
 
-// String returns a pointer to string s.
-func String(s string) *string {
-	return &s
+// String returns a pointer to the string value passed in.
+func String(v string) *string {
+	return &v
 }
 
-// Bool returns a pointer to bool b.
-func Bool(b bool) *bool {
-	return &b
+// StringValue returns the value of the string pointer passed in or
+// "" if the pointer is nil.
+func StringValue(v *string) string {
+	if v != nil {
+		return *v
+	}
+	return ""
+}
+
+// Bool returns a pointer to the bool value passed in.
+func Bool(v bool) *bool {
+	return &v
+}
+
+// BoolValue returns the value of the bool pointer passed in or
+// false if the pointer is nil.
+func BoolValue(v *bool) bool {
+	if v != nil {
+		return *v
+	}
+	return false
+}
+
+// Int returns a pointer to the int value passed in.
+func Int(v int) *int {
+	return &v
+}
+
+// IntValue returns the value of the int pointer passed in or
+// 0 if the pointer is nil.
+func IntValue(v *int) int {
+	if v != nil {
+		return *v
+	}
+	return 0
 }
 
 func Find(slice []string, val string) (int, bool) {
