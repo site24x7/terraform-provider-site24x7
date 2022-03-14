@@ -20,12 +20,12 @@ data "site24x7_monitors" "s247monitors" {
 }
 // Displays the monitor IDs
 output "s247monitors_ids" {
-  description = "Monitor IDs ============================ "
+  description = "Monitor IDs : "
   value       = data.site24x7_monitors.s247monitors.ids
 }
 // Displays the monitor IDs and names of the monitors
 output "s247monitors_ids_and_names" {
-  description = "Monitor IDs and Names ============================ "
+  description = "Monitor IDs and Names : "
   value       = data.site24x7_monitors.s247monitors.ids_and_names
 }
 
@@ -39,13 +39,13 @@ data "site24x7_monitors" "zylkerMonitorIDs" {
 
 // Displays the monitor IDs
 output "zylkerMonitorIDs_monitor_id" {
-  description = "Zylker Monitor IDs ============================ "
+  description = "Zylker Monitor IDs : "
   value       = data.site24x7_monitors.zylkerMonitorIDs.ids
 }
 
 // Displays the monitor IDs and names of the monitors
 output "zylkerMonitorIDs_monitor_id_and_names" {
-  description = "Zylker Monitor IDs and Names ============================ "
+  description = "Zylker Monitor IDs and Names : "
   value       = data.site24x7_monitors.zylkerMonitorIDs.ids_and_names
 }
 ```

@@ -53,21 +53,21 @@ data "site24x7_monitor" "s247monitor" {
 
 // Displays the monitor ID
 output "s247monitor_monitor_id" {
-  description = "Monitor ID ============================ "
+  description = "Monitor ID : "
   value       = data.site24x7_monitor.s247monitor.id
 }
 // Displays the name
 output "s247monitor_display_name" {
-  description = "Monitor Display Name ============================ "
+  description = "Monitor Display Name : "
   value       = data.site24x7_monitor.s247monitor.display_name
 }
 // Displays the user group IDs associated to the monitor
 output "monitor_user_group_ids" {
-  description = "Monitor User Group IDs ============================ "
+  description = "Monitor User Group IDs : "
   value       = data.site24x7_monitor.s247monitor.user_group_ids
 }
 // Displays the notification profile ID associated to the monitor
 output "s247monitor_notification_profile_id" {
-  description = "Monitor Notification Profile ID ============================ "
+  description = "Monitor Notification Profile ID : "
   value       = data.site24x7_monitor.s247monitor.notification_profile_id
 }
