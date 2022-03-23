@@ -24,7 +24,7 @@ resource "site24x7_website_monitor" "website_monitor" {
   // (Optional) Check interval for monitoring. Default: 1. See
   // https://www.site24x7.com/help/api/#check-interval for all supported
   // values.
-  check_frequency = 1
+  check_frequency = "1"
 
   // (Optional) HTTP Method to be used for accessing the website. Default: "G".
   // See https://www.site24x7.com/help/api/#http_methods for allowed values.
@@ -171,7 +171,7 @@ resource "site24x7_website_monitor" "website_monitor" {
 * `actions` (Map of String) Action to be performed on monitor status changes.
 * `auth_pass` (String) Authentication password to access the website.
 * `auth_user` (String) Authentication user name to access the website.
-* `check_frequency` (Number) Interval at which your website has to be monitored. Default value is 1 minute.
+* `check_frequency` (String) Interval at which your website has to be monitored. Default value is 1 minute.
 * `http_method` (String) HTTP Method to be used for accessing the website. PUT, PATCH and DELETE are not supported.
 * `match_case` (Boolean) Perform case sensitive keyword search or not.
 * `match_regex_severity` (Number) Severity with which alert has to raised when the matching regex is found in the website response.

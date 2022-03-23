@@ -6,12 +6,12 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "1.0.6"
+      version = "1.0.7"
       // Uncomment for local setup
       # source  = "registry.zoho.io/zoho/site24x7"
-      # version = "1.0.6"
+      # version = "1.0.7"
     #   source  = "registry.terraform.io/site24x7/site24x7"
-    #   version = "1.0.6"
+    #   version = "1.0.7"
     }
   }
 }
@@ -89,7 +89,7 @@ resource "site24x7_website_monitor" "website_monitor_example" {
 
   // (Optional) Interval at which your website has to be monitored.
   // See https://www.site24x7.com/help/api/#check-interval for all supported values.
-  check_frequency = 1
+  check_frequency = "1"
 
   // (Optional) Name of the Location Profile that has to be associated with the monitor. 
   // Either specify location_profile_id or location_profile_name.
@@ -125,7 +125,7 @@ resource "site24x7_website_monitor" "web_monitor_us" {
 
   // (Optional) Interval at which your website has to be monitored.
   // See https://www.site24x7.com/help/api/#check-interval for all supported values.
-  check_frequency = 1
+  check_frequency = "1"
 
   // (Optional) Name of the Location Profile that has to be associated with the monitor. 
   // Either specify location_profile_id or location_profile_name.

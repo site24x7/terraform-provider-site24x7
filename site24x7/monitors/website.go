@@ -83,9 +83,9 @@ var websiteMonitorSchema = map[string]*schema.Schema{
 		Description: "Website address to monitor.",
 	},
 	"check_frequency": {
-		Type:        schema.TypeInt,
+		Type:        schema.TypeString,
 		Optional:    true,
-		Default:     1,
+		Default:     "1",
 		Description: "Interval at which your website has to be monitored. Default value is 1 minute.",
 	},
 	"http_method": {
@@ -439,7 +439,7 @@ func resourceDataToWebsiteMonitor(d *schema.ResourceData, client site24x7.Client
 		DisplayName:           d.Get("display_name").(string),
 		Type:                  string(api.URL),
 		Website:               d.Get("website").(string),
-		CheckFrequency:        strconv.Itoa(d.Get("check_frequency").(int)),
+		CheckFrequency:        d.Get("check_frequency").(string),
 		Timeout:               d.Get("timeout").(int),
 		HTTPMethod:            d.Get("http_method").(string),
 		AuthUser:              d.Get("auth_user").(string),
