@@ -110,7 +110,7 @@ resource "site24x7_website_monitor" "website_monitor_us" {
   // (Optional) Check interval for monitoring. Default: 1. See
   // https://www.site24x7.com/help/api/#check-interval for all supported
   // values.
-  check_frequency = 1
+  check_frequency = "1"
 }
 
 ```

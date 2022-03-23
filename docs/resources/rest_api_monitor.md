@@ -132,7 +132,7 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
 * `tag_ids` (List of String) List of tags IDs to be associated to the monitor. Either specify tag_ids or tag_names.
 * `tag_names` (List of String) List of tag names to be associated to the monitor. Tag name matching works for both exact and partial match. Either specify tag_ids or tag_names.
 * `third_party_service_ids` (List of String) List of Third Party Service IDs to be associated to the monitor.
-* `check_frequency` (Number) Interval at which your website has to be monitored. Default value is 1 minute.
+* `check_frequency` (String) Interval at which your website has to be monitored. Default value is 1 minute.
 * `timeout` (Number) Timeout for connecting to website. Default value is 10. Range 1 - 45.
 * `client_certificate_password` (String) Password of the uploaded client certificate.
 * `http_method` (String) HTTP Method used for accessing the website. Default value is G.

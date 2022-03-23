@@ -89,7 +89,7 @@ resource "site24x7_website_monitor" "website_monitor_example" {
 
   // (Optional) Interval at which your website has to be monitored.
   // See https://www.site24x7.com/help/api/#check-interval for all supported values.
-  check_frequency = 1
+  check_frequency = "1"
 
   // (Optional) Name of the Location Profile that has to be associated with the monitor. 
   // Either specify location_profile_id or location_profile_name.
@@ -125,7 +125,7 @@ resource "site24x7_website_monitor" "web_monitor_us" {
 
   // (Optional) Interval at which your website has to be monitored.
   // See https://www.site24x7.com/help/api/#check-interval for all supported values.
-  check_frequency = 1
+  check_frequency = "1"
 
   // (Optional) Name of the Location Profile that has to be associated with the monitor. 
   // Either specify location_profile_id or location_profile_name.
