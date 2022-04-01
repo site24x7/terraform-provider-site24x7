@@ -280,3 +280,55 @@ func (amazonMonitor *AmazonMonitor) GetTagIDs() []string {
 func (amazonMonitor *AmazonMonitor) String() string {
 	return ToString(amazonMonitor)
 }
+
+// Denotes the server monitor resource in Site24x7.
+type ServerMonitor struct {
+	_                     struct{} `type:"structure"` // Enforces key based initialization.
+	MonitorID             string   `json:"monitor_id,omitempty"`
+	DisplayName           string   `json:"display_name"`
+	HostName              string   `json:"hostname"`
+	IPAddress             string   `json:"ipaddress"`
+	Type                  string   `json:"type"`
+	TemplateID            string   `json:"templateid"`
+	PollInterval          int      `json:"sm_poll_interval"`
+	ITAutomationModule    bool     `json:"server_setting_it_aut"`
+	PluginModule          bool     `json:"server_setting_plugins"`
+	LogNeeded             bool     `json:"log_needed"`
+	PerformAutomation     bool     `json:"perform_automation"`
+	NotificationProfileID string   `json:"notification_profile_id"`
+	ThresholdProfileID    string   `json:"threshold_profile_id"`
+	ResourceProfileID     string   `json:"resource_profile_id"`
+	MonitorGroups         []string `json:"monitor_groups,omitempty"`
+	UserGroupIDs          []string `json:"user_group_ids,omitempty"`
+	TagIDs                []string `json:"tag_ids,omitempty"`
+	ThirdPartyServiceIDs  []string `json:"third_party_services,omitempty"`
+	// ActionIDs             []ActionRef `json:"action_ids,omitempty"`
+}
+
+func (serverMonitor *ServerMonitor) SetNotificationProfileID(notificationProfileID string) {
+	serverMonitor.NotificationProfileID = notificationProfileID
+}
+
+func (serverMonitor *ServerMonitor) GetNotificationProfileID() string {
+	return serverMonitor.NotificationProfileID
+}
+
+func (serverMonitor *ServerMonitor) SetUserGroupIDs(userGroupIDs []string) {
+	serverMonitor.UserGroupIDs = userGroupIDs
+}
+
+func (serverMonitor *ServerMonitor) GetUserGroupIDs() []string {
+	return serverMonitor.UserGroupIDs
+}
+
+func (serverMonitor *ServerMonitor) SetTagIDs(tagIDs []string) {
+	serverMonitor.TagIDs = tagIDs
+}
+
+func (serverMonitor *ServerMonitor) GetTagIDs() []string {
+	return serverMonitor.TagIDs
+}
+
+func (serverMonitor *ServerMonitor) String() string {
+	return ToString(serverMonitor)
+}

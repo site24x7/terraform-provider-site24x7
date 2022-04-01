@@ -65,6 +65,16 @@ Usage example
 
 Refer to the [examples/](examples/) directory for a fully documented usage example.
 
+Set your Site24x7 OAuth credentials in the bash environment
+
+```sh
+
+  $ export SITE24X7_OAUTH2_CLIENT_ID="<your_oauth2_client_id>"
+  $ export SITE24X7_OAUTH2_CLIENT_SECRET="<your_oauth2_client_secret>"
+  $ export SITE24X7_OAUTH2_REFRESH_TOKEN="<your_oauth2_refresh_token>"
+
+```
+
 This is a quick example of the provider configuration:
 
 ```terraform
@@ -115,6 +125,94 @@ resource "site24x7_website_monitor" "website_monitor_us" {
 
 ```
 
+## Steps to import existing monitors and generate terraform resource configuration for the same
+
+#### Clone the repository
+
+Execute the below command to clone Site24x7's terraform provider repository to any desired location in your file system.
+
+```sh
+
+  git clone https://github.com/site24x7/terraform-provider-site24x7.git
+  cd terraform-provider-site24x7
+
+```
+
+The current directory denotes your `$SITE24X7_TERRAFORM_PROVIDER_REPOSITORY_HOME`
+
+#### Export your Site24x7 OAuth credentials in the bash environment
+
+```sh
+
+  $ export SITE24X7_OAUTH2_CLIENT_ID="<your_oauth2_client_id>"
+  $ export SITE24X7_OAUTH2_CLIENT_SECRET="<your_oauth2_client_secret>"
+  $ export SITE24X7_OAUTH2_REFRESH_TOKEN="<your_oauth2_refresh_token>"
+
+```
+
+To fetch all the required monitor ID's using the datasource `site24x7_monitors` paste the below content in `$SITE24X7_TERRAFORM_PROVIDER_REPOSITORY_HOME/main.tf`
+
+Eg: To fetch all SERVER monitor ID's
+
+```terraform
+
+    // Data source to fetch all SERVER monitors
+    data "site24x7_monitors" "s247monitors" {
+        // (Optional) Type of the monitor. (eg) RESTAPI, SSL_CERT, URL, SERVER etc.
+        monitor_type = "SERVER"
+    }
+
+    resource "local_file" "key" {
+        filename = "${path.module}/utilities/importer/monitors_to_import.json"
+        content  = jsonencode(data.site24x7_monitors.s247monitors.ids)
+    }
+
+```
+
+Execute the command `terraform apply` from $SITE24X7_TERRAFORM_PROVIDER_REPOSITORY_HOME to write all the monitor IDs in the file `$SITE24X7_TERRAFORM_PROVIDER_REPOSITORY_HOME/utilities/importer/monitors_to_import.json`
+
+```sh
+
+  cd utilities/importer
+  terraform init
+  python site24x7_importer.py --resource site24x7_server_monitor
+
+```
+
+#### Importing monitors
+
+Copy the empty configurations(similar to the one given below) generated in the file `$SITE24X7_TERRAFORM_PROVIDER_REPOSITORY_HOME/empty_configuration.tf` to your terraform configuration file.
+
+```terraform
+    resource "site24x7_server_monitor" "SERVER_123456000025786003" {
+    }
+
+    resource "site24x7_server_monitor" "SERVER_123456000027570003" {
+    }
+```
+
+Copy `$SITE24X7_TERRAFORM_PROVIDER_REPOSITORY_HOME/utilities/importer/output/import_commands.sh` to your terraform directory and execute the same to import all the monitors to your terraform state.
+
+```sh
+  ./import_commands.sh
+```
+
+Copy the resource configurations(similar to the one given below) generated in the file $SITE24X7_TERRAFORM_PROVIDER_REPOSITORY_HOME/utilities/importer/output/imported_configuration.tf to your terraform configuration file.
+
+```terraform
+  resource "site24x7_server_monitor" "SERVER_123456000025786003" { 
+      perform_automation = true 
+      log_needed = true 
+      notification_profile_id = "123456000000029001" 
+      tag_ids = ["123456000024829001", "123456000024829005"] 
+      poll_interval = 1 
+      monitor_groups = ["123456000000120011"] 
+      threshold_profile_id = "123456000000029003" 
+      user_group_ids = ["123456000000025005", "123456000000025009"] 
+      display_name = "ubuntu-server"
+  }
+```
+
 ## Developing the Provider
 
 If you wish to work on the provider, you'll first need [Go](http://www.golang.org) installed on your
@@ -129,9 +227,9 @@ Clone the repository and build the provider:
 
 ```sh
 
-git clone git@github.com:Site24x7/terraform-provider-site24x7
-cd terraform-provider-site24x7
-./build/build_terraform_provider_site24x7.sh
+  git clone https://github.com/site24x7/terraform-provider-site24x7.git
+  cd terraform-provider-site24x7
+  ./build/build_terraform_provider_site24x7.sh
 
 ```
 

@@ -8,10 +8,10 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/site24x7/terraform-provider-site24x7/api"
-	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
 	"github.com/google/go-querystring/query"
 	log "github.com/sirupsen/logrus"
+	"github.com/site24x7/terraform-provider-site24x7/api"
+	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
 )
 
 // Request is a wrapper for preparing and sending a *http.Request. It provides
