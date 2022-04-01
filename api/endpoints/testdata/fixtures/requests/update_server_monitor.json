@@ -1,0 +1,27 @@
+{
+  "monitor_id": "123",
+  "display_name": "foo",
+  "type": "SERVER",
+  "hostname":"abc",
+  "ipaddress":"192.12.23.334",
+  "perform_automation":false,
+  "resource_profile_id":"123",
+  "server_setting_it_aut":false,
+  "server_setting_plugins":false,
+  "sm_poll_interval":1,
+  "templateid":"456",
+  "log_needed": false,
+  "notification_profile_id": "789",
+  "threshold_profile_id": "012",
+  "monitor_groups": [
+    "234",
+    "567"
+  ],
+  "user_group_ids": [
+    "123",
+    "456"
+  ],
+  "tag_ids": [
+    "123"
+  ]
+}

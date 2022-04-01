@@ -19,6 +19,7 @@ type Client struct {
 	FakeAmazonMonitors         *fake.AmazonMonitors
 	FakeWebsiteMonitors        *fake.WebsiteMonitors
 	FakeSSLMonitors            *fake.SSLMonitors
+	FakeServerMonitors         *fake.ServerMonitors
 	FakeRestApiMonitors        *fake.RestApiMonitors
 	FakeNotificationProfiles   *fake.NotificationProfiles
 	FakeThresholdProfiles      *fake.ThresholdProfiles
@@ -42,6 +43,7 @@ func NewClient() *Client {
 		FakeTags:                   &fake.Tags{},
 		FakeAmazonMonitors:         &fake.AmazonMonitors{},
 		FakeSSLMonitors:            &fake.SSLMonitors{},
+		FakeServerMonitors:         &fake.ServerMonitors{},
 		FakeWebsiteMonitors:        &fake.WebsiteMonitors{},
 		FakeRestApiMonitors:        &fake.RestApiMonitors{},
 		FakeNotificationProfiles:   &fake.NotificationProfiles{},
@@ -89,6 +91,11 @@ func (c *Client) SSLMonitors() monitors.SSLMonitors {
 // RestApiMonitors implements Client.
 func (c *Client) RestApiMonitors() monitors.RestApiMonitors {
 	return c.FakeRestApiMonitors
+}
+
+// ServerMonitors implements Client.
+func (c *Client) ServerMonitors() monitors.ServerMonitors {
+	return c.FakeServerMonitors
 }
 
 // Monitors implements Client.

@@ -1,0 +1,36 @@
+{
+  "code": 0,
+  "message": "success",
+  "data": [
+    {
+      "monitor_id": "897654345678",
+      "display_name": "foo",
+      "type": "SERVER",
+      "notification_profile_id": "789",
+      "threshold_profile_id": "012",
+      "monitor_groups": [
+        "234",
+        "567"
+      ],
+      "user_group_ids": [
+        "123",
+        "456"
+      ]
+    },
+    {
+      "monitor_id": "933654345678",
+      "display_name": "foo",
+      "type": "SERVER",
+      "notification_profile_id": "789",
+      "threshold_profile_id": "012",
+      "monitor_groups": [
+        "234",
+        "567"
+      ],
+      "user_group_ids": [
+        "123",
+        "456"
+      ]
+    }
+  ]
+}

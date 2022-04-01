@@ -72,6 +72,7 @@ type Client interface {
 	Tags() endpoints.Tags
 	WebsiteMonitors() monitors.WebsiteMonitors
 	SSLMonitors() monitors.SSLMonitors
+	ServerMonitors() monitors.ServerMonitors
 	RestApiMonitors() monitors.RestApiMonitors
 	AmazonMonitors() monitors.AmazonMonitors
 	NotificationProfiles() endpoints.NotificationProfiles
@@ -148,6 +149,11 @@ func (c *client) WebsiteMonitors() monitors.WebsiteMonitors {
 // SSLMonitors implements Client.
 func (c *client) SSLMonitors() monitors.SSLMonitors {
 	return monitors.NewSSLMonitors(c.restClient)
+}
+
+// ServerMonitors implements Client.
+func (c *client) ServerMonitors() monitors.ServerMonitors {
+	return monitors.NewServerMonitors(c.restClient)
 }
 
 // RestApiMonitors implements Client.

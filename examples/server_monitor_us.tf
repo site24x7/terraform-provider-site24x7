@@ -4,7 +4,7 @@ terraform {
 
   required_providers {
     site24x7 = {
-      source  = "site24x7/site24x7"
+      source = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
       version = "1.0.9"
     }
@@ -42,28 +42,19 @@ provider "site24x7" {
 
 }
 
-// Site24x7 SSL Certificate Monitor API doc - https://www.site24x7.com/help/api/#ssl-certificate
-resource "site24x7_ssl_monitor" "ssl_monitor_us" {
+// Resource for updating the server monitor.
+resource "site24x7_server_monitor" "SERVER_123456000025786003" {
   // (Required) Display name for the monitor
-  display_name = "Example SSL Monitor"
+  display_name            = "ubuntu-server"
 
-  // (Required) Domain name to be verified for SSL Certificate.
-  domain_name = "www.example.com"
-  
-  // (Optional) Location Profile to be associated with the monitor. If 
-  // location_profile_id and location_profile_name are omitted,
-  // the first profile returned by the /api/location_profiles endpoint
-  // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
-  // used.
-  location_profile_id = "123"
+  // (Optional) Frequency at which data has to be collected for the server monitor.
+  poll_interval           = 1
 
-  // (Optional) Name of the Location Profile that has to be associated with the monitor. 
-  // Either specify location_profile_id or location_profile_name.
-  // If location_profile_id and location_profile_name are omitted,
-  // the first profile returned by the /api/location_profiles endpoint
-  // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
-  // used.
-  location_profile_name = "North America"
+  // (Optional) Boolean to enable/disable Event Log/Syslog monitoring.
+  log_needed           = true
+
+  // (Optional) Execute IT Automation during scheduled maintenance.
+  perform_automation   = true
 
   // (Optional) Notification profile to be associated with the monitor. If
   // omitted, the first profile returned by the /api/notification_profiles

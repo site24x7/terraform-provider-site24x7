@@ -21,4 +21,5 @@ const (
 	SSL_CERT MonitorType = "SSL_CERT"
 	RESTAPI  MonitorType = "RESTAPI"
 	AMAZON   MonitorType = "AMAZON"
+	SERVER   MonitorType = "SERVER"
 )
