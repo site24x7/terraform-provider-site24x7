@@ -140,6 +140,8 @@ Execute the below command to clone Site24x7's terraform provider repository to a
 
 The current directory denotes your `$SITE24X7_TERRAFORM_PROVIDER_REPOSITORY_HOME`
 
+
+
 #### Export your Site24x7 OAuth credentials in the bash environment
 
 ```sh
@@ -169,7 +171,7 @@ Eg: To fetch all SERVER monitor ID's
 
 ```
 
-Execute the command `terraform apply` from $SITE24X7_TERRAFORM_PROVIDER_REPOSITORY_HOME to write all the monitor IDs in the file `$SITE24X7_TERRAFORM_PROVIDER_REPOSITORY_HOME/utilities/importer/monitors_to_import.json`
+Execute the command `terraform apply` from `$SITE24X7_TERRAFORM_PROVIDER_REPOSITORY_HOME` to write all the monitor IDs in the file `$SITE24X7_TERRAFORM_PROVIDER_REPOSITORY_HOME/utilities/importer/monitors_to_import.json`
 
 ```sh
 
@@ -197,7 +199,7 @@ Copy `$SITE24X7_TERRAFORM_PROVIDER_REPOSITORY_HOME/utilities/importer/output/imp
   ./import_commands.sh
 ```
 
-Copy the resource configurations(similar to the one given below) generated in the file $SITE24X7_TERRAFORM_PROVIDER_REPOSITORY_HOME/utilities/importer/output/imported_configuration.tf to your terraform configuration file.
+Copy the resource configurations(similar to the one given below) generated in the file `$SITE24X7_TERRAFORM_PROVIDER_REPOSITORY_HOME/utilities/importer/output/imported_configuration.tf` to your terraform configuration file.
 
 ```terraform
   resource "site24x7_server_monitor" "SERVER_123456000025786003" { 
