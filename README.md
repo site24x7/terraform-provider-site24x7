@@ -45,6 +45,7 @@ A terraform provider for managing the following resources in Site24x7:
 - Website Monitor - [site24x7_website_monitor](examples/website_monitor_us.tf) ([Site24x7 Website Monitor API doc](https://www.site24x7.com/help/api/#website))
 - SSL Certificate Monitor - [site24x7_ssl_monitor](examples/ssl_monitor_us.tf) ([Site24x7 SSL Certificate Monitor API doc](https://www.site24x7.com/help/api/#ssl-certificate))
 - Rest API Monitor - [site24x7_rest_api_monitor](examples/rest_api_monitor_us.tf) ([Site24x7 Rest API Monitor API doc](https://www.site24x7.com/help/api/#rest-api))
+- Server Monitor - [site24x7_server_monitor](examples/server_monitor_us.tf) ([Terraform Server Monitor doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/resources/server_monitor))
 - Amazon Monitor - [site24x7_amazon_monitor](examples/amazon_monitor_us.tf) ([Site24x7 Amazon Monitor API doc](https://www.site24x7.com/help/api/#amazon-webservice-monitor))
 - URL IT Automation - [site24x7_url_action](examples/it_automation_us.tf) ([Site24x7 IT Automation API doc](https://www.site24x7.com/help/api/#it-automation))
 - Monitor Group - [site24x7_monitor_group](examples/monitor_group_us.tf) ([Site24x7 Monitor Group API doc](https://www.site24x7.com/help/api/#monitor-groups))
@@ -152,9 +153,9 @@ The current directory denotes your `$SITE24X7_TERRAFORM_PROVIDER_REPOSITORY_HOME
 
 ```
 
-To fetch all the required monitor ID's using the datasource `site24x7_monitors` paste the below content in `$SITE24X7_TERRAFORM_PROVIDER_REPOSITORY_HOME/main.tf`
+#### Fetch monitors to import
 
-Eg: To fetch all SERVER monitor ID's
+To fetch all the server monitor IDs using the datasource `site24x7_monitors` paste the below configuration in `$SITE24X7_TERRAFORM_PROVIDER_REPOSITORY_HOME/main.tf`
 
 ```terraform
 
@@ -171,7 +172,19 @@ Eg: To fetch all SERVER monitor ID's
 
 ```
 
-Execute the command `terraform apply` from `$SITE24X7_TERRAFORM_PROVIDER_REPOSITORY_HOME` to write all the monitor IDs in the file `$SITE24X7_TERRAFORM_PROVIDER_REPOSITORY_HOME/utilities/importer/monitors_to_import.json`
+Execute the below commands to write all the server monitor IDs in the file `$SITE24X7_TERRAFORM_PROVIDER_REPOSITORY_HOME/utilities/importer/monitors_to_import.json`
+
+```sh
+
+  cd $SITE24X7_TERRAFORM_PROVIDER_REPOSITORY_HOME
+  terraform init
+  terraform apply
+
+```
+
+#### Generating configuration and import commands
+
+Execute the below commands to generate empty configuration, terraform import commands and the state file configuration.
 
 ```sh
 
@@ -181,27 +194,32 @@ Execute the command `terraform apply` from `$SITE24X7_TERRAFORM_PROVIDER_REPOSIT
 
 ```
 
-#### Importing monitors
+#### Importing monitors to your state
 
 Copy the empty configurations(similar to the one given below) generated in the file `$SITE24X7_TERRAFORM_PROVIDER_REPOSITORY_HOME/empty_configuration.tf` to your terraform configuration file.
 
 ```terraform
+
     resource "site24x7_server_monitor" "SERVER_123456000025786003" {
     }
 
     resource "site24x7_server_monitor" "SERVER_123456000027570003" {
     }
+
 ```
 
 Copy `$SITE24X7_TERRAFORM_PROVIDER_REPOSITORY_HOME/utilities/importer/output/import_commands.sh` to your terraform directory and execute the same to import all the monitors to your terraform state.
 
 ```sh
+
   ./import_commands.sh
+
 ```
 
 Copy the resource configurations(similar to the one given below) generated in the file `$SITE24X7_TERRAFORM_PROVIDER_REPOSITORY_HOME/utilities/importer/output/imported_configuration.tf` to your terraform configuration file.
 
 ```terraform
+
   resource "site24x7_server_monitor" "SERVER_123456000025786003" { 
       perform_automation = true 
       log_needed = true 
@@ -213,6 +231,7 @@ Copy the resource configurations(similar to the one given below) generated in th
       user_group_ids = ["123456000000025005", "123456000000025009"] 
       display_name = "ubuntu-server"
   }
+
 ```
 
 ## Developing the Provider
