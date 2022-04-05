@@ -8,7 +8,7 @@ description: |-
 
 # Resource: site24x7\_monitor\_group
 
-Use this resource to create, update, and delete a monitor group in Site24x7.
+Use this resource to create, update and delete a monitor group in Site24x7.
 
 ## Example Usage
 

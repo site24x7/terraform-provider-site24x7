@@ -8,7 +8,7 @@ description: |-
 
 # Resource: site24x7\_rest\_api\_monitor
 
-Use this resource to create, update, and delete a REST API monitor in Site24x7.
+Use this resource to create, update and delete a REST API monitor in Site24x7.
 
 ## Example Usage
 

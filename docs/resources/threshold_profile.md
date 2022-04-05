@@ -8,7 +8,7 @@ description: |-
 
 # Resource: site24x7\_threshold\_profile
 
-Use this resource to create, update, and delete a threshold profile in Site24x7.
+Use this resource to create, update and delete a threshold profile in Site24x7.
 
 ## Example Usage
 
