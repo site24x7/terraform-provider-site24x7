@@ -32,7 +32,7 @@ var MonitorGroupSchema = map[string]*schema.Schema{
 		Description: "Number of monitors' health that decide the group status. ‘0’ implies that all the monitors are considered for determining the group status. Default value is 1.",
 	},
 	"dependency_resource_id": {
-		Type: schema.TypeList,
+		Type: schema.TypeSet,
 		Elem: &schema.Schema{
 			Type: schema.TypeString,
 		},

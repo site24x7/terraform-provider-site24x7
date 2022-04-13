@@ -8,7 +8,7 @@ description: |-
 
 # Resource: site24x7\_tag
 
-Use this resource to create, update, and delete a tag in Site24x7.
+Use this resource to create, update and delete a tag in Site24x7.
 
 ## Example Usage
 

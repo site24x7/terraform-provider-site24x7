@@ -13,17 +13,27 @@ import (
 )
 
 func TestRequestSetsHeader(t *testing.T) {
-	r := NewRequest(nil, "GET", "")
+	clientConfig := ClientConfig{
+		APIBaseURL: "",
+		TokenURL:   "",
+		Verb:       "GET",
+	}
+	r := NewRequest(nil, clientConfig)
 
 	assert.Empty(t, r.header.Get("Content-Type"))
 
-	r = NewRequest(nil, "GET", "").AddHeader("Content-Type", "application/json")
+	r = NewRequest(nil, clientConfig).AddHeader("Content-Type", "application/json")
 
 	assert.Equal(t, "application/json", r.header.Get("Content-Type"))
 }
 
 func TestRequestSetsJSONBody(t *testing.T) {
-	r := NewRequest(nil, "GET", "").
+	clientConfig := ClientConfig{
+		APIBaseURL: "",
+		TokenURL:   "",
+		Verb:       "GET",
+	}
+	r := NewRequest(nil, clientConfig).
 		Body(map[string]string{"foo": "bar"})
 
 	require.NoError(t, r.err)
@@ -31,7 +41,12 @@ func TestRequestSetsJSONBody(t *testing.T) {
 }
 
 func TestRequestSetsErrorOnInvalidBody(t *testing.T) {
-	r := NewRequest(nil, "GET", "").
+	clientConfig := ClientConfig{
+		APIBaseURL: "",
+		TokenURL:   "",
+		Verb:       "GET",
+	}
+	r := NewRequest(nil, clientConfig).
 		Body(func() {})
 
 	require.Error(t, r.err)
@@ -41,7 +56,13 @@ func TestRequestSetsErrorOnInvalidBody(t *testing.T) {
 func TestRequestIsNotSentOnPreviousError(t *testing.T) {
 	c := newFakeHTTPClient()
 
-	r := NewRequest(c, "GET", "")
+	clientConfig := ClientConfig{
+		APIBaseURL: "",
+		TokenURL:   "",
+		Verb:       "GET",
+	}
+
+	r := NewRequest(c, clientConfig)
 	r.err = errors.New("whoops")
 
 	resp := r.Do()
@@ -55,7 +76,13 @@ func TestRequestBuildRequest(t *testing.T) {
 		"foo": "bar",
 	}
 
-	r := NewRequest(nil, "DELETE", "").
+	clientConfig := ClientConfig{
+		APIBaseURL: "",
+		TokenURL:   "",
+		Verb:       "DELETE",
+	}
+
+	r := NewRequest(nil, clientConfig).
 		Resource("foos").
 		ResourceID("123").
 		Body(body)
@@ -79,7 +106,13 @@ func TestRequestDo(t *testing.T) {
 		WithStatusCode(200).
 		WithResponseBody([]byte(`{"data":{"foo":"bar"}}`))
 
-	resp := NewRequest(c, "POST", "").
+	clientConfig := ClientConfig{
+		APIBaseURL: "",
+		TokenURL:   "",
+		Verb:       "POST",
+	}
+
+	resp := NewRequest(c, clientConfig).
 		Resource("foos").
 		ResourceID("123").
 		Do()
@@ -93,7 +126,13 @@ func TestRequestDoConvertsHTTPErrorsToStatusError(t *testing.T) {
 		WithStatusCode(404).
 		WithResponseBody([]byte(`{"error_code":456,"message":"not found","error_info":{"foo":"bar"}}`))
 
-	err := NewRequest(c, "PUT", "").
+	clientConfig := ClientConfig{
+		APIBaseURL: "",
+		TokenURL:   "",
+		Verb:       "PUT",
+	}
+
+	err := NewRequest(c, clientConfig).
 		Resource("foos").
 		ResourceID("123").
 		Do().
@@ -110,7 +149,13 @@ func TestRequestDoFallsBackToStatusErrorIfErrorResponseBodyIsInvalid(t *testing.
 		WithStatusCode(400).
 		WithResponseBody([]byte(`{`))
 
-	err := NewRequest(c, "PUT", "").
+	clientConfig := ClientConfig{
+		APIBaseURL: "",
+		TokenURL:   "",
+		Verb:       "PUT",
+	}
+
+	err := NewRequest(c, clientConfig).
 		Resource("foos").
 		ResourceID("123").
 		Body(nil).

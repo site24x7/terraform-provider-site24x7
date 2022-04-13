@@ -12,6 +12,14 @@ type Client interface {
 	Delete() *Request
 }
 
+type ClientConfig struct {
+	APIBaseURL string
+	Verb       string
+	TokenURL   string
+	ZAAID      string
+	MSP        bool
+}
+
 // HTTPClient is the interface of an http client that is compatible with
 // *http.Client.
 type HTTPClient interface {
@@ -19,14 +27,14 @@ type HTTPClient interface {
 }
 
 type client struct {
-	baseURL    string
+	config     ClientConfig
 	httpClient HTTPClient
 }
 
 // New Client creates a new REST Client.
-func NewClient(httpClient HTTPClient, baseURL string) Client {
+func NewClient(httpClient HTTPClient, clientConfig ClientConfig) Client {
 	return &client{
-		baseURL:    baseURL,
+		config:     clientConfig,
 		httpClient: httpClient,
 	}
 }
@@ -34,7 +42,8 @@ func NewClient(httpClient HTTPClient, baseURL string) Client {
 // Verb creates a new *Request with given HTTP verb, e.g. 'POST', 'PUT', 'GET'
 // or 'DELETE'.
 func (c *client) Verb(verb string) *Request {
-	return NewRequest(c.httpClient, verb, c.baseURL)
+	c.config.Verb = verb
+	return NewRequest(c.httpClient, c.config)
 }
 
 // Get creates a new HTTP GET request.

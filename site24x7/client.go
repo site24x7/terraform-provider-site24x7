@@ -32,6 +32,8 @@ type Config struct {
 	// if it expires.
 	RefreshToken string
 
+	ZAAID string
+
 	// APIBaseURL allows overriding the default API base URL (https://www.site24x7.com/api).
 	// See https://www.site24x7.com/help/api/index.html#introduction for options of data centers for top level domain.
 	APIBaseURL string
@@ -98,28 +100,36 @@ func New(c Config) Client {
 		c.RetryConfig,
 	)
 
-	if c.APIBaseURL != "" {
-		return NewClientWithBaseURL(httpClient, c.APIBaseURL)
-	}
-
-	return NewClient(httpClient)
+	return NewClient(httpClient, c)
 }
 
 // NewClient creates a new Site24x7 API Client from httpClient with default API base URL.
 // This can be used to provide a custom http client for use with the API. The custom http
 // client has to transparently handle the Site24x7 OAuth flow.
-func NewClient(httpClient HTTPClient) Client {
-	return NewClientWithBaseURL(httpClient, APIBaseURL)
+func NewClient(httpClient HTTPClient, c Config) Client {
+
+	clientConfig := rest.ClientConfig{
+		APIBaseURL: c.APIBaseURL,
+		TokenURL:   c.TokenURL,
+		ZAAID:      c.ZAAID,
+	}
+	if c.ZAAID != "" {
+		clientConfig.MSP = true
+	}
+	return &client{
+		restClient: rest.NewClient(httpClient, clientConfig),
+	}
+
 }
 
-// NewClientWithBaseURL creates a new Site24x7 API Client from httpClient and given API base URL.
-// This can be used to provide a custom http client for use with the API. The custom http
-// client has to transparently handle the Site24x7 OAuth flow.
-func NewClientWithBaseURL(httpClient HTTPClient, baseURL string) Client {
-	return &client{
-		restClient: rest.NewClient(httpClient, baseURL),
-	}
-}
+// // NewClientWithBaseURL creates a new Site24x7 API Client from httpClient and given API base URL.
+// // This can be used to provide a custom http client for use with the API. The custom http
+// // client has to transparently handle the Site24x7 OAuth flow.
+// func NewClientWithBaseURL(httpClient HTTPClient, baseURL string) Client {
+// 	return &client{
+// 		restClient: rest.NewClient(httpClient, baseURL),
+// 	}
+// }
 
 // CurrentStatus implements Client.
 func (c *client) CurrentStatus() endpoints.CurrentStatus {

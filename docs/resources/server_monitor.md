@@ -3,12 +3,12 @@ layout: "site24x7"
 page_title: "Site24x7: site24x7_server_monitor"
 sidebar_current: "docs-site24x7-resource-server-monitor"
 description: |-
-  Create and manage a SSL monitor in Site24x7.
+  Manage a server monitor in Site24x7.
 ---
 
 # Resource: site24x7\_server\_monitor
 
-Use this resource to create, update, and delete a SSL monitor in Site24x7.
+Use this resource to create, update and delete a server monitor in Site24x7.
 
 ## Example Usage
 

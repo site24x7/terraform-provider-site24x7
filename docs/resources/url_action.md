@@ -8,7 +8,7 @@ description: |-
 
 # Resource: site24x7\_url\_action
 
-Use this resource to create, update, and delete a URL IT automation action in Site24x7.
+Use this resource to create, update and delete a URL IT automation action in Site24x7.
 
 ## Example Usage
 

@@ -34,6 +34,11 @@ func Provider() terraform.ResourceProvider {
 				DefaultFunc: schema.EnvDefaultFunc("SITE24X7_OAUTH2_REFRESH_TOKEN", nil),
 				Description: "OAuth2 Refresh Token",
 			},
+			"zaaid": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: "MSP customer zaaid",
+			},
 			"data_center": {
 				Type:        schema.TypeString,
 				Optional:    true,
@@ -99,6 +104,7 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 		ClientID:     d.Get("oauth2_client_id").(string),
 		ClientSecret: d.Get("oauth2_client_secret").(string),
 		RefreshToken: d.Get("oauth2_refresh_token").(string),
+		ZAAID:        d.Get("zaaid").(string),
 		APIBaseURL:   dataCenter.GetAPIBaseURL(),
 		TokenURL:     dataCenter.GetTokenURL(),
 		RetryConfig: &backoff.RetryConfig{

@@ -3,10 +3,10 @@ package site24x7
 import (
 	"testing"
 
+	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
 	"github.com/site24x7/terraform-provider-site24x7/fake"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -18,7 +18,7 @@ func TestUserGroupCreate(t *testing.T) {
 
 	a := &api.UserGroup{
 		DisplayName:      "test_user_group",
-		Users:            []string{"123", "456"},
+		Users:            []string{"123"},
 		AttributeGroupID: "789",
 		ProductID:        0,
 	}
@@ -43,7 +43,7 @@ func TestUserGroupUpdate(t *testing.T) {
 	a := &api.UserGroup{
 		UserGroupID:      "123",
 		DisplayName:      "test_user_group",
-		Users:            []string{"123", "456"},
+		Users:            []string{"123"},
 		AttributeGroupID: "789",
 		ProductID:        0,
 	}
@@ -124,7 +124,6 @@ func userGroupTestResourceData(t *testing.T) *schema.ResourceData {
 		"display_name": "test_user_group",
 		"users": []interface{}{
 			"123",
-			"456",
 		},
 		"attribute_group_id": "789",
 		"product_id":         0,

@@ -31,17 +31,12 @@ var LocationProfileSchema = map[string]*schema.Schema{
 		Description: "Primary location for monitoring.",
 	},
 	"secondary_locations": {
-		Type:     schema.TypeList,
+		Type:     schema.TypeSet,
 		Required: true,
 		Elem: &schema.Schema{
 			Type: schema.TypeString,
 		},
 		Description: "List of secondary locations for monitoring",
-		// DiffSuppressFunc: func(k, secLocationsInState, secLocationsInConf string, d *schema.ResourceData) bool {
-		// 	log.Println("secLocationsInConf ++++++++++++++++++ ", secLocationsInConf)
-		// 	log.Println("secLocationsInState +++++++++++++++++ ", secLocationsInState)
-		// 	return false
-		// },
 	},
 	"restrict_alternate_location_polling": {
 		Type:        schema.TypeBool,
@@ -132,9 +127,11 @@ func locationProfileExists(d *schema.ResourceData, meta interface{}) (bool, erro
 }
 
 func resourceDataToLocationProfile(d *schema.ResourceData) *api.LocationProfile {
-	var secondaryLocationIDs []string
-	for _, secondaryLocationID := range d.Get("secondary_locations").([]interface{}) {
-		secondaryLocationIDs = append(secondaryLocationIDs, secondaryLocationID.(string))
+
+	secondaryLocations := d.Get("secondary_locations").(*schema.Set).List()
+	secondaryLocationIDs := make([]string, 0, len(secondaryLocations))
+	for _, v := range secondaryLocations {
+		secondaryLocationIDs = append(secondaryLocationIDs, v.(string))
 	}
 	return &api.LocationProfile{
 		ProfileID:                        d.Id(),
@@ -149,7 +146,6 @@ func resourceDataToLocationProfile(d *schema.ResourceData) *api.LocationProfile 
 func updateLocationProfileResourceData(d *schema.ResourceData, locationProfile *api.LocationProfile) {
 	d.Set("display_name", locationProfile.ProfileName)
 	d.Set("primary_location", locationProfile.PrimaryLocation)
-	// sort.Strings(locationProfile.SecondaryLocations)
 	d.Set("secondary_locations", locationProfile.SecondaryLocations)
 	d.Set("restrict_alternate_location_polling", locationProfile.RestrictAlternateLocationPolling)
 }

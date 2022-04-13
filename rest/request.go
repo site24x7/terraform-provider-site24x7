@@ -23,6 +23,7 @@ type Request struct {
 	resourceID string
 	query      url.Values
 	header     http.Header
+	cookie     *http.Cookie
 	verb       string
 	body       []byte
 	err        error
@@ -30,11 +31,15 @@ type Request struct {
 
 // NewRequest creates a new *Request which uses client to send out the prepared
 // *http.Request.
-func NewRequest(client HTTPClient, verb, baseURL string) *Request {
+func NewRequest(client HTTPClient, config ClientConfig) *Request {
 	r := &Request{
 		client:  client,
-		baseURL: baseURL,
-		verb:    verb,
+		baseURL: config.APIBaseURL,
+		verb:    config.Verb,
+	}
+
+	if config.MSP {
+		r.cookie = &http.Cookie{Name: "zaaid", Value: config.ZAAID}
 	}
 
 	r.AddHeader("Accept", "application/json; version=2.1")
@@ -116,6 +121,10 @@ func (r *Request) buildRequest() (*http.Request, error) {
 		Header: r.header,
 		Body:   ioutil.NopCloser(bytes.NewReader(r.body)),
 		URL:    url,
+	}
+
+	if r.cookie != nil {
+		req.AddCookie(r.cookie)
 	}
 
 	if len(r.query) != 0 {

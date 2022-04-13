@@ -54,7 +54,12 @@ func RunTest(t *testing.T, test *EndpointTest) {
 	server := httptest.NewServer(handler)
 	defer server.Close()
 
-	restClient := rest.NewClient(http.DefaultClient, server.URL)
+	clientConfig := rest.ClientConfig{
+		APIBaseURL: server.URL,
+		TokenURL:   server.URL,
+	}
+
+	restClient := rest.NewClient(http.DefaultClient, clientConfig)
 
 	test.Fn(t, restClient)
 }

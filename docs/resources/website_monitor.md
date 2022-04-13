@@ -8,7 +8,7 @@ description: |-
 
 # Resource: site24x7\_website\_monitor
 
-Use this resource to create, update, and delete a website monitor in Site24x7.
+Use this resource to create, update and delete a website monitor in Site24x7.
 
 ## Example Usage
 

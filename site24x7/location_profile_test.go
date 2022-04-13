@@ -18,7 +18,7 @@ func TestLocationProfileCreate(t *testing.T) {
 
 	a := &api.LocationProfile{
 		ProfileName:        "prof",
-		SecondaryLocations: []string{"123", "456"},
+		SecondaryLocations: []string{"123"},
 		PrimaryLocation:    "1",
 	}
 
@@ -42,7 +42,7 @@ func TestLocationProfileUpdate(t *testing.T) {
 	a := &api.LocationProfile{
 		ProfileID:          "123",
 		ProfileName:        "prof",
-		SecondaryLocations: []string{"123", "456"},
+		SecondaryLocations: []string{"123"},
 		PrimaryLocation:    "1",
 	}
 
@@ -122,7 +122,6 @@ func locationProfileTestResourceData(t *testing.T) *schema.ResourceData {
 		"profile_name": "prof",
 		"secondary_locations": []interface{}{
 			"123",
-			"456",
 		},
 		"primary_location": "1",
 	})
