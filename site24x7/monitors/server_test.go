@@ -12,7 +12,7 @@ import (
 )
 
 func TestServerMonitorUpdate(t *testing.T) {
-	d := sslTestResourceData(t)
+	d := serverTestResourceData(t)
 	d.SetId("123")
 
 	c := fake.NewClient()
@@ -23,10 +23,39 @@ func TestServerMonitorUpdate(t *testing.T) {
 		Type:                  "SERVER",
 		NotificationProfileID: "789",
 		ThresholdProfileID:    "012",
+		LogNeeded:             true,
+		PerformAutomation:     false,
+		HostName:              "test-ubuntu",
+		IPAddress:             "1.2.3.4",
+		TemplateID:            "1234",
+		ITAutomationModule:    true,
+		PluginModule:          false,
+		PollInterval:          1,
 		MonitorGroups:         []string{"234", "567"},
 		UserGroupIDs:          []string{"123", "456"},
 		TagIDs:                []string{"123"},
 	}
+
+	b := &api.ServerMonitor{
+		MonitorID:             "123",
+		DisplayName:           "foo",
+		Type:                  "SERVER",
+		NotificationProfileID: "789",
+		ThresholdProfileID:    "012",
+		LogNeeded:             true,
+		PerformAutomation:     true,
+		HostName:              "test-ubuntu",
+		IPAddress:             "1.2.3.4",
+		TemplateID:            "1234",
+		ITAutomationModule:    true,
+		PluginModule:          false,
+		PollInterval:          2,
+		MonitorGroups:         []string{"234", "567"},
+		UserGroupIDs:          []string{"123", "456"},
+		TagIDs:                []string{"123"},
+	}
+
+	c.FakeServerMonitors.On("Get", "123").Return(b, nil).Once()
 
 	notificationProfiles := []*api.NotificationProfile{
 		{
@@ -86,7 +115,7 @@ func TestServerMonitorUpdate(t *testing.T) {
 }
 
 func TestServerMonitorRead(t *testing.T) {
-	d := sslTestResourceData(t)
+	d := serverTestResourceData(t)
 	d.SetId("123")
 
 	c := fake.NewClient()
@@ -103,7 +132,7 @@ func TestServerMonitorRead(t *testing.T) {
 }
 
 func TestServerMonitorDelete(t *testing.T) {
-	d := sslTestResourceData(t)
+	d := serverTestResourceData(t)
 	d.SetId("123")
 
 	c := fake.NewClient()
@@ -118,7 +147,7 @@ func TestServerMonitorDelete(t *testing.T) {
 }
 
 func TestServerMonitorExists(t *testing.T) {
-	d := sslTestResourceData(t)
+	d := serverTestResourceData(t)
 	d.SetId("123")
 
 	c := fake.NewClient()
@@ -149,8 +178,15 @@ func serverTestResourceData(t *testing.T) *schema.ResourceData {
 	return schema.TestResourceDataRaw(t, ServerMonitorSchema, map[string]interface{}{
 		"display_name":            "foo",
 		"type":                    "SERVER",
+		"hostname":                "test-ubuntu",
+		"ipaddress":               "1.2.3.4",
+		"server_setting_it_aut":   true,
+		"server_setting_plugins":  false,
 		"notification_profile_id": "789",
 		"threshold_profile_id":    "012",
+		"poll_interval":           1,
+		"log_needed":              true,
+		"perform_automation":      false,
 		"monitor_groups": []interface{}{
 			"234",
 			"567",

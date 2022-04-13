@@ -29,17 +29,12 @@ var UserGroupSchema = map[string]*schema.Schema{
 		Description: "Attribute Alert Group to be associated with the User Alert group.",
 	},
 	"users": {
-		Type:     schema.TypeList,
+		Type:     schema.TypeSet,
 		Required: true,
 		Elem: &schema.Schema{
 			Type: schema.TypeString,
 		},
 		Description: "User IDs of the users to be associated to the group.",
-		// DiffSuppressFunc: func(k, usersInState, usersInConf string, d *schema.ResourceData) bool {
-		// 	log.Println("usersInState : ", usersInState)
-		// 	log.Println("usersInConf : ", usersInConf)
-		// 	return true
-		// },
 	},
 	"product_id": {
 		Type:         schema.TypeInt,
@@ -132,10 +127,13 @@ func userGroupExists(d *schema.ResourceData, meta interface{}) (bool, error) {
 }
 
 func resourceDataToUserGroup(d *schema.ResourceData) *api.UserGroup {
-	var userIDs []string
-	for _, userID := range d.Get("users").([]interface{}) {
-		userIDs = append(userIDs, userID.(string))
+
+	users := d.Get("users").(*schema.Set).List()
+	userIDs := make([]string, 0, len(users))
+	for _, v := range users {
+		userIDs = append(userIDs, v.(string))
 	}
+
 	return &api.UserGroup{
 		UserGroupID:      d.Id(),
 		DisplayName:      d.Get("display_name").(string),

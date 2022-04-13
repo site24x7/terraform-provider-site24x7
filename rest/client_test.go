@@ -7,7 +7,13 @@ import (
 )
 
 func TestClientVerbs(t *testing.T) {
-	c := NewClient(&fakeHTTPClient{}, "http://localhost/api")
+
+	clientConfig := ClientConfig{
+		APIBaseURL: "http://localhost/api",
+		TokenURL:   "http://localhost/api",
+	}
+
+	c := NewClient(&fakeHTTPClient{}, clientConfig)
 
 	assert.Equal(t, "POST", c.Post().verb)
 	assert.Equal(t, "GET", c.Get().verb)

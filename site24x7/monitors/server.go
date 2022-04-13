@@ -1,8 +1,6 @@
 package monitors
 
 import (
-	"log"
-
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
@@ -120,12 +118,11 @@ func ResourceSite24x7ServerMonitor() *schema.Resource {
 func serverMonitorRead(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(site24x7.Client)
 
-	log.Println("READDDDDDDDDDDDDDDDDDDD ======================== ", d.Id())
 	serverMonitor, err := client.ServerMonitors().Get(d.Id())
 	if err != nil {
 		return err
 	}
-	log.Println("READDDDDDDDDDDDDDDDDDDD ======================== serverMonitor ", serverMonitor)
+
 	updateServerMonitorResourceData(d, serverMonitor)
 
 	return nil
@@ -134,7 +131,7 @@ func serverMonitorRead(d *schema.ResourceData, meta interface{}) error {
 func serverMonitorUpdate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(site24x7.Client)
 	serverMon, err := client.ServerMonitors().Get(d.Id())
-	log.Println("UPDATEEEEEEEEEEEEEEEEEEEE ======================== ", d.Id())
+
 	serverMonitor, err := resourceDataToServerMonitor(d, client, serverMon)
 	if err != nil {
 		return err

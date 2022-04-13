@@ -4,11 +4,11 @@ terraform {
 
   required_providers {
     site24x7 = {
-      source  = "site24x7/site24x7"
-      // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "1.0.10"
-      # source  = "registry.terraform.io/site24x7/site24x7"
-      # version = "1.0.0"
+      # source  = "site24x7/site24x7"
+      # // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
+      # version = "1.0.10"
+      source  = "registry.terraform.io/site24x7/site24x7"
+      version = "1.0.0"
     }
   }
 }
@@ -27,6 +27,9 @@ provider "site24x7" {
   # // environment variable if the attribute is empty or omitted.
   # oauth2_refresh_token = "<SITE24X7_OAUTH2_REFRESH_TOKEN>"
 
+  // ZAAID of the customer under a MSP or BU
+  # zaaid = "1234"
+
   // Specify the data center from which you have obtained your
   // OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN).
   data_center = "US"
@@ -44,74 +47,24 @@ provider "site24x7" {
 
 }
 
-// Site24x7 Rest API Monitor API doc - https://www.site24x7.com/help/api/#rest-api
-resource "site24x7_rest_api_monitor" "rest_api_monitor_basic" {
+// Website Monitor API doc: https://www.site24x7.com/help/api/#website
+resource "site24x7_website_monitor" "website_monitor_example" {
   // (Required) Display name for the monitor
-  display_name = "REST API Monitor - terraform"
+  display_name = "Example Monitor"
+
   // (Required) Website address to monitor.
-  website = "https://dummy.restapiexample.com/"
+  website = "https://www.example.com"
+
+  // (Optional) Interval at which your website has to be monitored.
+  // See https://www.site24x7.com/help/api/#check-interval for all supported values.
+  check_frequency = "1"
+
   // (Optional) Name of the Location Profile that has to be associated with the monitor. 
   // Either specify location_profile_id or location_profile_name.
   // If location_profile_id and location_profile_name are omitted,
   // the first profile returned by the /api/location_profiles endpoint
   // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
   // used.
-  # location_profile_name = "North America"
-  // (Optional) Provide a comma-separated list of HTTP status codes that indicate a successful response. 
-  // You can specify individual status codes, as well as ranges separated with a colon.
-  # up_status_codes = "400:500"
+  location_profile_name = "North America"
 
-  // ================ JSON ASSERTION ATTRIBUTES
-  // (Optional) Response content type. Default value is 'T'
-  // 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML
-  // https://www.site24x7.com/help/api/#res_content_type
-  response_content_type = "J"
-  // (Optional) Provide multiple JSON Path expressions to enable evaluation of JSON Path expression assertions. 
-  // The assertions must successfully parse the JSON Path in the JSON. JSON expression assertions fails if the expressions does not match.
-  match_json_path = [
-    "$.store.book[*].author",
-    "$..author",
-    "$.store.*"
-  ]
-  // (Optional) Trigger an alert when the JSON path assertion fails during a test. 
-  // Alert type constant. Can be either 0 or 2. '0' denotes Down and '2' denotes Trouble. Default value is 2.
-  match_json_path_severity = 0
-  // (Optional) JSON schema to be validated against the JSON response.
-  json_schema = "{\"test\":\"abcd\"}"
-  // (Optional) Trigger an alert when the JSON schema assertion fails during a test. 
-  // Alert type constant. Can be either 0 or 2. '0' denotes Down and '2' denotes Trouble. Default value is 2.
-  json_schema_severity = 2
-  // (Optional) JSON Schema check allows you to annotate and validate all JSON endpoints for your web service.
-  json_schema_check = true
-  // JSON ASSERTION ATTRIBUTES ================
-}
-
-// Data source to fetch URL monitor starting with the name "REST" and is of the monitor type "RESTAPI"
-data "site24x7_monitor" "s247monitor" {
-  // (Optional) Regular expression denoting the name of the monitor.
-  name_regex = "^REST"
-  // (Optional) Type of the monitor. (eg) RESTAPI, SSL_CERT, URL, SERVER etc.
-  monitor_type = "RESTAPI"
-}
-
-
-// Displays the monitor ID
-output "s247monitor_monitor_id" {
-  description = "Monitor ID : "
-  value       = data.site24x7_monitor.s247monitor.id
-}
-// Displays the name
-output "s247monitor_display_name" {
-  description = "Monitor Display Name : "
-  value       = data.site24x7_monitor.s247monitor.display_name
-}
-// Displays the user group IDs associated to the monitor
-output "monitor_user_group_ids" {
-  description = "Monitor User Group IDs : "
-  value       = data.site24x7_monitor.s247monitor.user_group_ids
-}
-// Displays the notification profile ID associated to the monitor
-output "s247monitor_notification_profile_id" {
-  description = "Monitor Notification Profile ID : "
-  value       = data.site24x7_monitor.s247monitor.notification_profile_id
 }

@@ -333,6 +333,7 @@ func resourceDataToThresholdProfile(d *schema.ResourceData) *api.ThresholdProfil
 	}
 
 	// Response Time Threshold
+	var setResponseTimeThresholdMap bool
 	responseTimeThresholdMap := make(map[string]interface{})
 	var primaryThresholdList []map[string]interface{}
 	var secondaryThresholdList []map[string]interface{}
@@ -360,12 +361,14 @@ func resourceDataToThresholdProfile(d *schema.ResourceData) *api.ThresholdProfil
 	}
 	if len(primaryThresholdList) > 0 {
 		responseTimeThresholdMap["primary"] = primaryThresholdList
+		setResponseTimeThresholdMap = true
 	}
 	if len(secondaryThresholdList) > 0 {
 		responseTimeThresholdMap["secondary"] = secondaryThresholdList
+		setResponseTimeThresholdMap = true
 	}
 
-	return &api.ThresholdProfile{
+	thresholdProfileToReturn := &api.ThresholdProfile{
 		ProfileID:              d.Id(),
 		ProfileName:            d.Get("profile_name").(string),
 		Type:                   d.Get("type").(string),
@@ -373,8 +376,13 @@ func resourceDataToThresholdProfile(d *schema.ResourceData) *api.ThresholdProfil
 		DownLocationThreshold:  d.Get("down_location_threshold").(int),
 		WebsiteContentModified: d.Get("website_content_modified").(bool),
 		WebsiteContentChanges:  websiteContentChanges,
-		ResponseTimeThreshold:  responseTimeThresholdMap,
 	}
+
+	if setResponseTimeThresholdMap {
+		thresholdProfileToReturn.ResponseTimeThreshold = responseTimeThresholdMap
+	}
+
+	return thresholdProfileToReturn
 }
 
 // Called during read and sets thresholdProfile in API response to ResourceData
