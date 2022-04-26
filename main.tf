@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "1.0.11"
+      version = "1.0.12"
       # source  = "registry.terraform.io/site24x7/site24x7"
       # version = "1.0.0"
     }
@@ -32,7 +32,7 @@ provider "site24x7" {
 
   // Specify the data center from which you have obtained your
   // OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN).
-  data_center = "US"
+  data_center = "EU"
 
   // The minimum time to wait in seconds before retrying failed Site24x7 API requests.
   retry_min_wait = 1

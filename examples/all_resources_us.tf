@@ -6,12 +6,12 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "1.0.11"
+      version = "1.0.12"
       // Uncomment for local setup
       # source  = "registry.zoho.io/zoho/site24x7"
-      # version = "1.0.11"
+      # version = "1.0.12"
     #   source  = "registry.terraform.io/site24x7/site24x7"
-    #   version = "1.0.11"
+    #   version = "1.0.12"
     }
   }
 }
