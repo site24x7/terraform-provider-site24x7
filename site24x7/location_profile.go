@@ -43,6 +43,11 @@ var LocationProfileSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Description: "Restricts polling of the resource from the selected locations alone in the Location Profile, overrides the alternate location poll logic.",
 	},
+	"outer_regions_location_consent": {
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Description: "Consent is mandatory for monitoring from countries outside the European Economic Area (EEA) and the Adequate countries. To provide your consent, set outer_regions_location_consent as true.",
+	},
 }
 
 func ResourceSite24x7LocationProfile() *schema.Resource {
@@ -139,6 +144,7 @@ func resourceDataToLocationProfile(d *schema.ResourceData) *api.LocationProfile 
 		PrimaryLocation:                  d.Get("primary_location").(string),
 		SecondaryLocations:               secondaryLocationIDs,
 		RestrictAlternateLocationPolling: d.Get("restrict_alternate_location_polling").(bool),
+		LocationConsentForOuterRegions:   d.Get("outer_regions_location_consent").(bool),
 	}
 }
 
@@ -148,4 +154,5 @@ func updateLocationProfileResourceData(d *schema.ResourceData, locationProfile *
 	d.Set("primary_location", locationProfile.PrimaryLocation)
 	d.Set("secondary_locations", locationProfile.SecondaryLocations)
 	d.Set("restrict_alternate_location_polling", locationProfile.RestrictAlternateLocationPolling)
+	d.Set("outer_regions_location_consent", locationProfile.LocationConsentForOuterRegions)
 }

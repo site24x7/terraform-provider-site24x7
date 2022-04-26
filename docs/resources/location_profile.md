@@ -31,6 +31,9 @@ resource "site24x7_location_profile" "location_profile_us" {
 
   // (Optional) Restricts polling of the resource from the selected locations alone in the Location Profile, overrides the alternate location poll logic.
   restrict_alternate_location_polling = true
+
+  // (Optional) Consent is mandatory for monitoring from countries outside the European Economic Area (EEA) and the Adequate countries. To provide your consent, set outer_regions_location_consent as true.
+  outer_regions_location_consent = true
 }
 ```
 
@@ -45,6 +48,7 @@ resource "site24x7_location_profile" "location_profile_us" {
 
 * `secondary_locations` (List of String) List of secondary locations for monitoring.
 * `restrict_alternate_location_polling` (Boolean) Restricts polling of the resource from the selected locations alone in the Location Profile, overrides the alternate location poll logic.
+* `outer_regions_location_consent` (Boolean) Consent is mandatory for monitoring from countries outside the European Economic Area (EEA) and the Adequate countries. To provide your consent, set outer_regions_location_consent as true.
 
 
 Refer [API documentation](https://www.site24x7.com/help/api/#location-profiles) for more information about attributes.

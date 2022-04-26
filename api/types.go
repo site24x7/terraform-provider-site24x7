@@ -170,6 +170,7 @@ type LocationProfile struct {
 	PrimaryLocation                  string   `json:"primary_location"`
 	SecondaryLocations               []string `json:"secondary_locations"`
 	RestrictAlternateLocationPolling bool     `json:"restrict_alt_loc"`
+	LocationConsentForOuterRegions   bool     `json:"outer_regions_location_consent"`
 }
 
 func (locationProfile *LocationProfile) String() string {

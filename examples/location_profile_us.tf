@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "1.0.11"
+      version = "1.0.12"
     }
   }
 }
@@ -63,4 +63,7 @@ resource "site24x7_location_profile" "location_profile_us" {
 
   // (Optional) Restricts polling of the resource from the selected locations alone in the Location Profile, overrides the alternate location poll logic.
   restrict_alternate_location_polling = true
+
+  // (Optional) Consent is mandatory for monitoring from countries outside the European Economic Area (EEA) and the Adequate countries. To provide your consent, set outer_regions_location_consent as true.
+  outer_regions_location_consent = true
 }
