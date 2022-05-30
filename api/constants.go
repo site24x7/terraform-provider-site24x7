@@ -18,6 +18,7 @@ const (
 
 	// Type of the Site24x7 resource.
 	URL      MonitorType = "URL"
+	HOMEPAGE MonitorType = "HOMEPAGE"
 	SSL_CERT MonitorType = "SSL_CERT"
 	RESTAPI  MonitorType = "RESTAPI"
 	AMAZON   MonitorType = "AMAZON"
