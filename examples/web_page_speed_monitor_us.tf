@@ -1,6 +1,6 @@
 terraform {
   # Require Terraform version 0.15.x (recommended)
-  required_version = "~> 0.13.0"
+  required_version = "~> 0.15.0"
 
   required_providers {
     site24x7 = {
@@ -45,14 +45,115 @@ provider "site24x7" {
 
 }
 
-// Site24x7 SSL Certificate Monitor API doc - https://www.site24x7.com/help/api/#ssl-certificate
-resource "site24x7_ssl_monitor" "ssl_monitor_us" {
+// Web Page Speed(Browser) Monitor API doc: https://www.site24x7.com/help/api/#websocket
+resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_basic" {
   // (Required) Display name for the monitor
-  display_name = "Example SSL Monitor"
+  display_name = "Home Page Speed - Terraform"
 
-  // (Required) Domain name to be verified for SSL Certificate.
-  domain_name = "www.example.com"
-  
+  // (Required) Website address to monitor.
+  website = "https://www.example.com"
+
+  // (Optional) Interval at which your website has to be monitored.
+  // See https://www.site24x7.com/help/api/#check-interval for all supported values.
+  check_frequency = "15"
+
+  // (Optional) Name of the Location Profile that has to be associated with the monitor. 
+  // Either specify location_profile_id or location_profile_name.
+  // If location_profile_id and location_profile_name are omitted,
+  // the first profile returned by the /api/location_profiles endpoint
+  // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
+  // used.
+  location_profile_name = "North America"
+
+}
+
+// Website Monitor API doc: https://www.site24x7.com/help/api/#websocket
+resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_example" {
+  // (Required) Display name for the monitor
+  display_name = "mymonitor"
+
+  // (Required) Website address to monitor.
+  website = "https://foo.bar"
+
+  // (Optional) Check interval for monitoring. Default: 1. See
+  // https://www.site24x7.com/help/api/#check-interval for all supported
+  // values.
+  check_frequency = "15"
+
+  // (Optional) Timeout for connecting to the website. Range 1 - 45. Default: 30
+  timeout = 40
+
+  // (Optional) Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure. 
+  use_ipv6 = false
+
+  // (Optional) Type of content the website page has. 1 - Static Website,	2 - Dynamic Website, 3 - Flash-Based Website. Default value is 1.
+  website_type = 2
+
+  // (Optional) Type of the browser. 1 - Firefox, 2 - Chrome. Default value is 1
+  browser_type = 2
+
+  // (Optional) Type of the device used for running the speed test. 1 - Desktop, 2 - Mobile, 3 - Tab. Default value is "1".
+  device_type = "1"
+
+  // (Optional) Set a resolution based on your preferred device type.
+  wpa_resolution = "1024,768" 
+
+  // HTTP configuration
+
+  // (Optional) HTTP Method to be used for accessing the website. Default: "G".
+  // See https://www.site24x7.com/help/api/#http_methods for allowed values.
+  http_method = "G"
+
+  // (Optional) User Agent to be used while monitoring the website.
+  user_agent = "some user agent string"
+
+  // (Optional) Authentication user name to access the website.
+  auth_user = "theuser"
+
+  // (Optional) Authentication password to access the website.
+  auth_pass = "thepasswd"
+
+  // (Optional) Map of custom HTTP headers to send.
+  custom_headers = {
+    "Accept" = "application/json"
+    "Accept-Encoding" = "gzip"
+  }
+
+  // (Optional) Provide a comma-separated list of HTTP status codes that indicate a successful response. You can specify individual status codes, as well as ranges separated with a colon. Default: ""
+  up_status_codes = "200,404"
+
+
+  // Content Check Configuration
+
+  // (Optional) Check for the keyword in the website response.
+  matching_keyword_value = "foo"
+
+  // (Optional) Alert type to match on. See
+  // https://www.site24x7.com/help/api/#alert-type-constants for available
+  // values.
+  matching_keyword_severity = 2
+
+  // (Optional) Check for non existence of keyword in the website response.
+  unmatching_keyword_value = "error"
+
+  // (Optional) Alert type to match on. See
+  // https://www.site24x7.com/help/api/#alert-type-constants for available
+  // values.
+  unmatching_keyword_severity = 2
+
+  // (Optional) Perform case sensitive keyword search or not. Default: false.
+  match_case = true
+
+  // (Optional) Match the regular expression in the website response.
+  match_regex_value = ".*imprint.*"
+
+  // (Optional) Alert type to match on. See
+  // https://www.site24x7.com/help/api/#alert-type-constants for available
+  // values.
+  match_regex_severity = 2
+
+  // Configuration Profiles
+
   // (Optional) Location Profile to be associated with the monitor. If 
   // location_profile_id and location_profile_name are omitted,
   // the first profile returned by the /api/location_profiles endpoint
@@ -129,4 +230,13 @@ resource "site24x7_ssl_monitor" "ssl_monitor_us" {
   third_party_service_ids = [
     "4567"
   ]
+
+  // (Optional) Map of status to actions that should be performed on monitor
+  // status changes. See
+  // https://www.site24x7.com/help/api/#action-rule-constants for all available
+  // status values.
+  actions = {
+    "1" = "123"
+  }
 }
+

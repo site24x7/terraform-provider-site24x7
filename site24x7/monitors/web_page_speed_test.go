@@ -18,8 +18,12 @@ func TestWebPageSpeedMonitorCreate(t *testing.T) {
 
 	a := &api.WebPageSpeedMonitor{
 		DisplayName:           "foo",
-		Type:                  "URL",
+		Type:                  "HOMEPAGE",
 		Website:               "www.test.tld",
+		BrowserType:           1,
+		WebsiteType:           1,
+		DeviceType:            "1",
+		WPAResolution:         "1024,768",
 		CheckFrequency:        "5",
 		HTTPMethod:            "G",
 		Timeout:               10,
@@ -121,7 +125,11 @@ func TestWebPageSpeedMonitorUpdate(t *testing.T) {
 	a := &api.WebPageSpeedMonitor{
 		MonitorID:             "123",
 		DisplayName:           "foo",
-		Type:                  "URL",
+		Type:                  "HOMEPAGE",
+		BrowserType:           1,
+		WebsiteType:           1,
+		DeviceType:            "1",
+		WPAResolution:         "1024,768",
 		Website:               "www.test.tld",
 		CheckFrequency:        "5",
 		HTTPMethod:            "G",
@@ -278,10 +286,14 @@ func TestWebPageSpeedMonitorExists(t *testing.T) {
 func webPageSpeedMonitorTestResourceData(t *testing.T) *schema.ResourceData {
 	return schema.TestResourceDataRaw(t, webPageSpeedMonitorSchema, map[string]interface{}{
 		"display_name":    "foo",
-		"type":            "URL",
+		"type":            "HOMEPAGE",
 		"website":         "www.test.tld",
 		"check_frequency": "5",
 		"http_method":     "G",
+		"website_type":    1,
+		"browser_type":    1,
+		"device_type":     "1",
+		"wpa_resolution":  "1024,768",
 		"auth_user":       "username",
 		"auth_pass":       "password",
 		"match_case":      true,
@@ -302,7 +314,6 @@ func webPageSpeedMonitorTestResourceData(t *testing.T) *schema.ResourceData {
 			"123",
 			"456",
 		},
-		"use_name_server": true,
 		"actions": map[string]interface{}{
 			"1": "123action",
 			"5": "234action",
