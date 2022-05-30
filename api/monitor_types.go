@@ -112,6 +112,72 @@ func (websiteMonitor *WebsiteMonitor) String() string {
 	return ToString(websiteMonitor)
 }
 
+// Denotes the web page speed monitor resource in Site24x7.
+type WebPageSpeedMonitor struct {
+	_              struct{} `type:"structure"` // Enforces key based initialization.
+	MonitorID      string   `json:"monitor_id,omitempty"`
+	DisplayName    string   `json:"display_name"`
+	Type           string   `json:"type"`
+	Website        string   `json:"website"`
+	CheckFrequency string   `json:"check_frequency"`
+	Timeout        int      `json:"timeout"`
+	UseIPV6        bool     `json:"use_ipv6"`
+	WebsiteType    int      `json:"website_type"`
+	BrowserType    int      `json:"browser_type"`
+	DeviceType     string   `json:"device_type"`
+	WPAResolution  string   `json:"wpa_resolution"`
+	// HTTP Configuration
+	HTTPMethod    string   `json:"http_method"`
+	CustomHeaders []Header `json:"custom_headers,omitempty"`
+	AuthUser      string   `json:"auth_user,omitempty"`
+	AuthPass      string   `json:"auth_pass,omitempty"`
+	UserAgent     string   `json:"user_agent,omitempty"`
+	UpStatusCodes string   `json:"up_status_codes,omitempty"`
+	// Content Check
+	MatchingKeyword   *ValueAndSeverity `json:"matching_keyword,omitempty"`
+	UnmatchingKeyword *ValueAndSeverity `json:"unmatching_keyword,omitempty"`
+	MatchRegex        *ValueAndSeverity `json:"match_regex,omitempty"`
+	MatchCase         bool              `json:"match_case"`
+
+	LocationProfileID     string      `json:"location_profile_id"`
+	NotificationProfileID string      `json:"notification_profile_id"`
+	ThresholdProfileID    string      `json:"threshold_profile_id"`
+	MonitorGroups         []string    `json:"monitor_groups,omitempty"`
+	DependencyResourceID  []string    `json:"dependency_resource_ids,omitempty"`
+	UserGroupIDs          []string    `json:"user_group_ids,omitempty"`
+	TagIDs                []string    `json:"tag_ids,omitempty"`
+	ThirdPartyServiceIDs  []string    `json:"third_party_services,omitempty"`
+	ActionIDs             []ActionRef `json:"action_ids,omitempty"`
+}
+
+func (webPageSpeedMonitor *WebPageSpeedMonitor) SetNotificationProfileID(notificationProfileID string) {
+	webPageSpeedMonitor.NotificationProfileID = notificationProfileID
+}
+
+func (webPageSpeedMonitor *WebPageSpeedMonitor) GetNotificationProfileID() string {
+	return webPageSpeedMonitor.NotificationProfileID
+}
+
+func (webPageSpeedMonitor *WebPageSpeedMonitor) SetUserGroupIDs(userGroupIDs []string) {
+	webPageSpeedMonitor.UserGroupIDs = userGroupIDs
+}
+
+func (webPageSpeedMonitor *WebPageSpeedMonitor) GetUserGroupIDs() []string {
+	return webPageSpeedMonitor.UserGroupIDs
+}
+
+func (webPageSpeedMonitor *WebPageSpeedMonitor) SetTagIDs(tagIDs []string) {
+	webPageSpeedMonitor.TagIDs = tagIDs
+}
+
+func (webPageSpeedMonitor *WebPageSpeedMonitor) GetTagIDs() []string {
+	return webPageSpeedMonitor.TagIDs
+}
+
+func (webPageSpeedMonitor *WebPageSpeedMonitor) String() string {
+	return ToString(webPageSpeedMonitor)
+}
+
 // Denotes the SSL monitor resource in Site24x7.
 type SSLMonitor struct {
 	_                     struct{}    `type:"structure"` // Enforces key based initialization.

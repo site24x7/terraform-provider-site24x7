@@ -66,6 +66,7 @@ func Provider() terraform.ResourceProvider {
 
 		ResourcesMap: map[string]*schema.Resource{
 			"site24x7_website_monitor":        monitors.ResourceSite24x7WebsiteMonitor(),
+			"site24x7_web_page_speed_monitor": monitors.ResourceSite24x7WebPageSpeedMonitor(),
 			"site24x7_ssl_monitor":            monitors.ResourceSite24x7SSLMonitor(),
 			"site24x7_rest_api_monitor":       monitors.ResourceSite24x7RestApiMonitor(),
 			"site24x7_amazon_monitor":         monitors.ResourceSite24x7AmazonMonitor(),

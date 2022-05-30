@@ -18,6 +18,7 @@ type Client struct {
 	FakeTags                   *fake.Tags
 	FakeAmazonMonitors         *fake.AmazonMonitors
 	FakeWebsiteMonitors        *fake.WebsiteMonitors
+	FakeWebPageSpeedMonitors   *fake.WebPageSpeedMonitors
 	FakeSSLMonitors            *fake.SSLMonitors
 	FakeServerMonitors         *fake.ServerMonitors
 	FakeRestApiMonitors        *fake.RestApiMonitors
@@ -45,6 +46,7 @@ func NewClient() *Client {
 		FakeSSLMonitors:            &fake.SSLMonitors{},
 		FakeServerMonitors:         &fake.ServerMonitors{},
 		FakeWebsiteMonitors:        &fake.WebsiteMonitors{},
+		FakeWebPageSpeedMonitors:   &fake.WebPageSpeedMonitors{},
 		FakeRestApiMonitors:        &fake.RestApiMonitors{},
 		FakeNotificationProfiles:   &fake.NotificationProfiles{},
 		FakeThresholdProfiles:      &fake.ThresholdProfiles{},
@@ -81,6 +83,11 @@ func (c *Client) LocationTemplate() endpoints.LocationTemplate {
 // Monitors implements Client.
 func (c *Client) WebsiteMonitors() monitors.WebsiteMonitors {
 	return c.FakeWebsiteMonitors
+}
+
+// WebPageSpeedMonitors implements Client.
+func (c *Client) WebPageSpeedMonitors() monitors.WebPageSpeedMonitors {
+	return c.FakeWebPageSpeedMonitors
 }
 
 // SSLMonitors implements Client.

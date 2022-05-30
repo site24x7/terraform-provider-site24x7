@@ -2,6 +2,7 @@
     "profile_name": "Europe_TEST_Profile",
     "primary_location": "16",
     "restrict_alt_loc": false,
+    "outer_regions_location_consent":false,
     "secondary_locations": [
         "3",
         "2",

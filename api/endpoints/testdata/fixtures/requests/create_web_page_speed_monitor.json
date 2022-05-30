@@ -1,0 +1,59 @@
+{
+  "website": "http://www.example.com",
+  "type": "HOMEPAGE",
+  "website_type":1,
+  "browser_type":1,
+  "device_type":"1",
+  "wpa_resolution":"1024,768",
+  "use_ipv6":false,
+  "custom_headers": [
+    {
+      "name": "Accept-Encoding",
+      "value": "gzip"
+    },
+    {
+      "name": "Cache-Control",
+      "value": "nocache"
+    }
+  ],
+  "user_group_ids": [
+    "123412341234123415"
+  ],
+  "location_profile_id": "123412341234123412",
+  "user_agent": "Mozilla Firefox",
+  "timeout": 30,
+  "match_regex": {
+    "severity": 0,
+    "value": "^reg*"
+  },
+  "auth_user": "username",
+  "monitor_groups": [
+    "123412341234123416",
+    "123412341234123417"
+  ],
+  "third_party_services":[
+    "456987654321012",
+    "456987654321013"
+  ],
+  "auth_pass": "password",
+  "threshold_profile_id": "123412341234123414",
+  "match_case": true,
+  "notification_profile_id": "123412341234123413",
+  "http_method": "P",
+  "matching_keyword": {
+    "severity": 0,
+    "value": "Title"
+  },
+  "action_ids": [
+    {
+      "action_id": "123412341234123418",
+      "alert_type": 20
+    }
+  ],
+  "unmatching_keyword": {
+    "severity": 2,
+    "value": "Exception"
+  },
+  "check_frequency": "1440",
+  "display_name": "Display name for the monitor"
+}

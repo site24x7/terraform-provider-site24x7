@@ -73,6 +73,7 @@ type Client interface {
 	MonitorGroups() endpoints.MonitorGroups
 	Tags() endpoints.Tags
 	WebsiteMonitors() monitors.WebsiteMonitors
+	WebPageSpeedMonitors() monitors.WebPageSpeedMonitors
 	SSLMonitors() monitors.SSLMonitors
 	ServerMonitors() monitors.ServerMonitors
 	RestApiMonitors() monitors.RestApiMonitors
@@ -154,6 +155,11 @@ func (c *client) AmazonMonitors() monitors.AmazonMonitors {
 // WebsiteMonitors implements Client.
 func (c *client) WebsiteMonitors() monitors.WebsiteMonitors {
 	return monitors.NewMonitors(c.restClient)
+}
+
+// WebPageSpeedMonitors implements Client.
+func (c *client) WebPageSpeedMonitors() monitors.WebPageSpeedMonitors {
+	return monitors.NewWebPageSpeedMonitors(c.restClient)
 }
 
 // SSLMonitors implements Client.
