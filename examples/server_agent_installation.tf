@@ -88,3 +88,22 @@ output "aws_instance_ip" {
   description = "The public ip for ssh access"
   value       = aws_instance.t2_micro_instance.public_ip
 }
+
+
+// Another way is to specify server agent installation commands in the launch configuration.
+resource "aws_launch_configuration" "terraform_client_launch_configuration" {
+  image_id        = "ami-0d913428343424"
+  instance_type   = "t2.large"
+  key_name = "key_pair"
+  security_groups = [aws_security_group.site24x7-terraform-sg.id]
+  user_data = <<-EOF
+              #!/bin/bash
+              sudo systemctl start docker
+              sudo docker container run -p 9090:8080 -d my-webapp-demo
+              sudo wget https://staticdownloads.site24x7.com/server/Site24x7InstallScript.sh
+              sudo bash Site24x7InstallScript.sh -i -key=sdfsadfsdfsdfsdafcee066cesdafadsfsdaf
+              EOF
+  lifecycle {
+    create_before_destroy = true
+  }
+}

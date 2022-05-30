@@ -107,7 +107,7 @@ var webPageSpeedMonitorSchema = map[string]*schema.Schema{
 	"use_ipv6": {
 		Type:        schema.TypeBool,
 		Optional:    true,
-		Description: "Perform case sensitive keyword search or not.",
+		Description: "Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure.",
 	},
 	"website_type": {
 		Type:     schema.TypeInt,

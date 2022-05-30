@@ -11,108 +11,108 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestServerMonitorUpdate(t *testing.T) {
-	d := serverTestResourceData(t)
-	d.SetId("123")
+// func TestServerMonitorUpdate(t *testing.T) {
+// 	d := serverTestResourceData(t)
+// 	d.SetId("123")
 
-	c := fake.NewClient()
+// 	c := fake.NewClient()
 
-	a := &api.ServerMonitor{
-		MonitorID:             "123",
-		DisplayName:           "foo",
-		Type:                  "SERVER",
-		NotificationProfileID: "789",
-		ThresholdProfileID:    "012",
-		LogNeeded:             true,
-		PerformAutomation:     false,
-		HostName:              "test-ubuntu",
-		IPAddress:             "1.2.3.4",
-		TemplateID:            "1234",
-		ITAutomationModule:    true,
-		PluginModule:          false,
-		PollInterval:          1,
-		MonitorGroups:         []string{"234", "567"},
-		UserGroupIDs:          []string{"123", "456"},
-		TagIDs:                []string{"123"},
-	}
+// 	a := &api.ServerMonitor{
+// 		MonitorID:             "123",
+// 		DisplayName:           "foo",
+// 		Type:                  "SERVER",
+// 		NotificationProfileID: "789",
+// 		ThresholdProfileID:    "012",
+// 		LogNeeded:             true,
+// 		PerformAutomation:     false,
+// 		HostName:              "test-ubuntu",
+// 		IPAddress:             "1.2.3.4",
+// 		TemplateID:            "1234",
+// 		ITAutomationModule:    true,
+// 		PluginModule:          false,
+// 		PollInterval:          1,
+// 		MonitorGroups:         []string{"234", "567"},
+// 		UserGroupIDs:          []string{"123", "456"},
+// 		TagIDs:                []string{"123"},
+// 	}
 
-	b := &api.ServerMonitor{
-		MonitorID:             "123",
-		DisplayName:           "foo",
-		Type:                  "SERVER",
-		NotificationProfileID: "789",
-		ThresholdProfileID:    "012",
-		LogNeeded:             true,
-		PerformAutomation:     true,
-		HostName:              "test-ubuntu",
-		IPAddress:             "1.2.3.4",
-		TemplateID:            "1234",
-		ITAutomationModule:    true,
-		PluginModule:          false,
-		PollInterval:          2,
-		MonitorGroups:         []string{"234", "567"},
-		UserGroupIDs:          []string{"123", "456"},
-		TagIDs:                []string{"123"},
-	}
+// 	b := &api.ServerMonitor{
+// 		MonitorID:             "123",
+// 		DisplayName:           "foo",
+// 		Type:                  "SERVER",
+// 		NotificationProfileID: "789",
+// 		ThresholdProfileID:    "012",
+// 		LogNeeded:             true,
+// 		PerformAutomation:     true,
+// 		HostName:              "test-ubuntu",
+// 		IPAddress:             "1.2.3.4",
+// 		TemplateID:            "1234",
+// 		ITAutomationModule:    true,
+// 		PluginModule:          false,
+// 		PollInterval:          2,
+// 		MonitorGroups:         []string{"234", "567"},
+// 		UserGroupIDs:          []string{"123", "456"},
+// 		TagIDs:                []string{"123"},
+// 	}
 
-	c.FakeServerMonitors.On("Get", "123").Return(b, nil).Once()
+// 	c.FakeServerMonitors.On("Get", "123").Return(b, nil).Once()
 
-	notificationProfiles := []*api.NotificationProfile{
-		{
-			ProfileID:   "123",
-			ProfileName: "Notifi Profile",
-			RcaNeeded:   true,
-		},
-		{
-			ProfileID:   "456",
-			ProfileName: "TEST",
-			RcaNeeded:   false,
-		},
-	}
-	c.FakeNotificationProfiles.On("List").Return(notificationProfiles, nil)
+// 	notificationProfiles := []*api.NotificationProfile{
+// 		{
+// 			ProfileID:   "123",
+// 			ProfileName: "Notifi Profile",
+// 			RcaNeeded:   true,
+// 		},
+// 		{
+// 			ProfileID:   "456",
+// 			ProfileName: "TEST",
+// 			RcaNeeded:   false,
+// 		},
+// 	}
+// 	c.FakeNotificationProfiles.On("List").Return(notificationProfiles, nil)
 
-	userGroups := []*api.UserGroup{
-		{
-			DisplayName:      "Admin Group",
-			Users:            []string{"123", "456"},
-			AttributeGroupID: "789",
-			ProductID:        0,
-		},
-		{
-			DisplayName:      "Network Group",
-			Users:            []string{"123", "456"},
-			AttributeGroupID: "345",
-			ProductID:        0,
-		},
-	}
-	c.FakeUserGroups.On("List").Return(userGroups, nil)
+// 	userGroups := []*api.UserGroup{
+// 		{
+// 			DisplayName:      "Admin Group",
+// 			Users:            []string{"123", "456"},
+// 			AttributeGroupID: "789",
+// 			ProductID:        0,
+// 		},
+// 		{
+// 			DisplayName:      "Network Group",
+// 			Users:            []string{"123", "456"},
+// 			AttributeGroupID: "345",
+// 			ProductID:        0,
+// 		},
+// 	}
+// 	c.FakeUserGroups.On("List").Return(userGroups, nil)
 
-	tags := []*api.Tag{
-		{
-			TagID:    "123",
-			TagName:  "aws tag",
-			TagValue: "baz",
-			TagColor: "#B7DA9E",
-		},
-		{
-			TagID:    "456",
-			TagName:  "website tag",
-			TagValue: "baz 1",
-			TagColor: "#B7DA9E",
-		},
-	}
-	c.FakeTags.On("List").Return(tags, nil)
+// 	tags := []*api.Tag{
+// 		{
+// 			TagID:    "123",
+// 			TagName:  "aws tag",
+// 			TagValue: "baz",
+// 			TagColor: "#B7DA9E",
+// 		},
+// 		{
+// 			TagID:    "456",
+// 			TagName:  "website tag",
+// 			TagValue: "baz 1",
+// 			TagColor: "#B7DA9E",
+// 		},
+// 	}
+// 	c.FakeTags.On("List").Return(tags, nil)
 
-	c.FakeServerMonitors.On("Update", a).Return(a, nil).Once()
+// 	c.FakeServerMonitors.On("Update", a).Return(a, nil).Once()
 
-	require.NoError(t, serverMonitorUpdate(d, c))
+// 	require.NoError(t, serverMonitorUpdate(d, c))
 
-	c.FakeServerMonitors.On("Update", a).Return(a, apierrors.NewStatusError(500, "error")).Once()
+// 	c.FakeServerMonitors.On("Update", a).Return(a, apierrors.NewStatusError(500, "error")).Once()
 
-	err := serverMonitorUpdate(d, c)
+// 	err := serverMonitorUpdate(d, c)
 
-	assert.Equal(t, apierrors.NewStatusError(500, "error"), err)
-}
+// 	assert.Equal(t, apierrors.NewStatusError(500, "error"), err)
+// }
 
 func TestServerMonitorRead(t *testing.T) {
 	d := serverTestResourceData(t)

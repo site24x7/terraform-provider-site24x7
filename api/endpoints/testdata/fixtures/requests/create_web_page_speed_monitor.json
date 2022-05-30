@@ -5,7 +5,7 @@
   "browser_type":1,
   "device_type":"1",
   "wpa_resolution":"1024,768",
-  "use_ipv6":false,
+  "use_ipv6":true,
   "custom_headers": [
     {
       "name": "Accept-Encoding",
