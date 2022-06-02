@@ -250,6 +250,7 @@ type RestApiMonitor struct {
 	OAuth2Provider            string                 `json:"oauth2_provider,omitempty"`
 	ClientCertificatePassword string                 `json:"client_certificate_password,omitempty"`
 	JwtID                     string                 `json:"jwt_id,omitempty"`
+	GraphQL                   map[string]interface{} `json:"graphql,omitempty"`
 	MatchingKeyword           map[string]interface{} `json:"matching_keyword,omitempty"`
 	UnmatchingKeyword         map[string]interface{} `json:"unmatching_keyword,omitempty"`
 	MatchRegex                map[string]interface{} `json:"match_regex,omitempty"`

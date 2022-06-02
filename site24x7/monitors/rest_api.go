@@ -176,6 +176,16 @@ var RestApiMonitorSchema = map[string]*schema.Schema{
 		Default:     "G",
 		Description: "HTTP Method used for accessing the website. Default value is G.",
 	},
+	"graphql_query": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Provide the GraphQL query to get specific response from GraphQL based API service.",
+	},
+	"graphql_variables": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Provide the GraphQL variables to get specific response from GraphQL based API service.",
+	},
 	"http_protocol": {
 		Type:        schema.TypeString,
 		Optional:    true,
@@ -604,6 +614,13 @@ func resourceDataToRestApiMonitor(d *schema.ResourceData, client site24x7.Client
 		restApiMonitor.JSONSchema = jsonSchemaData
 	}
 
+	if graphqlQuery, ok := d.GetOk("graphql_query"); ok {
+		graphqlMap := make(map[string]interface{})
+		graphqlMap["query"] = graphqlQuery.(string)
+		graphqlMap["variables"] = d.Get("graphql_variables").(string)
+		restApiMonitor.GraphQL = graphqlMap
+	}
+
 	if restApiMonitor.LocationProfileID == "" {
 		locationProfileNameToMatch := d.Get("location_profile_name").(string)
 		profile, err := site24x7.DefaultLocationProfile(client, locationProfileNameToMatch)
@@ -671,6 +688,11 @@ func updateRestApiMonitorResourceData(d *schema.ResourceData, monitor *api.RestA
 	d.Set("user_group_ids", monitor.UserGroupIDs)
 	d.Set("tag_ids", monitor.TagIDs)
 	d.Set("third_party_service_ids", monitor.ThirdPartyServiceIDs)
+
+	if monitor.GraphQL != nil {
+		d.Set("graphql_query", monitor.GraphQL["query"].(string))
+		d.Set("graphql_variables", monitor.GraphQL["variables"].(string))
+	}
 
 	if monitor.MatchingKeyword != nil {
 		matchingKeywordMap := make(map[string]interface{})

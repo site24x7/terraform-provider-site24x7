@@ -104,9 +104,41 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
   // HTTP Configuration
   // (Optional) Provide a comma-separated list of HTTP status codes that indicate a successful response. 
   // You can specify individual status codes, as well as ranges separated with a colon.
-  up_status_codes = "400-500"
-}
+  up_status_codes = "400:500"
 
+  // ================ JSON ASSERTION ATTRIBUTES
+  // (Optional) Response content type. Default value is 'T'
+  // 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML
+  // https://www.site24x7.com/help/api/#res_content_type
+  response_content_type = "J"
+  // (Optional) Provide multiple JSON Path expressions to enable evaluation of JSON Path expression assertions. 
+  // The assertions must successfully parse the JSON Path in the JSON. JSON expression assertions fails if the expressions does not match.
+  match_json_path = [
+    "$.store.book[*].author",
+    "$..author",
+    "$.store.*"
+  ]
+  // (Optional) Trigger an alert when the JSON path assertion fails during a test. 
+  // Alert type constant. Can be either 0 or 2. '0' denotes Down and '2' denotes Trouble. Default value is 2.
+  match_json_path_severity = 0
+  // (Optional) JSON schema to be validated against the JSON response.
+  json_schema = "{\"test\":\"abcd\"}"
+  // (Optional) Trigger an alert when the JSON schema assertion fails during a test. 
+  // Alert type constant. Can be either 0 or 2. '0' denotes Down and '2' denotes Trouble. Default value is 2.
+  json_schema_severity = 2
+  // (Optional) JSON Schema check allows you to annotate and validate all JSON endpoints for your web service.
+  json_schema_check = true
+  // JSON ASSERTION ATTRIBUTES ================
+
+  // ================ GRAPHQL ATTRIBUTES
+  // (Optional) Provide content type for request params.
+  request_content_type = "G"
+  // (Optional) Provide the GraphQL query to get specific response from GraphQL based API service. request_content_type = "G"
+  graphql_query = "query GetFlimForId($FilmId:ID!){\n        film(id:$FilmId){\n            id\n            title\n            director\n            producers\n        }\n}"
+  // (Optional) Provide the GraphQL variables to get specific response from GraphQL based API service. request_content_type = "G"
+  graphql_variables = "{\n    \"FilmId\":\"ZmlsbXM6NQ==\"\n}"
+  // GRAPHQL ATTRIBUTES ================
+}
 
 ```
 
@@ -146,7 +178,9 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
 * `match_regex` (Map of String) Match the regular expression in the website response.
 * `matching_keyword` (Map of String) Check for the keyword in the website response.
 * `unmatching_keyword` (Map of String) Check for non existence of keyword in the website response.
-* `request_content_type` (String) Provide content type for request params.
+* `request_content_type` (String) Provide content type for request params. 'G' denotes GRAPHQL.
+* `graphql_query` (String) Provide the GraphQL query to get specific response from GraphQL based API service. request_content_type should be "G"
+* `graphql_variables` (String) Provide the GraphQL variables to get specific response from GraphQL based API service. request_content_type should be "G"
 * `request_param` (String) Provide parameters to be passed while accessing the website.
 * `response_content_type` (String) Response content type. Default value is 'T'. 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML. Refer [API documentation](https://www.site24x7.com/help/api/#res_content_type) for more information.
 * `match_json_path` (List of String) Provide multiple JSON Path expressions to enable evaluation of JSON Path expression assertions. The assertions must successfully parse the JSON Path in the JSON. JSON expression assertions fails if the expressions does not match.
