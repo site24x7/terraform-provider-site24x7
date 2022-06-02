@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "1.0.13"
+      version = "1.0.14"
     }
   }
 }
@@ -175,4 +175,13 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
   // (Optional) JSON Schema check allows you to annotate and validate all JSON endpoints for your web service.
   json_schema_check = true
   // JSON ASSERTION ATTRIBUTES ================
+
+  // ================ GRAPHQL ATTRIBUTES
+  // (Optional) Provide content type for request params.
+  request_content_type = "G"
+  // (Optional) Provide the GraphQL query to get specific response from GraphQL based API service. request_content_type = "G"
+  graphql_query = "query GetFlimForId($FilmId:ID!){\n        film(id:$FilmId){\n            id\n            title\n            director\n            producers\n        }\n}"
+  // (Optional) Provide the GraphQL variables to get specific response from GraphQL based API service. request_content_type = "G"
+  graphql_variables = "{\n    \"FilmId\":\"ZmlsbXM6NQ==\"\n}"
+  // GRAPHQL ATTRIBUTES ================
 }

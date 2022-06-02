@@ -4,11 +4,11 @@ terraform {
 
   required_providers {
     site24x7 = {
-      source  = "site24x7/site24x7"
-      // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "1.0.13"
-      # source  = "registry.terraform.io/site24x7/site24x7"
-      # version = "1.0.0"
+      # source  = "site24x7/site24x7"
+      # // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
+      # version = "1.0.14"
+      source  = "registry.terraform.io/site24x7/site24x7"
+      version = "1.0.0"
     }
   }
 }
@@ -66,4 +66,27 @@ resource "site24x7_website_monitor" "website_monitor_example" {
   // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
   // used.
   location_profile_name = "North America"
+}
+
+// Site24x7 Rest API Monitor API doc - https://www.site24x7.com/help/api/#rest-api
+resource "site24x7_rest_api_monitor" "rest_api_monitor_basic" {
+  // (Required) Display name for the monitor
+  display_name = "REST API Monitor - terraform"
+  // (Required) Website address to monitor.
+  website = "https://swapi-graphql.netlify.app/.netlify/functions/index"
+  // (Optional) Name of the Location Profile that has to be associated with the monitor. 
+  // Either specify location_profile_id or location_profile_name.
+  // If location_profile_id and location_profile_name are omitted,
+  // the first profile returned by the /api/location_profiles endpoint
+  // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
+  // used.
+  location_profile_name = "North America"
+
+  // (Optional) Provide content type for request params. "G" denotes GraphQL.
+  request_content_type = "G"
+  // (Optional) Provide the GraphQL query to get specific response from GraphQL based API service. request_content_type = "G"
+  graphql_query = "query GetFlimForId($FilmId:ID!){\n        film(id:$FilmId){\n            id\n            title\n            director\n            producers\n        }\n}"
+  // (Optional) Provide the GraphQL variables to get specific response from GraphQL based API service. request_content_type = "G"
+  graphql_variables = "{\n    \"FilmId\":\"ZmlsbXM6NQ==\"\n}"
+
 }
