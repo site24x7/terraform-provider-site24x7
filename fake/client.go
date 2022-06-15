@@ -2,6 +2,7 @@ package fake
 
 import (
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints"
+	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/common"
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/fake"
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/integration"
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/monitors"
@@ -31,6 +32,7 @@ type Client struct {
 	FakePagerDutyIntegration   *fake.PagerDutyIntegration
 	FakeServiceNowIntegration  *fake.ServiceNowIntegration
 	FakeThirdPartyIntegrations *fake.ThirdPartyIntegrations
+	FakeScheduleMaintenance    *fake.ScheduleMaintenance
 }
 
 // NewClient creates a new fake site24x7 API client.
@@ -57,6 +59,7 @@ func NewClient() *Client {
 		FakeServiceNowIntegration:  &fake.ServiceNowIntegration{},
 		FakeWebhookIntegration:     &fake.WebhookIntegration{},
 		FakeThirdPartyIntegrations: &fake.ThirdPartyIntegrations{},
+		FakeScheduleMaintenance:    &fake.ScheduleMaintenance{},
 	}
 }
 
@@ -163,4 +166,9 @@ func (c *Client) WebhookIntegration() integration.WebhookIntegration {
 // ThirdPartyIntegrations implements Client.
 func (c *Client) ThirdPartyIntegrations() integration.ThirdpartyIntegrations {
 	return c.FakeThirdPartyIntegrations
+}
+
+// ScheduleMaintenance implements Client.
+func (c *Client) ScheduleMaintenance() common.ScheduleMaintenance {
+	return c.FakeScheduleMaintenance
 }

@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints"
+	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/common"
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/integration"
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/monitors"
 	"github.com/site24x7/terraform-provider-site24x7/backoff"
@@ -72,6 +73,7 @@ type Client interface {
 	LocationTemplate() endpoints.LocationTemplate
 	MonitorGroups() endpoints.MonitorGroups
 	Tags() endpoints.Tags
+	ScheduleMaintenance() common.ScheduleMaintenance
 	WebsiteMonitors() monitors.WebsiteMonitors
 	WebPageSpeedMonitors() monitors.WebPageSpeedMonitors
 	SSLMonitors() monitors.SSLMonitors
@@ -140,6 +142,11 @@ func (c *client) CurrentStatus() endpoints.CurrentStatus {
 // LocationProfiles implements Client.
 func (c *client) LocationProfiles() endpoints.LocationProfiles {
 	return endpoints.NewLocationProfiles(c.restClient)
+}
+
+// ScheduleMaintenance implements Client.
+func (c *client) ScheduleMaintenance() common.ScheduleMaintenance {
+	return common.NewScheduleMaintenance(c.restClient)
 }
 
 // LocationTemplate implements Client.

@@ -25,7 +25,7 @@ import (
 // 	"device_type": "1",
 // 	"type": "HOMEPAGE",
 // 	"user_group_ids": [
-// 	  "306947000000025005"
+// 	  "123456000000025005"
 // 	],
 // 	"timeout": 30,
 // 	"match_case": false,
@@ -34,12 +34,12 @@ import (
 // 	  "value": "Management",
 // 	  "severity": 2
 // 	},
-// 	"notification_profile_id": "306947000000029001",
+// 	"notification_profile_id": "123456000000029001",
 // 	"user_agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:94.0) Gecko/20100101 Firefox/83.0",
 // 	"threshold_profile_id": "306947000030676013",
 // 	"perform_automation": false,
 // 	"website_type": 2,
-// 	"location_profile_id": "306947000000025013",
+// 	"location_profile_id": "123456000000025013",
 // 	"ignore_filetype": {
 // 	  "value": [
 // 		{

@@ -35,7 +35,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "1.0.14"
+      version = "1.0.15"
     }
   }
 }
@@ -61,6 +61,7 @@ A terraform provider for managing the following resources in Site24x7:
 - ServiceNow integration - [site24x7_servicenow_integration](examples/servicenow_integration_us.tf) ([Site24x7 ServiceNow integration API doc](https://www.site24x7.com/help/api/#create-servicenow))
 - Slack integration - [site24x7_slack_integration](examples/slack_integration_us.tf) ([Site24x7 Slack integration API doc](https://www.site24x7.com/help/api/#create-slack))
 - Webhook integration - [site24x7_webhook_integration](examples/webhook_integration_us.tf) ([Site24x7 Webhook integration API doc](https://www.site24x7.com/help/api/#create-webhook))
+- Schedule Maintenance - [site24x7_schedule_maintenance](examples/schedule_maintenance_us.tf) ([Site24x7 Schedule Maintenance API doc](https://www.site24x7.com/help/api/#schedule-maintenances))
 
 
 Usage example

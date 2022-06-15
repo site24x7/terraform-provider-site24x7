@@ -177,6 +177,28 @@ func (locationProfile *LocationProfile) String() string {
 	return ToString(locationProfile)
 }
 
+// Schedule a maintenance window to collaborate effectively within the IT team. It prevents redundant alerts from being triggered.
+type ScheduleMaintenance struct {
+	_                 struct{}     `type:"structure"` // Enforces key based initialization.
+	MaintenanceID     string       `json:"maintenance_id,omitempty"`
+	DisplayName       string       `json:"display_name"`
+	Description       string       `json:"description"`
+	MaintenanceType   int          `json:"maintenance_type"`
+	StartTime         string       `json:"start_time"`
+	EndTime           string       `json:"end_time"`
+	StartDate         string       `json:"start_date"`
+	EndDate           string       `json:"end_date"`
+	PerformMonitoring bool         `json:"perform_monitoring"`
+	SelectionType     ResourceType `json:"selection_type"`
+	Monitors          []string     `json:"monitors,omitempty"`
+	MonitorGroups     []string     `json:"monitor_groups,omitempty"`
+	Tags              []string     `json:"tags,omitempty"`
+}
+
+func (scheduleMaintenance *ScheduleMaintenance) String() string {
+	return ToString(scheduleMaintenance)
+}
+
 // LocationTemplate holds locations Site24x7 performs their monitor checks
 // from.
 type LocationTemplate struct {
