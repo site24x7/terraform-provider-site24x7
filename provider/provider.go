@@ -9,6 +9,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/site24x7/terraform-provider-site24x7/backoff"
 	"github.com/site24x7/terraform-provider-site24x7/site24x7"
+	"github.com/site24x7/terraform-provider-site24x7/site24x7/common"
 	"github.com/site24x7/terraform-provider-site24x7/site24x7/integration"
 	"github.com/site24x7/terraform-provider-site24x7/site24x7/monitors"
 )
@@ -78,6 +79,7 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_notification_profile":   site24x7.ResourceSite24x7NotificationProfile(),
 			"site24x7_user_group":             site24x7.ResourceSite24x7UserGroup(),
 			"site24x7_tag":                    site24x7.ResourceSite24x7Tag(),
+			"site24x7_schedule_maintenance":   common.ResourceSite24x7ScheduleMaintenance(),
 			"site24x7_opsgenie_integration":   integration.ResourceSite24x7OpsgenieIntegration(),
 			"site24x7_slack_integration":      integration.ResourceSite24x7SlackIntegration(),
 			"site24x7_webhook_integration":    integration.ResourceSite24x7WebhookIntegration(),

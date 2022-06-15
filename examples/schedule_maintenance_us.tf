@@ -45,32 +45,28 @@ provider "site24x7" {
 
 }
 
-// Data source to fetch URL monitor starting with the name "REST" and is of the monitor type "RESTAPI"
-data "site24x7_monitor" "s247monitor" {
-  // (Optional) Regular expression denoting the name of the monitor.
-  name_regex = "^REST"
-  // (Optional) Type of the monitor. (eg) RESTAPI, SSL_CERT, URL, SERVER etc.
-  monitor_type = "RESTAPI"
-}
-
-
-// Displays the monitor ID
-output "s247monitor_monitor_id" {
-  description = "Monitor ID : "
-  value       = data.site24x7_monitor.s247monitor.id
-}
-// Displays the name
-output "s247monitor_display_name" {
-  description = "Monitor Display Name : "
-  value       = data.site24x7_monitor.s247monitor.display_name
-}
-// Displays the user group IDs associated to the monitor
-output "monitor_user_group_ids" {
-  description = "Monitor User Group IDs : "
-  value       = data.site24x7_monitor.s247monitor.user_group_ids
-}
-// Displays the notification profile ID associated to the monitor
-output "s247monitor_notification_profile_id" {
-  description = "Monitor Notification Profile ID : "
-  value       = data.site24x7_monitor.s247monitor.notification_profile_id
+// Site24x7 Schedule Maintenance API doc - https://www.site24x7.com/help/api/#schedule-maintenances
+resource "site24x7_schedule_maintenance" "schedule_maintenance_basic" {
+  // (Required) Display name for the maintenance.
+  display_name = "Schedule Maintenance - Terraform"
+  // (Optional) Description for the maintenance.
+  description = "Switch upgrade"
+  // (Required) Mandatory, if the maintenance_type chosen is Once. Maintenance start date. Format - yyyy-mm-dd.
+  start_date = "2022-06-15"
+  // (Required) Mandatory, if the maintenance_type chosen is Once. Maintenance end date. Format - yyyy-mm-dd.
+  end_date = "2022-06-15"
+  // (Required) Maintenance start time. Format - hh:mm
+  start_time = "19:41"
+  // (Required) Maintenance end time. Format - hh:mm
+  end_time = "20:44"
+  // (Optional) Resource Type associated with this integration. Default value is '2'. Can take values 1|2|3. '1' denotes 'Monitor Group', '2' denotes 'Monitors', '3' denotes 'Tags'.
+  selection_type = 2
+  // (Optional) Monitors that need to be associated with the maintenance window when the selection_type = 2.
+  monitors = ["123456000007534005"]
+  // (Optional) Monitor Groups that need to be associated with the maintenance window when the selection_type = 1.
+  # monitor_groups = ["756"]
+  # // (Optional) Tags that need to be associated with the maintenance window when the selection_type = 3.
+  # tags = ["345"]
+  // (Optional) Enable this to perform uptime monitoring of the resource during the maintenance window.
+  perform_monitoring = true
 }
