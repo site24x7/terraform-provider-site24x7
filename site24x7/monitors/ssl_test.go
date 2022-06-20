@@ -29,6 +29,7 @@ func TestSSLMonitorCreate(t *testing.T) {
 		NotificationProfileID: "789",
 		ThresholdProfileID:    "012",
 		MonitorGroups:         []string{"234", "567"},
+		DependencyResourceIDs: []string{"234", "567"},
 		UserGroupIDs:          []string{"123", "456"},
 		TagIDs:                []string{"123"},
 	}
@@ -112,6 +113,7 @@ func TestSSLMonitorUpdate(t *testing.T) {
 		NotificationProfileID: "789",
 		ThresholdProfileID:    "012",
 		MonitorGroups:         []string{"234", "567"},
+		DependencyResourceIDs: []string{"234", "567"},
 		UserGroupIDs:          []string{"123", "456"},
 		TagIDs:                []string{"123"},
 	}
@@ -249,6 +251,10 @@ func sslTestResourceData(t *testing.T) *schema.ResourceData {
 		"notification_profile_id": "789",
 		"threshold_profile_id":    "012",
 		"monitor_groups": []interface{}{
+			"234",
+			"567",
+		},
+		"dependency_resource_ids": []interface{}{
 			"234",
 			"567",
 		},

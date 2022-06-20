@@ -36,7 +36,7 @@ import (
 // 	},
 // 	"notification_profile_id": "123456000000029001",
 // 	"user_agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:94.0) Gecko/20100101 Firefox/83.0",
-// 	"threshold_profile_id": "306947000030676013",
+// 	"threshold_profile_id": "123456000030676013",
 // 	"perform_automation": false,
 // 	"website_type": 2,
 // 	"location_profile_id": "123456000000025013",
@@ -242,7 +242,7 @@ var webPageSpeedMonitorSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Description: "List of monitor groups to which the monitor has to be associated.",
 	},
-	"dependency_resource_id": {
+	"dependency_resource_ids": {
 		Type: schema.TypeSet,
 		Elem: &schema.Schema{
 			Type: schema.TypeString,
@@ -406,23 +406,6 @@ func resourceDataToWebPageSpeedMonitor(d *schema.ResourceData, client site24x7.C
 		customHeaders[i] = api.Header{Name: k, Value: customHeaderMap[k].(string)}
 	}
 
-	// HTTP Response Headers
-	// var httpResponseHeader api.HTTPResponseHeader
-	// responseHeaderMap := d.Get("response_headers").(map[string]interface{})
-	// if len(responseHeaderMap) > 0 {
-	// 	reponseHeaderKeys := make([]string, 0, len(responseHeaderMap))
-	// 	for k := range responseHeaderMap {
-	// 		reponseHeaderKeys = append(reponseHeaderKeys, k)
-	// 	}
-	// 	sort.Strings(reponseHeaderKeys)
-	// 	responseHeaders := make([]api.Header, len(reponseHeaderKeys))
-	// 	for i, k := range reponseHeaderKeys {
-	// 		responseHeaders[i] = api.Header{Name: k, Value: responseHeaderMap[k].(string)}
-	// 	}
-	// 	httpResponseHeader.Severity = api.Status(d.Get("response_headers_severity").(int))
-	// 	httpResponseHeader.Value = responseHeaders
-	// }
-
 	var userGroupIDs []string
 	for _, id := range d.Get("user_group_ids").([]interface{}) {
 		userGroupIDs = append(userGroupIDs, id.(string))
@@ -441,6 +424,12 @@ func resourceDataToWebPageSpeedMonitor(d *schema.ResourceData, client site24x7.C
 	var monitorGroups []string
 	for _, group := range d.Get("monitor_groups").([]interface{}) {
 		monitorGroups = append(monitorGroups, group.(string))
+	}
+
+	dependencyIDs := d.Get("dependency_resource_ids").(*schema.Set).List()
+	dependencyResourceIDs := make([]string, 0, len(dependencyIDs))
+	for _, dependencyResourceID := range dependencyIDs {
+		dependencyResourceIDs = append(dependencyResourceIDs, dependencyResourceID.(string))
 	}
 
 	actionMap := d.Get("actions").(map[string]interface{})
@@ -485,12 +474,12 @@ func resourceDataToWebPageSpeedMonitor(d *schema.ResourceData, client site24x7.C
 		UserAgent:     d.Get("user_agent").(string),
 		UpStatusCodes: d.Get("up_status_codes").(string),
 		// Content Check
-		MatchCase: d.Get("match_case").(bool),
-		// ResponseHeaders:       httpResponseHeader,
+		MatchCase:             d.Get("match_case").(bool),
 		LocationProfileID:     d.Get("location_profile_id").(string),
 		NotificationProfileID: d.Get("notification_profile_id").(string),
 		ThresholdProfileID:    d.Get("threshold_profile_id").(string),
 		MonitorGroups:         monitorGroups,
+		DependencyResourceIDs: dependencyResourceIDs,
 		UserGroupIDs:          userGroupIDs,
 		TagIDs:                tagIDs,
 		ThirdPartyServiceIDs:  thirdPartyServiceIDs,
@@ -603,6 +592,7 @@ func updateWebPageSpeedMonitorResourceData(d *schema.ResourceData, monitor *api.
 	d.Set("notification_profile_id", monitor.NotificationProfileID)
 	d.Set("threshold_profile_id", monitor.ThresholdProfileID)
 	d.Set("monitor_groups", monitor.MonitorGroups)
+	d.Set("dependency_resource_ids", monitor.DependencyResourceIDs)
 	d.Set("user_group_ids", monitor.UserGroupIDs)
 	d.Set("tag_ids", monitor.TagIDs)
 	d.Set("third_party_service_ids", monitor.ThirdPartyServiceIDs)

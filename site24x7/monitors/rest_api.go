@@ -128,6 +128,14 @@ var RestApiMonitorSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Description: "List of monitor groups to which the monitor has to be associated.",
 	},
+	"dependency_resource_ids": {
+		Type: schema.TypeSet,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Description: "List of dependent resource IDs. Suppress alert when dependent monitor(s) is down.",
+	},
 	"user_group_ids": {
 		Type: schema.TypeList,
 		Elem: &schema.Schema{
@@ -477,6 +485,12 @@ func resourceDataToRestApiMonitor(d *schema.ResourceData, client site24x7.Client
 		monitorGroups = append(monitorGroups, group.(string))
 	}
 
+	dependencyIDs := d.Get("dependency_resource_ids").(*schema.Set).List()
+	dependencyResourceIDs := make([]string, 0, len(dependencyIDs))
+	for _, dependencyResourceID := range dependencyIDs {
+		dependencyResourceIDs = append(dependencyResourceIDs, dependencyResourceID.(string))
+	}
+
 	var userGroupIDs []string
 	for _, id := range d.Get("user_group_ids").([]interface{}) {
 		userGroupIDs = append(userGroupIDs, id.(string))
@@ -574,6 +588,7 @@ func resourceDataToRestApiMonitor(d *schema.ResourceData, client site24x7.Client
 		NotificationProfileID:     d.Get("notification_profile_id").(string),
 		ThresholdProfileID:        d.Get("threshold_profile_id").(string),
 		MonitorGroups:             monitorGroups,
+		DependencyResourceIDs:     dependencyResourceIDs,
 		UserGroupIDs:              userGroupIDs,
 		TagIDs:                    tagIDs,
 		ThirdPartyServiceIDs:      thirdPartyServiceIDs,
@@ -685,6 +700,7 @@ func updateRestApiMonitorResourceData(d *schema.ResourceData, monitor *api.RestA
 	d.Set("notification_profile_id", monitor.NotificationProfileID)
 	d.Set("threshold_profile_id", monitor.ThresholdProfileID)
 	d.Set("monitor_groups", monitor.MonitorGroups)
+	d.Set("dependency_resource_ids", monitor.DependencyResourceIDs)
 	d.Set("user_group_ids", monitor.UserGroupIDs)
 	d.Set("tag_ids", monitor.TagIDs)
 	d.Set("third_party_service_ids", monitor.ThirdPartyServiceIDs)

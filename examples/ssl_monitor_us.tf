@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "1.0.15"
+      version = "1.0.16"
     }
   }
 }
@@ -42,6 +42,24 @@ provider "site24x7" {
 
   // Maximum number of Site24x7 API request retries to perform until giving up.
   max_retries = 4
+
+}
+
+// Site24x7 SSL Certificate Monitor API doc - https://www.site24x7.com/help/api/#ssl-certificate
+resource "site24x7_ssl_monitor" "ssl_monitor_basic" {
+  // (Required) Display name for the monitor
+  display_name = "Example SSL Monitor"
+
+  // (Required) Domain name to be verified for SSL Certificate.
+  domain_name = "www.example.com"
+
+  // (Optional) Name of the Location Profile that has to be associated with the monitor. 
+  // Either specify location_profile_id or location_profile_name.
+  // If location_profile_id and location_profile_name are omitted,
+  // the first profile returned by the /api/location_profiles endpoint
+  // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
+  // used.
+  location_profile_name = "North America"
 
 }
 
@@ -91,6 +109,12 @@ resource "site24x7_ssl_monitor" "ssl_monitor_us" {
 
   // (Optional) List of monitor group IDs to associate the monitor to.
   monitor_groups = [
+    "123",
+    "456"
+  ]
+
+  // (Optional) List of dependent resource IDs. Suppress alert when dependent monitor(s) is down.
+  dependency_resource_ids = [
     "123",
     "456"
   ]

@@ -102,6 +102,12 @@ resource "site24x7_website_monitor" "website_monitor" {
     "456"
   ]
 
+  // (Optional) List of dependent resource IDs. Suppress alert when dependent monitor(s) is down.
+  dependency_resource_ids = [
+    "123",
+    "456"
+  ]
+
   // (Optional) List if user group IDs to be notified on down. If omitted, the
   // first user group returned by the /api/user_groups endpoint
   // (https://www.site24x7.com/help/api/#list-of-all-user-groups) will be used.
@@ -163,6 +169,7 @@ resource "site24x7_website_monitor" "website_monitor" {
 * `location_profile_id` (String) Location profile to be associated with the monitor.
 * `location_profile_name` (String) Name of the location profile to be associated with the monitor.
 * `monitor_groups` (List of String) List of monitor groups to which the monitor has to be associated.
+* `dependency_resource_ids` (List of String) List of dependent resource IDs. Suppress alert when dependent monitor(s) is down.
 * `user_group_ids` (List of String) List of user groups to be notified when the monitor is down. Either specify user_group_ids or user_group_names. If omitted, the first user group returned by the /api/user_groups endpoint will be used.
 * `user_group_names` (List of String) List of user group names to be notified when the monitor is down. Either specify user_group_ids or user_group_names. If omitted, the first user group returned by the /api/user_groups endpoint will be used.
 * `tag_ids` (List of String) List of tags IDs to be associated to the monitor. Either specify tag_ids or tag_names.
