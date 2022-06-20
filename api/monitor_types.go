@@ -78,6 +78,7 @@ type WebsiteMonitor struct {
 	NotificationProfileID string             `json:"notification_profile_id"`
 	ThresholdProfileID    string             `json:"threshold_profile_id"`
 	MonitorGroups         []string           `json:"monitor_groups,omitempty"`
+	DependencyResourceIDs []string           `json:"dependency_resource_ids,omitempty"`
 	UserGroupIDs          []string           `json:"user_group_ids,omitempty"`
 	TagIDs                []string           `json:"tag_ids,omitempty"`
 	ThirdPartyServiceIDs  []string           `json:"third_party_services,omitempty"`
@@ -143,7 +144,7 @@ type WebPageSpeedMonitor struct {
 	NotificationProfileID string      `json:"notification_profile_id"`
 	ThresholdProfileID    string      `json:"threshold_profile_id"`
 	MonitorGroups         []string    `json:"monitor_groups,omitempty"`
-	DependencyResourceID  []string    `json:"dependency_resource_ids,omitempty"`
+	DependencyResourceIDs []string    `json:"dependency_resource_ids,omitempty"`
 	UserGroupIDs          []string    `json:"user_group_ids,omitempty"`
 	TagIDs                []string    `json:"tag_ids,omitempty"`
 	ThirdPartyServiceIDs  []string    `json:"third_party_services,omitempty"`
@@ -196,6 +197,7 @@ type SSLMonitor struct {
 	NotificationProfileID string      `json:"notification_profile_id"`
 	ThresholdProfileID    string      `json:"threshold_profile_id"`
 	MonitorGroups         []string    `json:"monitor_groups,omitempty"`
+	DependencyResourceIDs []string    `json:"dependency_resource_ids,omitempty"`
 	UserGroupIDs          []string    `json:"user_group_ids,omitempty"`
 	TagIDs                []string    `json:"tag_ids,omitempty"`
 	ThirdPartyServiceIDs  []string    `json:"third_party_services,omitempty"`
@@ -268,6 +270,7 @@ type RestApiMonitor struct {
 	NotificationProfileID     string                 `json:"notification_profile_id"`
 	ThresholdProfileID        string                 `json:"threshold_profile_id"`
 	MonitorGroups             []string               `json:"monitor_groups,omitempty"`
+	DependencyResourceIDs     []string               `json:"dependency_resource_ids,omitempty"`
 	UserGroupIDs              []string               `json:"user_group_ids,omitempty"`
 	TagIDs                    []string               `json:"tag_ids,omitempty"`
 	ThirdPartyServiceIDs      []string               `json:"third_party_services,omitempty"`

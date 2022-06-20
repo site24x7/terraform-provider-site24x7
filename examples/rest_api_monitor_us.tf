@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "1.0.15"
+      version = "1.0.16"
     }
   }
 }
@@ -81,6 +81,18 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
   // (https://www.site24x7.com/help/api/#list-notification-profiles) will be
   // used.
   notification_profile_name = "Terraform Profile"
+
+  // (Optional) List of monitor group IDs to associate the monitor to.
+  monitor_groups = [
+    "123",
+    "456"
+  ]
+
+  // (Optional) List of dependent resource IDs. Suppress alert when dependent monitor(s) is down.
+  dependency_resource_ids = [
+    "123",
+    "456"
+  ]
 
   // (Optional) List if user group IDs to be notified on down. 
   // Either specify user_group_ids or user_group_names. If omitted, the

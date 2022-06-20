@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "1.0.15"
+      version = "1.0.16"
     }
   }
 }
@@ -192,6 +192,12 @@ resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_example" {
 
   // (Optional) List of monitor group IDs to associate the monitor to.
   monitor_groups = [
+    "123",
+    "456"
+  ]
+
+  // (Optional) List of dependent resource IDs. Suppress alert when dependent monitor(s) is down.
+  dependency_resource_ids = [
     "123",
     "456"
   ]
