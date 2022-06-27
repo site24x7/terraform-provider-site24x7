@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "1.0.16"
+      version = "1.0.17"
     }
   }
 }
@@ -56,8 +56,8 @@ resource "site24x7_monitor_group" "monitor_group_us" {
   // Number of monitors' health that decide the group status. ‘0’ implies that all the monitors 
   // are considered for determining the group status. Default value is 1
   health_threshold_count = 1
-  // (Optional) List of dependent resource ids.
-  dependency_resource_id = ["100000000005938013"]
+  // (Optional) List of dependent resource IDs. Suppress alert when dependent monitor(s) is down.
+  dependency_resource_ids = ["100000000005938013"]
   // (Optional) Boolean value indicating whether to suppress alert when the dependent monitor is down
   // Setting suppress_alert = true with an empty dependency_resource_id is meaningless.
   suppress_alert = true
