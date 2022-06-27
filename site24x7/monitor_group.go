@@ -31,7 +31,7 @@ var MonitorGroupSchema = map[string]*schema.Schema{
 		Default:     1,
 		Description: "Number of monitors' health that decide the group status. ‘0’ implies that all the monitors are considered for determining the group status. Default value is 1.",
 	},
-	"dependency_resource_id": {
+	"dependency_resource_ids": {
 		Type: schema.TypeSet,
 		Elem: &schema.Schema{
 			Type: schema.TypeString,
@@ -153,12 +153,10 @@ func resourceDataToMonitorGroupCreate(d *schema.ResourceData) *api.MonitorGroup 
 		}
 	}
 
-	var dependencyIDs []string
-	// If dependency_resource_id's are set in the configuration file iterate them and append to dependencyIDs
-	if _, monitorsExistsInConf := d.GetOk("dependency_resource_id"); monitorsExistsInConf {
-		for _, id := range d.Get("dependency_resource_id").([]interface{}) {
-			dependencyIDs = append(dependencyIDs, id.(string))
-		}
+	dependencyIDs := d.Get("dependency_resource_ids").(*schema.Set).List()
+	dependencyResourceIDs := make([]string, 0, len(dependencyIDs))
+	for _, dependencyResourceID := range dependencyIDs {
+		dependencyResourceIDs = append(dependencyResourceIDs, dependencyResourceID.(string))
 	}
 
 	return &api.MonitorGroup{
@@ -167,7 +165,7 @@ func resourceDataToMonitorGroupCreate(d *schema.ResourceData) *api.MonitorGroup 
 		Description:            d.Get("description").(string),
 		Monitors:               monitorIDs,
 		HealthThresholdCount:   healthThresholdCount,
-		DependencyResourceID:   dependencyIDs,
+		DependencyResourceIDs:  dependencyResourceIDs,
 		SuppressAlert:          d.Get("suppress_alert").(bool),
 		DependencyResourceType: 2,
 	}
@@ -204,9 +202,10 @@ func resourceDataToMonitorGroupUpdate(d *schema.ResourceData, monitorGroup *api.
 		}
 	}
 
-	var dependencyResourceIDs []string
-	for _, dependencyID := range d.Get("dependency_resource_id").([]interface{}) {
-		dependencyResourceIDs = append(dependencyResourceIDs, dependencyID.(string))
+	dependencyIDs := d.Get("dependency_resource_ids").(*schema.Set).List()
+	dependencyResourceIDs := make([]string, 0, len(dependencyIDs))
+	for _, dependencyResourceID := range dependencyIDs {
+		dependencyResourceIDs = append(dependencyResourceIDs, dependencyResourceID.(string))
 	}
 
 	var suppressAlert bool
@@ -226,7 +225,7 @@ func resourceDataToMonitorGroupUpdate(d *schema.ResourceData, monitorGroup *api.
 		// Setting monitors from GET response. Empty "monitors" in PUT request dissociates all monitors from the monitor group.
 		Monitors:               monitorGroup.Monitors,
 		HealthThresholdCount:   healthThresholdCount,
-		DependencyResourceID:   dependencyResourceIDs,
+		DependencyResourceIDs:  dependencyResourceIDs,
 		SuppressAlert:          suppressAlert,
 		DependencyResourceType: 2,
 	}
@@ -237,6 +236,6 @@ func updateMonitorGroupResourceData(d *schema.ResourceData, monitorGroup *api.Mo
 	d.Set("description", monitorGroup.Description)
 	// d.Set("monitors", monitorGroup.Monitors)
 	d.Set("health_threshold_count", monitorGroup.HealthThresholdCount)
-	d.Set("dependency_resource_id", monitorGroup.DependencyResourceID)
+	d.Set("dependency_resource_ids", monitorGroup.DependencyResourceIDs)
 	d.Set("suppress_alert", monitorGroup.SuppressAlert)
 }

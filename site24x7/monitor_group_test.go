@@ -19,6 +19,7 @@ func TestMonitorGroupCreate(t *testing.T) {
 	a := &api.MonitorGroup{
 		DisplayName:            "foobar",
 		Description:            "baz",
+		DependencyResourceIDs:  []string{"234", "567"},
 		DependencyResourceType: 2,
 	}
 
@@ -121,5 +122,9 @@ func monitorGroupTestResourceData(t *testing.T) *schema.ResourceData {
 		"display_name":   "foobar",
 		"description":    "baz",
 		"selection_type": 2,
+		"dependency_resource_ids": []interface{}{
+			"234",
+			"567",
+		},
 	})
 }
