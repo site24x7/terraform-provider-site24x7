@@ -22,6 +22,7 @@ func TestWebsiteMonitorCreate(t *testing.T) {
 		Website:               "www.test.tld",
 		CheckFrequency:        "5",
 		HTTPMethod:            "G",
+		AuthMethod:            "B",
 		Timeout:               10,
 		LocationProfileID:     "456",
 		NotificationProfileID: "789",
@@ -34,8 +35,10 @@ func TestWebsiteMonitorCreate(t *testing.T) {
 		UserGroupIDs:          []string{"123", "456"},
 		TagIDs:                []string{"123"},
 		AuthUser:              "username",
-		AuthPass:              "password",
-		CustomHeaders: []api.Header{
+		AuthPass:              "",
+		SSLProtocol:           "Auto",
+		HTTPProtocol:          "H1.1",
+		RequestHeaders: []api.Header{
 			{
 				Name:  "Accept",
 				Value: "application/json",
@@ -138,9 +141,12 @@ func TestWebsiteMonitorUpdate(t *testing.T) {
 		DependencyResourceIDs: []string{"234", "567"},
 		UserGroupIDs:          []string{"123", "456"},
 		TagIDs:                []string{"123"},
+		AuthMethod:            "B",
 		AuthUser:              "username",
-		AuthPass:              "password",
-		CustomHeaders: []api.Header{
+		AuthPass:              "",
+		SSLProtocol:           "Auto",
+		HTTPProtocol:          "H1.1",
+		RequestHeaders: []api.Header{
 			{
 				Name:  "Accept",
 				Value: "application/json",
@@ -286,11 +292,14 @@ func websiteMonitorTestResourceData(t *testing.T) *schema.ResourceData {
 		"website":         "www.test.tld",
 		"check_frequency": "5",
 		"http_method":     "G",
+		"auth_method":     "B",
 		"auth_user":       "username",
-		"auth_pass":       "password",
+		"auth_pass":       "",
 		"match_case":      true,
 		"user_agent":      "firefox",
-		"custom_headers": map[string]interface{}{
+		"ssl_protocol":    "Auto",
+		"http_protocol":   "H1.1",
+		"request_headers": map[string]interface{}{
 			"Accept":        "application/json",
 			"Cache-Control": "nocache",
 		},

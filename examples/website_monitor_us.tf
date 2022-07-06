@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "1.0.17"
+      version = "1.0.18"
     }
   }
 }
@@ -79,10 +79,6 @@ resource "site24x7_website_monitor" "website_monitor" {
   // https://www.site24x7.com/help/api/#check-interval for all supported
   // values.
   check_frequency = "1"
-
-  // (Optional) HTTP Method to be used for accessing the website. Default: "G".
-  // See https://www.site24x7.com/help/api/#http_methods for allowed values.
-  http_method = "P"
 
   // (Optional) Authentication user name to access the website.
   auth_user = "theuser"
@@ -220,8 +216,18 @@ resource "site24x7_website_monitor" "website_monitor" {
   // (Optional) Provide a comma-separated list of HTTP status codes that indicate a successful response. You can specify individual status codes, as well as ranges separated with a colon. Default: ""
   up_status_codes = "200,404"
 
+  // (Optional) HTTP Method to be used for accessing the website. Default value is 'G'. 'G' denotes GET, 'P' denotes POST and 'H' denotes HEAD. PUT, PATCH and DELETE are not supported.
+  // See https://www.site24x7.com/help/api/#http_methods for allowed values.
+  http_method = "P"
+
+  // (Optional) Provide content type for request params when http_method is 'P'. 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML and 'F' denotes FORM
+  request_content_type = "J"
+
+  // (Optional) Provide the content to be passed in the request body while accessing the website.
+  request_body = "{\"user_name\":\"joe\"}"
+  
   // (Optional) Map of custom HTTP headers to send.
-  custom_headers = {
+  request_headers = {
     "Accept" = "application/json"
   }
 

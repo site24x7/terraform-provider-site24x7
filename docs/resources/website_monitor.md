@@ -140,7 +140,7 @@ resource "site24x7_website_monitor" "website_monitor" {
   up_status_codes = "200,404"
 
   // (Optional) Map of custom HTTP headers to send.
-  custom_headers = {
+  request_headers = {
     "Accept" = "application/json"
   }
 
@@ -163,6 +163,34 @@ resource "site24x7_website_monitor" "website_monitor" {
 ### Optional
 
 * `id` (String) The ID of this resource.
+* `check_frequency` (String) Interval at which your website has to be monitored. Default value is 1 minute.
+* `timeout` (Number) Timeout for connecting to website. Default value is 10. Range 1 - 45.
+* `use_ipv6` (Boolean) Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure.
+* `matching_keyword_value` (String) Check for the keyword in the website response.
+* `matching_keyword_severity` (Number) Severity with which alert has to raised when the matching keyword is found in the website response.
+* `unmatching_keyword_value` (String) Check for the absence of the keyword in the website response.
+* `unmatching_keyword_severity` (Number) Severity with which alert has to raised when the keyword is not present in the website response.
+* `match_case` (Boolean) Perform case sensitive keyword search or not.
+* `match_regex_value` (String) Match the regular expression in the website response.
+* `match_regex_severity` (Number) Severity with which alert has to raised when the matching regex is found in the website response.
+* `response_headers` (Map of String) A Map of response header name and value.
+* `response_headers_severity` (Number) Severity with which alert has to raised when the header is found in the website response. Default value is 2. '0' denotes Down and '2' denotes Trouble.
+* `http_method` (String) HTTP Method to be used for accessing the website. Default value is 'G'. 'G' denotes GET, 'P' denotes POST and 'H' denotes HEAD. PUT, PATCH and DELETE are not supported.
+* `request_content_type` (String) Provide content type for request params when http_method is 'P'. 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML and 'F' denotes FORM.
+* `request_body` (String) Provide the content to be passed in the request body while accessing the website.
+* `request_headers` (Map of String) A Map of request header name and value.
+* `user_agent` (String) User Agent to be used while monitoring the website.
+* `auth_method` (String) Authentication method to access the website. Default value is 'B'. 'B' denotes Basic/NTLM. 'O' denotes OAuth 2 and 'W' denotes Web Token.
+* `auth_pass` (String) Authentication password to access the website.
+* `auth_user` (String) Authentication user name to access the website.
+* `credential_profile_id` (String) Credential Profile to associate.
+* `client_certificate_password` (String) Password of the client certificate.
+* `use_name_server` (Boolean) Resolve the IP address using Domain Name Server.
+* `forced_ips` (String) Provide the domain name or IP addresses to be used for monitoring instead of using the IPs resolved from the given URL.
+* `up_status_codes` (String) Provide a comma-separated list of HTTP status codes that indicate a successful response. You can specify individual status codes, as well as ranges separated with a colon.
+* `ssl_protocol` (String) Specify the version of the SSL protocol. If you are not sure about the version, use Auto.
+* `http_protocol` (String) Specify the version of the HTTP protocol. Default value is H1.1.
+* `use_alpn` (Boolean) Enable ALPN to send supported protocols as part of the TLS handshake.
 * `notification_profile_id` (String) Notification profile to be associated with the monitor. Either specify notification_profile_id or notification_profile_name. If notification_profile_id and notification_profile_name are omitted, the first profile returned by the /api/notification_profiles endpoint will be used.
 * `notification_profile_name` (String) Name of the notification profile to be associated with the monitor. Profile name matching works for both exact and partial match.
 * `threshold_profile_id` (String) Threshold profile to be associated with the monitor.
@@ -176,24 +204,6 @@ resource "site24x7_website_monitor" "website_monitor" {
 * `tag_names` (List of String) List of tag names to be associated to the monitor. Tag name matching works for both exact and partial match. Either specify tag_ids or tag_names.
 * `third_party_service_ids` (List of String) List of Third Party Service IDs to be associated to the monitor.
 * `actions` (Map of String) Action to be performed on monitor status changes.
-* `auth_pass` (String) Authentication password to access the website.
-* `auth_user` (String) Authentication user name to access the website.
-* `check_frequency` (String) Interval at which your website has to be monitored. Default value is 1 minute.
-* `http_method` (String) HTTP Method to be used for accessing the website. PUT, PATCH and DELETE are not supported.
-* `match_case` (Boolean) Perform case sensitive keyword search or not.
-* `match_regex_severity` (Number) Severity with which alert has to raised when the matching regex is found in the website response.
-* `match_regex_value` (String) Match the regular expression in the website response.
-* `matching_keyword_severity` (Number) Severity with which alert has to raised when the matching keyword is found in the website response.
-* `matching_keyword_value` (String) Check for the keyword in the website response.
-* `timeout` (Number) Timeout for connecting to website. Default value is 10. Range 1 - 45.
-* `unmatching_keyword_severity` (Number) Severity with which alert has to raised when the keyword is not present in the website response.
-* `unmatching_keyword_value` (String) Check for the absence of the keyword in the website response.
-* `up_status_codes` (String) Provide a comma-separated list of HTTP status codes that indicate a successful response. You can specify individual status codes, as well as ranges separated with a colon.
-* `use_name_server` (Boolean) Resolve the IP address using Domain Name Server.
-* `user_agent` (String) User Agent to be used while monitoring the website.
-* `custom_headers` (Map of String) A Map of Header name and value.
-* `response_headers` (Map of String) A Map of Header name and value.
-* `response_headers_severity` (Number) Severity with which alert has to raised when the header is found in the website response. Default value is 2. '0' denotes Down and '2' denotes Trouble.
 
 
 Refer [API documentation](https://www.site24x7.com/help/api/#website) for more information about attributes.

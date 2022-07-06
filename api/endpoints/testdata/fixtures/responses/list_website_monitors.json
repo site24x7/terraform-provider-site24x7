@@ -72,7 +72,6 @@
       "monitor_groups":[
         "12340000002807001"
       ],
-      "request_content_type":"J",
       "http_method":"P",
       "auth_user":"username",
       "auth_pass":"password",
@@ -87,7 +86,6 @@
       "auth_method":"B",
       "use_name_server":true,
       "probe_proxy_enabled":false,
-      "request_param":"{\n   \"externalCheck\": true\n}",
       "location_profile_id":"12340000001806001"
     }
   ]

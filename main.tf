@@ -4,11 +4,12 @@ terraform {
 
   required_providers {
     site24x7 = {
-      # source  = "site24x7/site24x7"
-      # // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      # version = "1.0.17"
-      source  = "registry.terraform.io/site24x7/site24x7"
-      version = "1.0.0"
+      source  = "site24x7/site24x7"
+      // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
+      version = "1.0.18"
+      // Uncomment for local build
+      # source  = "registry.terraform.io/site24x7/site24x7"
+      # version = "1.0.0"
     }
   }
 }
@@ -66,4 +67,18 @@ resource "site24x7_website_monitor" "website_monitor_example" {
   // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
   // used.
   location_profile_name = "North America"
+
+  // (Optional) HTTP Method to be used for accessing the website. Default value is 'G'. 'G' denotes GET, 'P' denotes POST and 'H' denotes HEAD. PUT, PATCH and DELETE are not supported.
+  http_method = "P"
+
+  // (Optional) Provide content type for request params when http_method is 'P'. 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML and 'F' denotes FORM
+  request_content_type = "J"
+
+  // (Optional) Provide the content to be passed in the request body while accessing the website.
+  request_body = "{\"user_name\":\"joe\"}"
+
+  // (Optional) Map of custom HTTP headers to send.
+  request_headers = {
+    "Accept" = "application/json"
+  }
 }
