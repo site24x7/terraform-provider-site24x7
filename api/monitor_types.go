@@ -55,34 +55,47 @@ func (monitor *GenericMonitor) String() string {
 
 // Denotes the website monitor resource in Site24x7.
 type WebsiteMonitor struct {
-	_                     struct{}           `type:"structure"` // Enforces key based initialization.
-	MonitorID             string             `json:"monitor_id,omitempty"`
-	DisplayName           string             `json:"display_name"`
-	Type                  string             `json:"type"`
-	Website               string             `json:"website"`
-	CheckFrequency        string             `json:"check_frequency"`
-	HTTPMethod            string             `json:"http_method"`
-	AuthUser              string             `json:"auth_user"`
-	AuthPass              string             `json:"auth_pass"`
-	MatchingKeyword       *ValueAndSeverity  `json:"matching_keyword,omitempty"`
-	UnmatchingKeyword     *ValueAndSeverity  `json:"unmatching_keyword,omitempty"`
-	MatchRegex            *ValueAndSeverity  `json:"match_regex,omitempty"`
-	MatchCase             bool               `json:"match_case"`
-	UserAgent             string             `json:"user_agent"`
-	Timeout               int                `json:"timeout"`
-	UseNameServer         bool               `json:"use_name_server"`
-	UpStatusCodes         string             `json:"up_status_codes"`
-	CustomHeaders         []Header           `json:"custom_headers,omitempty"`
-	ResponseHeaders       HTTPResponseHeader `json:"response_headers_check,omitempty"`
-	LocationProfileID     string             `json:"location_profile_id"`
-	NotificationProfileID string             `json:"notification_profile_id"`
-	ThresholdProfileID    string             `json:"threshold_profile_id"`
-	MonitorGroups         []string           `json:"monitor_groups,omitempty"`
-	DependencyResourceIDs []string           `json:"dependency_resource_ids,omitempty"`
-	UserGroupIDs          []string           `json:"user_group_ids,omitempty"`
-	TagIDs                []string           `json:"tag_ids,omitempty"`
-	ThirdPartyServiceIDs  []string           `json:"third_party_services,omitempty"`
-	ActionIDs             []ActionRef        `json:"action_ids,omitempty"`
+	_              struct{} `type:"structure"` // Enforces key based initialization.
+	MonitorID      string   `json:"monitor_id,omitempty"`
+	DisplayName    string   `json:"display_name"`
+	Type           string   `json:"type"`
+	Website        string   `json:"website"`
+	CheckFrequency string   `json:"check_frequency"`
+	Timeout        int      `json:"timeout"`
+	UseIPV6        bool     `json:"use_ipv6"`
+	// HTTP Configuration
+	HTTPMethod                string   `json:"http_method"`
+	RequestContentType        string   `json:"request_content_type,omitempty"`
+	RequestBody               string   `json:"request_param,omitempty"`
+	RequestHeaders            []Header `json:"custom_headers,omitempty"`
+	UserAgent                 string   `json:"user_agent,omitempty"`
+	AuthMethod                string   `json:"auth_method,omitempty"`
+	AuthUser                  string   `json:"auth_user,omitempty"`
+	AuthPass                  string   `json:"auth_pass,omitempty"`
+	CredentialProfileID       string   `json:"credential_profile_id,omitempty"`
+	ClientCertificatePassword string   `json:"client_certificate_password,omitempty"`
+	UseNameServer             bool     `json:"use_name_server,omitempty"`
+	ForcedIPs                 string   `json:"forced_ips,omitempty"`
+	UpStatusCodes             string   `json:"up_status_codes,omitempty"`
+	SSLProtocol               string   `json:"ssl_protocol,omitempty"`
+	HTTPProtocol              string   `json:"http_protocol,omitempty"`
+	UseAlpn                   bool     `json:"use_alpn"`
+	// Content Check
+	MatchingKeyword   *ValueAndSeverity  `json:"matching_keyword,omitempty"`
+	UnmatchingKeyword *ValueAndSeverity  `json:"unmatching_keyword,omitempty"`
+	MatchCase         bool               `json:"match_case"`
+	MatchRegex        *ValueAndSeverity  `json:"match_regex,omitempty"`
+	ResponseHeaders   HTTPResponseHeader `json:"response_headers_check,omitempty"`
+	// Configuration Profiles
+	LocationProfileID     string      `json:"location_profile_id"`
+	NotificationProfileID string      `json:"notification_profile_id"`
+	ThresholdProfileID    string      `json:"threshold_profile_id"`
+	MonitorGroups         []string    `json:"monitor_groups,omitempty"`
+	DependencyResourceIDs []string    `json:"dependency_resource_ids,omitempty"`
+	UserGroupIDs          []string    `json:"user_group_ids,omitempty"`
+	TagIDs                []string    `json:"tag_ids,omitempty"`
+	ThirdPartyServiceIDs  []string    `json:"third_party_services,omitempty"`
+	ActionIDs             []ActionRef `json:"action_ids,omitempty"`
 }
 
 func (websiteMonitor *WebsiteMonitor) SetNotificationProfileID(notificationProfileID string) {
@@ -247,6 +260,7 @@ type RestApiMonitor struct {
 	RequestContentType        string                 `json:"request_content_type,omitempty"`
 	ResponseContentType       string                 `json:"response_type"`
 	RequestParam              string                 `json:"request_param,omitempty"`
+	AuthMethod                string                 `json:"auth_method,omitempty"`
 	AuthUser                  string                 `json:"auth_user,omitempty"`
 	AuthPass                  string                 `json:"auth_pass,omitempty"`
 	OAuth2Provider            string                 `json:"oauth2_provider,omitempty"`

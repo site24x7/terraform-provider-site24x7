@@ -3,8 +3,9 @@
   "message": "success",
   "data": {
     "monitor_id": "123412341234123411",
+    "request_content_type": "F",
     "request_param": "param=value",
-    "use_ipv6": true,
+    "use_ipv6": false,
     "website": "http://www.example.com",
     "type": "URL",
     "custom_headers": [
@@ -23,12 +24,12 @@
     ],
     "location_profile_id": "123412341234123412",
     "user_agent": "Mozilla Firefox",
-    "request_content_type": "F",
     "timeout": 30,
     "match_regex": {
       "severity": 0,
       "value": "^reg*"
     },
+    "auth_method": "B",
     "auth_user": "username",
     "monitor_groups": [
       "123412341234123416",

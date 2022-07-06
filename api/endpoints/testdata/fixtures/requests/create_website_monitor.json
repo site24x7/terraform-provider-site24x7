@@ -52,7 +52,9 @@
   "check_frequency": "1440",
   "display_name": "Display name for the monitor",
   "use_name_server": true,
-  "up_status_codes": "",
+  "use_ipv6": false,
+  "use_alpn": false,
+  "up_status_codes": "200",
   "response_headers_check": {
     "severity": 2,
     "value": [

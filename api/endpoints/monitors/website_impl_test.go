@@ -24,7 +24,7 @@ func TestMonitors(t *testing.T) {
 				monitor := &api.WebsiteMonitor{
 					Website: "http://www.example.com",
 					Type:    "URL",
-					CustomHeaders: []api.Header{
+					RequestHeaders: []api.Header{
 						{
 							Name:  "Accept-Encoding",
 							Value: "gzip",
@@ -56,9 +56,11 @@ func TestMonitors(t *testing.T) {
 						"123412341234123416",
 						"123412341234123417",
 					},
-					MatchCase: true,
-
-					HTTPMethod: "P",
+					MatchCase:     true,
+					UseIPV6:       false,
+					UseAlpn:       false,
+					HTTPMethod:    "P",
+					UpStatusCodes: "200",
 					MatchingKeyword: &api.ValueAndSeverity{
 						Severity: api.Down,
 						Value:    "Title",
@@ -118,7 +120,7 @@ func TestMonitors(t *testing.T) {
 					MonitorID: "123412341234123411",
 					Website:   "http://www.example.com",
 					Type:      "URL",
-					CustomHeaders: []api.Header{
+					RequestHeaders: []api.Header{
 						{
 							Name:  "Accept-Encoding",
 							Value: "gzip",
@@ -139,15 +141,19 @@ func TestMonitors(t *testing.T) {
 						"456987654321012",
 						"456987654321013",
 					},
-					LocationProfileID: "123412341234123412",
-					UserAgent:         "Mozilla Firefox",
-					Timeout:           30,
+					LocationProfileID:  "123412341234123412",
+					UserAgent:          "Mozilla Firefox",
+					Timeout:            30,
+					RequestContentType: "F",
+					RequestBody:        "param=value",
 					MatchRegex: &api.ValueAndSeverity{
 						Severity: api.Down,
 						Value:    "^reg*",
 					},
-					AuthUser: "username",
-					AuthPass: "password",
+					UseAlpn:    false,
+					AuthMethod: "B",
+					AuthUser:   "username",
+					AuthPass:   "password",
 					MonitorGroups: []string{
 						"123412341234123416",
 						"123412341234123417",
@@ -184,7 +190,7 @@ func TestMonitors(t *testing.T) {
 			ExpectedVerb: "GET",
 			ExpectedPath: "/monitors",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "responses/list_monitors.json"),
+			ResponseBody: validation.Fixture(t, "responses/list_website_monitors.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				monitor, err := NewMonitors(c).List()
 				require.NoError(t, err)
@@ -194,7 +200,7 @@ func TestMonitors(t *testing.T) {
 						MonitorID: "12340000016033021",
 						Website:   "https://foo.bar/",
 						Type:      "URL",
-						CustomHeaders: []api.Header{
+						RequestHeaders: []api.Header{
 							{
 								Name:  "Accept-Encoding",
 								Value: "gzip",
@@ -228,6 +234,8 @@ func TestMonitors(t *testing.T) {
 						CheckFrequency: "1",
 						DisplayName:    "foo.bar",
 						UseNameServer:  true,
+						AuthMethod:     "B",
+						SSLProtocol:    "Auto",
 					},
 					{
 						MonitorID: "12340000016108026",
@@ -256,9 +264,11 @@ func TestMonitors(t *testing.T) {
 						},
 						CheckFrequency: "5",
 						DisplayName:    "some.api.tld",
+						AuthMethod:     "B",
 						AuthUser:       "username",
 						AuthPass:       "password",
 						UseNameServer:  true,
+						SSLProtocol:    "Auto",
 					},
 				}
 
