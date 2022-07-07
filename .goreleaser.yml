@@ -19,10 +19,14 @@ builds:
     - amd64
     - '386'
     - arm
-    # - arm64
+    - arm64
+  # List of combinations of GOOS + GOARCH + GOARM to ignore.
   ignore:
     - goos: darwin
       goarch: '386'
+      # failed to build for windows_arm64: exit status 2: cmd/go: unsupported GOOS/GOARCH pair windows/arm64
+    - goos: windows
+      goarch: arm64
   binary: '{{ .ProjectName }}_v{{ .Version }}'
 archives:
 - format: zip

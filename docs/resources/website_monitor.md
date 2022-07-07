@@ -13,10 +13,11 @@ Use this resource to create, update and delete a website monitor in Site24x7.
 ## Example Usage
 
 ```hcl
+
 // Website Monitor API doc: https://www.site24x7.com/help/api/#website
 resource "site24x7_website_monitor" "website_monitor" {
   // (Required) Display name for the monitor
-  display_name = "website monitor"
+  display_name = "mymonitor"
 
   // (Required) Website address to monitor.
   website = "https://foo.bar"
@@ -25,10 +26,6 @@ resource "site24x7_website_monitor" "website_monitor" {
   // https://www.site24x7.com/help/api/#check-interval for all supported
   // values.
   check_frequency = "1"
-
-  // (Optional) HTTP Method to be used for accessing the website. Default: "G".
-  // See https://www.site24x7.com/help/api/#http_methods for allowed values.
-  http_method = "P"
 
   // (Optional) Authentication user name to access the website.
   auth_user = "theuser"
@@ -90,6 +87,15 @@ resource "site24x7_website_monitor" "website_monitor" {
   // will be used.
   notification_profile_id = "123"
 
+  // (Optional) Name of the notification profile that has to be associated with the monitor.
+  // Profile name matching works for both exact and partial match.
+  // Either specify notification_profile_id or notification_profile_name.
+  // If notification_profile_id and notification_profile_name are omitted,
+  // the first profile returned by the /api/notification_profiles endpoint
+  // (https://www.site24x7.com/help/api/#list-notification-profiles) will be
+  // used.
+  notification_profile_name = "Terraform Profile"
+
   // (Optional) Threshold profile to be associated with the monitor. If
   // omitted, the first profile returned by the /api/threshold_profiles
   // endpoint for the website monitor (https://www.site24x7.com/help/api/#list-threshold-profiles) will
@@ -108,16 +114,34 @@ resource "site24x7_website_monitor" "website_monitor" {
     "456"
   ]
 
-  // (Optional) List if user group IDs to be notified on down. If omitted, the
+  // (Optional) List if user group IDs to be notified on down. 
+  // Either specify user_group_ids or user_group_names. If omitted, the
   // first user group returned by the /api/user_groups endpoint
   // (https://www.site24x7.com/help/api/#list-of-all-user-groups) will be used.
   user_group_ids = [
     "123",
   ]
 
+  // (Optional) List if user group names to be notified on down. 
+  // Either specify user_group_ids or user_group_names. If omitted, the
+  // first user group returned by the /api/user_groups endpoint
+  // (https://www.site24x7.com/help/api/#list-of-all-user-groups) will be used.
+  user_group_names = [
+    "Terraform",
+    "Network",
+    "Admin",
+  ]
+
   // (Optional) List if tag IDs to be associated to the monitor.
   tag_ids = [
     "123",
+  ]
+
+  // (Optional) List of tag names to be associated to the monitor. Tag name matching works for both exact and 
+  //  partial match. Either specify tag_ids or tag_names.
+  tag_names = [
+    "Terraform",
+    "Network",
   ]
 
   // (Optional) List of Third Party Service IDs to be associated to the monitor.
@@ -139,6 +163,16 @@ resource "site24x7_website_monitor" "website_monitor" {
   // (Optional) Provide a comma-separated list of HTTP status codes that indicate a successful response. You can specify individual status codes, as well as ranges separated with a colon. Default: ""
   up_status_codes = "200,404"
 
+  // (Optional) HTTP Method to be used for accessing the website. Default value is 'G'. 'G' denotes GET, 'P' denotes POST and 'H' denotes HEAD. PUT, PATCH and DELETE are not supported.
+  // See https://www.site24x7.com/help/api/#http_methods for allowed values.
+  http_method = "P"
+
+  // (Optional) Provide content type for request params when http_method is 'P'. 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML and 'F' denotes FORM
+  request_content_type = "J"
+
+  // (Optional) Provide the content to be passed in the request body while accessing the website.
+  request_body = "{\"user_name\":\"joe\"}"
+  
   // (Optional) Map of custom HTTP headers to send.
   request_headers = {
     "Accept" = "application/json"
@@ -151,6 +185,7 @@ resource "site24x7_website_monitor" "website_monitor" {
     "Connection" = "Keep-Alive"
   }
 }
+
 ```
 
 ## Attributes Reference
