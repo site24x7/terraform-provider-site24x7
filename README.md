@@ -132,6 +132,36 @@ resource "site24x7_website_monitor" "website_monitor_us" {
 
 ```
 
+## Steps to generate Site24x7 OAuth credentials
+
+Site24x7 REST APIs uses the OAuth 2.0 protocol to authorize and authenticate calls. To generate Site24x7 OAuth credentials(SITE24X7_CLIENT_ID, SITE24X7_CLIENT_SECRET and SITE24X7_REFRESH_TOKEN) please follow the steps below 
+
+1. Visit https://api-console.zoho.com/
+2. Choose the self client option.
+3. Copy the Client ID, Client Secret and paste them in the below curl command.
+4. Copy and paste `Site24x7.account.All,Site24x7.admin.All,Site24x7.reports.All,Site24x7.operations.All,Site24x7.msp.All,Site24x7.bu.All` in the scope field and click the "Create" button.
+5. Copy the generated code, paste it in the below command and execute the same.
+
+```sh
+
+  curl https://accounts.zoho.com/oauth/v2/token
+  -X POST
+  -d "client_id=<CLIENT_ID>"
+  -d "client_secret=<CLIENT_SECRET>"
+  -d "code=<GENERATED_CODE>"
+  -d "grant_type=authorization_code" --insecure
+
+```
+
+Note: Domain names in the OAuth credentials generation steps vary based on your data center
+
+1. United States (US) - https://accounts.zoho.com and https://api-console.zoho.com
+2. Europe (EU) - https://accounts.zoho.eu and https://api-console.zoho.eu
+3. China (CN) - https://accounts.zoho.com.cn and https://api-console.zoho.com.cn
+4. India (IN) - https://accounts.zoho.in and https://api-console.zoho.in
+5. Australia (AU) - https://accounts.zoho.com.au and https://api-console.zoho.com.au
+
+
 ## Steps to import existing monitors and generate terraform resource configuration for the same
 
 #### Clone the repository
@@ -146,8 +176,6 @@ Execute the below command to clone Site24x7's terraform provider repository to a
 ```
 
 The current directory denotes your `$SITE24X7_TERRAFORM_PROVIDER_REPOSITORY_HOME`
-
-
 
 #### Export your Site24x7 OAuth credentials in the bash environment
 
