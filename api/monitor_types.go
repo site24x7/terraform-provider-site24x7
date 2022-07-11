@@ -247,50 +247,52 @@ func (sslMonitor *SSLMonitor) String() string {
 
 // Denotes the REST API monitor resource in Site24x7.
 type RestApiMonitor struct {
-	_                         struct{}               `type:"structure"` // Enforces key based initialization.
-	MonitorID                 string                 `json:"monitor_id,omitempty"`
-	DisplayName               string                 `json:"display_name"`
-	Type                      string                 `json:"type"`
-	Website                   string                 `json:"website"`
-	CheckFrequency            string                 `json:"check_frequency"`
-	Timeout                   int                    `json:"timeout"`
-	HttpMethod                string                 `json:"http_method,omitempty"`
-	HttpProtocol              string                 `json:"http_protocol,omitempty"`
-	SslProtocol               string                 `json:"ssl_protocol,omitempty"`
+	_              struct{} `type:"structure"` // Enforces key based initialization.
+	MonitorID      string   `json:"monitor_id,omitempty"`
+	DisplayName    string   `json:"display_name"`
+	Type           string   `json:"type"`
+	Website        string   `json:"website"`
+	CheckFrequency string   `json:"check_frequency"`
+	Timeout        int      `json:"timeout"`
+	UseIPV6        bool     `json:"use_ipv6"`
+	// HTTP Configuration
+	HTTPMethod                string                 `json:"http_method"`
 	RequestContentType        string                 `json:"request_content_type,omitempty"`
-	ResponseContentType       string                 `json:"response_type"`
-	RequestParam              string                 `json:"request_param,omitempty"`
+	RequestBody               string                 `json:"request_param,omitempty"`
+	RequestHeaders            []Header               `json:"custom_headers,omitempty"`
+	GraphQL                   map[string]interface{} `json:"graphql,omitempty"`
+	UserAgent                 string                 `json:"user_agent,omitempty"`
 	AuthMethod                string                 `json:"auth_method,omitempty"`
 	AuthUser                  string                 `json:"auth_user,omitempty"`
 	AuthPass                  string                 `json:"auth_pass,omitempty"`
 	OAuth2Provider            string                 `json:"oauth2_provider,omitempty"`
 	ClientCertificatePassword string                 `json:"client_certificate_password,omitempty"`
 	JwtID                     string                 `json:"jwt_id,omitempty"`
-	GraphQL                   map[string]interface{} `json:"graphql,omitempty"`
-	MatchingKeyword           map[string]interface{} `json:"matching_keyword,omitempty"`
-	UnmatchingKeyword         map[string]interface{} `json:"unmatching_keyword,omitempty"`
-	MatchRegex                map[string]interface{} `json:"match_regex,omitempty"`
-	MatchJSON                 map[string]interface{} `json:"match_json,omitempty"`
-	JSONSchema                map[string]interface{} `json:"json_schema,omitempty"`
-	JSONSchemaCheck           bool                   `json:"json_schema_check,omitempty"`
-	UseAlpn                   bool                   `json:"use_alpn"`
-	UseIPV6                   bool                   `json:"use_ipv6"`
-	MatchCase                 bool                   `json:"match_case"`
 	UseNameServer             bool                   `json:"use_name_server"`
-	UserAgent                 string                 `json:"user_agent"`
-	CustomHeaders             []Header               `json:"custom_headers,omitempty"`
-	ResponseHeaders           HTTPResponseHeader     `json:"response_headers_check,omitempty"`
-	LocationProfileID         string                 `json:"location_profile_id"`
-	NotificationProfileID     string                 `json:"notification_profile_id"`
-	ThresholdProfileID        string                 `json:"threshold_profile_id"`
-	MonitorGroups             []string               `json:"monitor_groups,omitempty"`
-	DependencyResourceIDs     []string               `json:"dependency_resource_ids,omitempty"`
-	UserGroupIDs              []string               `json:"user_group_ids,omitempty"`
-	TagIDs                    []string               `json:"tag_ids,omitempty"`
-	ThirdPartyServiceIDs      []string               `json:"third_party_services,omitempty"`
-	ActionIDs                 []ActionRef            `json:"action_ids,omitempty"`
-	// HTTP Configuration
-	UpStatusCodes string `json:"up_status_codes,omitempty"`
+	HTTPProtocol              string                 `json:"http_protocol,omitempty"`
+	SSLProtocol               string                 `json:"ssl_protocol,omitempty"`
+	UpStatusCodes             string                 `json:"up_status_codes,omitempty"`
+	UseAlpn                   bool                   `json:"use_alpn"`
+	// Content Check
+	ResponseContentType string                 `json:"response_type"`
+	MatchJSON           map[string]interface{} `json:"match_json,omitempty"`
+	JSONSchema          map[string]interface{} `json:"json_schema,omitempty"`
+	JSONSchemaCheck     bool                   `json:"json_schema_check,omitempty"`
+	MatchingKeyword     map[string]interface{} `json:"matching_keyword,omitempty"`
+	UnmatchingKeyword   map[string]interface{} `json:"unmatching_keyword,omitempty"`
+	MatchCase           bool                   `json:"match_case"`
+	MatchRegex          map[string]interface{} `json:"match_regex,omitempty"`
+	ResponseHeaders     HTTPResponseHeader     `json:"response_headers_check,omitempty"`
+	// Configuration Profiles
+	LocationProfileID     string      `json:"location_profile_id"`
+	NotificationProfileID string      `json:"notification_profile_id"`
+	ThresholdProfileID    string      `json:"threshold_profile_id"`
+	MonitorGroups         []string    `json:"monitor_groups,omitempty"`
+	DependencyResourceIDs []string    `json:"dependency_resource_ids,omitempty"`
+	UserGroupIDs          []string    `json:"user_group_ids,omitempty"`
+	TagIDs                []string    `json:"tag_ids,omitempty"`
+	ThirdPartyServiceIDs  []string    `json:"third_party_services,omitempty"`
+	ActionIDs             []ActionRef `json:"action_ids,omitempty"`
 }
 
 func (restApiMonitor *RestApiMonitor) SetNotificationProfileID(notificationProfileID string) {

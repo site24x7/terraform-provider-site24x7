@@ -91,6 +91,226 @@ var RestApiMonitorSchema = map[string]*schema.Schema{
 		Default:     10,
 		Description: "Timeout for connecting to website. Default value is 10. Range 1 - 45.",
 	},
+	"use_ipv6": {
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Description: "Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure.",
+	},
+	// Content Check
+	"response_content_type": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Default:     "T",
+		Description: "Response content type. Default value is 'T'. 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML",
+	},
+	"match_json_path": {
+		Type: schema.TypeList,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Description: "Provide multiple JSON Path expressions to enable evaluation of JSON Path expression assertions. The assertions must successfully parse the JSON Path in the JSON. JSON expression assertions fails if the expressions does not match.",
+	},
+	"match_json_path_severity": {
+		Type:         schema.TypeInt,
+		Optional:     true,
+		Default:      2,
+		ValidateFunc: validation.IntInSlice([]int{0, 2}), // 0 - Down, 2 - Trouble
+		Description:  "Trigger an alert when the JSON path assertion fails during a test. Alert type constant. Can be either 0 or 2. '0' denotes Down and '2' denotes Trouble. Default value is 2.",
+	},
+	"json_schema": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "JSON schema to be validated against the JSON response.",
+	},
+	"json_schema_severity": {
+		Type:         schema.TypeInt,
+		Optional:     true,
+		Default:      2,
+		ValidateFunc: validation.IntInSlice([]int{0, 2}), // 0 - Down, 2 - Trouble
+		Description:  "Trigger an alert when the JSON schema assertion fails during a test. Alert type constant. Can be either 0 or 2. '0' denotes Down and '2' denotes Trouble. Default value is 2.",
+	},
+	"json_schema_check": {
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Description: "JSON Schema check allows you to annotate and validate all JSON endpoints for your web service.",
+	},
+	"matching_keyword": {
+		Type:     schema.TypeMap,
+		Optional: true,
+		Elem: &schema.Resource{
+			Schema: map[string]*schema.Schema{
+				"severity": {
+					Type:         schema.TypeInt,
+					Required:     true,
+					ValidateFunc: validation.IntInSlice([]int{0, 2}), // Trouble or Down
+				},
+				"value": {
+					Type:     schema.TypeString,
+					Required: true,
+				},
+			},
+		},
+		Description: "Check for the keyword in the website response.",
+	},
+	"unmatching_keyword": {
+		Type:     schema.TypeMap,
+		Optional: true,
+		Elem: &schema.Resource{
+			Schema: map[string]*schema.Schema{
+				"severity": {
+					Type:         schema.TypeInt,
+					Required:     true,
+					ValidateFunc: validation.IntInSlice([]int{0, 2}), // Trouble or Down
+				},
+				"value": {
+					Type:     schema.TypeString,
+					Required: true,
+				},
+			},
+		},
+		Description: "Check for non existence of keyword in the website response.",
+	},
+	"match_case": {
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Description: "Perform case sensitive keyword search or not.",
+	},
+	"match_regex": {
+		Type:     schema.TypeMap,
+		Optional: true,
+		Elem: &schema.Resource{
+			Schema: map[string]*schema.Schema{
+				"severity": {
+					Type:         schema.TypeInt,
+					Required:     true,
+					ValidateFunc: validation.IntInSlice([]int{0, 2}), // Trouble or Down
+				},
+				"value": {
+					Type:     schema.TypeString,
+					Required: true,
+				},
+			},
+		},
+		Description: "Match the regular expression in the website response.",
+	},
+	"response_headers": {
+		Type:        schema.TypeMap,
+		Optional:    true,
+		Description: "A Map of Header name and value.",
+	},
+	"response_headers_severity": {
+		Type:         schema.TypeInt,
+		Optional:     true,
+		Default:      2,
+		ValidateFunc: validation.IntInSlice([]int{0, 2}), // 0 - Down, 2 - Trouble
+		Description:  "Alert type constant. Can be either 0 or 2. '0' denotes Down and '2' denotes Trouble",
+	},
+	// HTTP Configuration
+	"http_method": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Default:     "G",
+		Description: "HTTP Method to be used for accessing the website. Default value is 'G'. 'G' denotes GET, 'P' denotes POST and 'H' denotes HEAD. PUT, PATCH and DELETE are not supported.",
+	},
+	"request_content_type": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Provide content type for request params when http_method is 'P'. 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML and 'F' denotes FORM",
+	},
+	"request_body": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Provide the content to be passed in the request body while accessing the website.",
+	},
+	"request_headers": {
+		Type:        schema.TypeMap,
+		Optional:    true,
+		Description: "A Map of request header name and value.",
+	},
+	"graphql_query": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Provide the GraphQL query to get specific response from GraphQL based API service.",
+	},
+	"graphql_variables": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Provide the GraphQL variables to get specific response from GraphQL based API service.",
+	},
+	"user_agent": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "User Agent to be used while monitoring the website.",
+	},
+	"auth_method": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Default:     "B",
+		Description: "Authentication method to access the website. Default value is 'B'. 'B' denotes Basic/NTLM. 'O' denotes OAuth 2 and 'W' denotes Web Token.",
+	},
+	"auth_user": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Authentication user name to access the website.",
+	},
+	"auth_pass": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Authentication password to access the website.",
+		DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
+			// Suppress diff - Password in API response is encrypted.
+			return true
+		},
+	},
+	"oauth2_provider": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Provider ID of the OAuth Provider to be associated with the monitor.",
+	},
+	"client_certificate_password": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Password of the client certificate.",
+		DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
+			// Suppress diff - Password in API response is encrypted.
+			return true
+		},
+	},
+	"jwt_id": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Token ID of the Web Token to be associated with the monitor.",
+	},
+	"use_name_server": {
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Description: "Resolve the IP address using Domain Name Server.",
+	},
+	"up_status_codes": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Provide a comma-separated list of HTTP status codes that indicate a successful response. You can specify individual status codes, as well as ranges separated with a colon.",
+	},
+	"ssl_protocol": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Default:     "Auto",
+		Description: "Specify the version of the SSL protocol. If you are not sure about the version, use Auto.",
+	},
+	"http_protocol": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Default:     "H1.1",
+		Description: "Specify the version of the HTTP protocol. Default value is H1.1.",
+	},
+	"use_alpn": {
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Default:     false,
+		Description: "Enable ALPN to send supported protocols as part of the TLS handshake.",
+	},
+	// Configuration Profiles
 	"location_profile_id": {
 		Type:        schema.TypeString,
 		Optional:    true,
@@ -178,209 +398,11 @@ var RestApiMonitorSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Description: "List of Third Party Service IDs to be associated to the monitor.",
 	},
-	"http_method": {
-		Type:        schema.TypeString,
-		Optional:    true,
-		Default:     "G",
-		Description: "HTTP Method used for accessing the website. Default value is G.",
-	},
-	"graphql_query": {
-		Type:        schema.TypeString,
-		Optional:    true,
-		Description: "Provide the GraphQL query to get specific response from GraphQL based API service.",
-	},
-	"graphql_variables": {
-		Type:        schema.TypeString,
-		Optional:    true,
-		Description: "Provide the GraphQL variables to get specific response from GraphQL based API service.",
-	},
-	"http_protocol": {
-		Type:        schema.TypeString,
-		Optional:    true,
-		Default:     "H1.1",
-		Description: "Specify the version of the HTTP protocol. Default value is H1.1.",
-	},
-	"ssl_protocol": {
-		Type:        schema.TypeString,
-		Optional:    true,
-		Default:     "Auto",
-		Description: "Specify the version of the SSL protocol. If you are not sure about the version, use Auto.",
-	},
-	"use_ipv6": {
-		Type:        schema.TypeBool,
-		Optional:    true,
-		Description: "Select IPv6 for monitoring the websites hosted with IPv6 address. If you choose non IPv6 supported locations, monitoring will happen through IPv4.",
-	},
-	"request_content_type": {
-		Type:        schema.TypeString,
-		Optional:    true,
-		Description: "Provide content type for request params.",
-	},
-	"response_content_type": {
-		Type:        schema.TypeString,
-		Optional:    true,
-		Default:     "T",
-		Description: "Response content type. Default value is 'T'. 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML",
-	},
-	"request_param": {
-		Type:        schema.TypeString,
-		Optional:    true,
-		Description: "Provide parameters to be passed while accessing the website.",
-	},
-	"auth_user": {
-		Type:        schema.TypeString,
-		Optional:    true,
-		Description: "Authentication password to access the website.",
-	},
-	"auth_pass": {
-		Type:        schema.TypeString,
-		Optional:    true,
-		Description: "Authentication user name to access the website.",
-	},
-	"oauth2_provider": {
-		Type:        schema.TypeString,
-		Optional:    true,
-		Description: "Provider ID of the OAuth Provider to be associated with the monitor.",
-	},
-	"client_certificate_password": {
-		Type:        schema.TypeString,
-		Optional:    true,
-		Description: "Password of the uploaded client certificate.",
-	},
-	"jwt_id": {
-		Type:        schema.TypeString,
-		Optional:    true,
-		Description: "Token ID of the Web Token to be associated with the monitor.",
-	},
-	"up_status_codes": {
-		Type:        schema.TypeString,
-		Optional:    true,
-		Description: "Provide a comma-separated list of HTTP status codes that indicate a successful response. You can specify individual status codes, as well as ranges separated with a colon.",
-	},
-	"matching_keyword": {
-		Type:     schema.TypeMap,
-		Optional: true,
-		Elem: &schema.Resource{
-			Schema: map[string]*schema.Schema{
-				"severity": {
-					Type:         schema.TypeInt,
-					Required:     true,
-					ValidateFunc: validation.IntInSlice([]int{0, 2}), // Trouble or Down
-				},
-				"value": {
-					Type:     schema.TypeString,
-					Required: true,
-				},
-			},
-		},
-		Description: "Check for the keyword in the website response.",
-	},
-	"unmatching_keyword": {
-		Type:     schema.TypeMap,
-		Optional: true,
-		Elem: &schema.Resource{
-			Schema: map[string]*schema.Schema{
-				"severity": {
-					Type:         schema.TypeInt,
-					Required:     true,
-					ValidateFunc: validation.IntInSlice([]int{0, 2}), // Trouble or Down
-				},
-				"value": {
-					Type:     schema.TypeString,
-					Required: true,
-				},
-			},
-		},
-		Description: "Check for non existence of keyword in the website response.",
-	},
-	"match_regex": {
-		Type:     schema.TypeMap,
-		Optional: true,
-		Elem: &schema.Resource{
-			Schema: map[string]*schema.Schema{
-				"severity": {
-					Type:         schema.TypeInt,
-					Required:     true,
-					ValidateFunc: validation.IntInSlice([]int{0, 2}), // Trouble or Down
-				},
-				"value": {
-					Type:     schema.TypeString,
-					Required: true,
-				},
-			},
-		},
-		Description: "Match the regular expression in the website response.",
-	},
-	"match_case": {
-		Type:        schema.TypeBool,
-		Optional:    true,
-		Description: "Perform case sensitive keyword search or not.",
-	},
-	"use_name_server": {
-		Type:        schema.TypeBool,
-		Optional:    true,
-		Description: "Resolve the IP address using Domain Name Server.",
-	},
-	"use_alpn": {
-		Type:        schema.TypeBool,
-		Optional:    true,
-		Default:     false,
-		Description: "Enable ALPN to send supported protocols as part of the TLS handshake.",
-	},
-	"user_agent": {
-		Type:        schema.TypeString,
-		Optional:    true,
-		Description: "User Agent to be used while monitoring the website.",
-	},
-	"custom_headers": {
+	"actions": {
 		Type:        schema.TypeMap,
 		Optional:    true,
-		Elem:        &schema.Schema{Type: schema.TypeString},
-		Description: "A Map of Header name and value.",
-	},
-	"response_headers_severity": {
-		Type:         schema.TypeInt,
-		Optional:     true,
-		Default:      2,
-		ValidateFunc: validation.IntInSlice([]int{0, 2}), // 0 - Down, 2 - Trouble
-		Description:  "Alert type constant. Can be either 0 or 2. '0' denotes Down and '2' denotes Trouble",
-	},
-	"response_headers": {
-		Type:        schema.TypeMap,
-		Optional:    true,
-		Description: "A Map of Header name and value.",
-	},
-	"match_json_path": {
-		Type: schema.TypeList,
-		Elem: &schema.Schema{
-			Type: schema.TypeString,
-		},
-		Optional:    true,
-		Description: "Provide multiple JSON Path expressions to enable evaluation of JSON Path expression assertions. The assertions must successfully parse the JSON Path in the JSON. JSON expression assertions fails if the expressions does not match.",
-	},
-	"match_json_path_severity": {
-		Type:         schema.TypeInt,
-		Optional:     true,
-		Default:      2,
-		ValidateFunc: validation.IntInSlice([]int{0, 2}), // 0 - Down, 2 - Trouble
-		Description:  "Trigger an alert when the JSON path assertion fails during a test. Alert type constant. Can be either 0 or 2. '0' denotes Down and '2' denotes Trouble. Default value is 2.",
-	},
-	"json_schema": {
-		Type:        schema.TypeString,
-		Optional:    true,
-		Description: "JSON schema to be validated against the JSON response.",
-	},
-	"json_schema_severity": {
-		Type:         schema.TypeInt,
-		Optional:     true,
-		Default:      2,
-		ValidateFunc: validation.IntInSlice([]int{0, 2}), // 0 - Down, 2 - Trouble
-		Description:  "Trigger an alert when the JSON schema assertion fails during a test. Alert type constant. Can be either 0 or 2. '0' denotes Down and '2' denotes Trouble. Default value is 2.",
-	},
-	"json_schema_check": {
-		Type:        schema.TypeBool,
-		Optional:    true,
-		Description: "JSON Schema check allows you to annotate and validate all JSON endpoints for your web service.",
+		Elem:        schema.TypeString,
+		Description: "Action to be performed on monitor status changes.",
 	},
 }
 
@@ -528,16 +550,16 @@ func resourceDataToRestApiMonitor(d *schema.ResourceData, client site24x7.Client
 		}
 	}
 
-	// Custom Headers
-	customHeaderMap := d.Get("custom_headers").(map[string]interface{})
-	customHeaderKeys := make([]string, 0, len(customHeaderMap))
-	for k := range customHeaderMap {
-		customHeaderKeys = append(customHeaderKeys, k)
+	// Request Headers
+	requestHeaderMap := d.Get("request_headers").(map[string]interface{})
+	requestHeaderKeys := make([]string, 0, len(requestHeaderMap))
+	for k := range requestHeaderMap {
+		requestHeaderKeys = append(requestHeaderKeys, k)
 	}
-	sort.Strings(customHeaderKeys)
-	customHeaders := make([]api.Header, len(customHeaderKeys))
-	for i, k := range customHeaderKeys {
-		customHeaders[i] = api.Header{Name: k, Value: customHeaderMap[k].(string)}
+	sort.Strings(requestHeaderKeys)
+	requestHeaders := make([]api.Header, len(requestHeaderKeys))
+	for i, k := range requestHeaderKeys {
+		requestHeaders[i] = api.Header{Name: k, Value: requestHeaderMap[k].(string)}
 	}
 
 	// HTTP Response Headers
@@ -564,25 +586,26 @@ func resourceDataToRestApiMonitor(d *schema.ResourceData, client site24x7.Client
 		Website:        d.Get("website").(string),
 		CheckFrequency: d.Get("check_frequency").(string),
 		Timeout:        d.Get("timeout").(int),
-		HttpMethod:     d.Get("http_method").(string),
-		HttpProtocol:   d.Get("http_protocol").(string),
-		SslProtocol:    d.Get("ssl_protocol").(string),
+		HTTPMethod:     d.Get("http_method").(string),
+		HTTPProtocol:   d.Get("http_protocol").(string),
+		SSLProtocol:    d.Get("ssl_protocol").(string),
 		UseAlpn:        d.Get("use_alpn").(bool),
 		UseIPV6:        d.Get("use_ipv6").(bool),
 
 		RequestContentType:        d.Get("request_content_type").(string),
 		ResponseContentType:       d.Get("response_content_type").(string),
-		RequestParam:              d.Get("request_param").(string),
+		RequestBody:               d.Get("request_body").(string),
 		OAuth2Provider:            d.Get("oauth2_provider").(string),
 		ClientCertificatePassword: d.Get("client_certificate_password").(string),
 		JwtID:                     d.Get("jwt_id").(string),
+		AuthMethod:                d.Get("auth_method").(string),
 		AuthUser:                  d.Get("auth_user").(string),
 		AuthPass:                  d.Get("auth_pass").(string),
 		MatchCase:                 d.Get("match_case").(bool),
 		JSONSchemaCheck:           d.Get("json_schema_check").(bool),
 		UseNameServer:             d.Get("use_name_server").(bool),
 		UserAgent:                 d.Get("user_agent").(string),
-		CustomHeaders:             customHeaders,
+		RequestHeaders:            requestHeaders,
 		ResponseHeaders:           httpResponseHeader,
 		LocationProfileID:         d.Get("location_profile_id").(string),
 		NotificationProfileID:     d.Get("notification_profile_id").(string),
@@ -682,14 +705,15 @@ func updateRestApiMonitorResourceData(d *schema.ResourceData, monitor *api.RestA
 	d.Set("website", monitor.Website)
 	d.Set("check_frequency", monitor.CheckFrequency)
 	d.Set("timeout", monitor.Timeout)
-	d.Set("http_method", monitor.HttpMethod)
-	d.Set("http_protocol", monitor.HttpProtocol)
-	d.Set("ssl_protocol", monitor.SslProtocol)
+	d.Set("http_method", monitor.HTTPMethod)
+	d.Set("http_protocol", monitor.HTTPProtocol)
+	d.Set("ssl_protocol", monitor.SSLProtocol)
 	d.Set("use_alpn", monitor.UseAlpn)
 	d.Set("use_ipv6", monitor.UseIPV6)
 	d.Set("request_content_type", monitor.RequestContentType)
 	d.Set("response_content_type", monitor.ResponseContentType)
-	d.Set("request_param", monitor.RequestParam)
+	d.Set("request_body", monitor.RequestBody)
+	d.Set("auth_method", monitor.AuthMethod)
 	d.Set("auth_user", monitor.AuthUser)
 	d.Set("auth_pass", monitor.AuthPass)
 	d.Set("oauth2_provider", monitor.OAuth2Provider)
@@ -749,15 +773,15 @@ func updateRestApiMonitorResourceData(d *schema.ResourceData, monitor *api.RestA
 	d.Set("use_name_server", monitor.UseNameServer)
 	d.Set("user_agent", monitor.UserAgent)
 
-	// Custom Headers
-	customHeaders := make(map[string]interface{})
-	for _, h := range monitor.CustomHeaders {
+	// Request Headers
+	requestHeaders := make(map[string]interface{})
+	for _, h := range monitor.RequestHeaders {
 		if h.Name == "" {
 			continue
 		}
-		customHeaders[h.Name] = h.Value
+		requestHeaders[h.Name] = h.Value
 	}
-	d.Set("custom_headers", customHeaders)
+	d.Set("request_headers", requestHeaders)
 
 	// Response Headers
 	responseHeaders := make(map[string]interface{})

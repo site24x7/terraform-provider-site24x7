@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "1.0.18"
+      version = "1.0.20"
     }
   }
 }
@@ -60,7 +60,6 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_basic" {
   location_profile_name = "North America"
 }
 
-// Site24x7 Rest API Monitor API doc - https://www.site24x7.com/help/api/#rest-api
 resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
   // (Required) Display name for the monitor
   display_name = "REST API Monitor - terraform"
@@ -188,9 +187,22 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
   json_schema_check = true
   // JSON ASSERTION ATTRIBUTES ================
 
+  // ================ HTTP POST with request body
+  // (Optional) HTTP Method to be used for accessing the website. Default value is 'G'. 'G' denotes GET, 'P' denotes POST and 'H' denotes HEAD. PUT, PATCH and DELETE are not supported.
+  http_method = "P"
+  // (Optional) Provide content type for request params when http_method is 'P'. 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML and 'F' denotes FORM
+  request_content_type = "J"
+  // (Optional) Provide the content to be passed in the request body while accessing the website.
+  request_body = "{\"user_name\":\"joe\"}"
+  // (Optional) Map of custom HTTP headers to send.
+  request_headers = {
+    "Accept" = "application/json"
+  }
+  // HTTP POST with request body ================
+
   // ================ GRAPHQL ATTRIBUTES
   // (Optional) Provide content type for request params.
-  request_content_type = "G"
+  // request_content_type = "G"
   // (Optional) Provide the GraphQL query to get specific response from GraphQL based API service. request_content_type = "G"
   graphql_query = "query GetFlimForId($FilmId:ID!){\n        film(id:$FilmId){\n            id\n            title\n            director\n            producers\n        }\n}"
   // (Optional) Provide the GraphQL variables to get specific response from GraphQL based API service. request_content_type = "G"
