@@ -33,6 +33,14 @@ type Config struct {
 	// if it expires.
 	RefreshToken string
 
+	// AccessToken is a token that's used by the application for identifying the user
+	// and retrieve the data related to him.
+	AccessToken string
+
+	// AccessToken expiry in seconds
+	Expiry string
+
+	// Application Account ID of the customer.
 	ZAAID string
 
 	// APIBaseURL allows overriding the default API base URL (https://www.site24x7.com/api).
@@ -51,7 +59,7 @@ type Config struct {
 // OAuthClient creates a new *http.Client from c that transparently obtains and
 // attaches OAuth access tokens to every request.
 func (c *Config) OAuthClient(ctx context.Context) *http.Client {
-	oauthConfig := oauth.NewConfig(c.ClientID, c.ClientSecret, c.RefreshToken)
+	oauthConfig := oauth.NewConfig(c.ClientID, c.ClientSecret, c.RefreshToken, c.AccessToken, c.Expiry)
 	if c.TokenURL != "" {
 		oauthConfig.Endpoint.TokenURL = c.TokenURL
 	}

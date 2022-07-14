@@ -35,6 +35,17 @@ func Provider() terraform.ResourceProvider {
 				DefaultFunc: schema.EnvDefaultFunc("SITE24X7_OAUTH2_REFRESH_TOKEN", nil),
 				Description: "OAuth2 Refresh Token",
 			},
+			"oauth2_access_token": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				DefaultFunc: schema.EnvDefaultFunc("SITE24X7_OAUTH2_ACCESS_TOKEN", nil),
+				Description: "OAuth2 Access Token",
+			},
+			"access_token_expiry": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: "Access token expiry in seconds",
+			},
 			"zaaid": {
 				Type:        schema.TypeString,
 				Optional:    true,
@@ -107,6 +118,8 @@ func providerConfigure(d *schema.ResourceData) (interface{}, error) {
 		ClientID:     d.Get("oauth2_client_id").(string),
 		ClientSecret: d.Get("oauth2_client_secret").(string),
 		RefreshToken: d.Get("oauth2_refresh_token").(string),
+		AccessToken:  d.Get("oauth2_access_token").(string),
+		Expiry:       d.Get("access_token_expiry").(string),
 		ZAAID:        d.Get("zaaid").(string),
 		APIBaseURL:   dataCenter.GetAPIBaseURL(),
 		TokenURL:     dataCenter.GetTokenURL(),

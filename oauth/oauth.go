@@ -3,6 +3,8 @@ package oauth
 import (
 	"context"
 	"net/http"
+	"strconv"
+	"time"
 
 	"golang.org/x/oauth2"
 )
@@ -21,6 +23,13 @@ const (
 type Config struct {
 	*oauth2.Config
 
+	// AccessToken is a token that's used by the application for identifying the user
+	// and retrieve the data related to the user.
+	AccessToken string
+
+	// AccessToken expiry in seconds
+	Expiry string
+
 	// RefreshToken is a token that's used by the application
 	// (as opposed to the user) to refresh the access token
 	// if it expires.
@@ -28,7 +37,7 @@ type Config struct {
 }
 
 // NewConfig creates a new *Config for the provided client credentials.
-func NewConfig(clientID, clientSecret, refreshToken string) *Config {
+func NewConfig(clientID, clientSecret, refreshToken, accessToken, expiry string) *Config {
 	return &Config{
 		Config: &oauth2.Config{
 			ClientID:     clientID,
@@ -39,6 +48,8 @@ func NewConfig(clientID, clientSecret, refreshToken string) *Config {
 			},
 		},
 		RefreshToken: refreshToken,
+		AccessToken:  accessToken,
+		Expiry:       expiry,
 	}
 }
 
@@ -59,8 +70,16 @@ func (c *Config) TokenSource(ctx context.Context) oauth2.TokenSource {
 		RefreshToken: c.RefreshToken,
 		TokenType:    TokenType,
 	}
-
-	return &tokenSource{
+	if c.AccessToken != "" {
+		t.AccessToken = c.AccessToken
+		if c.Expiry != "" {
+			if expiry, err := strconv.ParseInt(c.Expiry, 10, 64); err == nil {
+				t.Expiry = time.Now().Local().Add(time.Duration(expiry) * time.Second)
+			}
+		}
+	}
+	tokenSrc := &tokenSource{
 		delegate: c.Config.TokenSource(ctx, t),
 	}
+	return tokenSrc
 }
