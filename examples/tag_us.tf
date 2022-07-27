@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "1.0.21"
+      version = "1.0.22"
     }
   }
 }
@@ -56,4 +56,9 @@ resource "site24x7_tag" "tag_us" {
   // Color code for the Tag. Possible values are '#B7DA9E','#73C7A3','#B5DCDF','#D4ABBB','#4895A8','#DFE897','#FCEA8B','#FFC36D','#F79953','#F16B3C','#E55445','#F2E2B6','#DEC57B','#CBBD80','#AAB3D4','#7085BA','#F6BDAE','#EFAB6D','#CA765C','#999','#4A148C','#009688','#00ACC1','#0091EA','#8BC34A','#558B2F'
   tag_color = "#B7DA9E"
 
+}
+
+output "site24x7_tag_id" {
+  description = "ID of the tag created in Site24x7"
+  value       = site24x7_tag.tag_us.id
 }
