@@ -14,7 +14,7 @@ var TagSchema = map[string]*schema.Schema{
 	},
 	"tag_value": {
 		Type:        schema.TypeString,
-		Required:    true,
+		Optional:    true,
 		Description: "Value for the Tag.",
 	},
 	"tag_color": {
