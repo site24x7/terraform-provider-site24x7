@@ -46,6 +46,28 @@ import (
 //   },
 // }
 
+// SSL_CERT Threshold
+// {
+// 	"type": "SSL_CERT",
+// 	"days_until_expiry": [
+// 	  {
+// 		"severity": 2,
+// 		"comparison_operator": 2,
+// 		"value": 30
+// 	  },
+// 	  {
+// 		"severity": 3,
+// 		"comparison_operator": 2,
+// 		"value": 60
+// 	  }
+// 	],
+// 	"profile_type": 1,
+// 	"ssl_fingerprint_modified": {
+// 	  "value": false
+// 	},
+// 	"profile_name": "SSL Certificate Threshold"
+// }
+
 var ThresholdProfileSchema = map[string]*schema.Schema{
 	"profile_name": {
 		Type:        schema.TypeString,
@@ -237,6 +259,48 @@ var ThresholdProfileSchema = map[string]*schema.Schema{
 		},
 		Description: "Response time critical threshold for the secondary monitoring location. Anomaly Enabled Attribute",
 	},
+	// SSL_CERT monitor type attributes
+	"ssl_cert_fingerprint_modified": {
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Description: "Triggers alert when the ssl certificate is modified.",
+	},
+	"ssl_cert_days_until_expiry_trouble_threshold": {
+		Type:     schema.TypeMap,
+		Optional: true,
+		Elem: &schema.Resource{
+			Schema: map[string]*schema.Schema{
+				"severity": {
+					Type:         schema.TypeInt,
+					Required:     true,
+					ValidateFunc: validation.IntInSlice([]int{2}), // Trouble
+				},
+				"value": {
+					Type:     schema.TypeInt,
+					Required: true,
+				},
+			},
+		},
+		Description: "Triggers trouble alert before the SSL certificate expires within the configured number of days.",
+	},
+	"ssl_cert_days_until_expiry_critical_threshold": {
+		Type:     schema.TypeMap,
+		Optional: true,
+		Elem: &schema.Resource{
+			Schema: map[string]*schema.Schema{
+				"severity": {
+					Type:         schema.TypeInt,
+					Required:     true,
+					ValidateFunc: validation.IntInSlice([]int{2}), // Trouble
+				},
+				"value": {
+					Type:     schema.TypeInt,
+					Required: true,
+				},
+			},
+		},
+		Description: "Triggers critical alert before the SSL certificate expires within the configured number of days.",
+	},
 }
 
 func ResourceSite24x7ThresholdProfile() *schema.Resource {
@@ -283,7 +347,6 @@ func thresholdProfileUpdate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(Client)
 
 	thresholdProfile := resourceDataToThresholdProfile(d)
-
 	thresholdProfile, err := client.ThresholdProfiles().Update(thresholdProfile)
 	if err != nil {
 		return err
@@ -322,6 +385,89 @@ func thresholdProfileExists(d *schema.ResourceData, meta interface{}) (bool, err
 
 func resourceDataToThresholdProfile(d *schema.ResourceData) *api.ThresholdProfile {
 
+	monitorType := d.Get("type").(string)
+
+	thresholdProfileToReturn := &api.ThresholdProfile{
+		ProfileID:   d.Id(),
+		ProfileName: d.Get("profile_name").(string),
+		Type:        d.Get("type").(string),
+		ProfileType: d.Get("profile_type").(int),
+	}
+
+	// SSL_CERT attributes
+	if monitorType == string(api.SSL_CERT) {
+		setSSLCertificateAttributes(d, thresholdProfileToReturn)
+	} else {
+		setCommonAttributes(d, thresholdProfileToReturn)
+	}
+
+	return thresholdProfileToReturn
+}
+
+// Called during read and sets thresholdProfile in API response to ResourceData
+func updateThresholdProfileResourceData(d *schema.ResourceData, thresholdProfile *api.ThresholdProfile) {
+
+	monitorType := thresholdProfile.Type
+	d.Set("profile_name", thresholdProfile.ProfileName)
+	d.Set("type", thresholdProfile.Type)
+	d.Set("profile_type", thresholdProfile.ProfileType)
+
+	if monitorType == string(api.SSL_CERT) {
+		setSSLCertificateResourceData(d, thresholdProfile)
+	} else {
+		setCommonResourceData(d, thresholdProfile)
+	}
+
+}
+
+func setSSLCertificateAttributes(d *schema.ResourceData, thresholdProfile *api.ThresholdProfile) {
+	// SSL Certificate days until expiry
+	var sslCertDaysUntilExpiry []map[string]interface{}
+	if sslCertDaysUntilExp, ok := d.GetOk("ssl_cert_days_until_expiry_trouble_threshold"); ok {
+		sslCertDaysUntilExpiryMap := sslCertDaysUntilExp.(map[string]interface{})
+		sslCertDaysUntilExpiryMap["severity"] = "2"
+		sslCertDaysUntilExpiry = append(sslCertDaysUntilExpiry, sslCertDaysUntilExpiryMap)
+	}
+	if sslCertDaysUntilExpCritical, ok := d.GetOk("ssl_cert_days_until_expiry_critical_threshold"); ok {
+		sslCertDaysUntilExpiryCriticalMap := sslCertDaysUntilExpCritical.(map[string]interface{})
+		sslCertDaysUntilExpiryCriticalMap["severity"] = "3"
+		sslCertDaysUntilExpiry = append(sslCertDaysUntilExpiry, sslCertDaysUntilExpiryCriticalMap)
+	}
+	thresholdProfile.SSLCertificateDaysUntilExpiry = sslCertDaysUntilExpiry
+
+	// SSL certificate fingerprint modified
+	if sslCertFingerprintModified, ok := d.GetOk("ssl_cert_fingerprint_modified"); ok {
+		sslCertFingerprintModifiedMap := make(map[string]interface{})
+		sslCertFingerprintModifiedMap["value"] = sslCertFingerprintModified.(bool)
+		thresholdProfile.SSLCertificateFingerprintModified = sslCertFingerprintModifiedMap
+	}
+}
+
+func setSSLCertificateResourceData(d *schema.ResourceData, thresholdProfile *api.ThresholdProfile) {
+	if len(thresholdProfile.SSLCertificateDaysUntilExpiry) > 0 {
+		for _, sslCertDaysUntilExpiry := range thresholdProfile.SSLCertificateDaysUntilExpiry {
+			sslCertDaysUntilExpiryMap := sslCertDaysUntilExpiry
+			if secondarySeverity, ok := sslCertDaysUntilExpiryMap["severity"]; ok {
+				if secondarySeverity == 2 {
+					d.Set("ssl_cert_days_until_expiry_trouble_threshold", sslCertDaysUntilExpiryMap)
+				}
+				if secondarySeverity == 3 {
+					d.Set("ssl_cert_days_until_expiry_critical_threshold", sslCertDaysUntilExpiryMap)
+				}
+			}
+		}
+	}
+
+	if thresholdProfile.SSLCertificateFingerprintModified != nil {
+		d.Set("ssl_cert_fingerprint_modified", thresholdProfile.SSLCertificateFingerprintModified["value"].(bool))
+	}
+}
+
+func setCommonAttributes(d *schema.ResourceData, thresholdProfile *api.ThresholdProfile) {
+	thresholdProfile.DownLocationThreshold = d.Get("down_location_threshold").(int)
+	thresholdProfile.WebsiteContentModified = d.Get("website_content_modified").(bool)
+
+	// Website content changes
 	var websiteContentChanges []map[string]interface{}
 	if contentChangesList, ok := d.GetOk("website_content_changes"); ok {
 		for _, urlContentChanges := range contentChangesList.([]interface{}) {
@@ -331,6 +477,7 @@ func resourceDataToThresholdProfile(d *schema.ResourceData) *api.ThresholdProfil
 			}
 		}
 	}
+	thresholdProfile.WebsiteContentChanges = websiteContentChanges
 
 	// Response Time Threshold
 	var setResponseTimeThresholdMap bool
@@ -367,29 +514,12 @@ func resourceDataToThresholdProfile(d *schema.ResourceData) *api.ThresholdProfil
 		responseTimeThresholdMap["secondary"] = secondaryThresholdList
 		setResponseTimeThresholdMap = true
 	}
-
-	thresholdProfileToReturn := &api.ThresholdProfile{
-		ProfileID:              d.Id(),
-		ProfileName:            d.Get("profile_name").(string),
-		Type:                   d.Get("type").(string),
-		ProfileType:            d.Get("profile_type").(int),
-		DownLocationThreshold:  d.Get("down_location_threshold").(int),
-		WebsiteContentModified: d.Get("website_content_modified").(bool),
-		WebsiteContentChanges:  websiteContentChanges,
-	}
-
 	if setResponseTimeThresholdMap {
-		thresholdProfileToReturn.ResponseTimeThreshold = responseTimeThresholdMap
+		thresholdProfile.ResponseTimeThreshold = responseTimeThresholdMap
 	}
-
-	return thresholdProfileToReturn
 }
 
-// Called during read and sets thresholdProfile in API response to ResourceData
-func updateThresholdProfileResourceData(d *schema.ResourceData, thresholdProfile *api.ThresholdProfile) {
-	d.Set("profile_name", thresholdProfile.ProfileName)
-	d.Set("type", thresholdProfile.Type)
-	d.Set("profile_type", thresholdProfile.ProfileType)
+func setCommonResourceData(d *schema.ResourceData, thresholdProfile *api.ThresholdProfile) {
 	d.Set("down_location_threshold", thresholdProfile.DownLocationThreshold)
 	d.Set("website_content_modified", thresholdProfile.WebsiteContentModified)
 	d.Set("website_content_changes", thresholdProfile.WebsiteContentChanges)
@@ -406,7 +536,6 @@ func updateThresholdProfileResourceData(d *schema.ResourceData, thresholdProfile
 					if primarySeverity == 3 {
 						d.Set("primary_response_time_critical_threshold", primaryThresholdMap)
 					}
-
 				}
 			}
 		}
@@ -425,10 +554,8 @@ func updateThresholdProfileResourceData(d *schema.ResourceData, thresholdProfile
 					if secondarySeverity == 3 {
 						d.Set("secondary_response_time_critical_threshold", secondaryThresholdMap)
 					}
-
 				}
 			}
 		}
-
 	}
 }

@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "1.0.21"
+      version = "1.0.22"
     }
   }
 }
@@ -52,7 +52,8 @@ resource "site24x7_threshold_profile" "website_threshold_profile_us" {
   // (Required) Type of the profile - Denotes monitor type (eg) RESTAPI, SSL_CERT
   type = "URL"
   // (Optional) Threshold profile types - https://www.site24x7.com/help/api/#threshold_profile_types
-  profile_type = 1
+  // 1 - Static Threshold,  2 - AI-based Threshold
+  profile_type = 1 
   // (Optional) Triggers alert when the monitor is down from configured number of locations. Default value is '3'
   down_location_threshold = 1
   // (Optional) Triggers alert when Website content is modified.
@@ -130,5 +131,27 @@ resource "site24x7_threshold_profile" "website_threshold_profile_us" {
     // Poll Check Value
     polls_check         = 5
   }
+
+}
+
+
+// SSL Threshold Profile API doc](https://www.site24x7.com/help/api/#ssl-certificate830))
+resource "site24x7_threshold_profile" "ssl_certificate_threshold_profile_us" {
+  // (Required) Name of the profile
+  profile_name = "SSL_CERT Thresh - Terraform"
+  // (Required) Type of the profile - Denotes monitor type (eg) RESTAPI, SSL_CERT
+  type = "SSL_CERT"
+  // (Optional) Triggers trouble alert before the SSL certificate expires within the configured number of days.
+  ssl_cert_days_until_expiry_trouble_threshold = {
+    severity     = 2
+    value = 61
+  }
+  // (Optional) Triggers critical alert before the SSL certificate expires within the configured number of days.
+  ssl_cert_days_until_expiry_critical_threshold = {
+    severity     = 3
+    value = 31
+  }
+  // (Optional) Triggers alert when the ssl certificate is modified.
+  ssl_cert_fingerprint_modified = false
 
 }
