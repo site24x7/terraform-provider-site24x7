@@ -55,7 +55,7 @@ resource "site24x7_tag" "tag_us" {
   // (Required) Display Name for the Tag.
   tag_name = "Website Tag - Terraform"
 
-  // (Required) Value for the Tag.
+  // Value for the Tag.
   tag_value = "Zoho Domains - Terraform"
 
   // Color code for the Tag. Possible values are '#B7DA9E','#73C7A3','#B5DCDF','#D4ABBB','#4895A8','#DFE897','#FCEA8B','#FFC36D','#F79953','#F16B3C','#E55445','#F2E2B6','#DEC57B','#CBBD80','#AAB3D4','#7085BA','#F6BDAE','#EFAB6D','#CA765C','#999','#4A148C','#009688','#00ACC1','#0091EA','#8BC34A','#558B2F'

@@ -14,7 +14,7 @@ var MonitorGroupSchema = map[string]*schema.Schema{
 	},
 	"description": {
 		Type:        schema.TypeString,
-		Required:    true,
+		Optional:    true,
 		Description: "Description for the Monitor Group.",
 	},
 	// As of now we don't support associating monitors via configuration file
