@@ -102,6 +102,7 @@ func DefaultThresholdProfile(client Client, monitorType api.MonitorType) (*api.T
 	for _, p := range profiles {
 		if p.Type == string(monitorType) {
 			thresholdProf = p
+			log.Println("Monitor Type : " + string(monitorType) + ", Associating the threshold profile : " + thresholdProf.ProfileName + " of type : " + thresholdProf.Type)
 			return p, nil
 		}
 	}
