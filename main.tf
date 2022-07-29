@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "1.0.22"
+      version = "1.0.23"
       // Uncomment for local build
       # source  = "registry.terraform.io/site24x7/site24x7"
       # version = "1.0.0"
@@ -59,7 +59,7 @@ provider "site24x7" {
 // Website Monitor API doc: https://www.site24x7.com/help/api/#website
 resource "site24x7_website_monitor" "website_monitor_example" {
   // (Required) Display name for the monitor
-  display_name = "Example Monitor"
+  display_name = "Example Monitor - Terraform 1"
 
   // (Required) Website address to monitor.
   website = "https://www.example.com"
@@ -94,5 +94,6 @@ resource "site24x7_website_monitor" "website_monitor_example" {
 
   tag_names = [ "Server Tag" ]
 }
+
 
 

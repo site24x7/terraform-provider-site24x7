@@ -48,6 +48,7 @@ var AmazonMonitorSchema = map[string]*schema.Schema{
 	"notification_profile_id": {
 		Type:        schema.TypeString,
 		Optional:    true,
+		Computed:    true,
 		Description: "Notification profile to be associated with the monitor.",
 	},
 	"notification_profile_name": {
@@ -61,6 +62,7 @@ var AmazonMonitorSchema = map[string]*schema.Schema{
 			Type: schema.TypeString,
 		},
 		Optional:    true,
+		Computed:    true,
 		Description: "List of user groups to be notified when the monitor is down.",
 	},
 	"user_group_names": {
@@ -113,9 +115,12 @@ func ResourceSite24x7AmazonMonitor() *schema.Resource {
 func amazonMonitorCreate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(site24x7.Client)
 
-	amazonMonitor, err := resourceDataToAmazonMonitor(d, client)
+	monitor, err := resourceDataToAmazonMonitor(d, client)
+	if err != nil {
+		return err
+	}
 
-	amazonMonitor, err = client.AmazonMonitors().Create(amazonMonitor)
+	amazonMonitor, err := client.AmazonMonitors().Create(monitor)
 	if err != nil {
 		return err
 	}
@@ -213,6 +218,7 @@ func resourceDataToAmazonMonitor(d *schema.ResourceData, client site24x7.Client)
 	}
 
 	amazonMonitor := &api.AmazonMonitor{
+		MonitorID:             d.Id(),
 		DisplayName:           d.Get("display_name").(string),
 		Type:                  string(api.AMAZON),
 		DiscoverFrequency:     d.Get("aws_discovery_frequency").(int),
@@ -242,7 +248,6 @@ func resourceDataToAmazonMonitor(d *schema.ResourceData, client site24x7.Client)
 	if tagsErr != nil {
 		return nil, tagsErr
 	}
-
 	return amazonMonitor, nil
 }
 
