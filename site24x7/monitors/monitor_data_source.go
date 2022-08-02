@@ -120,15 +120,12 @@ func monitorDataSourceRead(d *schema.ResourceData, meta interface{}) error {
 		return errors.New("Unable to find monitor matching the name : \"" + d.Get("name_regex").(string) + "\" and monitor type : \"" + monitorType + "\"")
 	}
 
-	err = updateResourceData(d, genericMonitor)
-	if err != nil {
-		return err
-	}
+	updateResourceData(d, genericMonitor)
 
 	return nil
 }
 
-func updateResourceData(d *schema.ResourceData, monitor *api.GenericMonitor) error {
+func updateResourceData(d *schema.ResourceData, monitor *api.GenericMonitor) {
 	d.SetId(monitor.MonitorID)
 	d.Set("monitor_type", monitor.Type)
 	d.Set("display_name", monitor.DisplayName)
@@ -139,5 +136,4 @@ func updateResourceData(d *schema.ResourceData, monitor *api.GenericMonitor) err
 	d.Set("user_group_ids", monitor.UserGroupIDs)
 	d.Set("tag_ids", monitor.TagIDs)
 	d.Set("third_party_service_ids", monitor.ThirdPartyServiceIDs)
-	return nil
 }

@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "1.0.23"
+      version = "1.0.24"
       // Uncomment for local build
       # source  = "registry.terraform.io/site24x7/site24x7"
       # version = "1.0.0"
@@ -94,6 +94,5 @@ resource "site24x7_website_monitor" "website_monitor_example" {
 
   tag_names = [ "Server Tag" ]
 }
-
 
 

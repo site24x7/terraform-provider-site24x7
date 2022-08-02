@@ -83,17 +83,13 @@ func monitorsDataSourceRead(d *schema.ResourceData, meta interface{}) error {
 		return errors.New("Unable to find monitors matching the name : \"" + d.Get("name_regex").(string) + "\" and monitor type : \"" + monitorType + "\"")
 	}
 
-	err = updateMonitorIDsResourceData(d, monitorIDs, monitorIDsAndNames)
-	if err != nil {
-		return err
-	}
+	updateMonitorIDsResourceData(d, monitorIDs, monitorIDsAndNames)
 
 	return nil
 }
 
-func updateMonitorIDsResourceData(d *schema.ResourceData, monitorIDs []string, monitorIDsAndNames []string) error {
+func updateMonitorIDsResourceData(d *schema.ResourceData, monitorIDs []string, monitorIDsAndNames []string) {
 	d.SetId(fmt.Sprintf("%d", hashcode.String(d.Get("name_regex").(string)+d.Get("monitor_type").(string))))
 	d.Set("ids", monitorIDs)
 	d.Set("ids_and_names", monitorIDsAndNames)
-	return nil
 }
