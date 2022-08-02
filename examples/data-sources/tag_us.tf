@@ -1,6 +1,6 @@
 terraform {
   # Require Terraform version 0.15.x (recommended)
-  required_version = "~> 0.13.0"
+  required_version = "~> 0.15.0"
 
   required_providers {
     site24x7 = {
@@ -45,20 +45,37 @@ provider "site24x7" {
 
 }
 
-// Site24x7 Tag API doc - https://www.site24x7.com/help/api/#tags
-resource "site24x7_tag" "tag_us" {
-  // (Required) Display Name for the Tag.
-  tag_name = "Website"
-
-  // Value for the Tag.
-  tag_value = "Zoho websites"
-
-  // Color code for the Tag. Possible values are '#B7DA9E','#73C7A3','#B5DCDF','#D4ABBB','#4895A8','#DFE897','#FCEA8B','#FFC36D','#F79953','#F16B3C','#E55445','#F2E2B6','#DEC57B','#CBBD80','#AAB3D4','#7085BA','#F6BDAE','#EFAB6D','#CA765C','#999','#4A148C','#009688','#00ACC1','#0091EA','#8BC34A','#558B2F'
-  tag_color = "#B7DA9E"
-
+// Data source to fetch a tag
+data "site24x7_tag" "s247tag" {
+  // (Required) Regular expression denoting the name of the tag.
+  tag_name_regex = "tagname"
+  // (Optional) Regular expression denoting the value of the tag.
+  tag_value_regex = "tagvalue"
 }
 
-output "site24x7_tag_id" {
-  description = "ID of the tag created in Site24x7"
-  value       = site24x7_tag.tag_us.id
+
+// Displays the Tag ID
+output "s247_tag_id" {
+  description = "Tag ID : "
+  value       = data.site24x7_tag.s247tag.id
+}
+// Displays the Tag Name
+output "s247_tag_name" {
+  description = "Tag Name : "
+  value       = data.site24x7_tag.s247tag.tag_name
+}
+// Displays the Tag Value
+output "s247_tag_value" {
+  description = "Tag Value : "
+  value       = data.site24x7_tag.s247tag.tag_value
+}
+// Displays the Tag Type
+output "s247_tag_type" {
+  description = "Tag Type : "
+  value       = data.site24x7_tag.s247tag.tag_type
+}
+// Displays the Tag Color
+output "s247_tag_color" {
+  description = "Tag Color : "
+  value       = data.site24x7_tag.s247tag.tag_color
 }

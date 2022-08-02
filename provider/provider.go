@@ -100,6 +100,7 @@ func Provider() terraform.ResourceProvider {
 		DataSourcesMap: map[string]*schema.Resource{
 			"site24x7_monitor":  monitors.DataSourceSite24x7Monitor(),
 			"site24x7_monitors": monitors.DataSourceSite24x7Monitors(),
+			"site24x7_tag":      site24x7.DataSourceSite24x7Tag(),
 		},
 
 		ConfigureFunc: providerConfigure,
