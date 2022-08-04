@@ -152,6 +152,15 @@ Site24x7 REST APIs uses the OAuth 2.0 protocol to authorize and authenticate cal
   -d "grant_type=authorization_code" --insecure
 
 ```
+6. The response for the above command will be similar to the one given below.
+
+```sh
+{"access_token":"1000.dfsewerwe33.rterert23","refresh_token":"1000.abdfdf.32dsfsdf","token_type":"Bearer","expires_in":3600}
+
+```
+7. Copy the the `CLIENT_ID`, `CLIENT_SECRET`, `refresh_token` and configure them in your terraform configuration file for the attributes `oauth2_client_id`, `oauth2_client_secret`, `oauth2_refresh_token` respectively.
+
+
 
 Note: Domain names in the OAuth credentials generation steps vary based on your data center
 
