@@ -20,7 +20,7 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
   display_name = "REST API Monitor - terraform"
   // (Required) Website address to monitor.
   website = "https://dummy.restapiexample.com/"
-  // (Optional) Name of the Location Profile that has to be associated with the monitor. 
+  // (Optional) Name of the Location Profile that has to be associated with the monitor.
   // Either specify location_profile_id or location_profile_name.
   // If location_profile_id and location_profile_name are omitted,
   // the first profile returned by the /api/location_profiles endpoint
@@ -48,7 +48,7 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
     "456"
   ]
 
-  // (Optional) List if user group IDs to be notified on down. 
+  // (Optional) List if user group IDs to be notified on down.
   // Either specify user_group_ids or user_group_names. If omitted, the
   // first user group returned by the /api/user_groups endpoint
   // (https://www.site24x7.com/help/api/#list-of-all-user-groups) will be used.
@@ -56,7 +56,7 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
     "123",
   ]
 
-  // (Optional) List if user group names to be notified on down. 
+  // (Optional) List if user group names to be notified on down.
   // Either specify user_group_ids or user_group_names. If omitted, the
   // first user group returned by the /api/user_groups endpoint
   // (https://www.site24x7.com/help/api/#list-of-all-user-groups) will be used.
@@ -71,13 +71,13 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
     "123",
   ]
 
-  // (Optional) List of tag names to be associated to the monitor. Tag name matching works for both exact and 
+  // (Optional) List of tag names to be associated to the monitor. Tag name matching works for both exact and
   //  partial match. Either specify tag_ids or tag_names.
   tag_names = [
     "Terraform",
     "Network",
   ]
-  
+
   // (Optional) List of Third Party Service IDs to be associated to the monitor.
   third_party_service_ids = [
     "4567"
@@ -93,19 +93,19 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
  	  severity= 2
  	  value= "aaa"
  	}
-  
+
   // (Optional) Check for non existence of keyword in the website response.
   unmatching_keyword = {
  	  severity= 2
  	  value= "bbb"
  	}
-  
+
   // (Optional) Match the regular expression in the website response.
   match_regex = {
  	  severity= 2
  	  value= ".*aaa.*"
  	}
-  
+
   // (Optional) Map of HTTP response headers to check.
   response_headers_severity = 0 // Can take values 0 or 2. '0' denotes Down and '2' denotes Trouble.
   response_headers = {
@@ -114,7 +114,7 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
   }
 
   // HTTP Configuration
-  // (Optional) Provide a comma-separated list of HTTP status codes that indicate a successful response. 
+  // (Optional) Provide a comma-separated list of HTTP status codes that indicate a successful response.
   // You can specify individual status codes, as well as ranges separated with a colon.
   up_status_codes = "400:500"
 
@@ -123,19 +123,19 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
   // 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML
   // https://www.site24x7.com/help/api/#res_content_type
   response_content_type = "J"
-  // (Optional) Provide multiple JSON Path expressions to enable evaluation of JSON Path expression assertions. 
+  // (Optional) Provide multiple JSON Path expressions to enable evaluation of JSON Path expression assertions.
   // The assertions must successfully parse the JSON Path in the JSON. JSON expression assertions fails if the expressions does not match.
   match_json_path = [
     "$.store.book[*].author",
     "$..author",
     "$.store.*"
   ]
-  // (Optional) Trigger an alert when the JSON path assertion fails during a test. 
+  // (Optional) Trigger an alert when the JSON path assertion fails during a test.
   // Alert type constant. Can be either 0 or 2. '0' denotes Down and '2' denotes Trouble. Default value is 2.
   match_json_path_severity = 0
   // (Optional) JSON schema to be validated against the JSON response.
   json_schema = "{\"test\":\"abcd\"}"
-  // (Optional) Trigger an alert when the JSON schema assertion fails during a test. 
+  // (Optional) Trigger an alert when the JSON schema assertion fails during a test.
   // Alert type constant. Can be either 0 or 2. '0' denotes Down and '2' denotes Trouble. Default value is 2.
   json_schema_severity = 2
   // (Optional) JSON Schema check allows you to annotate and validate all JSON endpoints for your web service.
@@ -187,7 +187,7 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
 * `request_headers` (Map of String) A Map of request header name and value.
 * `graphql_query` (String) Provide the GraphQL query to get specific response from GraphQL based API service. request_content_type should be "G"
 * `graphql_variables` (String) Provide the GraphQL variables to get specific response from GraphQL based API service. request_content_type should be "G"
-* `request_param` (String) Provide parameters to be passed while accessing the website.
+* ~~`request_param` (String) Provide parameters to be passed while accessing the website.~~ (Deprecated: https://github.com/site24x7/terraform-provider-site24x7/pull/94/files#diff-48dba37a89bbad21af6c4d8b66fd20583aadfca584594b57793cdd14f4d6330fL262)
 * `ssl_protocol` (String) Specify the version of the SSL protocol. If you are not sure about the version, use Auto.
 * `use_alpn` (Boolean) Enable ALPN to send supported protocols as part of the TLS handshake.
 * `http_method` (String) HTTP Method to be used for accessing the website. Default value is 'G'. 'G' denotes GET, 'P' denotes POST and 'H' denotes HEAD. PUT, PATCH and DELETE are not supported.
