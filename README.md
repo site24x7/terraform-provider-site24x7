@@ -87,15 +87,15 @@ This is a quick example of the provider configuration:
 provider "site24x7" {
   // (Required) The client ID will be looked up in the SITE24X7_OAUTH2_CLIENT_ID
   // environment variable if the attribute is empty or omitted.
-  # oauth2_client_id = "<SITE24X7_OAUTH2_CLIENT_ID>"
+  oauth2_client_id = "<SITE24X7_OAUTH2_CLIENT_ID>"
 
   // (Required) The client secret will be looked up in the SITE24X7_OAUTH2_CLIENT_SECRET
   // environment variable if the attribute is empty or omitted.
-  # oauth2_client_secret = "<SITE24X7_OAUTH2_CLIENT_SECRET>"
+  oauth2_client_secret = "<SITE24X7_OAUTH2_CLIENT_SECRET>"
 
   // (Required) The refresh token will be looked up in the SITE24X7_OAUTH2_REFRESH_TOKEN
   // environment variable if the attribute is empty or omitted.
-  # oauth2_refresh_token = "<SITE24X7_OAUTH2_REFRESH_TOKEN>"
+  oauth2_refresh_token = "<SITE24X7_OAUTH2_REFRESH_TOKEN>"
 
   // (Required) Specify the data center from which you have obtained your
   // OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN).
@@ -106,7 +106,7 @@ provider "site24x7" {
   // when oauth2_refresh_token is set.
   # oauth2_access_token = "<SITE24X7_OAUTH2_ACCESS_TOKEN>"
 
-	// (Optional) oauth2_access_token expiry in seconds. Specify access_token_expiry when oauth2_access_token is configured.
+  // (Optional) oauth2_access_token expiry in seconds. Specify access_token_expiry when oauth2_access_token is configured.
   # access_token_expiry = "0"
 
   // (Optional) ZAAID of the customer under a MSP or BU
