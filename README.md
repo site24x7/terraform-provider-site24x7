@@ -35,7 +35,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "1.0.25"
+      version = "1.0.26"
     }
   }
 }
@@ -82,36 +82,45 @@ Set your Site24x7 OAuth credentials in the bash environment
 This is a quick example of the provider configuration:
 
 ```terraform
+
 // Authentication API doc - https://www.site24x7.com/help/api/#authentication
 provider "site24x7" {
-  // The client ID will be looked up in the SITE24X7_OAUTH2_CLIENT_ID
+  // (Required) The client ID will be looked up in the SITE24X7_OAUTH2_CLIENT_ID
   // environment variable if the attribute is empty or omitted.
-  oauth2_client_id = "<SITE24X7_CLIENT_ID>"
+  # oauth2_client_id = "<SITE24X7_OAUTH2_CLIENT_ID>"
 
-  // The client secret will be looked up in the SITE24X7_OAUTH2_CLIENT_SECRET
+  // (Required) The client secret will be looked up in the SITE24X7_OAUTH2_CLIENT_SECRET
   // environment variable if the attribute is empty or omitted.
-  oauth2_client_secret = "<SITE24X7_CLIENT_SECRET>"
+  # oauth2_client_secret = "<SITE24X7_OAUTH2_CLIENT_SECRET>"
 
-  // The refresh token will be looked up in the SITE24X7_OAUTH2_REFRESH_TOKEN
+  // (Required) The refresh token will be looked up in the SITE24X7_OAUTH2_REFRESH_TOKEN
   // environment variable if the attribute is empty or omitted.
-  oauth2_refresh_token = "<SITE24X7_REFRESH_TOKEN>"
-
-  // ZAAID of the customer under a MSP or BU
-  zaaid = "1234"
+  # oauth2_refresh_token = "<SITE24X7_OAUTH2_REFRESH_TOKEN>"
 
   // (Required) Specify the data center from which you have obtained your
   // OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN).
   data_center = "US"
-  
-  // The minimum time to wait in seconds before retrying failed Site24x7 API requests.
+
+  // (Optional) The access token will be looked up in the SITE24X7_OAUTH2_ACCESS_TOKEN
+  // environment variable if the attribute is empty or omitted. You need not configure oauth2_access_token
+  // when oauth2_refresh_token is set.
+  # oauth2_access_token = "<SITE24X7_OAUTH2_ACCESS_TOKEN>"
+
+	// (Optional) oauth2_access_token expiry in seconds. Specify access_token_expiry when oauth2_access_token is configured.
+  # access_token_expiry = "0"
+
+  // (Optional) ZAAID of the customer under a MSP or BU
+  # zaaid = "1234"
+
+  // (Optional) The minimum time to wait in seconds before retrying failed Site24x7 API requests.
   retry_min_wait = 1
 
-  // The maximum time to wait in seconds before retrying failed Site24x7 API
+  // (Optional) The maximum time to wait in seconds before retrying failed Site24x7 API
   // requests. This is the upper limit for the wait duration with exponential
   // backoff.
   retry_max_wait = 30
 
-  // Maximum number of Site24x7 API request retries to perform until giving up.
+  // (Optional) Maximum number of Site24x7 API request retries to perform until giving up.
   max_retries = 4
 
 }

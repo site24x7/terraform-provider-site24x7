@@ -4,33 +4,33 @@ terraform {
 
   required_providers {
     site24x7 = {
-      # source  = "site24x7/site24x7"
-      # // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      # version = "1.0.25"
+      source  = "site24x7/site24x7"
+      // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
+      version = "1.0.26"
       // Uncomment for local build
-      source  = "registry.terraform.io/site24x7/site24x7"
-      version = "1.0.0"
+      # source  = "registry.terraform.io/site24x7/site24x7"
+      # version = "1.0.0"
     }
   }
 }
 
 // Authentication API doc - https://www.site24x7.com/help/api/#authentication
 provider "site24x7" {
-  // The client ID will be looked up in the SITE24X7_OAUTH2_CLIENT_ID
+  // (Required) The client ID will be looked up in the SITE24X7_OAUTH2_CLIENT_ID
   // environment variable if the attribute is empty or omitted.
   # oauth2_client_id = "<SITE24X7_OAUTH2_CLIENT_ID>"
 
-  # // The client secret will be looked up in the SITE24X7_OAUTH2_CLIENT_SECRET
-  # // environment variable if the attribute is empty or omitted.
+  // (Required) The client secret will be looked up in the SITE24X7_OAUTH2_CLIENT_SECRET
+  // environment variable if the attribute is empty or omitted.
   # oauth2_client_secret = "<SITE24X7_OAUTH2_CLIENT_SECRET>"
 
-  # // The refresh token will be looked up in the SITE24X7_OAUTH2_REFRESH_TOKEN
-  # // environment variable if the attribute is empty or omitted.
+  // (Required) The refresh token will be looked up in the SITE24X7_OAUTH2_REFRESH_TOKEN
+  // environment variable if the attribute is empty or omitted.
   # oauth2_refresh_token = "<SITE24X7_OAUTH2_REFRESH_TOKEN>"
 
-  # // (Optional) The access token will be looked up in the SITE24X7_OAUTH2_ACCESS_TOKEN
-  # // environment variable if the attribute is empty or omitted. You need not configure oauth2_access_token
-  # // when oauth2_refresh_token is set.
+  // (Optional) The access token will be looked up in the SITE24X7_OAUTH2_ACCESS_TOKEN
+  // environment variable if the attribute is empty or omitted. You need not configure oauth2_access_token
+  // when oauth2_refresh_token is set.
   # oauth2_access_token = "<SITE24X7_OAUTH2_ACCESS_TOKEN>"
 
 	// (Optional) oauth2_access_token expiry in seconds. Specify access_token_expiry when oauth2_access_token is configured.

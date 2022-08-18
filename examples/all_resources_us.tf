@@ -6,28 +6,28 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "1.0.25"
+      version = "1.0.26"
       // Uncomment for local setup
       # source  = "registry.zoho.io/zoho/site24x7"
-      # version = "1.0.25"
+      # version = "1.0.26"
     #   source  = "registry.terraform.io/site24x7/site24x7"
-    #   version = "1.0.25"
+    #   version = "1.0.26"
     }
   }
 }
 
 // Authentication API doc - https://www.site24x7.com/help/api/#authentication
 provider "site24x7" {
-  // The client ID will be looked up in the SITE24X7_OAUTH2_CLIENT_ID
+  // (Required) The client ID will be looked up in the SITE24X7_OAUTH2_CLIENT_ID
   // environment variable if the attribute is empty or omitted.
   # oauth2_client_id = "<SITE24X7_OAUTH2_CLIENT_ID>"
 
-  # // The client secret will be looked up in the SITE24X7_OAUTH2_CLIENT_SECRET
-  # // environment variable if the attribute is empty or omitted.
+  // (Required) The client secret will be looked up in the SITE24X7_OAUTH2_CLIENT_SECRET
+  // environment variable if the attribute is empty or omitted.
   # oauth2_client_secret = "<SITE24X7_OAUTH2_CLIENT_SECRET>"
 
-  # // The refresh token will be looked up in the SITE24X7_OAUTH2_REFRESH_TOKEN
-  # // environment variable if the attribute is empty or omitted.
+  // (Required) The refresh token will be looked up in the SITE24X7_OAUTH2_REFRESH_TOKEN
+  // environment variable if the attribute is empty or omitted.
   # oauth2_refresh_token = "<SITE24X7_OAUTH2_REFRESH_TOKEN>"
 
   // ZAAID of the customer under a MSP or BU
