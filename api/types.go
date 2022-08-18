@@ -72,6 +72,23 @@ func (monitorGroup *MonitorGroup) String() string {
 	return ToString(monitorGroup)
 }
 
+// Subgroups help you revisualize the high level architecture of your monitor group in a business view inside the web client. Create nested subgroups under your monitor group. Its a handy concept for easy administration.
+type Subgroup struct {
+	_                    struct{} `type:"structure"` // Enforces key based initialization.
+	ID                   string   `json:"group_id,omitempty"`
+	DisplayName          string   `json:"display_name"`
+	TopGroupID           string   `json:"top_group_id"`
+	ParentGroupID        string   `json:"parent_group_id"`
+	Description          string   `json:"description,omitempty"`
+	Type                 int      `json:"group_type"`
+	Monitors             []string `json:"monitors,omitempty"`
+	HealthThresholdCount int      `json:"health_threshold_count,omitempty"`
+}
+
+func (subgroup *Subgroup) String() string {
+	return ToString(subgroup)
+}
+
 // Tags helps you to organize monitor resources and locate related items that have the same tag.
 type Tag struct {
 	_        struct{} `type:"structure"` // Enforces key based initialization.

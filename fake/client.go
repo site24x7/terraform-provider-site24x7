@@ -16,6 +16,7 @@ type Client struct {
 	FakeLocationTemplate       *fake.LocationTemplate
 	FakeLocationProfiles       *fake.LocationProfiles
 	FakeMonitorGroups          *fake.MonitorGroups
+	FakeSubgroups              *fake.Subgroups
 	FakeTags                   *fake.Tags
 	FakeAmazonMonitors         *fake.AmazonMonitors
 	FakeWebsiteMonitors        *fake.WebsiteMonitors
@@ -43,6 +44,7 @@ func NewClient() *Client {
 		FakeLocationProfiles:       &fake.LocationProfiles{},
 		FakeLocationTemplate:       &fake.LocationTemplate{},
 		FakeMonitorGroups:          &fake.MonitorGroups{},
+		FakeSubgroups:              &fake.Subgroups{},
 		FakeTags:                   &fake.Tags{},
 		FakeAmazonMonitors:         &fake.AmazonMonitors{},
 		FakeSSLMonitors:            &fake.SSLMonitors{},
@@ -116,6 +118,11 @@ func (c *Client) AmazonMonitors() monitors.AmazonMonitors {
 // MonitorGroups implements Client.
 func (c *Client) MonitorGroups() endpoints.MonitorGroups {
 	return c.FakeMonitorGroups
+}
+
+// Subgroups implements Client.
+func (c *Client) Subgroups() endpoints.Subgroups {
+	return c.FakeSubgroups
 }
 
 // Tags implements Client.

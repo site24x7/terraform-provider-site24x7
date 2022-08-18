@@ -56,7 +56,7 @@ provider "site24x7" {
   // (Optional) ZAAID of the customer under a MSP or BU
   zaaid = "1234"
 
-  // (Optional) Specify the data center from which you have obtained your
+  // (Required) Specify the data center from which you have obtained your
   // OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN).
   data_center = "US"
   
@@ -105,10 +105,10 @@ resource "site24x7_website_monitor" "website_monitor_example" {
 | `oauth2_client_id`     | String  | Required  | Client ID obtained during Client Registration. The `SITE24X7_OAUTH2_CLIENT_ID` environment variable can also be used.                                                       |
 | `oauth2_client_secret` | String  | Required  | Client Secret obtained during Client Registration. The `SITE24X7_OAUTH2_CLIENT_SECRET` environment variable can also be used.                                               |
 | `oauth2_refresh_token` | String  | Required  | Refresh Token using which a new access token has to be generated. The `SITE24X7_OAUTH2_REFRESH_TOKEN` environment variable can also be used.                                |
+| `data_center`          | String  | Required  | The region for the data center from which OAuth 2.0 client credentials and refresh token were generated. Valid values are `US` or `EU` or `AU` or `IN` or `CN`.             |
 | `oauth2_access_token`  | String  | Optional  | The access token generated using the refresh token. The `SITE24X7_OAUTH2_ACCESS_TOKEN` environment variable can also be used.                                               |
-| `access_token_expiry`  | String  | Optional  | `oauth2_access_token` expiry in seconds. Specify access_token_expiry when `oauth2_access_token` is configured.                                                                  |
+| `access_token_expiry`  | String  | Optional  | `oauth2_access_token` expiry in seconds. Specify access_token_expiry when `oauth2_access_token` is configured.                                                              |
 | `zaaid`                | String  | Optional  | ZAAID of the customer under a MSP or BU.                                                                                                                                    |
-| `data_center`          | String  | Optional  | The region for the data center from which OAuth 2.0 client credentials and refresh token were generated. Valid values are `US` or `EU` or `AU` or `IN` or `CN`.             |
 | `max_retries`          | Number  | Optional  | Maximum number of Site24x7 API request retries to perform until giving up.                                                                                                  |
 | `retry_max_wait`       | Number  | Optional  | The maximum time to wait in seconds before retrying failed Site24x7 API requests. This is the upper limit for the wait duration with exponential backoff.                   |
 | `retry_min_wait`       | Number  | Optional  | The minimum time to wait in seconds before retrying failed Site24x7 API requests.                                                                                           |

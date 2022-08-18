@@ -30,7 +30,7 @@ provider "site24x7" {
   // ZAAID of the customer under a MSP or BU
   zaaid = "1234"
 
-  // Specify the data center from which you have obtained your
+  // (Required) Specify the data center from which you have obtained your
   // OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN).
   data_center = "US"
 

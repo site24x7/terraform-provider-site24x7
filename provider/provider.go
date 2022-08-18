@@ -46,15 +46,15 @@ func Provider() terraform.ResourceProvider {
 				Optional:    true,
 				Description: "Access token expiry in seconds",
 			},
+			"data_center": {
+				Type:        schema.TypeString,
+				Required:    true,
+				Description: "Site24x7 data center.",
+			},
 			"zaaid": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Description: "MSP customer zaaid",
-			},
-			"data_center": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "Site24x7 data center.",
 			},
 			"retry_min_wait": {
 				Type:        schema.TypeInt,
@@ -84,6 +84,7 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_amazon_monitor":         monitors.ResourceSite24x7AmazonMonitor(),
 			"site24x7_server_monitor":         monitors.ResourceSite24x7ServerMonitor(),
 			"site24x7_monitor_group":          site24x7.ResourceSite24x7MonitorGroup(),
+			"site24x7_subgroup":               site24x7.ResourceSite24x7Subgroup(),
 			"site24x7_url_action":             site24x7.ResourceSite24x7URLAction(),
 			"site24x7_threshold_profile":      site24x7.ResourceSite24x7ThresholdProfile(),
 			"site24x7_location_profile":       site24x7.ResourceSite24x7LocationProfile(),
@@ -98,9 +99,10 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_servicenow_integration": integration.ResourceSite24x7ServiceNowIntegration(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
-			"site24x7_monitor":  monitors.DataSourceSite24x7Monitor(),
-			"site24x7_monitors": monitors.DataSourceSite24x7Monitors(),
-			"site24x7_tag":      site24x7.DataSourceSite24x7Tag(),
+			"site24x7_monitor":       monitors.DataSourceSite24x7Monitor(),
+			"site24x7_monitors":      monitors.DataSourceSite24x7Monitors(),
+			"site24x7_tag":           site24x7.DataSourceSite24x7Tag(),
+			"site24x7_monitor_group": site24x7.DataSourceSite24x7MonitorGroup(),
 		},
 
 		ConfigureFunc: providerConfigure,

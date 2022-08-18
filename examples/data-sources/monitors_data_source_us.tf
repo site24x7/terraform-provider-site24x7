@@ -6,7 +6,7 @@ terraform {
     site24x7 = {
       source  = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      version = "1.0.24"
+      version = "1.0.25"
     }
   }
 }
@@ -28,7 +28,7 @@ provider "site24x7" {
   // ZAAID of the customer under a MSP or BU
   zaaid = "1234"
 
-  // Specify the data center from which you have obtained your
+  // (Required) Specify the data center from which you have obtained your
   // OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN).
   data_center = "US"
 
@@ -45,32 +45,38 @@ provider "site24x7" {
 
 }
 
-// Data source to fetch URL monitor starting with the name "REST" and is of the monitor type "RESTAPI"
-data "site24x7_monitor" "s247monitor" {
-  // (Optional) Regular expression denoting the name of the monitor.
-  name_regex = "^REST"
+// Data source to fetch all URL monitors
+data "site24x7_monitors" "s247monitors" {
   // (Optional) Type of the monitor. (eg) RESTAPI, SSL_CERT, URL, SERVER etc.
-  monitor_type = "RESTAPI"
+  monitor_type = "URL"
+}
+// Displays the monitor IDs
+output "s247monitors_ids" {
+  description = "Monitor IDs : "
+  value       = data.site24x7_monitors.s247monitors.ids
+}
+// Displays the monitor IDs and names of the monitors
+output "s247monitors_ids_and_names" {
+  description = "Monitor IDs and Names : "
+  value       = data.site24x7_monitors.s247monitors.ids_and_names
 }
 
+// Data source to fetch URL monitors starting with the name "zylker"
+data "site24x7_monitors" "zylkerMonitorIDs" {
+  // (Optional) Regular expression denoting the name of the monitor.
+  name_regex = "^zylker"
+  // (Optional) Type of the monitor. (eg) RESTAPI, SSL_CERT, URL, SERVER etc.
+  monitor_type = "URL"
+}
 
-// Displays the monitor ID
-output "s247monitor_monitor_id" {
-  description = "Monitor ID : "
-  value       = data.site24x7_monitor.s247monitor.id
+// Displays the monitor IDs
+output "zylkerMonitorIDs_monitor_id" {
+  description = "Zylker Monitor IDs : "
+  value       = data.site24x7_monitors.zylkerMonitorIDs.ids
 }
-// Displays the name
-output "s247monitor_display_name" {
-  description = "Monitor Display Name : "
-  value       = data.site24x7_monitor.s247monitor.display_name
-}
-// Displays the user group IDs associated to the monitor
-output "monitor_user_group_ids" {
-  description = "Monitor User Group IDs : "
-  value       = data.site24x7_monitor.s247monitor.user_group_ids
-}
-// Displays the notification profile ID associated to the monitor
-output "s247monitor_notification_profile_id" {
-  description = "Monitor Notification Profile ID : "
-  value       = data.site24x7_monitor.s247monitor.notification_profile_id
+
+// Displays the monitor IDs and names of the monitors
+output "zylkerMonitorIDs_monitor_id_and_names" {
+  description = "Zylker Monitor IDs and Names : "
+  value       = data.site24x7_monitors.zylkerMonitorIDs.ids_and_names
 }

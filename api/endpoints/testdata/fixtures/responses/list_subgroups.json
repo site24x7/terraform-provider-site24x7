@@ -1,0 +1,32 @@
+{
+  "code":0,
+  "message":"success",
+  "data":[
+    {
+      "group_id":"797300000123437",
+      "description":"checks for misc sites",
+      "display_name":"misc",
+      "group_type":      2,
+      "parent_group_id": "123",
+      "top_group_id":    "456",
+      "monitors": [
+        "726000000002460",
+        "726000000002464"
+      ]
+    },
+    {
+      "group_id":"79123400003075053",
+      "display_name":"api",
+      "group_type":      2,
+      "parent_group_id": "123",
+      "top_group_id":    "456"
+    },
+    {
+      "group_id":"79730456703075223",
+      "display_name":"web",
+      "group_type":      2,
+      "parent_group_id": "123",
+      "top_group_id":    "456"
+    }
+  ]
+}

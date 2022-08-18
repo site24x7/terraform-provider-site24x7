@@ -108,12 +108,12 @@ func tagDataSourceRead(d *schema.ResourceData, meta interface{}) error {
 		return errors.New("Unable to find tag matching the name : \"" + d.Get("tag_name_regex").(string) + "\" and value : \"" + d.Get("tag_value_regex").(string) + "\"")
 	}
 
-	updateResourceData(d, tag)
+	updateTagDataSourceResourceData(d, tag)
 
 	return nil
 }
 
-func updateResourceData(d *schema.ResourceData, tag *api.Tag) {
+func updateTagDataSourceResourceData(d *schema.ResourceData, tag *api.Tag) {
 	d.SetId(tag.TagID)
 	d.Set("tag_name", tag.TagName)
 	d.Set("tag_value", tag.TagValue)
