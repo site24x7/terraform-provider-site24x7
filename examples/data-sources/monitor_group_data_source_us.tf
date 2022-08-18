@@ -45,12 +45,51 @@ provider "site24x7" {
 
 }
 
-// User Group API doc: https://www.site24x7.com/help/api/#user-groups
-resource "site24x7_user_group" "user_group_us" {
-  // (Required) Display name for the user group.
-  display_name = "User Group - Terraform"
-  // (Required) User IDs of the users to be associated to the group.
-  users = ["123"]
-  // (Required) Attribute Alert Group to be associated with the User Alert group.
-  attribute_group_id = "456"
+// Data source to fetch a monitor group
+data "site24x7_monitor_group" "s247monitorgroup" {
+  // (Required) Regular expression denoting the name of the monitor group.
+  name_regex = "1"
+  
+}
+
+// Displays the Monitor Group ID
+output "s247_monitor_group_id" {
+  description = "Monitor Group ID : "
+  value       = data.site24x7_monitor_group.s247monitorgroup.id
+}
+
+// Displays the Monitor Group Name
+output "s247_monitor_group_name" {
+  description = "Monitor Group Name : "
+  value       = data.site24x7_monitor_group.s247monitorgroup.display_name
+}
+
+// Displays the description
+output "s247_monitor_group_description" {
+  description = "Monitor Group description : "
+  value       = data.site24x7_monitor_group.s247monitorgroup.description
+}
+
+// Displays the health threshold count
+output "s247_monitor_group_health_threshold_count" {
+  description = "Monitor Group health threshold count : "
+  value       = data.site24x7_monitor_group.s247monitorgroup.health_threshold_count
+}
+
+// Displays the monitors associated
+output "s247_monitor_group_monitors" {
+  description = "Monitors Associated : "
+  value       = data.site24x7_monitor_group.s247monitorgroup.monitors
+}
+
+// Displays the dependency resource IDs
+output "s247_monitor_group_dependency_resource_ids" {
+  description = "Dependency resource IDs : "
+  value       = data.site24x7_monitor_group.s247monitorgroup.dependency_resource_ids
+}
+
+// Displays the suppress alert
+output "s247_monitor_group_suppress_alert" {
+  description = "Suppress Alert : "
+  value       = data.site24x7_monitor_group.s247monitorgroup.suppress_alert
 }

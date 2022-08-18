@@ -1,0 +1,12 @@
+{
+  "group_id": "123",
+  "display_name": "foo group",
+  "description": "This is foo group",
+  "group_type":      2,
+  "top_group_id": "123",
+  "parent_group_id":    "456",
+  "monitors": [
+    "726000000002460",
+    "726000000002464"
+  ]
+}

@@ -39,11 +39,11 @@ resource "site24x7_monitor_group" "monitor_group_us" {
 
 ### Required
 
-* `description` (String) Description for the Monitor Group.
 * `display_name` (String) Display Name for the Monitor Group.
 
 ### Optional
 
+* `description` (String) Description for the Monitor Group.
 * `dependency_resource_ids` (List of String) List of dependent resource IDs. Suppress alert when dependent monitor(s) is down.
 * `health_threshold_count` (Number) Number of monitors' health that decide the group status. ‘0’ implies that all the monitors are considered for determining the group status. Default value is 1.
 * `id` (String) The ID of this resource.
