@@ -156,7 +156,9 @@ func resourceDataToMonitorGroupCreate(d *schema.ResourceData) *api.MonitorGroup 
 	dependencyIDs := d.Get("dependency_resource_ids").(*schema.Set).List()
 	dependencyResourceIDs := make([]string, 0, len(dependencyIDs))
 	for _, dependencyResourceID := range dependencyIDs {
-		dependencyResourceIDs = append(dependencyResourceIDs, dependencyResourceID.(string))
+		if dependencyResourceID != nil {
+			dependencyResourceIDs = append(dependencyResourceIDs, dependencyResourceID.(string))
+		}
 	}
 
 	return &api.MonitorGroup{
@@ -205,7 +207,9 @@ func resourceDataToMonitorGroupUpdate(d *schema.ResourceData, monitorGroup *api.
 	dependencyIDs := d.Get("dependency_resource_ids").(*schema.Set).List()
 	dependencyResourceIDs := make([]string, 0, len(dependencyIDs))
 	for _, dependencyResourceID := range dependencyIDs {
-		dependencyResourceIDs = append(dependencyResourceIDs, dependencyResourceID.(string))
+		if dependencyResourceID != nil {
+			dependencyResourceIDs = append(dependencyResourceIDs, dependencyResourceID.(string))
+		}
 	}
 
 	var suppressAlert bool

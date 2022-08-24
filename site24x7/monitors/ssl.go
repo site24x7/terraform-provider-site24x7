@@ -244,28 +244,38 @@ func resourceDataToSSLMonitor(d *schema.ResourceData, client site24x7.Client) (*
 
 	var monitorGroups []string
 	for _, group := range d.Get("monitor_groups").([]interface{}) {
-		monitorGroups = append(monitorGroups, group.(string))
+		if group != nil {
+			monitorGroups = append(monitorGroups, group.(string))
+		}
 	}
 
 	dependencyIDs := d.Get("dependency_resource_ids").(*schema.Set).List()
 	dependencyResourceIDs := make([]string, 0, len(dependencyIDs))
 	for _, dependencyResourceID := range dependencyIDs {
-		dependencyResourceIDs = append(dependencyResourceIDs, dependencyResourceID.(string))
+		if dependencyResourceID != nil {
+			dependencyResourceIDs = append(dependencyResourceIDs, dependencyResourceID.(string))
+		}
 	}
 
 	var userGroupIDs []string
 	for _, id := range d.Get("user_group_ids").([]interface{}) {
-		userGroupIDs = append(userGroupIDs, id.(string))
+		if id != nil {
+			userGroupIDs = append(userGroupIDs, id.(string))
+		}
 	}
 
 	var tagIDs []string
 	for _, id := range d.Get("tag_ids").([]interface{}) {
-		tagIDs = append(tagIDs, id.(string))
+		if id != nil {
+			tagIDs = append(tagIDs, id.(string))
+		}
 	}
 
 	var thirdPartyServiceIDs []string
 	for _, id := range d.Get("third_party_service_ids").([]interface{}) {
-		thirdPartyServiceIDs = append(thirdPartyServiceIDs, id.(string))
+		if id != nil {
+			thirdPartyServiceIDs = append(thirdPartyServiceIDs, id.(string))
+		}
 	}
 
 	sslMonitor := &api.SSLMonitor{
