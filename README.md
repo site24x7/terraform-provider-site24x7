@@ -143,7 +143,7 @@ resource "site24x7_website_monitor" "website_monitor_us" {
 
 ## Steps to generate Site24x7 OAuth credentials
 
-Site24x7 REST APIs uses the OAuth 2.0 protocol to authorize and authenticate calls. To generate Site24x7 OAuth credentials(`SITE24X7_CLIENT_ID`, `SITE24X7_CLIENT_SECRET` and `SITE24X7_REFRESH_TOKEN`) please follow the steps below 
+Site24x7 REST APIs uses the OAuth 2.0 protocol to authorize and authenticate calls. To generate Site24x7 OAuth credentials(`SITE24X7_OAUTH2_CLIENT_ID`, `SITE24X7_OAUTH2_CLIENT_SECRET` and `SITE24X7_OAUTH2_REFRESH_TOKEN`) please follow the steps below 
 
 1. Visit https://api-console.zoho.com/
 2. Choose the self client option.
