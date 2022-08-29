@@ -18,12 +18,6 @@ var SSLMonitorSchema = map[string]*schema.Schema{
 		Required:    true,
 		Description: "Domain name to be verified for SSL Certificate.",
 	},
-	"timeout": {
-		Type:        schema.TypeInt,
-		Optional:    true,
-		Default:     30,
-		Description: "Timeout for connecting to the host. Range 1 - 45.",
-	},
 	"protocol": {
 		Type:        schema.TypeString,
 		Optional:    true,
@@ -284,7 +278,7 @@ func resourceDataToSSLMonitor(d *schema.ResourceData, client site24x7.Client) (*
 		Type:                  string(api.SSL_CERT),
 		DomainName:            d.Get("domain_name").(string),
 		Protocol:              d.Get("protocol").(string),
-		Timeout:               d.Get("timeout").(int),
+		Timeout:               30,
 		Port:                  d.Get("port"),
 		ExpireDays:            d.Get("expire_days").(int),
 		HTTPProtocolVersion:   d.Get("http_protocol_version").(string),
