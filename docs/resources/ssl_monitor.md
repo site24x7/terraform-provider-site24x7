@@ -130,7 +130,6 @@ resource "site24x7_ssl_monitor" "ssl_monitor_us" {
 * `tag_ids` (List of String) List of tags IDs to be associated to the monitor. Either specify tag_ids or tag_names.
 * `tag_names` (List of String) List of tag names to be associated to the monitor. Tag name matching works for both exact and partial match. Either specify tag_ids or tag_names.
 * `third_party_service_ids` (List of String) List of Third Party Service IDs to be associated to the monitor.
-* `timeout` (Number) Timeout for connecting to the host. Range 1 - 45.
 * `expire_days` (Number) Day threshold for certificate expiry notification. Range 1 - 999.
 * `http_protocol_version` (String) Version of the HTTP protocol.
 * `ignore_domain_mismatch` (Boolean) Boolean to ignore domain name mismatch errors.
