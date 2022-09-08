@@ -5,8 +5,7 @@ terraform {
   required_providers {
     site24x7 = {
       # source  = "site24x7/site24x7"
-      # // Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      # version = "1.0.6"
+      # # version = "1.0.6"
       source  = "registry.terraform.io/site24x7/site24x7"
       version = "1.0.0"
     }

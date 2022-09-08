@@ -268,7 +268,7 @@ var webPageSpeedMonitorSchema = map[string]*schema.Schema{
 		Description: "Name of the user groups to be associated with the monitor.",
 	},
 	"tag_ids": {
-		Type: schema.TypeList,
+		Type: schema.TypeSet,
 		Elem: &schema.Schema{
 			Type: schema.TypeString,
 		},
@@ -414,7 +414,7 @@ func resourceDataToWebPageSpeedMonitor(d *schema.ResourceData, client site24x7.C
 	}
 
 	var tagIDs []string
-	for _, id := range d.Get("tag_ids").([]interface{}) {
+	for _, id := range d.Get("tag_ids").(*schema.Set).List() {
 		if id != nil {
 			tagIDs = append(tagIDs, id.(string))
 		}

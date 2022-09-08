@@ -75,13 +75,13 @@ var ServerMonitorSchema = map[string]*schema.Schema{
 		Description: "Name of the user groups to be associated with the monitor.",
 	},
 	"tag_ids": {
-		Type: schema.TypeList,
+		Type: schema.TypeSet,
 		Elem: &schema.Schema{
 			Type: schema.TypeString,
 		},
 		Optional:    true,
 		Computed:    true,
-		Description: "List of Tag IDs to be associated to the monitor.",
+		Description: "List of tag IDs to be associated to the monitor.",
 	},
 	"tag_names": {
 		Type: schema.TypeList,
@@ -191,7 +191,7 @@ func resourceDataToServerMonitor(d *schema.ResourceData, client site24x7.Client,
 	}
 
 	var tagIDs []string
-	for _, id := range d.Get("tag_ids").([]interface{}) {
+	for _, id := range d.Get("tag_ids").(*schema.Set).List() {
 		if id != nil {
 			tagIDs = append(tagIDs, id.(string))
 		}
