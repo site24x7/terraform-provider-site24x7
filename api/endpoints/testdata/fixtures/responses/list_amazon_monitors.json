@@ -15,12 +15,12 @@
       "user_group_ids": [
         "123412341234123415"
       ],
-      "aws_secret_key": "secretkey",
+      "role_arn": "secretkey",
       "aws_discover_services": [
         "1"
       ],
       "registration_method": 0,
-      "aws_access_key": "accesskey",
+      "aws_external_id":"accesskey",
       "advance_settings_id": "0",
       "state": 0,
       "notification_profile_id": "123412341234123413"
@@ -38,12 +38,12 @@
       "user_group_ids": [
         "123412341234123415"
       ],
-      "aws_secret_key": "secretkey",
+      "role_arn": "secretkey",
       "aws_discover_services": [
         "1"
       ],
       "registration_method": 0,
-      "aws_access_key": "accesskey",
+      "aws_external_id":"accesskey",
       "advance_settings_id": "0",
       "state": 0,
       "notification_profile_id": "123412341234123413"

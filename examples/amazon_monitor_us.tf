@@ -49,10 +49,10 @@ provider "site24x7" {
 resource "site24x7_amazon_monitor" "aws_monitor_site24x7" {
   // (Required) Display name for the monitor
   display_name = "aws_added_via_terraform"
-  // (Required) AWS access key
-  aws_access_key = ""
-  // (Required) AWS secret key
-  aws_secret_key = ""
+  // (Required) AWS Role ARN
+  role_arn = ""
+  // (Required) AWS External ID
+  aws_external_id = ""
   // (Optional) AWS discover frequency
   aws_discovery_frequency = 5
   // (Optional) AWS services to discover. See https://www.site24x7.com/help/api/#aws_discover_services 

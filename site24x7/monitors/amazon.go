@@ -13,23 +13,15 @@ var AmazonMonitorSchema = map[string]*schema.Schema{
 		Required:    true,
 		Description: "Display name for the AWS monitor.",
 	},
-	"aws_access_key": {
+	"aws_external_id": {
 		Type:        schema.TypeString,
 		Required:    true,
-		Description: "Access Key ID for the AWS account.",
-		DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
-			// We are suppressing diff since aws_access_key in API response is encrypted.
-			return true
-		},
+		Description: "External ID for the AWS account.",
 	},
-	"aws_secret_key": {
+	"role_arn": {
 		Type:        schema.TypeString,
 		Required:    true,
-		Description: "Secret Access key for the AWS account.",
-		DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
-			// We are suppressing diff since aws_secret_key in API response is encrypted.
-			return true
-		},
+		Description: "Role ARN for the AWS account.",
 	},
 	"aws_discovery_frequency": {
 		Type:        schema.TypeInt,
@@ -229,14 +221,13 @@ func resourceDataToAmazonMonitor(d *schema.ResourceData, client site24x7.Client)
 		Type:                  string(api.AMAZON),
 		DiscoverFrequency:     d.Get("aws_discovery_frequency").(int),
 		DiscoverServices:      awsServicesToDiscover,
-		SecretKey:             d.Get("aws_secret_key").(string),
-		AccessKey:             d.Get("aws_access_key").(string),
+		AWSExternalID:         d.Get("aws_external_id").(string),
+		RoleARN:               d.Get("role_arn").(string),
 		NotificationProfileID: d.Get("notification_profile_id").(string),
 		UserGroupIDs:          userGroupIDs,
 		TagIDs:                tagIDs,
 		ThirdPartyServiceIDs:  thirdPartyServiceIDs,
 	}
-
 	// Notification Profile
 	_, notificationProfileErr := site24x7.SetNotificationProfile(client, d, amazonMonitor)
 	if notificationProfileErr != nil {
@@ -265,6 +256,6 @@ func updateAmazonMonitorResourceData(d *schema.ResourceData, amazonMonitor *api.
 	d.Set("tag_ids", amazonMonitor.TagIDs)
 	d.Set("third_party_service_ids", amazonMonitor.ThirdPartyServiceIDs)
 	d.Set("aws_discover_services", amazonMonitor.DiscoverServices)
-	d.Set("aws_secret_key", amazonMonitor.SecretKey)
-	d.Set("aws_access_key", amazonMonitor.AccessKey)
+	d.Set("aws_external_id", amazonMonitor.AWSExternalID)
+	d.Set("role_arn", amazonMonitor.RoleARN)
 }

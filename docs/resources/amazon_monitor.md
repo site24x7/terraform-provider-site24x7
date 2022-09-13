@@ -17,19 +17,54 @@ Use this resource to create, update and delete amazon monitors in Site24x7.
 resource "site24x7_amazon_monitor" "aws_monitor_site24x7" {
   // (Required) Display name for the monitor
   display_name = "aws_added_via_terraform"
-  // (Required) AWS access key
-  aws_access_key = ""
-  // (Required) AWS secret key
-  aws_secret_key = ""
+  // (Required) AWS Role ARN
+  role_arn = ""
+  // (Required) AWS External ID
+  aws_external_id = ""
   // (Optional) AWS discover frequency
   aws_discovery_frequency = 5
   // (Optional) AWS services to discover. See https://www.site24x7.com/help/api/#aws_discover_services 
   // for knowing service ID.
   aws_discover_services = ["1"]
+  // (Optional) Name of the notification profile that has to be associated with the monitor.
+  // Profile name matching works for both exact and partial match.
+  // Either specify notification_profile_id or notification_profile_name.
+  // If notification_profile_id and notification_profile_name are omitted,
+  // the first profile returned by the /api/notification_profiles endpoint
+  // (https://www.site24x7.com/help/api/#list-notification-profiles) will be
+  // used.
+  notification_profile_name = "Terraform Profile"
+
+  // (Optional) List if user group IDs to be notified on down. 
+  // Either specify user_group_ids or user_group_names. If omitted, the
+  // first user group returned by the /api/user_groups endpoint
+  // (https://www.site24x7.com/help/api/#list-of-all-user-groups) will be used.
+  user_group_ids = [
+    "123",
+  ]
+
+  // (Optional) List if user group names to be notified on down. 
+  // Either specify user_group_ids or user_group_names. If omitted, the
+  // first user group returned by the /api/user_groups endpoint
+  // (https://www.site24x7.com/help/api/#list-of-all-user-groups) will be used.
+  user_group_names = [
+    "Terraform",
+    "Network",
+    "Admin",
+  ]
+  
   // (Optional) List if tag IDs to be associated to the monitor.
   tag_ids = [
     "123",
   ]
+
+  // (Optional) List of tag names to be associated to the monitor. Tag name matching works for both exact and 
+  //  partial match. Either specify tag_ids or tag_names.
+  tag_names = [
+    "Terraform",
+    "Network",
+  ]
+
   // (Optional) List of Third Party Service IDs to be associated to the monitor.
   third_party_service_ids = [
     "4567"
@@ -43,8 +78,8 @@ resource "site24x7_amazon_monitor" "aws_monitor_site24x7" {
 ### Required
 
 * `display_name` (String) Display name for the AWS monitor.
-* `aws_access_key` (String) Access Key ID for the AWS account.
-* `aws_secret_key` (String) Secret Access key for the AWS account.
+* `aws_external_id` (String) External ID for the AWS account.
+* `role_arn` (String) Role ARN for the AWS account.
 
 ### Optional
 
