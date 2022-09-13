@@ -329,8 +329,8 @@ type AmazonMonitor struct {
 	MonitorID             string   `json:"monitor_id,omitempty"`
 	DisplayName           string   `json:"display_name"`
 	Type                  string   `json:"type"`
-	SecretKey             string   `json:"aws_secret_key"`
-	AccessKey             string   `json:"aws_access_key"`
+	AWSExternalID         string   `json:"aws_external_id"`
+	RoleARN               string   `json:"role_arn"`
 	DiscoverFrequency     int      `json:"aws_discovery_frequency"`
 	DiscoverServices      []string `json:"aws_discover_services"`
 	NotificationProfileID string   `json:"notification_profile_id"`

@@ -7,8 +7,8 @@
     "user_group_ids": [
       "123412341234123415"
     ],
-    "aws_access_key":"accesskey",
-    "aws_secret_key":"secretkey",
+    "aws_external_id":"accesskey",
+    "role_arn":"secretkey",
     "notification_profile_id": "123412341234123413",  
     "aws_discover_services": [
       "1"

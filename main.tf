@@ -5,7 +5,6 @@ terraform {
   required_providers {
     site24x7 = {
       source  = "site24x7/site24x7"
-      
       // Uncomment for local build
       # source  = "registry.terraform.io/site24x7/site24x7"
       # version = "1.0.0"
