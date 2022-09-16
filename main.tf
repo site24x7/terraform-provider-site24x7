@@ -106,4 +106,3 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_basic" {
   // used.
   location_profile_name = "North America"
 }
-
