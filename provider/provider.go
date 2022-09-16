@@ -99,10 +99,11 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_servicenow_integration": integration.ResourceSite24x7ServiceNowIntegration(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
-			"site24x7_monitor":       monitors.DataSourceSite24x7Monitor(),
-			"site24x7_monitors":      monitors.DataSourceSite24x7Monitors(),
-			"site24x7_tag":           site24x7.DataSourceSite24x7Tag(),
-			"site24x7_monitor_group": site24x7.DataSourceSite24x7MonitorGroup(),
+			"site24x7_monitor":          monitors.DataSourceSite24x7Monitor(),
+			"site24x7_monitors":         monitors.DataSourceSite24x7Monitors(),
+			"site24x7_location_profile": site24x7.DataSourceSite24x7LocationProfile(),
+			"site24x7_monitor_group":    site24x7.DataSourceSite24x7MonitorGroup(),
+			"site24x7_tag":              site24x7.DataSourceSite24x7Tag(),
 		},
 
 		ConfigureFunc: providerConfigure,

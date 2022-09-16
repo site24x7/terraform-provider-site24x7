@@ -5,7 +5,6 @@ import (
 	"regexp"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	log "github.com/sirupsen/logrus"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 )
 
@@ -74,7 +73,6 @@ func monitorGroupDataSourceRead(d *schema.ResourceData, meta interface{}) error 
 	if err != nil {
 		return err
 	}
-	log.Println("MonitorGroup list ============================ ", monitorGroupList)
 
 	nameRegex := d.Get("name_regex")
 

@@ -60,7 +60,6 @@ func tagDataSourceRead(d *schema.ResourceData, meta interface{}) error {
 	if err != nil {
 		return err
 	}
-	// log.Println("Tags list ============================ ", tagsList)
 	nameRegex := d.Get("tag_name_regex")
 	valueRegex := d.Get("tag_value_regex")
 	var tag *api.Tag
@@ -72,7 +71,7 @@ func tagDataSourceRead(d *schema.ResourceData, meta interface{}) error {
 			valueRegexPattern = regexp.MustCompile("(?i)" + valueRegex.(string))
 		}
 		for _, tagInfo := range tagsList {
-			// log.Println("Matching Tag name ============================ ", tagInfo.TagName)
+
 			if nameRegex != "" && valueRegex != "" {
 				if len(tagInfo.TagName) > 0 && len(tagInfo.TagValue) > 0 {
 					if nameRegexPattern.MatchString(tagInfo.TagName) && valueRegexPattern.MatchString(tagInfo.TagValue) {

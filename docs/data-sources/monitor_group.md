@@ -77,9 +77,9 @@ output "s247_monitor_group_suppress_alert" {
 * `display_name` (String) Display Name for the Monitor Group.
 * `description` (String) Description for the Monitor Group.
 * `health_threshold_count` (String) Number of monitors' health that decide the group status. ‘0’ implies that all the monitors are considered for determining the group status.
-* `monitors` (String) List of monitors associated to the group.
-* `dependency_resource_ids` (String) List of dependent resource IDs. Suppress alert when dependent monitor(s) is down.
-* `suppress_alert` (String) Boolean value indicating whether to suppress alert when the dependent monitor is down.
+* `monitors` (List) List of monitors associated to the group.
+* `dependency_resource_ids` (List) List of dependent resource IDs. Suppress alert when dependent monitor(s) is down.
+* `suppress_alert` (Boolean) Attribute indicating whether alert will be suppressed when the dependent monitor is down.
 
 
  
