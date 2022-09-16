@@ -81,7 +81,6 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_web_page_speed_monitor": monitors.ResourceSite24x7WebPageSpeedMonitor(),
 			"site24x7_ssl_monitor":            monitors.ResourceSite24x7SSLMonitor(),
 			"site24x7_rest_api_monitor":       monitors.ResourceSite24x7RestApiMonitor(),
-			"site24x7_amazon_monitor":         monitors.ResourceSite24x7AmazonMonitor(),
 			"site24x7_server_monitor":         monitors.ResourceSite24x7ServerMonitor(),
 			"site24x7_monitor_group":          site24x7.ResourceSite24x7MonitorGroup(),
 			"site24x7_subgroup":               site24x7.ResourceSite24x7Subgroup(),
