@@ -74,7 +74,7 @@ func locationProfileDataSourceRead(d *schema.ResourceData, meta interface{}) err
 	nameRegex := d.Get("name_regex")
 
 	var locationProfile *api.LocationProfile
-	var monitorIDsAndNames []string
+	var matchingLocationProfileIDsAndNames []string
 
 	if nameRegex != "" {
 		// (?i) - Case insensitive match
@@ -89,9 +89,9 @@ func locationProfileDataSourceRead(d *schema.ResourceData, meta interface{}) err
 					locationProfile.SecondaryLocations = profileInfo.SecondaryLocations
 					locationProfile.LocationConsentForOuterRegions = profileInfo.LocationConsentForOuterRegions
 					locationProfile.RestrictAlternateLocationPolling = profileInfo.RestrictAlternateLocationPolling
-					monitorIDsAndNames = append(monitorIDsAndNames, profileInfo.ProfileID+"__"+profileInfo.ProfileName)
+					matchingLocationProfileIDsAndNames = append(matchingLocationProfileIDsAndNames, profileInfo.ProfileID+"__"+profileInfo.ProfileName)
 				} else if locationProfile != nil && nameRegexPattern.MatchString(profileInfo.ProfileName) {
-					monitorIDsAndNames = append(monitorIDsAndNames, profileInfo.ProfileID+"__"+profileInfo.ProfileName)
+					matchingLocationProfileIDsAndNames = append(matchingLocationProfileIDsAndNames, profileInfo.ProfileID+"__"+profileInfo.ProfileName)
 				}
 			}
 		}
@@ -103,14 +103,14 @@ func locationProfileDataSourceRead(d *schema.ResourceData, meta interface{}) err
 		return errors.New("Unable to find location profile matching the name : \"" + d.Get("name_regex").(string))
 	}
 
-	updateLocationProfileDataSourceResourceData(d, locationProfile, monitorIDsAndNames)
+	updateLocationProfileDataSourceResourceData(d, locationProfile, matchingLocationProfileIDsAndNames)
 
 	return nil
 }
 
-func updateLocationProfileDataSourceResourceData(d *schema.ResourceData, locationProfile *api.LocationProfile, monitorIDsAndNames []string) {
+func updateLocationProfileDataSourceResourceData(d *schema.ResourceData, locationProfile *api.LocationProfile, matchingLocationProfileIDsAndNames []string) {
 	d.SetId(locationProfile.ProfileID)
-	d.Set("matching_ids_and_names", monitorIDsAndNames)
+	d.Set("matching_ids_and_names", matchingLocationProfileIDsAndNames)
 	d.Set("profile_name", locationProfile.ProfileName)
 	d.Set("primary_location", locationProfile.PrimaryLocation)
 	d.Set("secondary_locations", locationProfile.SecondaryLocations)

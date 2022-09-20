@@ -79,3 +79,14 @@ output "s247_tag_color" {
   description = "Tag Color : "
   value       = data.site24x7_tag.s247tag.tag_color
 }
+
+// Displays the matching Tag IDs
+output "s247_matching_tag_ids" {
+  description = "Matching Tag IDs : "
+  value       = data.site24x7_tag.s247tag.matching_ids
+}
+// Displays the matching Tag IDs and Tag Names
+output "s247_matching_tag_ids_and_tag_names" {
+  description = "Matching Tag IDs and Tag Names : "
+  value       = data.site24x7_tag.s247tag.matching_ids_and_names
+}

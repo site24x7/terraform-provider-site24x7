@@ -1,4 +1,10 @@
 
+resource "site24x7_tag" "TAG_123456000024829003" { 
+ tag_color = "#CBBD80" 
+ tag_name = "Website Tag" 
+ tag_value = "Website Tag Value"
+}
+
 resource "site24x7_server_monitor" "SERVER_123456000025786003" { 
  perform_automation = true 
  log_needed = true 
@@ -20,4 +26,3 @@ resource "site24x7_server_monitor" "SERVER_123456000027570003" {
  user_group_ids = ["123456000000025005"] 
  display_name = "sdp-w10-2305"
 }
-

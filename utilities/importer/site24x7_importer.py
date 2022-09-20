@@ -23,6 +23,7 @@ Site24x7TerraformResourceVsMonitorType = {
 	"site24x7_ssl_monitor" : "SSL_CERT",
 	"site24x7_rest_api_monitor" : "RESTAPI",
 	"site24x7_server_monitor" : "SERVER",
+	"site24x7_tag" : "TAG",
 }
 
 ResourceNameVsAttributesJSONInState = {}
@@ -172,7 +173,7 @@ class Site24x7Importer:
 		for import_command in self.resource_name_vs_import_commands.values():
 			import_commands_list.append("\n")
 			import_commands_list.append(" ".join(import_command))
-		print("import_commands_list : ",import_commands_list)
+		print("Import commands : ",import_commands_list)
 		FileUtil.write(ImportCommandsFile, import_commands_list)
 		logging.info("Please execute the import_commands.sh file for importing your monitors : "+ImportCommandsFile)	
 
@@ -197,6 +198,7 @@ class TerraformState:
 		if not os.path.exists(self.file):
 			logging.info("Unable to find the Terraform state file : "+self.file)
 			return
+		logging.info("TerraformStateFile : "+TerraformStateFile)
 		with open(TerraformStateFile, 'r') as terraformStateFile:
 			stateFileJSON = json.load(terraformStateFile)
 			if "resources" in stateFileJSON:
@@ -224,7 +226,8 @@ class TerraformState:
 			for attribute in attributesMap:
 				val = attributesMap[attribute]
 				typeOfVal = type(val).__name__
-				if typeOfVal == "NoneType":
+				# logging.info(attribute+" ========= Type : "+str(typeOfVal))
+				if typeOfVal == "NoneType" or typeOfVal == "unicode":
 					typeOfVal = "str"
 				elif typeOfVal == "dict":
 					typeOfVal = "map"
@@ -275,6 +278,7 @@ class Util:
 	# terraform import site24x7_website_monitor.url_123456000026467038 123456000025786003
 	@staticmethod
 	def execute_command(command_list):
+		logging.info('Executing command : '+ str(command_list))
 		process = subprocess.Popen(command_list, 
 							stdout=subprocess.PIPE,
 							# cwd=ProjectHome,
@@ -310,7 +314,12 @@ def init():
 	Util.parse_command_line_args()
 	S247Importer = Site24x7Importer(MonitorsToImportFile)
 	TfState = TerraformState(TerraformStateFile)
-
+	
+# Used for development and debugging
+def development_main():
+	init()
+	# Grabs attributes and its type from the state file ($HOME/terraform-provider-site24x7/utilities/importer/terraform.tfstate) to $HOME/terraform-provider-site24x7/utilities/importer/conf/resource_vs_attribute_types.json
+	TfState.write_attribute_types()
 
 def main():
 	init()
@@ -322,3 +331,4 @@ def main():
 
 
 main()
+#development_main()
