@@ -46,8 +46,6 @@ provider "site24x7" {
 
 }
 
-
-
 resource "site24x7_server_monitor" "SERVER_123456000025786003" {
 }
 

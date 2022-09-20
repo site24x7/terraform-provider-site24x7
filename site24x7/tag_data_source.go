@@ -19,6 +19,18 @@ var tagDataSourceSchema = map[string]*schema.Schema{
 		Optional: true,
 		// ValidateFunc: validation.StringIsValidRegExp,
 	},
+	"matching_ids": {
+		Type:        schema.TypeList,
+		Computed:    true,
+		Elem:        &schema.Schema{Type: schema.TypeString},
+		Description: "List of tag IDs matching the tag_name_regex and tag_value_regex.",
+	},
+	"matching_ids_and_names": {
+		Type:        schema.TypeList,
+		Computed:    true,
+		Elem:        &schema.Schema{Type: schema.TypeString},
+		Description: "List of tag IDs and names matching the tag_name_regex and tag_value_regex.",
+	},
 	"tag_name": {
 		Type:        schema.TypeString,
 		Optional:    true,
@@ -63,6 +75,8 @@ func tagDataSourceRead(d *schema.ResourceData, meta interface{}) error {
 	nameRegex := d.Get("tag_name_regex")
 	valueRegex := d.Get("tag_value_regex")
 	var tag *api.Tag
+	var matchingTagIDs []string
+	var matchingTagIDsAndNames []string
 	if nameRegex != "" {
 		// (?i) - Case insensitive match
 		nameRegexPattern := regexp.MustCompile("(?i)" + nameRegex.(string))
@@ -74,26 +88,34 @@ func tagDataSourceRead(d *schema.ResourceData, meta interface{}) error {
 
 			if nameRegex != "" && valueRegex != "" {
 				if len(tagInfo.TagName) > 0 && len(tagInfo.TagValue) > 0 {
-					if nameRegexPattern.MatchString(tagInfo.TagName) && valueRegexPattern.MatchString(tagInfo.TagValue) {
+					if tag == nil && nameRegexPattern.MatchString(tagInfo.TagName) && valueRegexPattern.MatchString(tagInfo.TagValue) {
 						tag = new(api.Tag)
 						tag.TagID = tagInfo.TagID
 						tag.TagName = tagInfo.TagName
 						tag.TagValue = tagInfo.TagValue
 						tag.TagType = tagInfo.TagType
 						tag.TagColor = tagInfo.TagColor
-						break
+						matchingTagIDs = append(matchingTagIDs, tagInfo.TagID)
+						matchingTagIDsAndNames = append(matchingTagIDsAndNames, tagInfo.TagID+"__"+tagInfo.TagName+":"+tagInfo.TagValue)
+					} else if tag != nil && nameRegexPattern.MatchString(tagInfo.TagName) && valueRegexPattern.MatchString(tagInfo.TagValue) {
+						matchingTagIDs = append(matchingTagIDs, tagInfo.TagID)
+						matchingTagIDsAndNames = append(matchingTagIDsAndNames, tagInfo.TagID+"__"+tagInfo.TagName+":"+tagInfo.TagValue)
 					}
 				}
 			} else {
 				if len(tagInfo.TagName) > 0 {
-					if nameRegexPattern.MatchString(tagInfo.TagName) {
+					if tag == nil && nameRegexPattern.MatchString(tagInfo.TagName) {
 						tag = new(api.Tag)
 						tag.TagID = tagInfo.TagID
 						tag.TagName = tagInfo.TagName
 						tag.TagValue = tagInfo.TagValue
 						tag.TagType = tagInfo.TagType
 						tag.TagColor = tagInfo.TagColor
-						break
+						matchingTagIDs = append(matchingTagIDs, tagInfo.TagID)
+						matchingTagIDsAndNames = append(matchingTagIDsAndNames, tagInfo.TagID+"__"+tagInfo.TagName+":"+tagInfo.TagValue)
+					} else if tag != nil && nameRegexPattern.MatchString(tagInfo.TagName) {
+						matchingTagIDs = append(matchingTagIDs, tagInfo.TagID)
+						matchingTagIDsAndNames = append(matchingTagIDsAndNames, tagInfo.TagID+"__"+tagInfo.TagName+":"+tagInfo.TagValue)
 					}
 				}
 			}
@@ -107,13 +129,15 @@ func tagDataSourceRead(d *schema.ResourceData, meta interface{}) error {
 		return errors.New("Unable to find tag matching the name : \"" + d.Get("tag_name_regex").(string) + "\" and value : \"" + d.Get("tag_value_regex").(string) + "\"")
 	}
 
-	updateTagDataSourceResourceData(d, tag)
+	updateTagDataSourceResourceData(d, tag, matchingTagIDs, matchingTagIDsAndNames)
 
 	return nil
 }
 
-func updateTagDataSourceResourceData(d *schema.ResourceData, tag *api.Tag) {
+func updateTagDataSourceResourceData(d *schema.ResourceData, tag *api.Tag, matchingTagIDs []string, matchingTagIDsAndNames []string) {
 	d.SetId(tag.TagID)
+	d.Set("matching_ids", matchingTagIDs)
+	d.Set("matching_ids_and_names", matchingTagIDsAndNames)
 	d.Set("tag_name", tag.TagName)
 	d.Set("tag_value", tag.TagValue)
 	d.Set("tag_type", tag.TagType)

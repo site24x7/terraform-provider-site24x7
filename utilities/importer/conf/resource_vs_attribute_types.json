@@ -114,5 +114,11 @@
         "user_group_ids": "list",
         "user_group_names": "str",
         "website": "str"
+    },
+    "site24x7_tag": {
+        "tag_color": "str",
+        "tag_name": "str",
+        "id": "str",
+        "tag_value": "str"
     }
 }

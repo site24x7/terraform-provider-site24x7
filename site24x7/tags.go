@@ -31,7 +31,9 @@ func ResourceSite24x7Tag() *schema.Resource {
 		Update: tagUpdate,
 		Delete: tagDelete,
 		Exists: tagExists,
-
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 		Schema: TagSchema,
 	}
 }
