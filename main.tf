@@ -106,3 +106,10 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_basic" {
   // used.
   location_profile_name = "North America"
 }
+
+// Site24x7 notification profile API doc - https://www.site24x7.com/help/api/#enhanced-notification-profiles
+resource "site24x7_notification_profile" "notification_profile_default" {
+  // (Required) Display name for the notification profile.
+  profile_name = "Notification Profile(Terraform) - Default"
+
+}

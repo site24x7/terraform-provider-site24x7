@@ -24,7 +24,6 @@ func TestNotificationProfiles(t *testing.T) {
 					RcaNeeded:                   true,
 					NotifyAfterExecutingActions: true,
 					ProfileName:                 "Notifi Profile",
-					EscalationWaitTime:          60,
 				}
 
 				_, err := NewNotificationProfiles(c).Create(notificationProfile)
@@ -85,10 +84,10 @@ func TestNotificationProfiles(t *testing.T) {
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
 				notificationProfile := &api.NotificationProfile{
-					ProfileID:                   "123",
-					ProfileName:                 "Notifi Profile",
-					RcaNeeded:                   true,
-					EscalationWaitTime:          60,
+					ProfileID:   "123",
+					ProfileName: "Notifi Profile",
+					RcaNeeded:   true,
+
 					NotifyAfterExecutingActions: true,
 					SuppressAutomation:          false,
 				}

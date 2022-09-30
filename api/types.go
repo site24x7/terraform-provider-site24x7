@@ -163,19 +163,17 @@ func (thresholdProfile *ThresholdProfile) UnmarshalJSON(rawValue []byte) error {
 
 // NotificationProfile allows tweaking when alerts have to be sent out.
 type NotificationProfile struct {
-	_                           struct{} `type:"structure"` // Enforces key based initialization.
-	ProfileID                   string   `json:"profile_id,omitempty"`
-	ProfileName                 string   `json:"profile_name"`
-	RcaNeeded                   bool     `json:"rca_needed"`
-	NotifyAfterExecutingActions bool     `json:"notify_after_executing_actions"`
-	DowntimeNotificationDelay   int      `json:"downtime_notification_delay,omitempty"`
-	PersistentNotification      int      `json:"persistent_notification,omitempty"`
-	EscalationUserGroupId       string   `json:"escalation_user_group_id,omitempty"`
-	EscalationWaitTime          int      `json:"escalation_wait_time"`
-	SuppressAutomation          bool     `json:"suppress_automation"`
-	EscalationAutomations       []string `json:"escalation_automations,omitempty"`
-	EscalationServices          []string `json:"escalation_services,omitempty"`
-	TemplateID                  string   `json:"template_id,omitempty"`
+	_                              struct{}                 `type:"structure"` // Enforces key based initialization.
+	ProfileID                      string                   `json:"profile_id,omitempty"`
+	ProfileName                    string                   `json:"profile_name"`
+	RcaNeeded                      bool                     `json:"rca_needed"`
+	NotifyAfterExecutingActions    bool                     `json:"notify_after_executing_actions"`
+	TemplateID                     string                   `json:"template_id,omitempty"`
+	SuppressAutomation             bool                     `json:"suppress_automation"`
+	AlertConfiguration             []map[string]interface{} `json:"alert_configuration,omitempty"`
+	NotificationDelayConfiguration []map[string]interface{} `json:"notification_delay_configuration,omitempty"`
+	PersistentAlertConfiguration   []map[string]interface{} `json:"persistent_alert_configuration,omitempty"`
+	EscalationConfiguration        map[string]interface{}   `json:"escalation_configuration,omitempty"`
 }
 
 func (notificationProfile *NotificationProfile) String() string {
