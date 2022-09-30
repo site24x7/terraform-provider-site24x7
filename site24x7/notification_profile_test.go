@@ -20,10 +20,16 @@ func TestNotificationProfileCreate(t *testing.T) {
 		RcaNeeded:                   true,
 		NotifyAfterExecutingActions: true,
 		ProfileName:                 "Notifi Profile",
-		EscalationWaitTime:          60,
 		TemplateID:                  "0",
-		DowntimeNotificationDelay:   1,
 	}
+	// var notificationDelayConfiguration []map[string]interface{}
+	// notifationDelayConf := make(map[string]interface{})
+	// notifationDelayConf["status"] = 0
+	// notifationDelayConf["notification_delay"] = []int{1, 2}
+	// notifationDelayConf["business_hours_id"] = "123"
+	// notifationDelayConf["outside_business_hours"] = "0"
+	// notificationDelayConfiguration = append(notificationDelayConfiguration, notifationDelayConf)
+	// a.NotificationDelayConfiguration = notificationDelayConfiguration
 
 	c.FakeNotificationProfiles.On("Create", a).Return(a, nil).Once()
 
@@ -46,10 +52,8 @@ func TestNotificationProfileUpdate(t *testing.T) {
 		ProfileID:                   "123",
 		ProfileName:                 "Notifi Profile",
 		RcaNeeded:                   true,
-		EscalationWaitTime:          60,
 		NotifyAfterExecutingActions: true,
 		TemplateID:                  "0",
-		DowntimeNotificationDelay:   1,
 	}
 
 	c.FakeNotificationProfiles.On("Update", a).Return(a, nil).Once()
@@ -128,7 +132,14 @@ func notificationProfileTestResourceData(t *testing.T) *schema.ResourceData {
 		"rca_needed":                     true,
 		"notify_after_executing_actions": true,
 		"profile_name":                   "Notifi Profile",
-		"escalation_wait_time":           60,
 		"suppress_automation":            false,
+		// "notification_delay_configuration": []map[string]interface{}{
+		// 	{
+		// 		"status":                 0,
+		// 		"notification_delay":     []int{1, 2},
+		// 		"business_hours_id":      "123",
+		// 		"outside_business_hours": "0",
+		// 	},
+		// },
 	})
 }

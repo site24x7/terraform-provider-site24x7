@@ -2,6 +2,5 @@
   "rca_needed": true,
   "notify_after_executing_actions": true,
   "profile_name": "Notifi Profile",
-  "escalation_wait_time": 60,
   "suppress_automation": false
 }
