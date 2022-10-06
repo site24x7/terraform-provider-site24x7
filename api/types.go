@@ -3,6 +3,7 @@ package api
 import (
 	"encoding/json"
 	"fmt"
+	"reflect"
 	"strconv"
 )
 
@@ -110,7 +111,7 @@ type ThresholdProfile struct {
 	Type                   string                   `json:"type"` // Denotes monitor type
 	ProfileName            string                   `json:"profile_name"`
 	ProfileType            int                      `json:"profile_type"` // 1 - Static Threshold or 2 - AI-based Threshold
-	DownLocationThreshold  int                      `json:"down_location_threshold,omitempty"`
+	DownLocationThreshold  int                      `json:"down_location_threshold"`
 	WebsiteContentModified bool                     `json:"website_content_modified,omitempty"`
 	WebsiteContentChanges  []map[string]interface{} `json:"website_content_changes,omitempty"`
 	ResponseTimeThreshold  map[string]interface{}   `json:"response_time_threshold,omitempty"`
@@ -144,7 +145,13 @@ func (thresholdProfile *ThresholdProfile) UnmarshalJSON(rawValue []byte) error {
 		} else if k == "down_location_threshold" {
 			thresholdProfile.DownLocationThreshold = int(v.(float64))
 		} else if k == "website_content_modified" {
-			thresholdProfile.WebsiteContentModified, _ = v.(bool)
+			typeOfContentModified := reflect.TypeOf(v).Kind()
+			if typeOfContentModified == reflect.Map {
+				contentModifiedMap := v.(map[string]interface{})
+				thresholdProfile.WebsiteContentModified, _ = contentModifiedMap["value"].(bool)
+			} else {
+				thresholdProfile.WebsiteContentModified, _ = v.(bool)
+			}
 		} else if k == "website_content_changes" {
 			thresholdProfile.WebsiteContentChanges = make([]map[string]interface{}, 1, 1)
 			switch val := v.(type) {
