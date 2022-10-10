@@ -4,10 +4,10 @@ terraform {
 
   required_providers {
     site24x7 = {
-      source  = "site24x7/site24x7"
+      # source  = "site24x7/site24x7"
       // Uncomment for local build
-      # source  = "registry.terraform.io/site24x7/site24x7"
-      # version = "1.0.0"
+      source  = "registry.terraform.io/site24x7/site24x7"
+      version = "1.0.0"
     }
   }
 }
@@ -105,11 +105,4 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_basic" {
   // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
   // used.
   location_profile_name = "North America"
-}
-
-// Site24x7 notification profile API doc - https://www.site24x7.com/help/api/#enhanced-notification-profiles
-resource "site24x7_notification_profile" "notification_profile_default" {
-  // (Required) Display name for the notification profile.
-  profile_name = "Notification Profile(Terraform) - Default"
-
 }
