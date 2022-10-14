@@ -86,6 +86,7 @@ type Client interface {
 	WebsiteMonitors() monitors.WebsiteMonitors
 	WebPageSpeedMonitors() monitors.WebPageSpeedMonitors
 	SSLMonitors() monitors.SSLMonitors
+	HeartbeatMonitors() monitors.HeartbeatMonitors
 	ServerMonitors() monitors.ServerMonitors
 	RestApiMonitors() monitors.RestApiMonitors
 	AmazonMonitors() monitors.AmazonMonitors
@@ -181,6 +182,11 @@ func (c *client) WebPageSpeedMonitors() monitors.WebPageSpeedMonitors {
 // SSLMonitors implements Client.
 func (c *client) SSLMonitors() monitors.SSLMonitors {
 	return monitors.NewSSLMonitors(c.restClient)
+}
+
+// HeartbeatMonitors implements Client.
+func (c *client) HeartbeatMonitors() monitors.HeartbeatMonitors {
+	return monitors.NewHeartbeatMonitors(c.restClient)
 }
 
 // ServerMonitors implements Client.

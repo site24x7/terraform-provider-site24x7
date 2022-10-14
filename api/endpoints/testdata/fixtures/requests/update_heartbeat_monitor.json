@@ -1,0 +1,23 @@
+{
+  "monitor_id": "123",
+  "display_name": "foo",
+  "type": "HEARTBEAT",
+  "unique_name": "status_check",
+  "threshold_profile_id": "012",
+  "monitor_groups": [
+    "234",
+    "567"
+  ],
+  "user_group_ids": [
+    "123",
+    "456"
+  ],
+  "tag_ids": [
+    "123"
+  ],
+  "third_party_services": [
+    "123",
+    "456"
+  ],
+  "on_call_schedule_id": "1244"
+}

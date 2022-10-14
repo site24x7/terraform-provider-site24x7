@@ -45,76 +45,29 @@ provider "site24x7" {
   
   }
 
-// Site24x7 SSL Certificate Monitor API doc - https://www.site24x7.com/help/api/#ssl-certificate
-resource "site24x7_ssl_monitor" "ssl_monitor_basic" {
+// Site24x7 Heartbeat Monitor API doc - https://www.site24x7.com/help/api/#heartbeat
+resource "site24x7_heartbeat_monitor" "heartbeat_monitor_basic" {
   // (Required) Display name for the monitor
-  display_name = "Example SSL Monitor"
-
-  // (Required) Domain name to be verified for SSL Certificate.
-  domain_name = "www.example.com"
-
-  // (Optional) Name of the Location Profile that has to be associated with the monitor. 
-  // Either specify location_profile_id or location_profile_name.
-  // If location_profile_id and location_profile_name are omitted,
-  // the first profile returned by the /api/location_profiles endpoint
-  // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
-  // used.
-  location_profile_name = "North America"
-
+  display_name = "Heartbeat Monitor - Terraform"
+  // (Required) Unique name to be used in the ping URL.
+  name_in_ping_url = "status_check"
 }
 
-// Site24x7 SSL Certificate Monitor API doc - https://www.site24x7.com/help/api/#ssl-certificate
-resource "site24x7_ssl_monitor" "ssl_monitor_us" {
+// Site24x7 Heartbeat Monitor API doc - https://www.site24x7.com/help/api/#heartbeat
+resource "site24x7_heartbeat_monitor" "heartbeat_monitor_all_attributes" {
   // (Required) Display name for the monitor
-  display_name = "Example SSL Monitor"
-
-  // (Required) Domain name to be verified for SSL Certificate.
-  domain_name = "www.example.com"
-  
-  // (Optional) Location Profile to be associated with the monitor. If 
-  // location_profile_id and location_profile_name are omitted,
-  // the first profile returned by the /api/location_profiles endpoint
-  // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
-  // used.
-  location_profile_id = "123"
-
-  // (Optional) Name of the Location Profile that has to be associated with the monitor. 
-  // Either specify location_profile_id or location_profile_name.
-  // If location_profile_id and location_profile_name are omitted,
-  // the first profile returned by the /api/location_profiles endpoint
-  // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
-  // used.
-  location_profile_name = "North America"
-
-  // (Optional) Notification profile to be associated with the monitor. If
-  // omitted, the first profile returned by the /api/notification_profiles
-  // endpoint (https://www.site24x7.com/help/api/#list-notification-profiles)
-  // will be used.
-  notification_profile_id = "123"
-
-  // (Optional) Name of the notification profile that has to be associated with the monitor.
-  // Profile name matching works for both exact and partial match.
-  // Either specify notification_profile_id or notification_profile_name.
-  // If notification_profile_id and notification_profile_name are omitted,
-  // the first profile returned by the /api/notification_profiles endpoint
-  // (https://www.site24x7.com/help/api/#list-notification-profiles) will be
-  // used.
-  notification_profile_name = "Terraform Profile"
+  display_name = "Heartbeat Monitor - Terraform"
+  // (Required) Unique name to be used in the ping URL.
+  name_in_ping_url = "status_check"
 
   // (Optional) Threshold profile to be associated with the monitor. If
   // omitted, the first profile returned by the /api/threshold_profiles
-  // endpoint for the SSL monitor type (https://www.site24x7.com/help/api/#list-threshold-profiles) will
+  // endpoint for the HEARTBEAT monitor type (https://www.site24x7.com/help/api/#list-threshold-profiles) will
   // be used.
   threshold_profile_id = "123"
 
   // (Optional) List of monitor group IDs to associate the monitor to.
   monitor_groups = [
-    "123",
-    "456"
-  ]
-
-  // (Optional) List of dependent resource IDs. Suppress alert when dependent monitor(s) is down.
-  dependency_resource_ids = [
     "123",
     "456"
   ]
@@ -146,11 +99,14 @@ resource "site24x7_ssl_monitor" "ssl_monitor_us" {
   //  partial match. Either specify tag_ids or tag_names.
   tag_names = [
     "Terraform",
-    "Network",
+    "Server",
   ]
 
   // (Optional) List of Third Party Service IDs to be associated to the monitor.
   third_party_service_ids = [
     "4567"
   ]
+
+  // (Optional) Mandatory, if the user group ID is not given. On-Call Schedule ID of your choice.
+  on_call_schedule_id = "3455"
 }
