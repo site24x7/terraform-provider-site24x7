@@ -5,7 +5,7 @@ terraform {
   required_providers {
     site24x7 = {
       source  = "site24x7/site24x7"
-      // Uncomment for local build
+      # // Uncomment for local build
       # source  = "registry.terraform.io/site24x7/site24x7"
       # version = "1.0.0"
     }
@@ -57,7 +57,7 @@ provider "site24x7" {
 // Website Monitor API doc: https://www.site24x7.com/help/api/#website
 resource "site24x7_website_monitor" "website_monitor_example" {
   // (Required) Display name for the monitor
-  display_name = "Example Monitor - Terraform 1"
+  display_name = "Website Monitor - Terraform"
 
   // (Required) Website address to monitor.
   website = "https://www.example.com"
@@ -95,7 +95,7 @@ resource "site24x7_website_monitor" "website_monitor_example" {
 // Site24x7 Rest API Monitor API doc - https://www.site24x7.com/help/api/#rest-api
 resource "site24x7_rest_api_monitor" "rest_api_monitor_basic" {
   // (Required) Display name for the monitor
-  display_name = "REST API Monitor - terraform"
+  display_name = "REST API Monitor - Terraform"
   // (Required) Website address to monitor.
   website = "https://dummy.restapiexample.com/"
   // (Optional) Name of the Location Profile that has to be associated with the monitor. 
@@ -105,4 +105,13 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_basic" {
   // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
   // used.
   location_profile_name = "North America"
+}
+
+
+// Site24x7 Heartbeat Monitor API doc - https://www.site24x7.com/help/api/#heartbeat
+resource "site24x7_heartbeat_monitor" "heartbeat_monitor_basic" {
+  // (Required) Display name for the monitor
+  display_name = "Heartbeat Monitor - Terraform"
+  // (Required) Unique name to be used in the ping URL.
+  name_in_ping_url = "status_check"
 }
