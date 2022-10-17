@@ -33,6 +33,7 @@ type Client struct {
 	FakeWebhookIntegration     *fake.WebhookIntegration
 	FakePagerDutyIntegration   *fake.PagerDutyIntegration
 	FakeServiceNowIntegration  *fake.ServiceNowIntegration
+	FakeConnectwiseIntegration *fake.ConnectwiseIntegration
 	FakeThirdPartyIntegrations *fake.ThirdPartyIntegrations
 	FakeScheduleMaintenance    *fake.ScheduleMaintenance
 }
@@ -62,6 +63,7 @@ func NewClient() *Client {
 		FakePagerDutyIntegration:   &fake.PagerDutyIntegration{},
 		FakeServiceNowIntegration:  &fake.ServiceNowIntegration{},
 		FakeWebhookIntegration:     &fake.WebhookIntegration{},
+		FakeConnectwiseIntegration: &fake.ConnectwiseIntegration{},
 		FakeThirdPartyIntegrations: &fake.ThirdPartyIntegrations{},
 		FakeScheduleMaintenance:    &fake.ScheduleMaintenance{},
 	}
@@ -170,6 +172,11 @@ func (c *Client) PagerDutyIntegration() integration.PagerDutyIntegration {
 // PagerDuty implements Client.
 func (c *Client) ServiceNowIntegration() integration.ServiceNowIntegration {
 	return c.FakeServiceNowIntegration
+}
+
+// Connectwise implements Client.
+func (c *Client) ConnectwiseIntegration() integration.ConnectwiseIntegration {
+	return c.FakeConnectwiseIntegration
 }
 
 // WebhookIntegration implements Client.
