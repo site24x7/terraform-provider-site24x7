@@ -61,6 +61,7 @@ A terraform provider for managing the following resources in Site24x7:
 - Slack integration - [site24x7_slack_integration](examples/slack_integration_us.tf) ([Site24x7 Slack integration API doc](https://www.site24x7.com/help/api/#create-slack))
 - Webhook integration - [site24x7_webhook_integration](examples/webhook_integration_us.tf) ([Site24x7 Webhook integration API doc](https://www.site24x7.com/help/api/#create-webhook))
 - Schedule Maintenance - [site24x7_schedule_maintenance](examples/schedule_maintenance_us.tf) ([Site24x7 Schedule Maintenance API doc](https://www.site24x7.com/help/api/#schedule-maintenances))
+- Connectwise integration - [site24x7_connectwise_integration](examples/connectwise_integration_us.tf) ([Site24x7 Connectwise integration API doc](https://www.site24x7.com/help/api/#create-connectwise))
 
 
 Usage example
