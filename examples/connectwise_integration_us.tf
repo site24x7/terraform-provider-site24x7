@@ -54,9 +54,9 @@ resource "site24x7_connectwise_integration" "connectwise_integration_basic" {
   // (Required) Name of the comapny for Authentication.
   company        = "zylker_c"
   // (Required) Public Key for Authentication.
-  public_key 	   = "K3xKPKiP88i6rmAb"
+  public_key 	   = "KefwvwfrmAb"
   // (Required) Private Key for Authentication.
-  private_key 	 = "Fkb45lqwhQGIxcc5"
+  private_key 	 = "wegraaeagt"
   // (Required) Company ID for which the message will be posted.
   company_id 	   = "GreenInc"
   // (Required) Provide the configuration settings to resolve or close incidents automatically in Connectwise, when the monitor status changes to UP.
@@ -68,13 +68,13 @@ resource "site24x7_connectwise_integration" "connectwise_integration" {
   // (Required) Display name for the integration
   name           = "Connectwise Integration With Site24x7"
   // (Required) Hook URL to which the message will be posted
-  url            = "https://stagdcdscing.connectwisedev.com/"
+  url            = "https://wefvsefv.connectwisedev.com/"
   // (Required) Name of the comapny for Authentication.
   company        = "zylker_c"
   // (Required) Public Key for Authentication.
-  public_key 	   = "K3xKPKiP88i6rmAb"
+  public_key 	   = "KefwvwfrmAb"
   // (Required) Private Key for Authentication.
-  private_key 	 = "Fkb45lqwhQGIxcc5"
+  private_key 	 = "wegraaeagt"
   // (Required) Company ID for which the message will be posted.
   company_id 	   = "GreenInc"
   // (Required) Provide the configuration settings to resolve or close incidents automatically in Connectwise, when the monitor status changes to UP.

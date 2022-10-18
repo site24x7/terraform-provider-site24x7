@@ -22,17 +22,17 @@ func TestConnectwiseIntegration(t *testing.T) {
 			Fn: func(t *testing.T, c rest.Client) {
 				connectwiseIntegration := &api.ConnectwiseIntegration{
 					Name:          "Site24x7-Connectwise Integration",
-					URL:           "https://staging.connectwisedev.com/",
+					URL:           "https://wefvsefv.connectwisedev.com/",
 					Company:       "zylker_c",
-					PublicKey:	   "KaxKPKiP88i6rmAb",
-					PrivateKey:    "Fkb7dlqwhQGIxcc5",
+					PublicKey:	   "KefwvwfrmAb",
+					PrivateKey:    "wegraaeagt",
 					CompanyId:     "GreenInc",
 					SelectionType: 0,
 					CloseStatus:    "Closed (resolved)",
 					TroubleAlert:  true,
 					CriticalAlert: false,
 					DownAlert:     false,
-					AlertTagIDs:   []string{"113770000023231001"},
+					AlertTagIDs:   []string{"123450023231001"},
 				}
 
 				_, err := NewConnectwise(c).Create(connectwiseIntegration)
@@ -51,16 +51,16 @@ func TestConnectwiseIntegration(t *testing.T) {
 
 				expected := &api.ConnectwiseIntegration{
 					Name:          "Site24x7-Connectwise Integration",
-					URL:           "https://staging.connectwisedev.com/",
-					ServiceID:     "435929000005306001",
+					URL:           "https://wefvsefv.connectwisedev.com/",
+					ServiceID:     "123456306001",
 					ServiceStatus: 0,
 					SelectionType: 0,
 					CloseStatus:   "Closed (resolved)",
 					Company:       "zylker_c",
-					PublicKey:	   "KaxKPKiP88i6rmAb",
-					PrivateKey:    "Fkb7dlqwhQGIxcc5",
+					PublicKey:	   "KefwvwfrmAb",
+					PrivateKey:    "wegraaeagt",
 					CompanyId:     "GreenInc",
-					AlertTagIDs:   []string{"113770000023231001"},
+					AlertTagIDs:   []string{"123450023231001"},
 				}
 
 				assert.Equal(t, expected, connectwise_integration)
@@ -76,19 +76,19 @@ func TestConnectwiseIntegration(t *testing.T) {
 			Fn: func(t *testing.T, c rest.Client) {
 				connectwise_integration := &api.ConnectwiseIntegration{
 					Name:          "Site24x7-Connectwise Integration",
-					URL:           "https://staging.connectwisedev.com/",
+					URL:           "https://wefvsefv.connectwisedev.com/",
 					ServiceID:     "123",
 					SelectionType: 2,
 					Company:       "zylker_c",
-					PublicKey:	   "KaxKPKiP88i6rmAb",
-					PrivateKey:    "Fkb7dlqwhQGIxcc5",
+					PublicKey:	   "KefwvwfrmAb",
+					PrivateKey:    "wegraaeagt",
 					CompanyId:     "GreenInc",
 					CloseStatus:   "Closed (resolved)",
 					TroubleAlert:  true,
 					CriticalAlert: false,
 					DownAlert:     false,
-					Monitors:      []string{"113770000023231032", "113770000023231043"},
-					AlertTagIDs:   []string{"113770000023231001", "113770000023231002"},
+					Monitors:      []string{"12345623231032", "1234568231043"},
+					AlertTagIDs:   []string{"12345623231001", "1234563231002"},
 				}
 
 				_, err := NewConnectwise(c).Update(connectwise_integration)

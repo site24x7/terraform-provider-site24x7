@@ -1,16 +1,16 @@
 {
     "name": "Site24x7-Connectwise Integration",
-    "url": "https://staging.connectwisedev.com/",
+    "url": "https://wefvsefv.connectwisedev.com/",
     "selection_type":0,
     "company": "zylker_c",
-    "public_key": "KaxKPKiP88i6rmAb",
-    "private_key": "Fkb7dlqwhQGIxcc5",
+    "public_key": "KefwvwfrmAb",
+    "private_key": "wegraaeagt",
     "company_id": "GreenInc",
     "close_status": "Closed (resolved)",
     "trouble_alert":true,
     "critical_alert":false,
     "down_alert":false,
     "manual_resolve":false,
-    "alert_tags_id": ["113770000023231001"]
+    "alert_tags_id": ["123450023231001"]
   }
 

@@ -18,10 +18,10 @@ func TestConnectwiseIntegrationCreate(t *testing.T) {
 
 	a := &api.ConnectwiseIntegration{
 		Name:          "foo",
-		URL:           "https://staging.connectwisedev.com/",
+		URL:           "https://wefvsefv.connectwisedev.com/",
 		Company: 	   "zylker_c",
-		PublicKey: 	   "KaxKPKiP88i6rmAb",
-    	PrivateKey:    "Fkb7dlqwhQGIxcc5",
+		PublicKey: 	   "KefwvwfrmAb",
+    	PrivateKey:    "wegraaeagt",
     	CompanyId: 	   "GreenInc",
 		CloseStatus:   "Closed (resolved)",
 		SelectionType: 0,
@@ -51,10 +51,10 @@ func TestConnectwiseDutyIntegrationUpdate(t *testing.T) {
 	a := &api.ConnectwiseIntegration{
 		ServiceID:     "123",
 		Name:          "foo",
-		URL:           "https://staging.connectwisedev.com/",
+		URL:           "https://wefvsefv.connectwisedev.com/",
 		Company: 	   "zylker_c",
-		PublicKey: 	   "KaxKPKiP88i6rmAb",
-    	PrivateKey:    "Fkb7dlqwhQGIxcc5",
+		PublicKey: 	   "KefwvwfrmAb",
+    	PrivateKey:    "wegraaeagt",
     	CompanyId: 	   "GreenInc",
 		CloseStatus:   "Closed (resolved)",
 		SelectionType: 0,
@@ -138,11 +138,11 @@ func TestConnectwiseIntegrationExists(t *testing.T) {
 func connectwiseIntegrationTestResourceData(t *testing.T) *schema.ResourceData {
 	return schema.TestResourceDataRaw(t, ConnectwiseIntegrationSchema, map[string]interface{}{
 		"name":           "foo",
-		"url":            "https://staging.connectwisedev.com/",
+		"url":            "https://wefvsefv.connectwisedev.com/",
 		"selection_type": 0,
 		"company": 		  "zylker_c",
-		"public_key": 	  "KaxKPKiP88i6rmAb",
-    	"private_key": 	  "Fkb7dlqwhQGIxcc5",
+		"public_key": 	  "KefwvwfrmAb",
+    	"private_key": 	  "wegraaeagt",
     	"company_id": 	  "GreenInc",
 		"close_status":   "Closed (resolved)",
 		"trouble_alert":  true,
