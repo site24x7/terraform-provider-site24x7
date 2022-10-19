@@ -115,3 +115,4 @@ resource "site24x7_heartbeat_monitor" "heartbeat_monitor_basic" {
   // (Required) Unique name to be used in the ping URL.
   name_in_ping_url = "status_check"
 }
+

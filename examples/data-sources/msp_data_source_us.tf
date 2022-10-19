@@ -45,51 +45,45 @@ provider "site24x7" {
   
 }
 
-// Data source to fetch a monitor group
-data "site24x7_monitor_group" "s247monitorgroup" {
-  // (Required) Regular expression denoting the name of the monitor group.
-  name_regex = "1"
+// Data source to fetch a MSP customer
+data "site24x7_msp" "s247mspcustomer" {
+  // (Required) Regular expression denoting the name of the MSP customer.
+  customer_name_regex = "a"
   
 }
 
-// Displays the Monitor Group ID
-output "s247_monitor_group_id" {
-  description = "Monitor Group ID : "
-  value       = data.site24x7_monitor_group.s247monitorgroup.id
+// Displays MSP customer ID
+output "s247_msp_id" {
+  description = "MSP customer ID : "
+  value       = data.site24x7_msp.s247mspcustomer.id
 }
 
-// Displays the Monitor Group Name
-output "s247_monitor_group_name" {
-  description = "Monitor Group Name : "
-  value       = data.site24x7_monitor_group.s247monitorgroup.display_name
+// Displays MSP customer name
+output "s247_msp_name" {
+  description = "MSP customer name : "
+  value       = data.site24x7_msp.s247mspcustomer.customer_name
 }
 
-// Displays the description
-output "s247_monitor_group_description" {
-  description = "Monitor Group description : "
-  value       = data.site24x7_monitor_group.s247monitorgroup.description
+// Displays the matching ZAAIDs
+output "s247_matching_ids" {
+  description = "Matching MSP customer IDs : "
+  value       = data.site24x7_msp.s247mspcustomer.matching_zaaids
 }
 
-// Displays the health threshold count
-output "s247_monitor_group_health_threshold_count" {
-  description = "Monitor Group health threshold count : "
-  value       = data.site24x7_monitor_group.s247monitorgroup.health_threshold_count
+// Displays the matching ZAAIDs and names
+output "s247_matching_ids_and_names" {
+  description = "Matching MSP customer IDs and names : "
+  value       = data.site24x7_msp.s247mspcustomer.matching_zaaids_and_names
 }
 
-// Displays the monitors associated
-output "s247_monitor_group_monitors" {
-  description = "Monitors Associated : "
-  value       = data.site24x7_monitor_group.s247monitorgroup.monitors
+// Displays ZAAID of the customer
+output "s247_msp_customer_zaaid" {
+  description = "ZAAID : "
+  value       = data.site24x7_msp.s247mspcustomer.zaaid
 }
 
-// Displays the dependency resource IDs
-output "s247_monitor_group_dependency_resource_ids" {
-  description = "Dependency resource IDs : "
-  value       = data.site24x7_monitor_group.s247monitorgroup.dependency_resource_ids
-}
-
-// Displays the suppress alert
-output "s247_monitor_group_suppress_alert" {
-  description = "Suppress Alert : "
-  value       = data.site24x7_monitor_group.s247monitorgroup.suppress_alert
+// Displays user ID of the customer
+output "s247_msp_customer_userid" {
+  description = "User ID : "
+  value       = data.site24x7_msp.s247mspcustomer.user_id
 }
