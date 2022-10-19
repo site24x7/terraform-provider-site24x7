@@ -421,25 +421,26 @@ func (serverMonitor *ServerMonitor) String() string {
 
 // Denotes the Heartbeat monitor resource in Site24x7.
 type HeartbeatMonitor struct {
-	_                    struct{} `type:"structure"` // Enforces key based initialization.
-	MonitorID            string   `json:"monitor_id,omitempty"`
-	DisplayName          string   `json:"display_name"`
-	NameInPingURL        string   `json:"unique_name"`
-	Type                 string   `json:"type"`
-	ThresholdProfileID   string   `json:"threshold_profile_id"`
-	MonitorGroups        []string `json:"monitor_groups,omitempty"`
-	TagIDs               []string `json:"tag_ids,omitempty"`
-	ThirdPartyServiceIDs []string `json:"third_party_services,omitempty"`
-	UserGroupIDs         []string `json:"user_group_ids,omitempty"`
-	OnCallScheduleID     string   `json:"on_call_schedule_id,omitempty"`
+	_                     struct{} `type:"structure"` // Enforces key based initialization.
+	MonitorID             string   `json:"monitor_id,omitempty"`
+	DisplayName           string   `json:"display_name"`
+	NameInPingURL         string   `json:"unique_name"`
+	Type                  string   `json:"type"`
+	ThresholdProfileID    string   `json:"threshold_profile_id"`
+	NotificationProfileID string   `json:"notification_profile_id"`
+	MonitorGroups         []string `json:"monitor_groups,omitempty"`
+	TagIDs                []string `json:"tag_ids,omitempty"`
+	ThirdPartyServiceIDs  []string `json:"third_party_services,omitempty"`
+	UserGroupIDs          []string `json:"user_group_ids,omitempty"`
+	OnCallScheduleID      string   `json:"on_call_schedule_id,omitempty"`
 }
 
 func (heartbeatMonitor *HeartbeatMonitor) SetNotificationProfileID(notificationProfileID string) {
-
+	heartbeatMonitor.NotificationProfileID = notificationProfileID
 }
 
 func (heartbeatMonitor *HeartbeatMonitor) GetNotificationProfileID() string {
-	return ""
+	return heartbeatMonitor.NotificationProfileID
 }
 
 func (heartbeatMonitor *HeartbeatMonitor) SetUserGroupIDs(userGroupIDs []string) {

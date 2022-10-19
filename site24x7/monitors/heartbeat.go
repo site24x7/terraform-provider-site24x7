@@ -24,6 +24,17 @@ var HeartbeatMonitorSchema = map[string]*schema.Schema{
 		Computed:    true,
 		Description: "Threshold profile to be associated with the monitor.",
 	},
+	"notification_profile_id": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Computed:    true,
+		Description: "Notification profile to be associated with the monitor.",
+	},
+	"notification_profile_name": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Name of the notification profile to be associated with the monitor.",
+	},
 	"monitor_groups": {
 		Type: schema.TypeList,
 		Elem: &schema.Schema{
@@ -203,16 +214,23 @@ func resourceDataToHeartbeatMonitor(d *schema.ResourceData, client site24x7.Clie
 	}
 
 	heartbeatMonitor := &api.HeartbeatMonitor{
-		MonitorID:            d.Id(),
-		DisplayName:          d.Get("display_name").(string),
-		NameInPingURL:        d.Get("name_in_ping_url").(string),
-		Type:                 string(api.HEARTBEAT),
-		ThresholdProfileID:   d.Get("threshold_profile_id").(string),
-		MonitorGroups:        monitorGroups,
-		UserGroupIDs:         userGroupIDs,
-		TagIDs:               tagIDs,
-		ThirdPartyServiceIDs: thirdPartyServiceIDs,
-		OnCallScheduleID:     d.Get("on_call_schedule_id").(string),
+		MonitorID:             d.Id(),
+		DisplayName:           d.Get("display_name").(string),
+		NameInPingURL:         d.Get("name_in_ping_url").(string),
+		Type:                  string(api.HEARTBEAT),
+		ThresholdProfileID:    d.Get("threshold_profile_id").(string),
+		NotificationProfileID: d.Get("notification_profile_id").(string),
+		MonitorGroups:         monitorGroups,
+		UserGroupIDs:          userGroupIDs,
+		TagIDs:                tagIDs,
+		ThirdPartyServiceIDs:  thirdPartyServiceIDs,
+		OnCallScheduleID:      d.Get("on_call_schedule_id").(string),
+	}
+
+	// Notification Profile
+	_, notificationProfileErr := site24x7.SetNotificationProfile(client, d, heartbeatMonitor)
+	if notificationProfileErr != nil {
+		return nil, notificationProfileErr
 	}
 
 	// User Alert Groups
@@ -244,6 +262,7 @@ func updateHeartbeatMonitorResourceData(d *schema.ResourceData, monitor *api.Hea
 	d.Set("type", monitor.Type)
 	d.Set("name_in_ping_url", monitor.NameInPingURL)
 	d.Set("threshold_profile_id", monitor.ThresholdProfileID)
+	d.Set("notification_profile_id", monitor.NotificationProfileID)
 	d.Set("monitor_groups", monitor.MonitorGroups)
 	d.Set("user_group_ids", monitor.UserGroupIDs)
 	d.Set("tag_ids", monitor.TagIDs)
