@@ -17,15 +17,16 @@ func TestHeartbeatMonitorCreate(t *testing.T) {
 	c := fake.NewClient()
 
 	a := &api.HeartbeatMonitor{
-		DisplayName:          "foo",
-		NameInPingURL:        "status_check",
-		Type:                 "HEARTBEAT",
-		ThresholdProfileID:   "012",
-		MonitorGroups:        []string{"234", "567"},
-		UserGroupIDs:         []string{"123", "456"},
-		TagIDs:               []string{"123"},
-		ThirdPartyServiceIDs: []string{"123", "456"},
-		OnCallScheduleID:     "1244",
+		DisplayName:           "foo",
+		NameInPingURL:         "status_check",
+		Type:                  "HEARTBEAT",
+		ThresholdProfileID:    "012",
+		NotificationProfileID: "789",
+		MonitorGroups:         []string{"234", "567"},
+		UserGroupIDs:          []string{"123", "456"},
+		TagIDs:                []string{"123"},
+		ThirdPartyServiceIDs:  []string{"123", "456"},
+		OnCallScheduleID:      "1244",
 	}
 
 	notificationProfiles := []*api.NotificationProfile{
@@ -92,16 +93,17 @@ func TestHeartbeatMonitorUpdate(t *testing.T) {
 	c := fake.NewClient()
 
 	a := &api.HeartbeatMonitor{
-		MonitorID:            "123",
-		DisplayName:          "foo",
-		NameInPingURL:        "status_check",
-		Type:                 "HEARTBEAT",
-		ThresholdProfileID:   "012",
-		MonitorGroups:        []string{"234", "567"},
-		UserGroupIDs:         []string{"123", "456"},
-		TagIDs:               []string{"123"},
-		ThirdPartyServiceIDs: []string{"123", "456"},
-		OnCallScheduleID:     "1244",
+		MonitorID:             "123",
+		DisplayName:           "foo",
+		NameInPingURL:         "status_check",
+		Type:                  "HEARTBEAT",
+		ThresholdProfileID:    "012",
+		NotificationProfileID: "789",
+		MonitorGroups:         []string{"234", "567"},
+		UserGroupIDs:          []string{"123", "456"},
+		TagIDs:                []string{"123"},
+		ThirdPartyServiceIDs:  []string{"123", "456"},
+		OnCallScheduleID:      "1244",
 	}
 
 	notificationProfiles := []*api.NotificationProfile{
@@ -223,10 +225,11 @@ func TestHeartbeatMonitorExists(t *testing.T) {
 
 func heartbeatTestResourceData(t *testing.T) *schema.ResourceData {
 	return schema.TestResourceDataRaw(t, HeartbeatMonitorSchema, map[string]interface{}{
-		"display_name":         "foo",
-		"type":                 "HEARTBEAT",
-		"name_in_ping_url":     "status_check",
-		"threshold_profile_id": "012",
+		"display_name":            "foo",
+		"type":                    "HEARTBEAT",
+		"name_in_ping_url":        "status_check",
+		"threshold_profile_id":    "012",
+		"notification_profile_id": "789",
 		"monitor_groups": []interface{}{
 			"234",
 			"567",

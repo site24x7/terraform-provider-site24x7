@@ -3,6 +3,7 @@
   "type": "HEARTBEAT",
   "unique_name": "status_check",
   "threshold_profile_id": "012",
+  "notification_profile_id": "789",
   "monitor_groups": [
     "234",
     "567"
