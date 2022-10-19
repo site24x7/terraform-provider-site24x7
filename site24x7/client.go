@@ -101,6 +101,7 @@ type Client interface {
 	PagerDutyIntegration() integration.PagerDutyIntegration
 	ServiceNowIntegration() integration.ServiceNowIntegration
 	ConnectwiseIntegration() integration.ConnectwiseIntegration
+	MSP() endpoints.MSP
 }
 
 type client struct {
@@ -268,4 +269,9 @@ func (c *client) ConnectwiseIntegration() integration.ConnectwiseIntegration {
 // ThirdPartyIntegrations implements Client.
 func (c *client) ThirdPartyIntegrations() integration.ThirdpartyIntegrations {
 	return integration.NewThirdpartyIntegrations(c.restClient)
+}
+
+// MSP implements Client.
+func (c *client) MSP() endpoints.MSP {
+	return endpoints.NewMSP(c.restClient)
 }

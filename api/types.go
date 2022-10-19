@@ -317,3 +317,14 @@ type CurrentStatusListOptions struct {
 	LocationsRequired *bool   `url:"locations_required,omitempty"`
 	StatusRequired    *string `url:"status_required,omitempty"`
 }
+
+// Denotes a MSP customer
+type MSPCustomer struct {
+	Name   string `json:"name"`
+	ZAAID  string `json:"zaaid"`
+	UserID string `json:"user_id"`
+}
+
+func (mspCustomer *MSPCustomer) String() string {
+	return ToString(mspCustomer)
+}

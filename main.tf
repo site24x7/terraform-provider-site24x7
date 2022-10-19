@@ -4,10 +4,10 @@ terraform {
 
   required_providers {
     site24x7 = {
-      source  = "site24x7/site24x7"
+      # source  = "site24x7/site24x7"
       # // Uncomment for local build
-      # source  = "registry.terraform.io/site24x7/site24x7"
-      # version = "1.0.0"
+      source  = "registry.terraform.io/site24x7/site24x7"
+      version = "1.0.0"
     }
   }
 }
@@ -115,3 +115,4 @@ resource "site24x7_heartbeat_monitor" "heartbeat_monitor_basic" {
   // (Required) Unique name to be used in the ping URL.
   name_in_ping_url = "status_check"
 }
+

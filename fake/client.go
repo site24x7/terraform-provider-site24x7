@@ -36,6 +36,7 @@ type Client struct {
 	FakeConnectwiseIntegration *fake.ConnectwiseIntegration
 	FakeThirdPartyIntegrations *fake.ThirdPartyIntegrations
 	FakeScheduleMaintenance    *fake.ScheduleMaintenance
+	FakeMSP                    *fake.MSP
 }
 
 // NewClient creates a new fake site24x7 API client.
@@ -66,6 +67,7 @@ func NewClient() *Client {
 		FakeConnectwiseIntegration: &fake.ConnectwiseIntegration{},
 		FakeThirdPartyIntegrations: &fake.ThirdPartyIntegrations{},
 		FakeScheduleMaintenance:    &fake.ScheduleMaintenance{},
+		FakeMSP:                    &fake.MSP{},
 	}
 }
 
@@ -192,4 +194,9 @@ func (c *Client) ThirdPartyIntegrations() integration.ThirdpartyIntegrations {
 // ScheduleMaintenance implements Client.
 func (c *Client) ScheduleMaintenance() common.ScheduleMaintenance {
 	return c.FakeScheduleMaintenance
+}
+
+// MSP implements Client.
+func (c *Client) MSP() endpoints.MSP {
+	return c.FakeMSP
 }

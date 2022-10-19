@@ -66,6 +66,21 @@ resource "site24x7_heartbeat_monitor" "heartbeat_monitor_all_attributes" {
   // be used.
   threshold_profile_id = "123"
 
+  // (Optional) Notification profile to be associated with the monitor. If
+  // omitted, the first profile returned by the /api/notification_profiles
+  // endpoint (https://www.site24x7.com/help/api/#list-notification-profiles)
+  // will be used.
+  notification_profile_id = "123"
+
+  // (Optional) Name of the notification profile that has to be associated with the monitor.
+  // Profile name matching works for both exact and partial match.
+  // Either specify notification_profile_id or notification_profile_name.
+  // If notification_profile_id and notification_profile_name are omitted,
+  // the first profile returned by the /api/notification_profiles endpoint
+  // (https://www.site24x7.com/help/api/#list-notification-profiles) will be
+  // used.
+  notification_profile_name = "Terraform Profile"
+
   // (Optional) List of monitor group IDs to associate the monitor to.
   monitor_groups = [
     "123",
