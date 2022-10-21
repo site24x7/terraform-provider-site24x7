@@ -74,6 +74,7 @@ A terraform provider for managing the following resources in Site24x7:
 - Location profile - [site24x7_location_profile](examples/data-sources/location_profile_data_source_us.tf) ([Location profile API doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/location_profile))
 - Threshold profile - [site24x7_threshold_profile](examples/data-sources/threshold_profile_data_source_us.tf) ([Threshold profile API doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/threshold_profile))
 - Notification profile - [site24x7_notification_profile](examples/data-sources/notification_profile_data_source_us.tf) ([Notification profile API doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/notification_profile))
+- IT automation - [site24x7_it_automation](examples/data-sources/it_automation_data_source_us.tf) ([IT automation API doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/it_automation))
 - Tag - [site24x7_tag](examples/data-sources/tag_data_source_us.tf) ([Tag API doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/tag))
 - MSP - [site24x7_msp](examples/data-sources/msp_data_source_us.tf) ([MSP API doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/msp))
 

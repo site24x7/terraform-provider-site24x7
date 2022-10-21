@@ -16,7 +16,7 @@ func TestActionCreate(t *testing.T) {
 
 	c := fake.NewClient()
 
-	a := &api.URLAutomation{
+	a := &api.URLAction{
 		ActionName:             "foobar",
 		ActionMethod:           "G",
 		AuthMethod:             "B",
@@ -29,11 +29,11 @@ func TestActionCreate(t *testing.T) {
 		ActionType:             1,
 	}
 
-	c.FakeURLAutomations.On("Create", a).Return(a, nil).Once()
+	c.FakeURLActions.On("Create", a).Return(a, nil).Once()
 
 	require.NoError(t, urlActionCreate(d, c))
 
-	c.FakeURLAutomations.On("Create", a).Return(a, apierrors.NewStatusError(500, "error")).Once()
+	c.FakeURLActions.On("Create", a).Return(a, apierrors.NewStatusError(500, "error")).Once()
 
 	err := urlActionCreate(d, c)
 
@@ -46,7 +46,7 @@ func TestActionUpdate(t *testing.T) {
 
 	c := fake.NewClient()
 
-	a := &api.URLAutomation{
+	a := &api.URLAction{
 		ActionID:               "123",
 		ActionName:             "foobar",
 		ActionMethod:           "G",
@@ -60,11 +60,11 @@ func TestActionUpdate(t *testing.T) {
 		ActionType:             1,
 	}
 
-	c.FakeURLAutomations.On("Update", a).Return(a, nil).Once()
+	c.FakeURLActions.On("Update", a).Return(a, nil).Once()
 
 	require.NoError(t, urlActionUpdate(d, c))
 
-	c.FakeURLAutomations.On("Update", a).Return(a, apierrors.NewStatusError(500, "error")).Once()
+	c.FakeURLActions.On("Update", a).Return(a, apierrors.NewStatusError(500, "error")).Once()
 
 	err := urlActionUpdate(d, c)
 
@@ -77,11 +77,11 @@ func TestActionRead(t *testing.T) {
 
 	c := fake.NewClient()
 
-	c.FakeURLAutomations.On("Get", "123").Return(&api.URLAutomation{}, nil).Once()
+	c.FakeURLActions.On("Get", "123").Return(&api.URLAction{}, nil).Once()
 
 	require.NoError(t, urlActionRead(d, c))
 
-	c.FakeURLAutomations.On("Get", "123").Return(nil, apierrors.NewStatusError(500, "error")).Once()
+	c.FakeURLActions.On("Get", "123").Return(nil, apierrors.NewStatusError(500, "error")).Once()
 
 	err := urlActionRead(d, c)
 
@@ -94,11 +94,11 @@ func TestActionDelete(t *testing.T) {
 
 	c := fake.NewClient()
 
-	c.FakeURLAutomations.On("Delete", "123").Return(nil).Once()
+	c.FakeURLActions.On("Delete", "123").Return(nil).Once()
 
 	require.NoError(t, urlActionDelete(d, c))
 
-	c.FakeURLAutomations.On("Delete", "123").Return(apierrors.NewStatusError(404, "not found")).Once()
+	c.FakeURLActions.On("Delete", "123").Return(apierrors.NewStatusError(404, "not found")).Once()
 
 	require.NoError(t, urlActionDelete(d, c))
 }
@@ -109,21 +109,21 @@ func TestActionExists(t *testing.T) {
 
 	c := fake.NewClient()
 
-	c.FakeURLAutomations.On("Get", "123").Return(&api.URLAutomation{}, nil).Once()
+	c.FakeURLActions.On("Get", "123").Return(&api.URLAction{}, nil).Once()
 
 	exists, err := urlActionExists(d, c)
 
 	require.NoError(t, err)
 	assert.True(t, exists)
 
-	c.FakeURLAutomations.On("Get", "123").Return(nil, apierrors.NewStatusError(404, "not found")).Once()
+	c.FakeURLActions.On("Get", "123").Return(nil, apierrors.NewStatusError(404, "not found")).Once()
 
 	exists, err = urlActionExists(d, c)
 
 	require.NoError(t, err)
 	assert.False(t, exists)
 
-	c.FakeURLAutomations.On("Get", "123").Return(nil, apierrors.NewStatusError(500, "error")).Once()
+	c.FakeURLActions.On("Get", "123").Return(nil, apierrors.NewStatusError(500, "error")).Once()
 
 	exists, err = urlActionExists(d, c)
 

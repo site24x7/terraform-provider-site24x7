@@ -6,44 +6,44 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-var _ endpoints.URLAutomations = &URLAutomations{}
+var _ endpoints.URLActions = &URLActions{}
 
-type URLAutomations struct {
+type URLActions struct {
 	mock.Mock
 }
 
-func (e *URLAutomations) Get(actionID string) (*api.URLAutomation, error) {
+func (e *URLActions) Get(actionID string) (*api.URLAction, error) {
 	args := e.Called(actionID)
-	if obj, ok := args.Get(0).(*api.URLAutomation); ok {
+	if obj, ok := args.Get(0).(*api.URLAction); ok {
 		return obj, args.Error(1)
 	}
 	return nil, args.Error(1)
 }
 
-func (e *URLAutomations) Create(automation *api.URLAutomation) (*api.URLAutomation, error) {
+func (e *URLActions) Create(automation *api.URLAction) (*api.URLAction, error) {
 	args := e.Called(automation)
-	if obj, ok := args.Get(0).(*api.URLAutomation); ok {
+	if obj, ok := args.Get(0).(*api.URLAction); ok {
 		return obj, args.Error(1)
 	}
 	return nil, args.Error(1)
 }
 
-func (e *URLAutomations) Update(automation *api.URLAutomation) (*api.URLAutomation, error) {
+func (e *URLActions) Update(automation *api.URLAction) (*api.URLAction, error) {
 	args := e.Called(automation)
-	if obj, ok := args.Get(0).(*api.URLAutomation); ok {
+	if obj, ok := args.Get(0).(*api.URLAction); ok {
 		return obj, args.Error(1)
 	}
 	return nil, args.Error(1)
 }
 
-func (e *URLAutomations) Delete(actionID string) error {
+func (e *URLActions) Delete(actionID string) error {
 	args := e.Called(actionID)
 	return args.Error(0)
 }
 
-func (e *URLAutomations) List() ([]*api.URLAutomation, error) {
+func (e *URLActions) List() ([]*api.URLAction, error) {
 	args := e.Called()
-	if obj, ok := args.Get(0).([]*api.URLAutomation); ok {
+	if obj, ok := args.Get(0).([]*api.URLAction); ok {
 		return obj, args.Error(1)
 	}
 	return nil, args.Error(1)

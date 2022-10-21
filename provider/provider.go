@@ -107,6 +107,7 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_notification_profile": site24x7.DataSourceSite24x7NotificationProfile(),
 			"site24x7_monitor_group":        site24x7.DataSourceSite24x7MonitorGroup(),
 			"site24x7_user_group":           site24x7.DataSourceSite24x7UserGroup(),
+			"site24x7_it_automation":        site24x7.DataSourceSite24x7ITAutomation(),
 			"site24x7_tag":                  site24x7.DataSourceSite24x7Tag(),
 			"site24x7_msp":                  site24x7.DataSourceSite24x7MSP(),
 		},

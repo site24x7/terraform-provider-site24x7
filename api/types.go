@@ -258,9 +258,9 @@ func (userGroup *UserGroup) String() string {
 	return ToString(userGroup)
 }
 
-// URLAutomation prioritize and remediate routine actions automatically,
+// URLAction prioritize and remediate routine actions automatically,
 // increase IT efficiency and streamline your processes to reduce performance degrade
-type URLAutomation struct {
+type URLAction struct {
 	_                      struct{} `type:"structure"` // Enforces key based initialization.
 	ActionID               string   `json:"action_id,omitempty"`
 	ActionType             int      `json:"action_type"`
@@ -281,8 +281,8 @@ type URLAutomation struct {
 	UserAgent              string   `json:"user_agent,omitempty"`
 }
 
-func (urlAutomation *URLAutomation) String() string {
-	return ToString(urlAutomation)
+func (urlAction *URLAction) String() string {
+	return ToString(urlAction)
 }
 
 // MonitorsStatus describes the response for the current status endpoint as

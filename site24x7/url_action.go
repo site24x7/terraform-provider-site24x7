@@ -108,7 +108,7 @@ func urlActionCreate(d *schema.ResourceData, meta interface{}) error {
 
 	automation := resourceDataToUrlAction(d)
 
-	automation, err := client.URLAutomations().Create(automation)
+	automation, err := client.URLActions().Create(automation)
 	if err != nil {
 		return err
 	}
@@ -121,7 +121,7 @@ func urlActionCreate(d *schema.ResourceData, meta interface{}) error {
 func urlActionRead(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(Client)
 
-	automation, err := client.URLAutomations().Get(d.Id())
+	automation, err := client.URLActions().Get(d.Id())
 	if err != nil {
 		return err
 	}
@@ -136,7 +136,7 @@ func urlActionUpdate(d *schema.ResourceData, meta interface{}) error {
 
 	automation := resourceDataToUrlAction(d)
 
-	automation, err := client.URLAutomations().Update(automation)
+	automation, err := client.URLActions().Update(automation)
 	if err != nil {
 		return err
 	}
@@ -149,7 +149,7 @@ func urlActionUpdate(d *schema.ResourceData, meta interface{}) error {
 func urlActionDelete(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(Client)
 
-	err := client.URLAutomations().Delete(d.Id())
+	err := client.URLActions().Delete(d.Id())
 	if apierrors.IsNotFound(err) {
 		return nil
 	}
@@ -160,7 +160,7 @@ func urlActionDelete(d *schema.ResourceData, meta interface{}) error {
 func urlActionExists(d *schema.ResourceData, meta interface{}) (bool, error) {
 	client := meta.(Client)
 
-	_, err := client.URLAutomations().Get(d.Id())
+	_, err := client.URLActions().Get(d.Id())
 	if apierrors.IsNotFound(err) {
 		return false, nil
 	}
@@ -172,8 +172,8 @@ func urlActionExists(d *schema.ResourceData, meta interface{}) (bool, error) {
 	return true, nil
 }
 
-func resourceDataToUrlAction(d *schema.ResourceData) *api.URLAutomation {
-	return &api.URLAutomation{
+func resourceDataToUrlAction(d *schema.ResourceData) *api.URLAction {
+	return &api.URLAction{
 		ActionID:               d.Id(),
 		ActionName:             d.Get("name").(string),
 		ActionType:             1,
@@ -190,7 +190,7 @@ func resourceDataToUrlAction(d *schema.ResourceData) *api.URLAutomation {
 	}
 }
 
-func updateUrlActionResourceData(d *schema.ResourceData, automation *api.URLAutomation) {
+func updateUrlActionResourceData(d *schema.ResourceData, automation *api.URLAction) {
 	d.Set("name", automation.ActionName)
 	d.Set("type", 1)
 	d.Set("url", automation.ActionUrl)
