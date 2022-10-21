@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestURLAutomations(t *testing.T) {
+func TestURLActions(t *testing.T) {
 	validation.RunTests(t, []*validation.EndpointTest{
 		{
 			Name:         "create it_automation",
@@ -21,14 +21,14 @@ func TestURLAutomations(t *testing.T) {
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
-				automation := &api.URLAutomation{
+				automation := &api.URLAction{
 					ActionType:    2,
 					ActionTimeout: 30,
 					ActionMethod:  "P",
 					ActionName:    "takeaction",
 					ActionUrl:     "testing.tld",
 				}
-				_, err := NewURLAutomations(c).Create(automation)
+				_, err := NewURLActions(c).Create(automation)
 				require.NoError(t, err)
 			},
 		},
@@ -37,7 +37,7 @@ func TestURLAutomations(t *testing.T) {
 			StatusCode:   500,
 			ResponseBody: []byte("whoops"),
 			Fn: func(t *testing.T, c rest.Client) {
-				_, err := NewURLAutomations(c).Create(&api.URLAutomation{})
+				_, err := NewURLActions(c).Create(&api.URLAction{})
 				assert.True(t, apierrors.HasStatusCode(err, 500))
 			},
 		},
@@ -48,10 +48,10 @@ func TestURLAutomations(t *testing.T) {
 			StatusCode:   200,
 			ResponseBody: validation.Fixture(t, "responses/get_it_automation.json"),
 			Fn: func(t *testing.T, c rest.Client) {
-				urlAutomation, err := NewURLAutomations(c).Get("123")
+				urlAction, err := NewURLActions(c).Get("123")
 				require.NoError(t, err)
 
-				expected := &api.URLAutomation{
+				expected := &api.URLAction{
 					ActionID:               "123",
 					ActionName:             "takeaction",
 					ActionUrl:              "testing.tld",
@@ -63,7 +63,7 @@ func TestURLAutomations(t *testing.T) {
 					CustomParameters:       "{\"message_type\":\"TEST\"}",
 					SendIncidentParameters: true,
 				}
-				assert.Equal(t, expected, urlAutomation)
+				assert.Equal(t, expected, urlAction)
 			},
 		},
 		{
@@ -73,10 +73,10 @@ func TestURLAutomations(t *testing.T) {
 			StatusCode:   200,
 			ResponseBody: validation.Fixture(t, "responses/list_it_automations.json"),
 			Fn: func(t *testing.T, c rest.Client) {
-				urlAutomations, err := NewURLAutomations(c).List()
+				urlActions, err := NewURLActions(c).List()
 				require.NoError(t, err)
 
-				expected := []*api.URLAutomation{
+				expected := []*api.URLAction{
 					{
 						ActionID:               "123",
 						ActionType:             2,
@@ -100,7 +100,7 @@ func TestURLAutomations(t *testing.T) {
 					},
 				}
 
-				assert.Equal(t, expected, urlAutomations)
+				assert.Equal(t, expected, urlActions)
 			},
 		},
 		{
@@ -110,7 +110,7 @@ func TestURLAutomations(t *testing.T) {
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
-				urlAutomation := &api.URLAutomation{
+				urlAction := &api.URLAction{
 					ActionID:               "123",
 					ActionType:             1,
 					ActionMethod:           "P",
@@ -122,7 +122,7 @@ func TestURLAutomations(t *testing.T) {
 					SendIncidentParameters: true,
 				}
 
-				_, err := NewURLAutomations(c).Update(urlAutomation)
+				_, err := NewURLActions(c).Update(urlAction)
 				require.NoError(t, err)
 			},
 		},
@@ -135,7 +135,7 @@ func TestURLAutomations(t *testing.T) {
 				ErrorInfo: map[string]interface{}{"foo": "bar"},
 			}),
 			Fn: func(t *testing.T, c rest.Client) {
-				_, err := NewURLAutomations(c).Update(&api.URLAutomation{})
+				_, err := NewURLActions(c).Update(&api.URLAction{})
 				assert.True(t, apierrors.HasStatusCode(err, 400))
 			},
 		},
@@ -145,14 +145,14 @@ func TestURLAutomations(t *testing.T) {
 			ExpectedPath: "/it_automation/123",
 			StatusCode:   200,
 			Fn: func(t *testing.T, c rest.Client) {
-				require.NoError(t, NewURLAutomations(c).Delete("123"))
+				require.NoError(t, NewURLActions(c).Delete("123"))
 			},
 		},
 		{
 			Name:       "delete it_automation not found",
 			StatusCode: 404,
 			Fn: func(t *testing.T, c rest.Client) {
-				err := NewURLAutomations(c).Delete("123")
+				err := NewURLActions(c).Delete("123")
 				assert.True(t, apierrors.IsNotFound(err))
 			},
 		},

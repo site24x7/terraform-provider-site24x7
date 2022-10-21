@@ -12,7 +12,7 @@ import (
 // with mocks. In can be used in unit tests.
 type Client struct {
 	FakeCurrentStatus          *fake.CurrentStatus
-	FakeURLAutomations         *fake.URLAutomations
+	FakeURLActions             *fake.URLActions
 	FakeLocationTemplate       *fake.LocationTemplate
 	FakeLocationProfiles       *fake.LocationProfiles
 	FakeMonitorGroups          *fake.MonitorGroups
@@ -43,7 +43,7 @@ type Client struct {
 func NewClient() *Client {
 	return &Client{
 		FakeCurrentStatus:          &fake.CurrentStatus{},
-		FakeURLAutomations:         &fake.URLAutomations{},
+		FakeURLActions:             &fake.URLActions{},
 		FakeLocationProfiles:       &fake.LocationProfiles{},
 		FakeLocationTemplate:       &fake.LocationTemplate{},
 		FakeMonitorGroups:          &fake.MonitorGroups{},
@@ -77,8 +77,8 @@ func (c *Client) CurrentStatus() endpoints.CurrentStatus {
 }
 
 // ItAutomations implements Client.
-func (c *Client) URLAutomations() endpoints.URLAutomations {
-	return c.FakeURLAutomations
+func (c *Client) URLActions() endpoints.URLActions {
+	return c.FakeURLActions
 }
 
 // LocationProfiles implements Client.

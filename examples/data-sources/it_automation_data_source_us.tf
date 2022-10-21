@@ -45,47 +45,44 @@ provider "site24x7" {
   
 }
 
-// Data source to fetch a tag
-data "site24x7_tag" "s247tag" {
-  // (Required) Regular expression denoting the name of the tag.
-  tag_name_regex = "tagname"
-  // (Optional) Regular expression denoting the value of the tag.
-  tag_value_regex = "tagvalue"
+// Data source to fetch an IT automation
+data "site24x7_it_automation" "s247itautomation" {
+  // (Required) Regular expression denoting the name of the IT automation.
+  name_regex = "url"
+  
 }
 
-// Displays the Tag ID
-output "s247_tag_id" {
-  description = "Tag ID : "
-  value       = data.site24x7_tag.s247tag.id
-}
-// Displays the Tag Name
-output "s247_tag_name" {
-  description = "Tag Name : "
-  value       = data.site24x7_tag.s247tag.tag_name
-}
-// Displays the Tag Value
-output "s247_tag_value" {
-  description = "Tag Value : "
-  value       = data.site24x7_tag.s247tag.tag_value
-}
-// Displays the Tag Type
-output "s247_tag_type" {
-  description = "Tag Type : "
-  value       = data.site24x7_tag.s247tag.tag_type
-}
-// Displays the Tag Color
-output "s247_tag_color" {
-  description = "Tag Color : "
-  value       = data.site24x7_tag.s247tag.tag_color
+// Displays the IT automation ID
+output "s247_it_automation_id" {
+  description = "IT automation ID : "
+  value       = data.site24x7_it_automation.s247itautomation.id
 }
 
-// Displays the matching Tag IDs
-output "s247_matching_tag_ids" {
-  description = "Matching Tag IDs : "
-  value       = data.site24x7_tag.s247tag.matching_ids
+// Displays the IT automation Name
+output "s247_it_automation_name" {
+  description = "IT automation name : "
+  value       = data.site24x7_it_automation.s247itautomation.action_name
 }
-// Displays the matching Tag IDs and Tag Names
-output "s247_matching_tag_ids_and_tag_names" {
-  description = "Matching Tag IDs and Tag Names : "
-  value       = data.site24x7_tag.s247tag.matching_ids_and_names
+
+// Displays the IT automation Type
+output "s247_it_automation_type" {
+  description = "IT automation type : "
+  value       = data.site24x7_it_automation.s247itautomation.action_type
+}
+// Displays the matching IT automation object
+output "s247_matching_it_automation" {
+  description = "Matching IT automation : "
+  value       = data.site24x7_it_automation.s247itautomation
+}
+
+// Displays the matching IT automation IDs
+output "s247_matching_ids" {
+  description = "Matching IT automation IDs : "
+  value       = data.site24x7_it_automation.s247itautomation.matching_ids
+}
+
+// Displays the matching IT automation IDs and names
+output "s247_matching_ids_and_names" {
+  description = "Matching IT automation IDs and names : "
+  value       = data.site24x7_it_automation.s247itautomation.matching_ids_and_names
 }

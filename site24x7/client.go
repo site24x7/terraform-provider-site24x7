@@ -93,7 +93,7 @@ type Client interface {
 	NotificationProfiles() endpoints.NotificationProfiles
 	ThresholdProfiles() endpoints.ThresholdProfiles
 	UserGroups() endpoints.UserGroups
-	URLAutomations() endpoints.URLAutomations
+	URLActions() endpoints.URLActions
 	ThirdPartyIntegrations() integration.ThirdpartyIntegrations
 	OpsgenieIntegration() integration.OpsgenieIntegration
 	SlackIntegration() integration.SlackIntegration
@@ -232,8 +232,8 @@ func (c *client) UserGroups() endpoints.UserGroups {
 }
 
 // ItAutomations implements Client.
-func (c *client) URLAutomations() endpoints.URLAutomations {
-	return endpoints.NewURLAutomations(c.restClient)
+func (c *client) URLActions() endpoints.URLActions {
+	return endpoints.NewURLActions(c.restClient)
 }
 
 // OpsgenieIntegraion implements Client.
