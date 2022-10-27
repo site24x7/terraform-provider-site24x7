@@ -101,6 +101,7 @@ type Client interface {
 	PagerDutyIntegration() integration.PagerDutyIntegration
 	ServiceNowIntegration() integration.ServiceNowIntegration
 	ConnectwiseIntegration() integration.ConnectwiseIntegration
+	TelegramIntegration() integration.TelegramIntegration
 }
 
 type client struct {
@@ -263,6 +264,11 @@ func (c *client) ServiceNowIntegration() integration.ServiceNowIntegration {
 // Connectwise implements Client.
 func (c *client) ConnectwiseIntegration() integration.ConnectwiseIntegration {
 	return integration.NewConnectwise(c.restClient)
+}
+
+// Telegram implements Client.
+func (c *client) TelegramIntegration() integration.TelegramIntegration {
+	return integration.NewTelegram(c.restClient)
 }
 
 // ThirdPartyIntegrations implements Client.

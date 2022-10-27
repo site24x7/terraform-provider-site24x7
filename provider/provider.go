@@ -98,6 +98,7 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_pagerduty_integration":  integration.ResourceSite24x7PagerDutyIntegration(),
 			"site24x7_servicenow_integration": integration.ResourceSite24x7ServiceNowIntegration(),
 			"site24x7_connectwise_integration": integration.ResourceSite24x7ConnectwiseIntegration(),
+			"site24x7_telegram_integration": integration.ResourceSite24x7TelegramIntegration(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
 			"site24x7_monitor":              monitors.DataSourceSite24x7Monitor(),

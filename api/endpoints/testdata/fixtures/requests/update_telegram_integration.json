@@ -1,0 +1,13 @@
+{
+  "name": "Site24x7-Telegram Integration",
+  "channel_url": "https://web.telegram.org/z/#-87656875",
+  "token": "5334957868:ARTVWHmnzFiWfmzab-u-Ytrqs68dzom-TI8",
+  "selection_type":2,
+  "title": "$MONITOR_NAME is $STATUS",
+  "service_id": "123",
+  "trouble_alert":true,
+  "critical_alert":false,
+  "down_alert":false,
+  "alert_tags_id": ["113770000023231001", "113770000023231002"],
+  "monitors": ["113770000023231032","113770000023231043"]
+}

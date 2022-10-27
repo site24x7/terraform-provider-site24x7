@@ -1,0 +1,17 @@
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "type": 21,
+        "channel_url": "https://web.telegram.org/z/#-87656875",
+        "token": "5334957868:ARTVWHmnzFiWfmzab-u-Ytrqs68dzom-TI8",
+        "selection_type": 0,
+        "trouble_alert": false,
+        "critical_alert": false,
+        "title": "$MONITOR_NAME is $STATUS",
+        "service_id": "435929000005306001",
+        "name": "Site24x7-Telegram Integration",
+        "service_status": 0,
+        "alert_tags_id": ["113770000023231001"]
+    }
+}

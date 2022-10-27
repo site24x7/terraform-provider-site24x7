@@ -62,6 +62,7 @@ A terraform provider for managing the following resources in Site24x7:
 - Webhook integration - [site24x7_webhook_integration](examples/webhook_integration_us.tf) ([Site24x7 Webhook integration API doc](https://www.site24x7.com/help/api/#create-webhook))
 - Schedule Maintenance - [site24x7_schedule_maintenance](examples/schedule_maintenance_us.tf) ([Site24x7 Schedule Maintenance API doc](https://www.site24x7.com/help/api/#schedule-maintenances))
 - Connectwise integration - [site24x7_connectwise_integration](examples/connectwise_integration_us.tf) ([Site24x7 Connectwise integration API doc](https://www.site24x7.com/help/api/#create-connectwise))
+- Telegram integration - [site24x7_telegram_integration](examples/telegram_integration_us.tf) ([Site24x7 telegram integration API doc](https://www.site24x7.com/help/api/#create-telegram))
 
 
 Usage example
