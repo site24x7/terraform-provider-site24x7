@@ -55,6 +55,9 @@ A terraform provider for managing the following resources in Site24x7:
 - Notification Profile - [site24x7_notification_profile](examples/notification_profile_us.tf) ([Site24x7 Notification Profile API doc](https://www.site24x7.com/help/api/#notification-profiles))
 - User Group - [site24x7_user_group](examples/user_group_us.tf) ([Site24x7 User Group API doc](https://www.site24x7.com/help/api/#user-groups))
 - Tag - [site24x7_tag](examples/tag_us.tf) ([Site24x7 Tag API doc](https://www.site24x7.com/help/api/#tags))
+
+#### Integrations
+
 - Opsgenie integration - [site24x7_opsgenie_integration](examples/opsgenie_integration_us.tf) ([Site24x7 Opsgenie integration API doc](https://www.site24x7.com/help/api/#create-opsgenie))
 - PagerDuty integration - [site24x7_pagerduty_integration](examples/pagerduty_integration_us.tf) ([Site24x7 PagerDuty integration API doc](https://www.site24x7.com/help/api/#create-pagerduty))
 - ServiceNow integration - [site24x7_servicenow_integration](examples/servicenow_integration_us.tf) ([Site24x7 ServiceNow integration API doc](https://www.site24x7.com/help/api/#create-servicenow))
@@ -64,6 +67,17 @@ A terraform provider for managing the following resources in Site24x7:
 - Connectwise integration - [site24x7_connectwise_integration](examples/connectwise_integration_us.tf) ([Site24x7 Connectwise integration API doc](https://www.site24x7.com/help/api/#create-connectwise))
 - Telegram integration - [site24x7_telegram_integration](examples/telegram_integration_us.tf) ([Site24x7 telegram integration API doc](https://www.site24x7.com/help/api/#create-telegram))
 
+#### Data Sources
+
+- Site24x7 monitor - [site24x7_monitor/site24x7_monitors](examples/data-sources/monitor_data_source_us.tf) ([Site24x7 monitor API doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/monitor))
+- Monitor group - [site24x7_monitor_group](examples/data-sources/monitor_group_data_source_us.tf) ([Monitor group API doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/monitor_group))
+- User group - [site24x7_user_group](examples/data-sources/user_group_data_source_us.tf) ([User group API doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/user_group))
+- Location profile - [site24x7_location_profile](examples/data-sources/location_profile_data_source_us.tf) ([Location profile API doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/location_profile))
+- Threshold profile - [site24x7_threshold_profile](examples/data-sources/threshold_profile_data_source_us.tf) ([Threshold profile API doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/threshold_profile))
+- Notification profile - [site24x7_notification_profile](examples/data-sources/notification_profile_data_source_us.tf) ([Notification profile API doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/notification_profile))
+- IT automation - [site24x7_it_automation](examples/data-sources/it_automation_data_source_us.tf) ([IT automation API doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/it_automation))
+- Tag - [site24x7_tag](examples/data-sources/tag_data_source_us.tf) ([Tag API doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/tag))
+- MSP - [site24x7_msp](examples/data-sources/msp_data_source_us.tf) ([MSP API doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/msp))
 
 Usage example
 -------------

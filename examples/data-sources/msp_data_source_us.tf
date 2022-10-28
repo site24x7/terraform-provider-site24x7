@@ -45,47 +45,45 @@ provider "site24x7" {
   
 }
 
-// Data source to fetch a tag
-data "site24x7_tag" "s247tag" {
-  // (Required) Regular expression denoting the name of the tag.
-  tag_name_regex = "tagname"
-  // (Optional) Regular expression denoting the value of the tag.
-  tag_value_regex = "tagvalue"
+// Data source to fetch a MSP customer
+data "site24x7_msp" "s247mspcustomer" {
+  // (Required) Regular expression denoting the name of the MSP customer.
+  customer_name_regex = "a"
+  
 }
 
-// Displays the Tag ID
-output "s247_tag_id" {
-  description = "Tag ID : "
-  value       = data.site24x7_tag.s247tag.id
-}
-// Displays the Tag Name
-output "s247_tag_name" {
-  description = "Tag Name : "
-  value       = data.site24x7_tag.s247tag.tag_name
-}
-// Displays the Tag Value
-output "s247_tag_value" {
-  description = "Tag Value : "
-  value       = data.site24x7_tag.s247tag.tag_value
-}
-// Displays the Tag Type
-output "s247_tag_type" {
-  description = "Tag Type : "
-  value       = data.site24x7_tag.s247tag.tag_type
-}
-// Displays the Tag Color
-output "s247_tag_color" {
-  description = "Tag Color : "
-  value       = data.site24x7_tag.s247tag.tag_color
+// Displays MSP customer ID
+output "s247_msp_id" {
+  description = "MSP customer ID : "
+  value       = data.site24x7_msp.s247mspcustomer.id
 }
 
-// Displays the matching Tag IDs
-output "s247_matching_tag_ids" {
-  description = "Matching Tag IDs : "
-  value       = data.site24x7_tag.s247tag.matching_ids
+// Displays MSP customer name
+output "s247_msp_name" {
+  description = "MSP customer name : "
+  value       = data.site24x7_msp.s247mspcustomer.customer_name
 }
-// Displays the matching Tag IDs and Tag Names
-output "s247_matching_tag_ids_and_tag_names" {
-  description = "Matching Tag IDs and Tag Names : "
-  value       = data.site24x7_tag.s247tag.matching_ids_and_names
+
+// Displays the matching ZAAIDs
+output "s247_matching_ids" {
+  description = "Matching MSP customer IDs : "
+  value       = data.site24x7_msp.s247mspcustomer.matching_zaaids
+}
+
+// Displays the matching ZAAIDs and names
+output "s247_matching_ids_and_names" {
+  description = "Matching MSP customer IDs and names : "
+  value       = data.site24x7_msp.s247mspcustomer.matching_zaaids_and_names
+}
+
+// Displays ZAAID of the customer
+output "s247_msp_customer_zaaid" {
+  description = "ZAAID : "
+  value       = data.site24x7_msp.s247mspcustomer.zaaid
+}
+
+// Displays user ID of the customer
+output "s247_msp_customer_userid" {
+  description = "User ID : "
+  value       = data.site24x7_msp.s247mspcustomer.user_id
 }

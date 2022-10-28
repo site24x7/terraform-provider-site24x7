@@ -35,6 +35,21 @@ resource "site24x7_heartbeat_monitor" "heartbeat_monitor_all_attributes" {
   // be used.
   threshold_profile_id = "123"
 
+  // (Optional) Notification profile to be associated with the monitor. If
+  // omitted, the first profile returned by the /api/notification_profiles
+  // endpoint (https://www.site24x7.com/help/api/#list-notification-profiles)
+  // will be used.
+  notification_profile_id = "123"
+
+  // (Optional) Name of the notification profile that has to be associated with the monitor.
+  // Profile name matching works for both exact and partial match.
+  // Either specify notification_profile_id or notification_profile_name.
+  // If notification_profile_id and notification_profile_name are omitted,
+  // the first profile returned by the /api/notification_profiles endpoint
+  // (https://www.site24x7.com/help/api/#list-notification-profiles) will be
+  // used.
+  notification_profile_name = "Terraform Profile"
+
   // (Optional) List of monitor group IDs to associate the monitor to.
   monitor_groups = [
     "123",
@@ -93,6 +108,8 @@ resource "site24x7_heartbeat_monitor" "heartbeat_monitor_all_attributes" {
 
 * `id` (String) The ID of this resource.
 * `threshold_profile_id` (String) Threshold profile to be associated with the monitor.
+* `notification_profile_id` (String) Notification profile to be associated with the monitor. Either specify notification_profile_id or notification_profile_name. If notification_profile_id and notification_profile_name are omitted, the first profile returned by the /api/notification_profiles endpoint will be used.
+* `notification_profile_name` (String) Name of the notification profile to be associated with the monitor. Profile name matching works for both exact and partial match.
 * `monitor_groups` (List of String) List of monitor groups to which the monitor has to be associated.
 * `user_group_ids` (List of String) List of user groups to be notified when the monitor is down. Either specify user_group_ids or user_group_names. If omitted, the first user group returned by the /api/user_groups endpoint will be used.
 * `user_group_names` (List of String) List of user group names to be notified when the monitor is down. Either specify user_group_ids or user_group_names. If omitted, the first user group returned by the /api/user_groups endpoint will be used.

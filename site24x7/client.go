@@ -93,7 +93,7 @@ type Client interface {
 	NotificationProfiles() endpoints.NotificationProfiles
 	ThresholdProfiles() endpoints.ThresholdProfiles
 	UserGroups() endpoints.UserGroups
-	URLAutomations() endpoints.URLAutomations
+	URLActions() endpoints.URLActions
 	ThirdPartyIntegrations() integration.ThirdpartyIntegrations
 	OpsgenieIntegration() integration.OpsgenieIntegration
 	SlackIntegration() integration.SlackIntegration
@@ -102,6 +102,7 @@ type Client interface {
 	ServiceNowIntegration() integration.ServiceNowIntegration
 	ConnectwiseIntegration() integration.ConnectwiseIntegration
 	TelegramIntegration() integration.TelegramIntegration
+	MSP() endpoints.MSP
 }
 
 type client struct {
@@ -232,8 +233,8 @@ func (c *client) UserGroups() endpoints.UserGroups {
 }
 
 // ItAutomations implements Client.
-func (c *client) URLAutomations() endpoints.URLAutomations {
-	return endpoints.NewURLAutomations(c.restClient)
+func (c *client) URLActions() endpoints.URLActions {
+	return endpoints.NewURLActions(c.restClient)
 }
 
 // OpsgenieIntegraion implements Client.
@@ -274,4 +275,9 @@ func (c *client) TelegramIntegration() integration.TelegramIntegration {
 // ThirdPartyIntegrations implements Client.
 func (c *client) ThirdPartyIntegrations() integration.ThirdpartyIntegrations {
 	return integration.NewThirdpartyIntegrations(c.restClient)
+}
+
+// MSP implements Client.
+func (c *client) MSP() endpoints.MSP {
+	return endpoints.NewMSP(c.restClient)
 }

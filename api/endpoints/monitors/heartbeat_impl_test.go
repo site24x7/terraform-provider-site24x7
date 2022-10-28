@@ -21,15 +21,16 @@ func TestHeartbeatMonitors(t *testing.T) {
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
 				heartbeatMonitor := &api.HeartbeatMonitor{
-					DisplayName:          "foo",
-					NameInPingURL:        "status_check",
-					Type:                 "HEARTBEAT",
-					ThresholdProfileID:   "012",
-					MonitorGroups:        []string{"234", "567"},
-					UserGroupIDs:         []string{"123", "456"},
-					TagIDs:               []string{"123"},
-					ThirdPartyServiceIDs: []string{"123", "456"},
-					OnCallScheduleID:     "1244",
+					DisplayName:           "foo",
+					NameInPingURL:         "status_check",
+					Type:                  "HEARTBEAT",
+					ThresholdProfileID:    "012",
+					NotificationProfileID: "789",
+					MonitorGroups:         []string{"234", "567"},
+					UserGroupIDs:          []string{"123", "456"},
+					TagIDs:                []string{"123"},
+					ThirdPartyServiceIDs:  []string{"123", "456"},
+					OnCallScheduleID:      "1244",
 				}
 
 				_, err := NewHeartbeatMonitors(c).Create(heartbeatMonitor)
@@ -47,15 +48,16 @@ func TestHeartbeatMonitors(t *testing.T) {
 				require.NoError(t, err)
 
 				expected := &api.HeartbeatMonitor{
-					MonitorID:            "897654345678",
-					DisplayName:          "foo",
-					NameInPingURL:        "status_check",
-					Type:                 "HEARTBEAT",
-					ThresholdProfileID:   "012",
-					MonitorGroups:        []string{"234", "567"},
-					UserGroupIDs:         []string{"123", "456"},
-					ThirdPartyServiceIDs: []string{"123", "456"},
-					OnCallScheduleID:     "1244",
+					MonitorID:             "897654345678",
+					DisplayName:           "foo",
+					NameInPingURL:         "status_check",
+					Type:                  "HEARTBEAT",
+					ThresholdProfileID:    "012",
+					NotificationProfileID: "789",
+					MonitorGroups:         []string{"234", "567"},
+					UserGroupIDs:          []string{"123", "456"},
+					ThirdPartyServiceIDs:  []string{"123", "456"},
+					OnCallScheduleID:      "1244",
 				}
 
 				assert.Equal(t, expected, heartbeatMonitor)
@@ -73,26 +75,28 @@ func TestHeartbeatMonitors(t *testing.T) {
 
 				expected := []*api.HeartbeatMonitor{
 					{
-						MonitorID:            "897654345678",
-						DisplayName:          "foo",
-						NameInPingURL:        "status_check",
-						Type:                 "HEARTBEAT",
-						ThresholdProfileID:   "012",
-						MonitorGroups:        []string{"234", "567"},
-						UserGroupIDs:         []string{"123", "456"},
-						ThirdPartyServiceIDs: []string{"123", "456"},
-						OnCallScheduleID:     "1244",
+						MonitorID:             "897654345678",
+						DisplayName:           "foo",
+						NameInPingURL:         "status_check",
+						Type:                  "HEARTBEAT",
+						ThresholdProfileID:    "012",
+						NotificationProfileID: "789",
+						MonitorGroups:         []string{"234", "567"},
+						UserGroupIDs:          []string{"123", "456"},
+						ThirdPartyServiceIDs:  []string{"123", "456"},
+						OnCallScheduleID:      "1244",
 					},
 					{
-						MonitorID:            "933654345678",
-						DisplayName:          "foo",
-						NameInPingURL:        "status_check",
-						Type:                 "HEARTBEAT",
-						ThresholdProfileID:   "012",
-						MonitorGroups:        []string{"234", "567"},
-						UserGroupIDs:         []string{"123", "456"},
-						ThirdPartyServiceIDs: []string{"123", "456"},
-						OnCallScheduleID:     "1244",
+						MonitorID:             "933654345678",
+						DisplayName:           "foo",
+						NameInPingURL:         "status_check",
+						Type:                  "HEARTBEAT",
+						ThresholdProfileID:    "012",
+						NotificationProfileID: "789",
+						MonitorGroups:         []string{"234", "567"},
+						UserGroupIDs:          []string{"123", "456"},
+						ThirdPartyServiceIDs:  []string{"123", "456"},
+						OnCallScheduleID:      "1244",
 					},
 				}
 
@@ -108,16 +112,17 @@ func TestHeartbeatMonitors(t *testing.T) {
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
 				heartbeatMonitor := &api.HeartbeatMonitor{
-					MonitorID:            "123",
-					DisplayName:          "foo",
-					NameInPingURL:        "status_check",
-					Type:                 "HEARTBEAT",
-					ThresholdProfileID:   "012",
-					MonitorGroups:        []string{"234", "567"},
-					UserGroupIDs:         []string{"123", "456"},
-					TagIDs:               []string{"123"},
-					ThirdPartyServiceIDs: []string{"123", "456"},
-					OnCallScheduleID:     "1244",
+					MonitorID:             "123",
+					DisplayName:           "foo",
+					NameInPingURL:         "status_check",
+					Type:                  "HEARTBEAT",
+					ThresholdProfileID:    "012",
+					NotificationProfileID: "789",
+					MonitorGroups:         []string{"234", "567"},
+					UserGroupIDs:          []string{"123", "456"},
+					TagIDs:                []string{"123"},
+					ThirdPartyServiceIDs:  []string{"123", "456"},
+					OnCallScheduleID:      "1244",
 				}
 
 				_, err := NewHeartbeatMonitors(c).Update(heartbeatMonitor)

@@ -43,7 +43,7 @@ provider "site24x7" {
 	// (Optional) Maximum number of Site24x7 API request retries to perform until giving up.
 	max_retries = 4
   
-  }
+}
 
 // Data source to fetch a monitor group
 data "site24x7_monitor_group" "s247monitorgroup" {

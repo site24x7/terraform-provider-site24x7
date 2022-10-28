@@ -12,7 +12,7 @@ import (
 // with mocks. In can be used in unit tests.
 type Client struct {
 	FakeCurrentStatus          *fake.CurrentStatus
-	FakeURLAutomations         *fake.URLAutomations
+	FakeURLActions             *fake.URLActions
 	FakeLocationTemplate       *fake.LocationTemplate
 	FakeLocationProfiles       *fake.LocationProfiles
 	FakeMonitorGroups          *fake.MonitorGroups
@@ -37,13 +37,14 @@ type Client struct {
 	FakeTelegramIntegration *fake.TelegramIntegration
 	FakeThirdPartyIntegrations *fake.ThirdPartyIntegrations
 	FakeScheduleMaintenance    *fake.ScheduleMaintenance
+	FakeMSP                    *fake.MSP
 }
 
 // NewClient creates a new fake site24x7 API client.
 func NewClient() *Client {
 	return &Client{
 		FakeCurrentStatus:          &fake.CurrentStatus{},
-		FakeURLAutomations:         &fake.URLAutomations{},
+		FakeURLActions:             &fake.URLActions{},
 		FakeLocationProfiles:       &fake.LocationProfiles{},
 		FakeLocationTemplate:       &fake.LocationTemplate{},
 		FakeMonitorGroups:          &fake.MonitorGroups{},
@@ -68,6 +69,7 @@ func NewClient() *Client {
 		FakeTelegramIntegration: &fake.TelegramIntegration{},
 		FakeThirdPartyIntegrations: &fake.ThirdPartyIntegrations{},
 		FakeScheduleMaintenance:    &fake.ScheduleMaintenance{},
+		FakeMSP:                    &fake.MSP{},
 	}
 }
 
@@ -77,8 +79,8 @@ func (c *Client) CurrentStatus() endpoints.CurrentStatus {
 }
 
 // ItAutomations implements Client.
-func (c *Client) URLAutomations() endpoints.URLAutomations {
-	return c.FakeURLAutomations
+func (c *Client) URLActions() endpoints.URLActions {
+	return c.FakeURLActions
 }
 
 // LocationProfiles implements Client.
@@ -199,4 +201,9 @@ func (c *Client) ThirdPartyIntegrations() integration.ThirdpartyIntegrations {
 // ScheduleMaintenance implements Client.
 func (c *Client) ScheduleMaintenance() common.ScheduleMaintenance {
 	return c.FakeScheduleMaintenance
+}
+
+// MSP implements Client.
+func (c *Client) MSP() endpoints.MSP {
+	return c.FakeMSP
 }
