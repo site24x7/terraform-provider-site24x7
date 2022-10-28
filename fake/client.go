@@ -34,6 +34,7 @@ type Client struct {
 	FakePagerDutyIntegration   *fake.PagerDutyIntegration
 	FakeServiceNowIntegration  *fake.ServiceNowIntegration
 	FakeConnectwiseIntegration *fake.ConnectwiseIntegration
+	FakeTelegramIntegration *fake.TelegramIntegration
 	FakeThirdPartyIntegrations *fake.ThirdPartyIntegrations
 	FakeScheduleMaintenance    *fake.ScheduleMaintenance
 	FakeMSP                    *fake.MSP
@@ -65,6 +66,7 @@ func NewClient() *Client {
 		FakeServiceNowIntegration:  &fake.ServiceNowIntegration{},
 		FakeWebhookIntegration:     &fake.WebhookIntegration{},
 		FakeConnectwiseIntegration: &fake.ConnectwiseIntegration{},
+		FakeTelegramIntegration: &fake.TelegramIntegration{},
 		FakeThirdPartyIntegrations: &fake.ThirdPartyIntegrations{},
 		FakeScheduleMaintenance:    &fake.ScheduleMaintenance{},
 		FakeMSP:                    &fake.MSP{},
@@ -179,6 +181,11 @@ func (c *Client) ServiceNowIntegration() integration.ServiceNowIntegration {
 // Connectwise implements Client.
 func (c *Client) ConnectwiseIntegration() integration.ConnectwiseIntegration {
 	return c.FakeConnectwiseIntegration
+}
+
+// Telegram implements Client.
+func (c *Client) TelegramIntegration() integration.TelegramIntegration {
+	return c.FakeTelegramIntegration
 }
 
 // WebhookIntegration implements Client.
