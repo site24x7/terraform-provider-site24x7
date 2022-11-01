@@ -82,6 +82,18 @@ func TestRestApiMonitorCreate(t *testing.T) {
 		// },
 	}
 
+	locationProfiles := []*api.LocationProfile{
+		{
+			ProfileID:   "123",
+			ProfileName: "Location Profile",
+		},
+		{
+			ProfileID:   "456",
+			ProfileName: "TEST",
+		},
+	}
+	c.FakeLocationProfiles.On("List").Return(locationProfiles, nil)
+
 	notificationProfiles := []*api.NotificationProfile{
 		{
 			ProfileID:   "123",
@@ -211,6 +223,18 @@ func TestRestApiMonitorUpdate(t *testing.T) {
 		// 	"value":    "*.a.*",
 		// },
 	}
+
+	locationProfiles := []*api.LocationProfile{
+		{
+			ProfileID:   "123",
+			ProfileName: "Location Profile",
+		},
+		{
+			ProfileID:   "456",
+			ProfileName: "TEST",
+		},
+	}
+	c.FakeLocationProfiles.On("List").Return(locationProfiles, nil)
 
 	notificationProfiles := []*api.NotificationProfile{
 		{

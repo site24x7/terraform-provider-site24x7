@@ -1,6 +1,8 @@
 package api
 
 type Site24x7Monitor interface {
+	SetLocationProfileID(notificationProfileID string)
+	GetLocationProfileID() string
 	SetNotificationProfileID(notificationProfileID string)
 	GetNotificationProfileID() string
 	SetUserGroupIDs(userGroupIDs []string)
@@ -98,6 +100,14 @@ type WebsiteMonitor struct {
 	ActionIDs             []ActionRef `json:"action_ids,omitempty"`
 }
 
+func (websiteMonitor *WebsiteMonitor) SetLocationProfileID(locationProfileID string) {
+	websiteMonitor.LocationProfileID = locationProfileID
+}
+
+func (websiteMonitor *WebsiteMonitor) GetLocationProfileID() string {
+	return websiteMonitor.LocationProfileID
+}
+
 func (websiteMonitor *WebsiteMonitor) SetNotificationProfileID(notificationProfileID string) {
 	websiteMonitor.NotificationProfileID = notificationProfileID
 }
@@ -164,6 +174,14 @@ type WebPageSpeedMonitor struct {
 	ActionIDs             []ActionRef `json:"action_ids,omitempty"`
 }
 
+func (webPageSpeedMonitor *WebPageSpeedMonitor) SetLocationProfileID(locationProfileID string) {
+	webPageSpeedMonitor.LocationProfileID = locationProfileID
+}
+
+func (webPageSpeedMonitor *WebPageSpeedMonitor) GetLocationProfileID() string {
+	return webPageSpeedMonitor.LocationProfileID
+}
+
 func (webPageSpeedMonitor *WebPageSpeedMonitor) SetNotificationProfileID(notificationProfileID string) {
 	webPageSpeedMonitor.NotificationProfileID = notificationProfileID
 }
@@ -215,6 +233,14 @@ type SSLMonitor struct {
 	TagIDs                []string    `json:"tag_ids,omitempty"`
 	ThirdPartyServiceIDs  []string    `json:"third_party_services,omitempty"`
 	// ActionIDs             []ActionRef `json:"action_ids,omitempty"`
+}
+
+func (sslMonitor *SSLMonitor) SetLocationProfileID(locationProfileID string) {
+	sslMonitor.LocationProfileID = locationProfileID
+}
+
+func (sslMonitor *SSLMonitor) GetLocationProfileID() string {
+	return sslMonitor.LocationProfileID
 }
 
 func (sslMonitor *SSLMonitor) SetNotificationProfileID(notificationProfileID string) {
@@ -295,6 +321,14 @@ type RestApiMonitor struct {
 	ActionIDs             []ActionRef `json:"action_ids,omitempty"`
 }
 
+func (restApiMonitor *RestApiMonitor) SetLocationProfileID(locationProfileID string) {
+	restApiMonitor.LocationProfileID = locationProfileID
+}
+
+func (restApiMonitor *RestApiMonitor) GetLocationProfileID() string {
+	return restApiMonitor.LocationProfileID
+}
+
 func (restApiMonitor *RestApiMonitor) SetNotificationProfileID(notificationProfileID string) {
 	restApiMonitor.NotificationProfileID = notificationProfileID
 }
@@ -337,6 +371,13 @@ type AmazonMonitor struct {
 	UserGroupIDs          []string `json:"user_group_ids"`
 	TagIDs                []string `json:"tag_ids,omitempty"`
 	ThirdPartyServiceIDs  []string `json:"third_party_services,omitempty"`
+}
+
+func (amazonMonitor *AmazonMonitor) SetLocationProfileID(locationProfileID string) {
+}
+
+func (amazonMonitor *AmazonMonitor) GetLocationProfileID() string {
+	return ""
 }
 
 func (amazonMonitor *AmazonMonitor) SetNotificationProfileID(notificationProfileID string) {
@@ -391,6 +432,13 @@ type ServerMonitor struct {
 	// ActionIDs             []ActionRef `json:"action_ids,omitempty"`
 }
 
+func (serverMonitor *ServerMonitor) SetLocationProfileID(locationProfileID string) {
+}
+
+func (serverMonitor *ServerMonitor) GetLocationProfileID() string {
+	return ""
+}
+
 func (serverMonitor *ServerMonitor) SetNotificationProfileID(notificationProfileID string) {
 	serverMonitor.NotificationProfileID = notificationProfileID
 }
@@ -433,6 +481,13 @@ type HeartbeatMonitor struct {
 	ThirdPartyServiceIDs  []string `json:"third_party_services,omitempty"`
 	UserGroupIDs          []string `json:"user_group_ids,omitempty"`
 	OnCallScheduleID      string   `json:"on_call_schedule_id,omitempty"`
+}
+
+func (heartbeatMonitor *HeartbeatMonitor) SetLocationProfileID(locationProfileID string) {
+}
+
+func (heartbeatMonitor *HeartbeatMonitor) GetLocationProfileID() string {
+	return ""
 }
 
 func (heartbeatMonitor *HeartbeatMonitor) SetNotificationProfileID(notificationProfileID string) {

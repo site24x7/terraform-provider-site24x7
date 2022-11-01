@@ -669,14 +669,10 @@ func resourceDataToRestApiMonitor(d *schema.ResourceData, client site24x7.Client
 		restApiMonitor.GraphQL = graphqlMap
 	}
 
-	if restApiMonitor.LocationProfileID == "" {
-		locationProfileNameToMatch := d.Get("location_profile_name").(string)
-		profile, err := site24x7.DefaultLocationProfile(client, locationProfileNameToMatch)
-		if err != nil {
-			return nil, err
-		}
-		restApiMonitor.LocationProfileID = profile.ProfileID
-		d.Set("location_profile_id", profile.ProfileID)
+	// Location Profile
+	_, locationProfileErr := site24x7.SetLocationProfile(client, d, restApiMonitor)
+	if locationProfileErr != nil {
+		return nil, locationProfileErr
 	}
 
 	// Notification Profile

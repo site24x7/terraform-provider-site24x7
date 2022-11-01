@@ -34,6 +34,18 @@ func TestSSLMonitorCreate(t *testing.T) {
 		TagIDs:                []string{"123"},
 	}
 
+	locationProfiles := []*api.LocationProfile{
+		{
+			ProfileID:   "123",
+			ProfileName: "Location Profile",
+		},
+		{
+			ProfileID:   "456",
+			ProfileName: "TEST",
+		},
+	}
+	c.FakeLocationProfiles.On("List").Return(locationProfiles, nil)
+
 	notificationProfiles := []*api.NotificationProfile{
 		{
 			ProfileID:   "123",
@@ -117,6 +129,18 @@ func TestSSLMonitorUpdate(t *testing.T) {
 		UserGroupIDs:          []string{"123", "456"},
 		TagIDs:                []string{"123"},
 	}
+
+	locationProfiles := []*api.LocationProfile{
+		{
+			ProfileID:   "123",
+			ProfileName: "Location Profile",
+		},
+		{
+			ProfileID:   "456",
+			ProfileName: "TEST",
+		},
+	}
+	c.FakeLocationProfiles.On("List").Return(locationProfiles, nil)
 
 	notificationProfiles := []*api.NotificationProfile{
 		{
