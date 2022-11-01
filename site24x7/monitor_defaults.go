@@ -34,6 +34,40 @@ func DefaultLocationProfile(client Client, profileNameToMatch string) (*api.Loca
 	return locationProfiles[0], nil
 }
 
+func SetLocationProfile(client Client, d *schema.ResourceData, monitor api.Site24x7Monitor) (*api.LocationProfile, error) {
+	var locationProfile *api.LocationProfile
+	locationProfiles, err := client.LocationProfiles().List()
+	if err != nil {
+		return nil, err
+	}
+	if len(locationProfiles) == 0 {
+		return nil, errors.New("Unable to find location profiles in Site24x7! Please configure them by visiting Admin -> Configuration Profiles -> Location Profiles")
+	}
+	// location_profile_id will be set for existing resources.
+	// If location_profile_name is defined we try to find a match in Site24x7 and override location_profile_id else raise an error.
+	if _, locationProfileNameExistsInConf := d.GetOk("location_profile_name"); locationProfileNameExistsInConf {
+		locationProfileNameToMatch := d.Get("location_profile_name").(string)
+		log.Println("Finding match for the location profile name : \"" + locationProfileNameToMatch + "\" in Site24x7")
+		if locationProfileNameToMatch != "" {
+			for _, p := range locationProfiles {
+				if strings.Contains(p.ProfileName, locationProfileNameToMatch) {
+					locationProfile = p
+				}
+			}
+		}
+		if locationProfile == nil {
+			return nil, errors.New("Unable to find location profile matching the string : \"" + locationProfileNameToMatch + "\" in Site24x7. Please configure a valid value for the argument \"location_profile_name\"")
+		}
+		monitor.SetLocationProfileID(locationProfile.ProfileID)
+		d.Set("location_profile_id", locationProfile.ProfileID)
+	} else if monitor.GetLocationProfileID() == "" { // This will be true when location_profile_id in the configuration file is empty during resource addition.
+		locationProfile = locationProfiles[0]
+		monitor.SetLocationProfileID(locationProfile.ProfileID)
+		d.Set("location_profile_id", locationProfile.ProfileID)
+	}
+	return locationProfile, nil
+}
+
 // DefaultNotificationProfile fetches the first notification profile returned by the
 // client. If no notification profiles are configured, DefaultNotificationProfile will
 // return an error.

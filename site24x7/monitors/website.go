@@ -597,16 +597,13 @@ func resourceDataToWebsiteMonitor(d *schema.ResourceData, client site24x7.Client
 	websiteMonitor.TagIDs = tagIDs
 	websiteMonitor.ThirdPartyServiceIDs = thirdPartyServiceIDs
 	websiteMonitor.ActionIDs = actionRefs
+
 	// Location Profile
-	if websiteMonitor.LocationProfileID == "" {
-		locationProfileNameToMatch := d.Get("location_profile_name").(string)
-		profile, err := site24x7.DefaultLocationProfile(client, locationProfileNameToMatch)
-		if err != nil {
-			return nil, err
-		}
-		websiteMonitor.LocationProfileID = profile.ProfileID
-		d.Set("location_profile_id", profile.ProfileID)
+	_, locationProfileErr := site24x7.SetLocationProfile(client, d, websiteMonitor)
+	if locationProfileErr != nil {
+		return nil, locationProfileErr
 	}
+
 	// Threshold Profile
 	if websiteMonitor.ThresholdProfileID == "" {
 		profile, err := site24x7.DefaultThresholdProfile(client, api.URL)
