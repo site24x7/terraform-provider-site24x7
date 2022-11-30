@@ -140,10 +140,6 @@ func monitorGroupExists(d *schema.ResourceData, meta interface{}) (bool, error) 
 }
 
 func resourceDataToMonitorGroupCreate(d *schema.ResourceData) *api.MonitorGroup {
-	var healthThresholdCount int
-	if _, thresholdExistsInConf := d.GetOk("health_threshold_count"); !thresholdExistsInConf {
-		healthThresholdCount = 1
-	}
 
 	var monitorIDs []string
 	// If monitors are set in the configuration file iterate them and append to monitorIDs
@@ -166,7 +162,7 @@ func resourceDataToMonitorGroupCreate(d *schema.ResourceData) *api.MonitorGroup 
 		DisplayName:            d.Get("display_name").(string),
 		Description:            d.Get("description").(string),
 		Monitors:               monitorIDs,
-		HealthThresholdCount:   healthThresholdCount,
+		HealthThresholdCount:   d.Get("health_threshold_count").(int),
 		DependencyResourceIDs:  dependencyResourceIDs,
 		SuppressAlert:          d.Get("suppress_alert").(bool),
 		DependencyResourceType: 2,
@@ -194,16 +190,6 @@ func resourceDataToMonitorGroupUpdate(d *schema.ResourceData, monitorGroup *api.
 	// 	}
 	// }
 
-	var healthThresholdCount int
-	if d.HasChange("health_threshold_count") {
-		oldThresholdCount, newThresholdCount := d.GetChange("health_threshold_count")
-		if newThresholdCount != 0 {
-			healthThresholdCount = newThresholdCount.(int)
-		} else {
-			healthThresholdCount = oldThresholdCount.(int)
-		}
-	}
-
 	dependencyIDs := d.Get("dependency_resource_ids").(*schema.Set).List()
 	dependencyResourceIDs := make([]string, 0, len(dependencyIDs))
 	for _, dependencyResourceID := range dependencyIDs {
@@ -228,7 +214,7 @@ func resourceDataToMonitorGroupUpdate(d *schema.ResourceData, monitorGroup *api.
 		Description: d.Get("description").(string),
 		// Setting monitors from GET response. Empty "monitors" in PUT request dissociates all monitors from the monitor group.
 		Monitors:               monitorGroup.Monitors,
-		HealthThresholdCount:   healthThresholdCount,
+		HealthThresholdCount:   d.Get("health_threshold_count").(int),
 		DependencyResourceIDs:  dependencyResourceIDs,
 		SuppressAlert:          suppressAlert,
 		DependencyResourceType: 2,
