@@ -103,7 +103,7 @@ resource "site24x7_notification_profile" "notification_profile_us" {
 
   // (Optional) You can choose to delay and receive Down, Trouble, or Critical notifications if the monitor remains in the same state for a specific number of polls. If you haven't configured any Notification Delay for a specific period, you'll receive alerts immediately.
   notification_delay_configuration {    
-    // (Optional) Status for which alerts should be raised. '-1' denotes 'Any', '0' denotes 'Down', '1' denotes 'Up', '2' denotes 'Trouble' and '3' denotes 'Critical'.
+    // (Optional) Status for which alerts should be raised. '0' denotes 'Down', '2' denotes 'Trouble' and '3' denotes 'Critical'.
     status = 0    
     // (Optional) Alerting Period - Predefined business hours during which alerts should be sent. Default value is '-1' and it denotes 'All Hours'.
     business_hours_id = "123456000036869001"            
@@ -115,7 +115,7 @@ resource "site24x7_notification_profile" "notification_profile_us" {
 
   // (Optional) You can choose to delay and receive Down, Trouble, or Critical notifications if the monitor remains in the same state for a specific number of polls. If you haven't configured any Notification Delay for a specific period, you'll receive alerts immediately.
   notification_delay_configuration {    
-    // (Optional) Status for which alerts should be raised. '-1' denotes 'Any', '0' denotes 'Down', '1' denotes 'Up', '2' denotes 'Trouble' and '3' denotes 'Critical'.
+    // (Optional) Status for which alerts should be raised. '0' denotes 'Down', '2' denotes 'Trouble' and '3' denotes 'Critical'.
     status = 0    
     // (Optional) Alerting Period - Predefined business hours during which alerts should be sent. Default value is '-1' and it denotes 'All Hours'.
     business_hours_id = "-1"            
