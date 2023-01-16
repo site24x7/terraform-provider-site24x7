@@ -84,6 +84,7 @@ type Client interface {
 	Tags() endpoints.Tags
 	ScheduleMaintenance() common.ScheduleMaintenance
 	WebsiteMonitors() monitors.WebsiteMonitors
+	DNSServerMonitors() monitors.DNSServerMonitors
 	WebPageSpeedMonitors() monitors.WebPageSpeedMonitors
 	SSLMonitors() monitors.SSLMonitors
 	HeartbeatMonitors() monitors.HeartbeatMonitors
@@ -175,6 +176,11 @@ func (c *client) AmazonMonitors() monitors.AmazonMonitors {
 // WebsiteMonitors implements Client.
 func (c *client) WebsiteMonitors() monitors.WebsiteMonitors {
 	return monitors.NewMonitors(c.restClient)
+}
+
+// DNSServerMonitors implements Client.
+func (c *client) DNSServerMonitors() monitors.DNSServerMonitors {
+	return monitors.NewDNSServerMonitors(c.restClient)
 }
 
 // WebPageSpeedMonitors implements Client.

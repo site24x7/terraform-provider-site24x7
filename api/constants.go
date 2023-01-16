@@ -24,4 +24,5 @@ const (
 	AMAZON    MonitorType = "AMAZON"
 	SERVER    MonitorType = "SERVER"
 	HEARTBEAT MonitorType = "HEARTBEAT"
+	DNS       MonitorType = "DNS"
 )

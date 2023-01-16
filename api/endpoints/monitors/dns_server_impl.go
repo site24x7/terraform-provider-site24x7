@@ -5,28 +5,28 @@ import (
 	"github.com/site24x7/terraform-provider-site24x7/rest"
 )
 
-type WebsiteMonitors interface {
-	Get(monitorID string) (*api.WebsiteMonitor, error)
-	Create(monitor *api.WebsiteMonitor) (*api.WebsiteMonitor, error)
-	Update(monitor *api.WebsiteMonitor) (*api.WebsiteMonitor, error)
+type DNSServerMonitors interface {
+	Get(monitorID string) (*api.DNSServerMonitor, error)
+	Create(monitor *api.DNSServerMonitor) (*api.DNSServerMonitor, error)
+	Update(monitor *api.DNSServerMonitor) (*api.DNSServerMonitor, error)
 	Delete(monitorID string) error
-	List() ([]*api.WebsiteMonitor, error)
+	List() ([]*api.DNSServerMonitor, error)
 	Activate(monitorID string) error
 	Suspend(monitorID string) error
 }
 
-type websitemonitors struct {
+type dnsservermonitors struct {
 	client rest.Client
 }
 
-func NewMonitors(client rest.Client) WebsiteMonitors {
-	return &websitemonitors{
+func NewDNSServerMonitors(client rest.Client) DNSServerMonitors {
+	return &dnsservermonitors{
 		client: client,
 	}
 }
 
-func (c *websitemonitors) Get(monitorID string) (*api.WebsiteMonitor, error) {
-	monitor := &api.WebsiteMonitor{}
+func (c *dnsservermonitors) Get(monitorID string) (*api.DNSServerMonitor, error) {
+	monitor := &api.DNSServerMonitor{}
 	err := c.client.
 		Get().
 		Resource("monitors").
@@ -37,8 +37,8 @@ func (c *websitemonitors) Get(monitorID string) (*api.WebsiteMonitor, error) {
 	return monitor, err
 }
 
-func (c *websitemonitors) Create(monitor *api.WebsiteMonitor) (*api.WebsiteMonitor, error) {
-	newMonitor := &api.WebsiteMonitor{}
+func (c *dnsservermonitors) Create(monitor *api.DNSServerMonitor) (*api.DNSServerMonitor, error) {
+	newMonitor := &api.DNSServerMonitor{}
 	err := c.client.
 		Post().
 		Resource("monitors").
@@ -49,8 +49,8 @@ func (c *websitemonitors) Create(monitor *api.WebsiteMonitor) (*api.WebsiteMonit
 	return newMonitor, err
 }
 
-func (c *websitemonitors) Update(monitor *api.WebsiteMonitor) (*api.WebsiteMonitor, error) {
-	updatedMonitor := &api.WebsiteMonitor{}
+func (c *dnsservermonitors) Update(monitor *api.DNSServerMonitor) (*api.DNSServerMonitor, error) {
+	updatedMonitor := &api.DNSServerMonitor{}
 	err := c.client.
 		Put().
 		Resource("monitors").
@@ -63,7 +63,7 @@ func (c *websitemonitors) Update(monitor *api.WebsiteMonitor) (*api.WebsiteMonit
 	return updatedMonitor, err
 }
 
-func (c *websitemonitors) Delete(monitorID string) error {
+func (c *dnsservermonitors) Delete(monitorID string) error {
 	return c.client.
 		Delete().
 		Resource("monitors").
@@ -72,8 +72,8 @@ func (c *websitemonitors) Delete(monitorID string) error {
 		Err()
 }
 
-func (c *websitemonitors) List() ([]*api.WebsiteMonitor, error) {
-	monitors := []*api.WebsiteMonitor{}
+func (c *dnsservermonitors) List() ([]*api.DNSServerMonitor, error) {
+	monitors := []*api.DNSServerMonitor{}
 	err := c.client.
 		Get().
 		Resource("monitors").
@@ -83,7 +83,7 @@ func (c *websitemonitors) List() ([]*api.WebsiteMonitor, error) {
 	return monitors, err
 }
 
-func (c *websitemonitors) Activate(monitorID string) error {
+func (c *dnsservermonitors) Activate(monitorID string) error {
 	return c.client.
 		Put().
 		Resource("monitors/activate").
@@ -92,7 +92,7 @@ func (c *websitemonitors) Activate(monitorID string) error {
 		Err()
 }
 
-func (c *websitemonitors) Suspend(monitorID string) error {
+func (c *dnsservermonitors) Suspend(monitorID string) error {
 	return c.client.
 		Put().
 		Resource("monitors/suspend").

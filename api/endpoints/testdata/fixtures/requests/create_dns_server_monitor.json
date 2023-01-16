@@ -1,0 +1,36 @@
+{
+  "display_name": "DNS Server Impl Test",
+  "dns_host": "8.8.8.8",
+  "dns_port": "53",
+  "lookup_type": 1,
+  "domain_name": "www.example.com",
+  "check_frequency": "5",
+  "timeout": 10,
+  "threshold_profile_id": "123412341234123414",
+  "location_profile_id": "123412341234123412",
+  "notification_profile_id": "123412341234123413",
+  "user_group_ids": [
+    "123412341234123415"
+  ],
+  "third_party_services":[
+    "456987654321012",
+    "456987654321013"
+  ],
+  "monitor_groups": [
+    "123412341234123416",
+    "123412341234123417"
+  ],
+  "action_ids": [
+    {
+      "action_id": "123412341234123418",
+      "alert_type": 20
+    }
+  ],
+  "search_config": [
+    {
+      "addr": "1.2.3.4",
+      "ttlo": 60,
+      "ttl": 60
+    }
+  ]
+}

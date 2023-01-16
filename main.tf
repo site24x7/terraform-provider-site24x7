@@ -1,10 +1,10 @@
 terraform {
   # Require Terraform version 0.15.x (recommended)
-  required_version = "~> 0.15.0"
+  required_version = "> 0.15.0"
 
   required_providers {
     site24x7 = {
-      source  = "site24x7/site24x7"
+      source = "site24x7/site24x7"
       # // Uncomment for local build
       # source  = "registry.terraform.io/site24x7/site24x7"
       # version = "1.0.0"
@@ -51,7 +51,6 @@ provider "site24x7" {
 
   // (Optional) Maximum number of Site24x7 API request retries to perform until giving up.
   max_retries = 4
-
 }
 
 // Website Monitor API doc: https://www.site24x7.com/help/api/#website
@@ -88,10 +87,8 @@ resource "site24x7_website_monitor" "website_monitor_example" {
   request_headers = {
     "Accept" = "application/json"
   }
-
   # tag_ids = [site24x7_tag.tag_us.id]
 }
-
 // Site24x7 Rest API Monitor API doc - https://www.site24x7.com/help/api/#rest-api
 resource "site24x7_rest_api_monitor" "rest_api_monitor_basic" {
   // (Required) Display name for the monitor

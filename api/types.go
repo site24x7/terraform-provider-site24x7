@@ -46,6 +46,33 @@ type Header struct {
 	Value string `json:"value"`
 }
 
+type SearchConfig struct {
+	Addr     string `json:"addr,omitempty"`
+	TTLO     int    `json:"ttlo,omitempty"`
+	TTL      int    `json:"ttl,omitempty"`
+	Target   string `json:"target,omitempty"`
+	Priority int    `json:"priority,omitempty"`
+	Port     int    `json:"port,omitempty"`
+	Wt       int    `json:"wt,omitempty"`
+	Rcvd     int    `json:"rcvd,omitempty"`
+	PNS      string `json:"pns,omitempty"`
+	Admin    string `json:"admin,omitempty"`
+	Serial   int    `json:"serial,omitempty"`
+	RFF      int    `json:"rff,omitempty"`
+	RTF      int    `json:"rtf,omitempty"`
+	EXPT     int    `json:"expt,omitempty"`
+	MTTL     int    `json:"mttl,omitempty"`
+	Flg      int    `json:"flg,omitempty"`
+	Prtcl    int    `json:"prtcl,omitempty"`
+	Kalg     int    `json:"kalg,omitempty"`
+	Kid      int    `json:"kid,omitempty"`
+	Key      string `json:"key,omitempty"`
+	Tag      string `json:"tag,omitempty"`
+	CertAuth string `json:"cert_auth,omitempty"`
+	Halg     int    `json:"halg,omitempty"`
+	Hash     string `json:"hash,omitempty"`
+}
+
 type HTTPResponseHeader struct {
 	Severity Status   `json:"severity"`
 	Value    []Header `json:"value"`

@@ -34,10 +34,11 @@ type Client struct {
 	FakePagerDutyIntegration   *fake.PagerDutyIntegration
 	FakeServiceNowIntegration  *fake.ServiceNowIntegration
 	FakeConnectwiseIntegration *fake.ConnectwiseIntegration
-	FakeTelegramIntegration *fake.TelegramIntegration
+	FakeTelegramIntegration    *fake.TelegramIntegration
 	FakeThirdPartyIntegrations *fake.ThirdPartyIntegrations
 	FakeScheduleMaintenance    *fake.ScheduleMaintenance
 	FakeMSP                    *fake.MSP
+	FakeDNSServerMonitors      *fake.DNSServerMonitors
 }
 
 // NewClient creates a new fake site24x7 API client.
@@ -55,6 +56,7 @@ func NewClient() *Client {
 		FakeHeartbeatMonitors:      &fake.HeartbeatMonitors{},
 		FakeServerMonitors:         &fake.ServerMonitors{},
 		FakeWebsiteMonitors:        &fake.WebsiteMonitors{},
+		FakeDNSServerMonitors:      &fake.DNSServerMonitors{},
 		FakeWebPageSpeedMonitors:   &fake.WebPageSpeedMonitors{},
 		FakeRestApiMonitors:        &fake.RestApiMonitors{},
 		FakeNotificationProfiles:   &fake.NotificationProfiles{},
@@ -66,7 +68,7 @@ func NewClient() *Client {
 		FakeServiceNowIntegration:  &fake.ServiceNowIntegration{},
 		FakeWebhookIntegration:     &fake.WebhookIntegration{},
 		FakeConnectwiseIntegration: &fake.ConnectwiseIntegration{},
-		FakeTelegramIntegration: &fake.TelegramIntegration{},
+		FakeTelegramIntegration:    &fake.TelegramIntegration{},
 		FakeThirdPartyIntegrations: &fake.ThirdPartyIntegrations{},
 		FakeScheduleMaintenance:    &fake.ScheduleMaintenance{},
 		FakeMSP:                    &fake.MSP{},
@@ -96,6 +98,11 @@ func (c *Client) LocationTemplate() endpoints.LocationTemplate {
 // Monitors implements Client.
 func (c *Client) WebsiteMonitors() monitors.WebsiteMonitors {
 	return c.FakeWebsiteMonitors
+}
+
+// DNS Server Monitors implements Client.
+func (c *Client) DNSServerMonitors() monitors.DNSServerMonitors {
+	return c.FakeDNSServerMonitors
 }
 
 // WebPageSpeedMonitors implements Client.

@@ -1,0 +1,50 @@
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "monitor_id": "123412341234123411",
+    "display_name": "DNS Server Impl Test",
+    "lookup_type": 1,
+    "dns_host": "8.8.8.8",
+    "dns_port": "53",
+    "use_ipv6": false,
+    "domain_name": "www.example.com",
+    "type": "DNS",
+    "user_group_ids": [
+      "123412341234123415"
+    ],
+    "location_profile_id": "123412341234123412",
+    "timeout": 10,
+    "monitor_groups": [
+      "123412341234123416",
+      "123412341234123417"
+    ],
+    "threshold_profile_id": "123412341234123414",
+    "match_case": true,
+    "notification_profile_id": "123412341234123413",
+    "action_ids": [
+      {
+        "action_id": "123412341234123418",
+        "alert_type": 20
+      }
+    ],
+    "dependency_resource_id": "123412341234123419",
+    "check_frequency": "5",
+    
+    "tag_ids":[
+      "123456987654321012",
+      "123456987654321013"
+    ],
+    "third_party_services":[
+      "456987654321012",
+      "456987654321013"
+    ],
+    "search_config": [
+      {
+        "addr": "5.6.7.8",
+        "ttlo": 59,
+        "ttl": 59
+      }
+    ]
+  }
+}
