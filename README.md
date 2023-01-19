@@ -43,6 +43,7 @@ terraform {
 A terraform provider for managing the following resources in Site24x7:
 
 - Website Monitor - [site24x7_website_monitor](examples/website_monitor_us.tf) ([Site24x7 Website Monitor API doc](https://www.site24x7.com/help/api/#website))
+- DNS Server Monitor - [site24x7_dns_server_monitor](examples/dns_server_monitor_us.tf) ([Site24x7 DNS Server Monitor API doc](https://www.site24x7.com/help/api/#dns-server))
 - Web Page Speed (Browser) Monitor - [site24x7_web_page_speed_monitor](examples/web_page_speed_monitor_us.tf) ([Site24x7 Web Page Speed Monitor API doc](https://www.site24x7.com/help/api/#websocket))
 - SSL Certificate Monitor - [site24x7_ssl_monitor](examples/ssl_monitor_us.tf) ([Site24x7 SSL Certificate Monitor API doc](https://www.site24x7.com/help/api/#ssl-certificate))
 - Rest API Monitor - [site24x7_rest_api_monitor](examples/rest_api_monitor_us.tf) ([Site24x7 Rest API Monitor API doc](https://www.site24x7.com/help/api/#rest-api))

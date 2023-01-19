@@ -1,0 +1,75 @@
+{
+  "code":0,
+  "message":"success",
+  "data":[
+    {
+      "monitor_id":"12340000016033021",
+      "dns_host": "8.8.8.8",
+      "dns_port": "53",
+      "domain_name": "www.example.com",
+      "use_ipv6":false,
+      "lookup_type": 1,
+      "action_ids":[
+        {
+          "action_id":"12340000019175145",
+          "alert_type":0
+        },
+        {
+          "action_id":"12340000019181133",
+          "alert_type":1
+        }
+      ],
+      "type":"DNS",
+      "user_group_ids":[
+        "12340000000018013"
+      ],
+      "timeout":10,
+      "monitor_groups":[
+        "12340000005749001"
+      ],
+      "state":0,
+      "notification_profile_id":"12340000003579003",
+      "check_frequency":"5",
+      "threshold_profile_id":"12340000001812001",
+      "display_name":"foo.bar",
+      "location_profile_id":"12340000001806001",
+      "search_config": [
+        {
+          "addr": "1.1.1.1",
+          "ttlo": 58,
+          "ttl": 58
+        }
+      ]
+    },
+    {
+      "monitor_id":"12340000016108026",
+      "domain_name": "www.example.com",
+      "dns_host": "8.8.8.8",
+      "dns_port": "53",
+      "use_ipv6":false,
+      "action_ids":[
+        {
+          "action_id":"12340000019180203",
+          "alert_type":0
+        },
+        {
+          "action_id":"12340000019181125",
+          "alert_type":1
+        }
+      ],
+      "type":"DNS",
+      "user_group_ids":[
+        "12340000015652005"
+      ],
+      "timeout":10,
+      "monitor_groups":[
+        "12340000002807001"
+      ],
+      "notification_profile_id":"12340000003579003",
+      "check_frequency":"5",
+      "threshold_profile_id":"12340000001812001",
+      "display_name":"some.api.tld",
+      "location_profile_id":"12340000001806001"
+    }
+  ]
+}

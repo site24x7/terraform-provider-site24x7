@@ -21,6 +21,7 @@ func TestMonitorGroupCreate(t *testing.T) {
 		Description:            "baz",
 		DependencyResourceIDs:  []string{"234", "567"},
 		DependencyResourceType: 2,
+		HealthThresholdCount:1,
 	}
 
 	c.FakeMonitorGroups.On("Create", a).Return(a, nil).Once()

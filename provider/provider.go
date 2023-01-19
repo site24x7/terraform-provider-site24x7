@@ -83,6 +83,7 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_rest_api_monitor":        monitors.ResourceSite24x7RestApiMonitor(),
 			"site24x7_server_monitor":          monitors.ResourceSite24x7ServerMonitor(),
 			"site24x7_heartbeat_monitor":       monitors.ResourceSite24x7HeartbeatMonitor(),
+			"site24x7_dns_server_monitor":      monitors.ResourceSite24x7DNSServerMonitor(),
 			"site24x7_monitor_group":           site24x7.ResourceSite24x7MonitorGroup(),
 			"site24x7_subgroup":                site24x7.ResourceSite24x7Subgroup(),
 			"site24x7_url_action":              site24x7.ResourceSite24x7URLAction(),
@@ -98,7 +99,7 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_pagerduty_integration":   integration.ResourceSite24x7PagerDutyIntegration(),
 			"site24x7_servicenow_integration":  integration.ResourceSite24x7ServiceNowIntegration(),
 			"site24x7_connectwise_integration": integration.ResourceSite24x7ConnectwiseIntegration(),
-			"site24x7_telegram_integration": integration.ResourceSite24x7TelegramIntegration(),
+			"site24x7_telegram_integration":    integration.ResourceSite24x7TelegramIntegration(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
 			"site24x7_monitor":              monitors.DataSourceSite24x7Monitor(),

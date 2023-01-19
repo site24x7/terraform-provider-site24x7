@@ -34,3 +34,28 @@ func TestClientMonitorsCreate(t *testing.T) {
 
 	c.FakeWebsiteMonitors.AssertExpectations(t)
 }
+
+func TestClientDNSServerMonitorsCreate(t *testing.T) {
+	c := NewClient()
+
+	monitor := &api.DNSServerMonitor{
+		DisplayName: "foo",
+	}
+
+	c.FakeDNSServerMonitors.On("Create", mock.Anything).Return(monitor, nil).Once()
+	c.FakeDNSServerMonitors.On("Create", mock.Anything).Return(nil, errors.New("whoops")).Once()
+
+	result, err := c.DNSServerMonitors().Create(&api.DNSServerMonitor{})
+
+	require.NoError(t, err)
+
+	assert.Equal(t, monitor, result)
+
+	_, err = c.DNSServerMonitors().Create(&api.DNSServerMonitor{})
+
+	require.Error(t, err)
+
+	assert.Equal(t, errors.New("whoops"), err)
+
+	c.FakeDNSServerMonitors.AssertExpectations(t)
+}
