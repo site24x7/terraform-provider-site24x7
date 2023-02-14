@@ -1,13 +1,13 @@
 terraform {
   # Require Terraform version 0.15.x (recommended)
-  required_version = "> 0.15.0"
+  required_version = "~> 0.15.0"
 
   required_providers {
     site24x7 = {
-      source = "site24x7/site24x7"
+      #source = "site24x7/site24x7"
       # // Uncomment for local build
-      # source  = "registry.terraform.io/site24x7/site24x7"
-      # version = "1.0.0"
+      source  = "registry.terraform.io/site24x7/site24x7"
+      version = "1.0.0"
     }
   }
 }
@@ -73,7 +73,6 @@ resource "site24x7_website_monitor" "website_monitor_example" {
   // used.
   location_profile_name = "North America"
 
-
   // (Optional) HTTP Method to be used for accessing the website. Default value is 'G'. 'G' denotes GET, 'P' denotes POST and 'H' denotes HEAD. PUT, PATCH and DELETE are not supported.
   http_method = "P"
 
@@ -89,12 +88,19 @@ resource "site24x7_website_monitor" "website_monitor_example" {
   }
   # tag_ids = [site24x7_tag.tag_us.id]
 }
-// Site24x7 Rest API Monitor API doc - https://www.site24x7.com/help/api/#rest-api
-resource "site24x7_rest_api_monitor" "rest_api_monitor_basic" {
+
+// Web Page Speed(Browser) Monitor API doc: https://www.site24x7.com/help/api/#web-page-speed-(browser)
+resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_basic" {
   // (Required) Display name for the monitor
-  display_name = "REST API Monitor - Terraform"
+  display_name = "Home Page Speed - Terraform"
+
   // (Required) Website address to monitor.
-  website = "https://dummy.restapiexample.com/"
+  website = "https://www.example.com"
+
+  // (Optional) Interval at which your website has to be monitored.
+  // See https://www.site24x7.com/help/api/#check-interval for all supported values.
+  check_frequency = "15"
+
   // (Optional) Name of the Location Profile that has to be associated with the monitor. 
   // Either specify location_profile_id or location_profile_name.
   // If location_profile_id and location_profile_name are omitted,
@@ -102,13 +108,5 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_basic" {
   // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
   // used.
   location_profile_name = "North America"
-}
 
-
-// Site24x7 Heartbeat Monitor API doc - https://www.site24x7.com/help/api/#heartbeat
-resource "site24x7_heartbeat_monitor" "heartbeat_monitor_basic" {
-  // (Required) Display name for the monitor
-  display_name = "Heartbeat Monitor - Terraform"
-  // (Required) Unique name to be used in the ping URL.
-  name_in_ping_url = "status_check"
 }

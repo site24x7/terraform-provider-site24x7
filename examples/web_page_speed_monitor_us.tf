@@ -45,7 +45,7 @@ provider "site24x7" {
   
   }
 
-// Web Page Speed(Browser) Monitor API doc: https://www.site24x7.com/help/api/#websocket
+// Web Page Speed(Browser) Monitor API doc: https://www.site24x7.com/help/api/#web-page-speed-(browser)
 resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_basic" {
   // (Required) Display name for the monitor
   display_name = "Home Page Speed - Terraform"
@@ -67,7 +67,7 @@ resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_basic" {
 
 }
 
-// Website Monitor API doc: https://www.site24x7.com/help/api/#websocket
+// Website Monitor API doc: https://www.site24x7.com/help/api/#web-page-speed-(browser)
 resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_example" {
   // (Required) Display name for the monitor
   display_name = "mymonitor"
@@ -75,10 +75,10 @@ resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_example" {
   // (Required) Website address to monitor.
   website = "https://foo.bar"
 
-  // (Required) Type of the browser. 1 - Firefox, 2 - Chrome. Default value is 1
+  // (Required) Type of the browser. 1 - Firefox, 2 - Chrome. Default value is 1.
   browser_type = 2
 
-  // (Required) Type of the browser. 83 - Firefox, 88 - Chrome. Default value is 1
+  // (Required) Version of the browser. 83 - Firefox, 88 - Chrome. Default value is 83.
   browser_version = 88
 
   // (Optional) Check interval for monitoring. Default: 1. See
