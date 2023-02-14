@@ -14,7 +14,7 @@ Use this resource to create, update and delete a web page speed monitor in Site2
 
 ```hcl
 
-// Website Monitor API doc: https://www.site24x7.com/help/api/#websocket
+// Website Monitor API doc: https://www.site24x7.com/help/api/#web-page-speed-(browser)
 resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_example" {
   // (Required) Display name for the monitor
   display_name = "mymonitor"
@@ -25,7 +25,7 @@ resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_example" {
   // (Required) Type of the browser. 1 - Firefox, 2 - Chrome. Default value is 1
   browser_type = 2
 
-  // (Required) Type of the browser. 83 - Firefox, 88 - Chrome. Default value is 1
+  // (Required) Version of the browser. 83 - Firefox, 88 - Chrome. Default value is 83
   browser_version = 88
 
   // (Optional) Check interval for monitoring. Default: 1. See
@@ -204,9 +204,6 @@ resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_example" {
 
 * `display_name` (String) Display Name for the monitor.
 * `website` (String) Website address to monitor.
-* `browser_type` (Number) Type of the browser. 1 - Firefox, 2 - Chrome. Default value is 1.
-* `browser_version` (Number) Type of the browser. 83 - Firefox, 88 - Chrome. Default value is 1.
-
 
 ### Optional
 
@@ -216,6 +213,8 @@ resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_example" {
 * `use_ipv6` (Number) Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure.
 * `website_type` (Number) Type of content the website page has. 1 - Static Website,	2 - Dynamic Website, 3 - Flash-Based Website. Default value is 1.
 * `device_type` (String) Type of the device used for running the speed test. 1 - Desktop, 2 - Mobile, 3 - Tab. Default value is "1".
+* `browser_type` (Number) Type of the browser. 1 - Firefox, 2 - Chrome. Default value is 1.
+* `browser_version` (Number) Version of the browser. 83 - Firefox, 88 - Chrome. Default value is 83.
 * `wpa_resolution` (String) Set a resolution based on your preferred device type.
 * `http_method` (String) HTTP Method to be used for accessing the website. PUT, PATCH and DELETE are not supported.
 * `custom_headers` (Map of String) A Map of Header name and value.
@@ -244,4 +243,4 @@ resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_example" {
 * `third_party_service_ids` (List of String) List of Third Party Service IDs to be associated to the monitor.
 * `actions` (Map of String) Action to be performed on monitor status changes.
 
-Refer [API documentation](https://www.site24x7.com/help/api/#websocket) for more information about attributes.
+Refer [API documentation](https://www.site24x7.com/help/api/#web-page-speed-(browser)) for more information about attributes.
