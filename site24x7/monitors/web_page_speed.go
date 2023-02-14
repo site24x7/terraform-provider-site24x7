@@ -121,6 +121,12 @@ var webPageSpeedMonitorSchema = map[string]*schema.Schema{
 		Default:     1,
 		Description: "Type of the browser. 1 - Firefox, 2 - Chrome.",
 	},
+	"browser_version": {
+		Type:        schema.TypeInt,
+		Optional:    true,
+		Default:     83,
+		Description: "Type of the browser. 83 - Firefox, 88 - Chrome.",
+	},
 	"device_type": {
 		Type:        schema.TypeString,
 		Optional:    true,
@@ -474,6 +480,7 @@ func resourceDataToWebPageSpeedMonitor(d *schema.ResourceData, client site24x7.C
 		UseIPV6:        d.Get("use_ipv6").(bool),
 		WebsiteType:    d.Get("website_type").(int),
 		BrowserType:    d.Get("browser_type").(int),
+		BrowserVersion: d.Get("browser_version").(int),
 		DeviceType:     d.Get("device_type").(string),
 		WPAResolution:  d.Get("wpa_resolution").(string),
 		// HTTP Configuration
@@ -562,6 +569,7 @@ func updateWebPageSpeedMonitorResourceData(d *schema.ResourceData, monitor *api.
 	d.Set("use_ipv6", monitor.UseIPV6)
 	d.Set("website_type", monitor.WebsiteType)
 	d.Set("browser_type", monitor.BrowserType)
+	d.Set("browser_version", monitor.BrowserVersion)
 	d.Set("device_type", monitor.DeviceType)
 	d.Set("wpa_resolution", monitor.WPAResolution)
 	// HTTP Configuration

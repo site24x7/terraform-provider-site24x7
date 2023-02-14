@@ -22,6 +22,12 @@ resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_example" {
   // (Required) Website address to monitor.
   website = "https://foo.bar"
 
+  // (Required) Type of the browser. 1 - Firefox, 2 - Chrome. Default value is 1
+  browser_type = 2
+
+  // (Required) Type of the browser. 83 - Firefox, 88 - Chrome. Default value is 1
+  browser_version = 88
+
   // (Optional) Check interval for monitoring. Default: 1. See
   // https://www.site24x7.com/help/api/#check-interval for all supported
   // values.
@@ -35,9 +41,6 @@ resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_example" {
 
   // (Optional) Type of content the website page has. 1 - Static Website,	2 - Dynamic Website, 3 - Flash-Based Website. Default value is 1.
   website_type = 2
-
-  // (Optional) Type of the browser. 1 - Firefox, 2 - Chrome. Default value is 1
-  browser_type = 2
 
   // (Optional) Type of the device used for running the speed test. 1 - Desktop, 2 - Mobile, 3 - Tab. Default value is "1".
   device_type = "1"
@@ -201,6 +204,9 @@ resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_example" {
 
 * `display_name` (String) Display Name for the monitor.
 * `website` (String) Website address to monitor.
+* `browser_type` (Number) Type of the browser. 1 - Firefox, 2 - Chrome. Default value is 1.
+* `browser_version` (Number) Type of the browser. 83 - Firefox, 88 - Chrome. Default value is 1.
+
 
 ### Optional
 
@@ -209,7 +215,6 @@ resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_example" {
 * `timeout` (Number) Timeout for connecting to website. Default value is 10. Range 1 - 45.
 * `use_ipv6` (Number) Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure.
 * `website_type` (Number) Type of content the website page has. 1 - Static Website,	2 - Dynamic Website, 3 - Flash-Based Website. Default value is 1.
-* `browser_type` (Number) Type of the browser. 1 - Firefox, 2 - Chrome. Default value is 1.
 * `device_type` (String) Type of the device used for running the speed test. 1 - Desktop, 2 - Mobile, 3 - Tab. Default value is "1".
 * `wpa_resolution` (String) Set a resolution based on your preferred device type.
 * `http_method` (String) HTTP Method to be used for accessing the website. PUT, PATCH and DELETE are not supported.
