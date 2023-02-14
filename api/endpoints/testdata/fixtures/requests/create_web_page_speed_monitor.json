@@ -3,6 +3,7 @@
   "type": "HOMEPAGE",
   "website_type":1,
   "browser_type":1,
+  "browser_version":83,
   "device_type":"1",
   "wpa_resolution":"1024,768",
   "use_ipv6":true,

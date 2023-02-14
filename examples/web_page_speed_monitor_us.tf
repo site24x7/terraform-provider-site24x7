@@ -75,6 +75,12 @@ resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_example" {
   // (Required) Website address to monitor.
   website = "https://foo.bar"
 
+  // (Required) Type of the browser. 1 - Firefox, 2 - Chrome. Default value is 1
+  browser_type = 2
+
+  // (Required) Type of the browser. 83 - Firefox, 88 - Chrome. Default value is 1
+  browser_version = 88
+
   // (Optional) Check interval for monitoring. Default: 1. See
   // https://www.site24x7.com/help/api/#check-interval for all supported
   // values.
@@ -88,9 +94,6 @@ resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_example" {
 
   // (Optional) Type of content the website page has. 1 - Static Website,	2 - Dynamic Website, 3 - Flash-Based Website. Default value is 1.
   website_type = 2
-
-  // (Optional) Type of the browser. 1 - Firefox, 2 - Chrome. Default value is 1
-  browser_type = 2
 
   // (Optional) Type of the device used for running the speed test. 1 - Desktop, 2 - Mobile, 3 - Tab. Default value is "1".
   device_type = "1"

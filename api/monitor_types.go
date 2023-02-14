@@ -148,6 +148,7 @@ type WebPageSpeedMonitor struct {
 	UseIPV6        bool     `json:"use_ipv6"`
 	WebsiteType    int      `json:"website_type"`
 	BrowserType    int      `json:"browser_type"`
+	BrowserVersion int      `json:"browser_version"`
 	DeviceType     string   `json:"device_type"`
 	WPAResolution  string   `json:"wpa_resolution"`
 	// HTTP Configuration
