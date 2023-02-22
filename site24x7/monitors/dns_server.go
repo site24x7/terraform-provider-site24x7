@@ -19,103 +19,48 @@ var dnsServerMonitorSchema = map[string]*schema.Schema{
 		Required:    true,
 		Description: "Display Name for the monitor.",
 	},
-	"type": {
-		Type:        schema.TypeString,
-		Optional:    true,
-		Description: "DNS",
-	},
 	"dns_host": {
 		Type:        schema.TypeString,
 		Required:    true,
-		Description: "DNS Name Server to be monitored",
-	},
-	"dns_port": {
-		Type:        schema.TypeString,
-		Optional:    true,
-		Description: "DNS Name Server to be monitored",
-	},
-	"use_ipv6": {
-		Type:        schema.TypeBool,
-		Optional:    true,
-		Description: "Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure.",
+		Description: "DNS Name Server to be monitored.",
 	},
 	"domain_name": {
 		Type:        schema.TypeString,
 		Required:    true,
 		Description: "Domain name to be resolved.",
 	},
+	"dns_port": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Default:     "53",
+		Description: "Port for DNS access. Default value: 53.",
+	},
 	"check_frequency": {
 		Type:        schema.TypeString,
-		Required:    true,
-		Description: "Check interval for monitoring. See https://www.site24x7.com/help/api/#check_interval.",
+		Optional:    true,
+		Default:     "5",
+		Description: "Interval at which your DNS server has to be monitored. Default value is 5 minutes.",
 	},
 	"timeout": {
 		Type:        schema.TypeInt,
-		Required:    true,
-		Description: "Timeout for connecting to website. Default value is 10. Range 1 - 45.",
+		Optional:    true,
+		Default:     10,
+		Description: "Timeout for connecting to your DNS server. Default value is 10. Range 1 - 45.",
+	},
+	"use_ipv6": {
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Description: "Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure.",
 	},
 	"deep_discovery": {
 		Type:        schema.TypeBool,
 		Optional:    true,
 		Description: "Enable this attribute to auto discover and set up monitoring for all the related resources for the domain_name.",
 	},
-
-	// Configuration Profiles
-	"location_profile_id": {
-		Type:     schema.TypeString,
-		Optional: true,
-		// Computed:    true,
-		Description: "Location profile to be associated with the monitor.",
-	},
-	"location_profile_name": {
-		Type:        schema.TypeString,
-		Required:    true,
-		Description: "Name of the location profile to be associated with the monitor.",
-	},
-	"notification_profile_id": {
-		Type:        schema.TypeString,
-		Optional:    true,
-		Computed:    true,
-		Description: "Notification profile to be associated with the monitor.",
-	},
-	"notification_profile_name": {
-		Type:        schema.TypeString,
-		Required:    true,
-		Description: "Name of the notification profile to be associated with the monitor.",
-	},
-	"threshold_profile_id": {
-		Type:        schema.TypeString,
-		Optional:    true,
-		Description: "Threshold profile to be associated with the monitor.",
-	},
-	"user_group_ids": {
-		Type: schema.TypeList,
-		Elem: &schema.Schema{
-			Type: schema.TypeString,
-		},
-		Optional:    true,
-		Computed:    true,
-		Description: "List of user groups to be notified when the monitor is down.",
-	},
-	"user_group_names": {
-		Type: schema.TypeList,
-		Elem: &schema.Schema{
-			Type: schema.TypeString,
-		},
-		Required:    true,
-		Description: "Name of the user groups to be associated with the monitor.",
-	},
-	"monitor_groups": {
-		Type: schema.TypeList,
-		Elem: &schema.Schema{
-			Type: schema.TypeString,
-		},
-		Optional:    true,
-		Description: "List of monitor groups to which the monitor has to be associated.",
-	},
 	"lookup_type": {
 		Type:        schema.TypeInt,
-		Required:    true,
+		Optional:    true,
+		Default:     1,
 		Description: "DNS Server Lookup Type Constants. See https://www.site24x7.com/help/api/#dns_lookup_type",
 	},
 	"dnssec": {
@@ -123,20 +68,6 @@ var dnsServerMonitorSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Description: "Pass dnssec parameter to enable Site24x7 to validate DNS responses.",
 		Default:     false,
-	},
-	"dependency_resource_ids": {
-		Type: schema.TypeSet,
-		Elem: &schema.Schema{
-			Type: schema.TypeString,
-		},
-		Optional:    true,
-		Description: "List of dependent resource IDs. Suppress alert when dependent monitor(s) is down.",
-	},
-	"actions": {
-		Type:        schema.TypeMap,
-		Optional:    true,
-		Elem:        schema.TypeString,
-		Description: "Action to be performed on monitor status changes.",
 	},
 	"search_config": {
 		Type:     schema.TypeSet,
@@ -247,13 +178,73 @@ var dnsServerMonitorSchema = map[string]*schema.Schema{
 		},
 		Description: "Value to be checked against resolved values. Choose a JSON Format based on your configured lookup type. See https://www.site24x7.com/help/api/#constants for details",
 	},
-	"third_party_service_ids": {
+	"on_call_schedule_id": {
+		Type:     schema.TypeString,
+		Optional: true,
+		Description: "if user_group_ids is not choosen,	On-Call Schedule of your choice.",
+	},
+	// Configuration Profiles
+	"location_profile_id": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Computed:    true,
+		Description: "Location profile to be associated with the monitor.",
+	},
+	"location_profile_name": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Computed:    true,
+		Description: "Name of the location profile to be associated with the monitor.",
+	},
+	"notification_profile_id": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Computed:    true,
+		Description: "Notification profile to be associated with the monitor.",
+	},
+	"notification_profile_name": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Name of the notification profile to be associated with the monitor.",
+	},
+	"threshold_profile_id": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Computed:    true,
+		Description: "Threshold profile to be associated with the monitor.",
+	},
+	"monitor_groups": {
 		Type: schema.TypeList,
 		Elem: &schema.Schema{
 			Type: schema.TypeString,
 		},
 		Optional:    true,
-		Description: "List of Third Party Service IDs to be associated to the monitor.",
+		Description: "List of monitor groups to which the monitor has to be associated.",
+	},
+	"dependency_resource_ids": {
+		Type: schema.TypeSet,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Description: "List of dependent resource IDs. Suppress alert when dependent monitor(s) is down.",
+	},
+	"user_group_ids": {
+		Type: schema.TypeList,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Computed:    true,
+		Description: "List of user groups to be notified when the monitor is down.",
+	},
+	"user_group_names": {
+		Type: schema.TypeList,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Description: "Name of the user groups to be associated with the monitor.",
 	},
 	"tag_ids": {
 		Type: schema.TypeSet,
@@ -272,10 +263,19 @@ var dnsServerMonitorSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Description: "List of tag names to be associated to the monitor.",
 	},
-	"on_call_schedule_id": {
-		Type:        schema.TypeString,
+	"third_party_service_ids": {
+		Type: schema.TypeList,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
 		Optional:    true,
-		Description: "if user_group_ids is not choosen,	On-Call Schedule of your choice.",
+		Description: "List of Third Party Service IDs to be associated to the monitor.",
+	},
+	"actions": {
+		Type:        schema.TypeMap,
+		Optional:    true,
+		Elem:        schema.TypeString,
+		Description: "Action to be performed on monitor status changes.",
 	},
 }
 
@@ -525,18 +525,18 @@ func resourceDataToDNSServerMonitor(d *schema.ResourceData, client site24x7.Clie
 			}
 		case "CAA":
 			searchConfigItems[k] = api.SearchConfig{
-				Tag:  v.(map[string]interface{})["tag"].(string),
-				CertAuth:  v.(map[string]interface{})["cert_auth"].(string),
-				Flg:   v.(map[string]interface{})["flg"].(int),
-				TTLO: v.(map[string]interface{})["ttlo"].(int),
-				TTL:  v.(map[string]interface{})["ttl"].(int),
+				Tag:      v.(map[string]interface{})["tag"].(string),
+				CertAuth: v.(map[string]interface{})["cert_auth"].(string),
+				Flg:      v.(map[string]interface{})["flg"].(int),
+				TTLO:     v.(map[string]interface{})["ttlo"].(int),
+				TTL:      v.(map[string]interface{})["ttl"].(int),
 			}
 		case "DS":
 			searchConfigItems[k] = api.SearchConfig{
-				Kid:   v.(map[string]interface{})["kid"].(int),
-				Kalg:  v.(map[string]interface{})["kalg"].(int),
-				Halg:  v.(map[string]interface{})["halg"].(int),
-				Hash:  v.(map[string]interface{})["hash"].(string),
+				Kid:  v.(map[string]interface{})["kid"].(int),
+				Kalg: v.(map[string]interface{})["kalg"].(int),
+				Halg: v.(map[string]interface{})["halg"].(int),
+				Hash: v.(map[string]interface{})["hash"].(string),
 				TTLO: v.(map[string]interface{})["ttlo"].(int),
 				TTL:  v.(map[string]interface{})["ttl"].(int),
 			}
@@ -563,7 +563,7 @@ func resourceDataToDNSServerMonitor(d *schema.ResourceData, client site24x7.Clie
 
 	// Threshold Profile
 	if dnsServerMonitor.ThresholdProfileID == "" {
-		profile, err := site24x7.DefaultThresholdProfile(client, api.URL)
+		profile, err := site24x7.DefaultThresholdProfile(client, api.DNS)
 		if err != nil {
 			return nil, err
 		}
@@ -597,24 +597,23 @@ func updateDNSServerMonitorResourceData(d *schema.ResourceData, monitor *api.DNS
 	d.Set("use_ipv6", monitor.UseIPV6)
 	d.Set("domain_name", monitor.DomainName)
 	d.Set("timeout", monitor.Timeout)
-	d.Set("notification_profile_id", monitor.NotificationProfileID)
-	d.Set("tag_ids", monitor.TagIDs)
-	d.Set("user_group_ids", monitor.UserGroupIDs)
+	d.Set("lookup_type", monitor.LookupType)
+	d.Set("dnssec", monitor.DNSSEC)
+	d.Set("deep_discovery", monitor.DeepDiscovery)
+	d.Set("check_frequency", monitor.CheckFrequency)
+
+	d.Set("monitor_groups", monitor.MonitorGroups)
+	d.Set("dependency_resource_ids", monitor.DependencyResourceIDs)
 	d.Set("location_profile_id", monitor.LocationProfileID)
 	d.Set("notification_profile_id", monitor.NotificationProfileID)
 	d.Set("threshold_profile_id", monitor.ThresholdProfileID)
+	d.Set("tag_ids", monitor.TagIDs)
 	d.Set("user_group_ids", monitor.UserGroupIDs)
-	d.Set("monitor_groups", monitor.MonitorGroups)
-	d.Set("dependency_resource_ids", monitor.DependencyResourceIDs)
-	d.Set("lookup_type", monitor.LookupType)
-	d.Set("dnssec", monitor.DNSSEC)
 	actions := make(map[string]interface{})
 	for _, action := range monitor.ActionIDs {
 		actions[fmt.Sprintf("%d", action.AlertType)] = action.ActionID
 	}
 	d.Set("actions", actions)
 	d.Set("third_party_service_ids", monitor.ThirdPartyServiceIDs)
-	d.Set("tag_ids", monitor.TagIDs)
-	d.Set("deep_discovery", monitor.DeepDiscovery)
-	d.Set("check_frequency", monitor.CheckFrequency)
+
 }
