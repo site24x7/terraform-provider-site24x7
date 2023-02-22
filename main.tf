@@ -4,10 +4,10 @@ terraform {
 
   required_providers {
     site24x7 = {
-      #source = "site24x7/site24x7"
-      # // Uncomment for local build
-      source  = "registry.terraform.io/site24x7/site24x7"
-      version = "1.0.0"
+      source = "site24x7/site24x7"
+      // Uncomment for local build
+      # source  = "registry.terraform.io/site24x7/site24x7"
+      # version = "1.0.0"
     }
   }
 }
@@ -88,6 +88,19 @@ resource "site24x7_website_monitor" "website_monitor_example" {
   }
   # tag_ids = [site24x7_tag.tag_us.id]
 }
+
+// DNS Server API doc: https://www.site24x7.com/help/api/#dns-server
+resource "site24x7_dns_server_monitor" "dns_monitor_basic" {
+  // (Required) Name for the monitor.
+  display_name              = "Nowatt basic DNS monitor - Terraform"
+  
+  // (Required) DNS Name Server to be monitored
+  dns_host                  = "185.43.51.84"
+  
+  // (Required) Domain name to be resolved.
+  domain_name               = "www.nowatt.com"
+}
+
 
 // Web Page Speed(Browser) Monitor API doc: https://www.site24x7.com/help/api/#web-page-speed-(browser)
 resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_basic" {

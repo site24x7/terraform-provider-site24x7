@@ -521,30 +521,32 @@ func (heartbeatMonitor *HeartbeatMonitor) String() string {
 
 // Denotes the DNS Server monitor resource in Site24x7.
 type DNSServerMonitor struct {
-	_                     struct{}       `type:"structure"` // Enforces key based initialization.
-	MonitorID             string         `json:"monitor_id,omitempty"`
-	DisplayName           string         `json:"display_name,omitempty"`
-	Type                  string         `json:"type,omitempty"`
-	DNSHost               string         `json:"dns_host,omitempty"`
-	DNSPort               string         `json:"dns_port,omitempty"`
-	UseIPV6               bool           `json:"use_ipv6,omitempty"`
-	DomainName            string         `json:"domain_name,omitempty"`
-	CheckFrequency        string         `json:"check_frequency,omitempty"`
-	Timeout               int            `json:"timeout,omitempty"`
-	LocationProfileID     string         `json:"location_profile_id,omitempty"`
-	NotificationProfileID string         `json:"notification_profile_id,omitempty"`
-	ThresholdProfileID    string         `json:"threshold_profile_id,omitempty"`
-	UserGroupIDs          []string       `json:"user_group_ids,omitempty"`
-	OnCallScheduleID      string         `json:"on_call_schedule_id,omitempty"`
-	MonitorGroups         []string       `json:"monitor_groups,omitempty"`
-	DependencyResourceIDs []string       `json:"dependency_resource_ids,omitempty"`
-	LookupType            int            `json:"lookup_type,omitempty"`
-	DNSSEC                bool           `json:"dnssec,omitempty"`
-	ActionIDs             []ActionRef    `json:"action_ids,omitempty"`
-	ThirdPartyServiceIDs  []string       `json:"third_party_services,omitempty"`
-	TagIDs                []string       `json:"tag_ids,omitempty"`
-	DeepDiscovery         bool           `json:"deep_discovery,omitempty"`
-	SearchConfig          []SearchConfig `json:"search_config,omitempty"`
+	_                struct{}       `type:"structure"` // Enforces key based initialization.
+	MonitorID        string         `json:"monitor_id,omitempty"`
+	DisplayName      string         `json:"display_name"`
+	DomainName       string         `json:"domain_name"`
+	Type             string         `json:"type"`
+	DNSHost          string         `json:"dns_host"`
+	DNSPort          string         `json:"dns_port"`
+	UseIPV6          bool           `json:"use_ipv6"`
+	CheckFrequency   string         `json:"check_frequency"`
+	Timeout          int            `json:"timeout"`
+	LookupType       int            `json:"lookup_type,omitempty"`
+	DNSSEC           bool           `json:"dnssec,omitempty"`
+	DeepDiscovery    bool           `json:"deep_discovery,omitempty"`
+	SearchConfig     []SearchConfig `json:"search_config,omitempty"`
+	OnCallScheduleID string         `json:"on_call_schedule_id,omitempty"`
+
+	// Configuration Profiles
+	LocationProfileID     string      `json:"location_profile_id"`
+	NotificationProfileID string      `json:"notification_profile_id"`
+	ThresholdProfileID    string      `json:"threshold_profile_id"`
+	MonitorGroups         []string    `json:"monitor_groups,omitempty"`
+	DependencyResourceIDs []string    `json:"dependency_resource_ids,omitempty"`
+	UserGroupIDs          []string    `json:"user_group_ids,omitempty"`
+	TagIDs                []string    `json:"tag_ids,omitempty"`
+	ThirdPartyServiceIDs  []string    `json:"third_party_services,omitempty"`
+	ActionIDs             []ActionRef `json:"action_ids,omitempty"`
 }
 
 func (DNSServerMonitor *DNSServerMonitor) SetLocationProfileID(locationProfileID string) {

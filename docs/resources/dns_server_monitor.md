@@ -1,49 +1,18 @@
-terraform {
-  # Require Terraform version 0.15.x (recommended)
-  required_version = "~> 0.15.0"
+---
+layout: "site24x7"
+page_title: "Site24x7: site24x7_dns_server_monitor"
+sidebar_current: "docs-site24x7-resource-dns-server-monitor"
+description: |-
+  Create and manage a DNS server monitor in Site24x7.
+---
 
-  required_providers {
-    site24x7 = {
-      source  = "site24x7/site24x7"
-      # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      
-    }
-  }
-}
+# Resource: site24x7\_dns\_server\_monitor
 
-// Authentication API doc - https://www.site24x7.com/help/api/#authentication
-provider "site24x7" {
-	// (Required) The client ID will be looked up in the SITE24X7_OAUTH2_CLIENT_ID
-	// environment variable if the attribute is empty or omitted.
-	oauth2_client_id = "<SITE24X7_OAUTH2_CLIENT_ID>"
-  
-	// (Required) The client secret will be looked up in the SITE24X7_OAUTH2_CLIENT_SECRET
-	// environment variable if the attribute is empty or omitted.
-	oauth2_client_secret = "<SITE24X7_OAUTH2_CLIENT_SECRET>"
-  
-	// (Required) The refresh token will be looked up in the SITE24X7_OAUTH2_REFRESH_TOKEN
-	// environment variable if the attribute is empty or omitted.
-	oauth2_refresh_token = "<SITE24X7_OAUTH2_REFRESH_TOKEN>"
-  
-	// (Required) Specify the data center from which you have obtained your
-	// OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN).
-	data_center = "US"
-	
-	// (Optional) ZAAID of the customer under a MSP or BU
-	zaaid = "1234"
-  
-	// (Optional) The minimum time to wait in seconds before retrying failed Site24x7 API requests.
-	retry_min_wait = 1
-  
-	// (Optional) The maximum time to wait in seconds before retrying failed Site24x7 API
-	// requests. This is the upper limit for the wait duration with exponential
-	// backoff.
-	retry_max_wait = 30
-  
-	// (Optional) Maximum number of Site24x7 API request retries to perform until giving up.
-	max_retries = 4
-  
-}
+Use this resource to create, update and delete a DNS server monitor in Site24x7.
+
+## Example Usage
+
+```hcl
 
 // DNS Server API doc: https://www.site24x7.com/help/api/#dns-server
 resource "site24x7_dns_server_monitor" "dns_monitor_basic" {
@@ -190,3 +159,40 @@ resource "site24x7_dns_server_monitor" "dns_server_monitor" {
   }
 }
 
+```
+
+## Attributes Reference
+
+### Required
+
+* `display_name` (String) Display Name for the monitor.
+* `dns_host` (String) DNS Name Server to be monitored.
+* `domain_name` (String) Domain name to be resolved.
+
+### Optional
+
+* `id` (String) The ID of this resource.
+* `dns_port` (String) Port for DNS access. Default value: 53.
+* `check_frequency` (String) Interval at which your DNS server has to be monitored. Default value is 5 minutes.
+* `timeout` (Number) Timeout for connecting to your DNS server. Default value is 10. Range 1 - 45.
+* `use_ipv6` (Boolean) Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure.
+* `deep_discovery` (Boolean) Enable this attribute to auto discover and set up monitoring for all the related resources for the domain_name.
+* `lookup_type` (Number) Lookup Types supported: 1 - A, 255 - ALL, 28 - AAAA, 2 - NS, 15 - MX, 5 - CNAME, 6 - SOA, 12 - PTR, 33 - SRV, 16 - TXT, 48 - DNSKEY, 257 - CAA, 43 - DS. DNS Server Lookup Type Constants. See https://www.site24x7.com/help/api/#dns_lookup_type
+* `dnssec` (Boolean) Pass dnssec parameter to enable Site24x7 to validate DNS responses.
+* `notification_profile_id` (String) Notification profile to be associated with the monitor. Either specify notification_profile_id or notification_profile_name. If notification_profile_id and notification_profile_name are omitted, the first profile returned by the /api/notification_profiles endpoint will be used.
+* `notification_profile_name` (String) Name of the notification profile to be associated with the monitor. Profile name matching works for both exact and partial match.
+* `threshold_profile_id` (String) Threshold profile to be associated with the monitor.
+* `location_profile_id` (String) Location profile to be associated with the monitor.
+* `location_profile_name` (String) Name of the location profile to be associated with the monitor.
+* `monitor_groups` (List of String) List of monitor groups to which the monitor has to be associated.
+* `dependency_resource_ids` (List of String) List of dependent resource IDs. Suppress alert when dependent monitor(s) is down.
+* `user_group_ids` (List of String) List of user groups to be notified when the monitor is down. Either specify user_group_ids or user_group_names. If omitted, the first user group returned by the /api/user_groups endpoint will be used.
+* `user_group_names` (List of String) List of user group names to be notified when the monitor is down. Either specify user_group_ids or user_group_names. If omitted, the first user group returned by the /api/user_groups endpoint will be used.
+* `on_call_schedule_id` (String) Mandatory, if the user group ID is not given. On-Call Schedule ID of your choice.
+* `tag_ids` (List of String) List of tags IDs to be associated to the monitor. Either specify tag_ids or tag_names.
+* `tag_names` (List of String) List of tag names to be associated to the monitor. Tag name matching works for both exact and partial match. Either specify tag_ids or tag_names.
+* `third_party_service_ids` (List of String) List of Third Party Service IDs to be associated to the monitor.
+* `actions` (Map of String) Action to be performed on monitor status changes.
+
+
+Refer [API documentation](https://www.site24x7.com/help/api/#dns-server) for more information about attributes.
