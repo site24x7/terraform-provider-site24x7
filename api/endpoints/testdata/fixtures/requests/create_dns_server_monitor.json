@@ -1,11 +1,13 @@
 {
   "display_name": "DNS Server Impl Test",
+  "type": "DNS",
   "dns_host": "8.8.8.8",
   "dns_port": "53",
   "lookup_type": 1,
   "domain_name": "www.example.com",
   "check_frequency": "5",
   "timeout": 10,
+  "use_ipv6": false,
   "threshold_profile_id": "123412341234123414",
   "location_profile_id": "123412341234123412",
   "notification_profile_id": "123412341234123413",
