@@ -1,3 +1,1 @@
 #!/bin/bash
-terraform import site24x7_server_monitor.SERVER_123456000025786003 123456000025786003
-terraform import site24x7_server_monitor.SERVER_123456000027570003 123456000027570003

@@ -271,6 +271,34 @@ type Location struct {
 	Continent   string   `json:"continent"`
 }
 
+// Setup other users who can login to Site24x7 and receive instant notifications about outages.
+type User struct {
+	_                   struct{}               `type:"structure"` // Enforces key based initialization.
+	ID                  string                 `json:"user_id,omitempty"`
+	DisplayName         string                 `json:"display_name"`
+	Email               string                 `json:"email_address"`
+	SelectionType       ResourceType           `json:"selection_type"`
+	UserRole            int                    `json:"user_role"`
+	JobTitle            int                    `json:"job_title,omitempty"`
+	MobileSettings      map[string]interface{} `json:"mobile_settings,omitempty"`
+	AlertSettings       map[string]interface{} `json:"alert_settings"`
+	TwitterSettings     map[string]interface{} `json:"twitter_settings,omitempty"`
+	IsEditAllowed       bool                   `json:"is_edit_allowed,omitempty"`
+	IsClientPortalUser  bool                   `json:"is_client_portal_user,omitempty"`
+	IsAccountContact    bool                   `json:"is_account_contact,omitempty"`
+	IsContact           bool                   `json:"is_contact,omitempty"`
+	IsInvited           bool                   `json:"is_invited,omitempty"`
+	SubscribeNewsletter bool                   `json:"subscribe_newsletter,omitempty"`
+	UserGroupIDs        []string               `json:"user_groups,omitempty"`
+	NotificationMedium  []int                  `json:"notify_medium"`
+	Monitors            []string               `json:"monitors,omitempty"`
+	MonitorGroups       []string               `json:"monitor_groups,omitempty"`
+}
+
+func (user *User) String() string {
+	return ToString(user)
+}
+
 // UserGroup help organize individuals so that they receive alerts and reports based on their responsibility.
 type UserGroup struct {
 	_                struct{} `type:"structure"` // Enforces key based initialization.

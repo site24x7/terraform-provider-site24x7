@@ -93,6 +93,7 @@ type Client interface {
 	AmazonMonitors() monitors.AmazonMonitors
 	NotificationProfiles() endpoints.NotificationProfiles
 	ThresholdProfiles() endpoints.ThresholdProfiles
+	Users() endpoints.Users
 	UserGroups() endpoints.UserGroups
 	URLActions() endpoints.URLActions
 	ThirdPartyIntegrations() integration.ThirdpartyIntegrations
@@ -231,6 +232,11 @@ func (c *client) NotificationProfiles() endpoints.NotificationProfiles {
 // ThresholdProfiles implements Client.
 func (c *client) ThresholdProfiles() endpoints.ThresholdProfiles {
 	return endpoints.NewThresholdProfiles(c.restClient)
+}
+
+// UserGroups implements Client.
+func (c *client) Users() endpoints.Users {
+	return endpoints.NewUsers(c.restClient)
 }
 
 // UserGroups implements Client.

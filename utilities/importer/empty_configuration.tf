@@ -4,10 +4,10 @@ terraform {
 
   required_providers {
     site24x7 = {
-      # source  = "site24x7/site24x7"
-      # # version = "1.0.6"
-      source  = "registry.terraform.io/site24x7/site24x7"
-      version = "1.0.0"
+      source  = "site24x7/site24x7"
+      # version = "1.0.6"
+      # source  = "registry.terraform.io/site24x7/site24x7"
+      # version = "1.0.0"
     }
   }
 }
@@ -46,8 +46,3 @@ provider "site24x7" {
 
 }
 
-resource "site24x7_server_monitor" "SERVER_123456000025786003" {
-}
-
-resource "site24x7_server_monitor" "SERVER_123456000027570003" {
-}
