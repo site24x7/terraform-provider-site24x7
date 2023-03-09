@@ -1,0 +1,16 @@
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "user_id":"897654345678",
+    "display_name": "Admin User",
+    "user_groups": [
+      "87654643",
+      "32434567890"
+    ],
+    "email_address":  "admin@test.com",
+    "notify_medium":[1],
+    "selection_type":0,
+    "user_role":1
+  }
+}

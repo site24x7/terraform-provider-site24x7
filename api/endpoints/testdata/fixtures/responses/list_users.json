@@ -1,0 +1,30 @@
+{
+  "code":0,
+  "message":"success",
+  "data":[
+    {
+      "display_name":"Tester",
+      "user_id":"765432344567878",
+      "user_groups": [
+        "654367756756",
+				"232423435455"
+      ],
+      "email_address":  "admin@test.com",
+      "notify_medium":[1],
+      "selection_type":0,
+      "user_role":1
+      },
+    {
+      "display_name":"misc",
+      "user_id":"797300000123437",
+      "email_address":  "admin@test.com",
+      "notify_medium":[1],
+      "selection_type":0,
+      "user_role":1,
+      "user_groups":[
+        "79730000001337083",
+        "12340000005000031"
+      ]
+    }
+  ]
+}

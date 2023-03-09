@@ -4,10 +4,10 @@ terraform {
 
   required_providers {
     site24x7 = {
-      source = "site24x7/site24x7"
+      # source = "site24x7/site24x7"
       // Uncomment for local build
-      # source  = "registry.terraform.io/site24x7/site24x7"
-      # version = "1.0.0"
+      source  = "registry.terraform.io/site24x7/site24x7"
+      version = "1.0.0"
     }
   }
 }
@@ -123,3 +123,4 @@ resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_basic" {
   location_profile_name = "North America"
 
 }
+

@@ -1,0 +1,28 @@
+{
+  "display_name": "FooUser",
+  "email_address":  "admin@test.com",
+  "notify_medium":[1],
+  "selection_type":0,
+  "user_role":1,
+  "user_groups": [
+    "123",
+    "987654",
+    "987"
+  ],
+  "alert_settings": {
+    "email_format": 1,
+    "critical": [
+      1
+    ],
+    "trouble": [
+      1
+    ],
+    "up": [
+      1
+    ],
+    "down": [
+      1
+    ]
+  }
+}
+

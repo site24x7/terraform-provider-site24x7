@@ -28,6 +28,7 @@ type Client struct {
 	FakeNotificationProfiles   *fake.NotificationProfiles
 	FakeThresholdProfiles      *fake.ThresholdProfiles
 	FakeUserGroups             *fake.UserGroups
+	FakeUsers                  *fake.Users
 	FakeOpsgenieIntegration    *fake.OpsgenieIntegration
 	FakeSlackIntegration       *fake.SlackIntegration
 	FakeWebhookIntegration     *fake.WebhookIntegration
@@ -62,6 +63,7 @@ func NewClient() *Client {
 		FakeNotificationProfiles:   &fake.NotificationProfiles{},
 		FakeThresholdProfiles:      &fake.ThresholdProfiles{},
 		FakeUserGroups:             &fake.UserGroups{},
+		FakeUsers:                  &fake.Users{},
 		FakeOpsgenieIntegration:    &fake.OpsgenieIntegration{},
 		FakeSlackIntegration:       &fake.SlackIntegration{},
 		FakePagerDutyIntegration:   &fake.PagerDutyIntegration{},
@@ -163,6 +165,11 @@ func (c *Client) ThresholdProfiles() endpoints.ThresholdProfiles {
 // UserGroups implements Client.
 func (c *Client) UserGroups() endpoints.UserGroups {
 	return c.FakeUserGroups
+}
+
+// Users implements Client.
+func (c *Client) Users() endpoints.Users {
+	return c.FakeUsers
 }
 
 // OpsgenieIntegration implements Client.

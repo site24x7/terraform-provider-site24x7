@@ -90,19 +90,22 @@ class Site24x7Importer:
 	def import_monitors(self):
 		terraform_conf_file_data = FileUtil.read(EmptyConfigurationFile)
 		for monitorID in self.monitors_to_import:
-			resourceName = self.resource_type_in_site24x7+"_"+monitorID
-			resource_name_vs_details_in_state = TfState.get_resource_name_vs_details()
-			if resourceName not in resource_name_vs_details_in_state:
-				logging.info("Importing the resource : "+resourceName)
-				terraform_conf_file_data
-				empty_conf_to_append = self.resource_name_vs_empty_configuration[resourceName]
-				# Check whether the empty configuration is already present in the file.
-				if empty_conf_to_append not in terraform_conf_file_data:
-					FileUtil.append(EmptyConfigurationFile, empty_conf_to_append)
-				# Execute the import command
-				Util.execute_command(self.resource_name_vs_import_commands[resourceName])
-			else:
-				logging.info("Resource : "+resourceName+" already imported")
+			try:
+				resourceName = self.resource_type_in_site24x7+"_"+monitorID
+				resource_name_vs_details_in_state = TfState.get_resource_name_vs_details()
+				if resourceName not in resource_name_vs_details_in_state:
+					logging.info("Importing the resource : "+resourceName)
+					terraform_conf_file_data
+					empty_conf_to_append = self.resource_name_vs_empty_configuration[resourceName]
+					# Check whether the empty configuration is already present in the file.
+					if empty_conf_to_append not in terraform_conf_file_data:
+						FileUtil.append(EmptyConfigurationFile, empty_conf_to_append)
+					# Execute the import command
+					Util.execute_command(self.resource_name_vs_import_commands[resourceName])
+				else:
+					logging.info("Resource : "+resourceName+" already imported")
+			except:
+				logging.info("Exception while importing the monitor : "+monitorID)
 		# Parse the state file to populate resource_name_vs_attributes
 		TfState.parse()
 
