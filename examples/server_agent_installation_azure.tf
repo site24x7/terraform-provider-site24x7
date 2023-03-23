@@ -95,7 +95,7 @@ resource "azurerm_virtual_machine" "example" {
     environment = "staging"
   }
 }
-// Extension block to define the extention installation
+// Extension block to define the site24x7 azure VM extention installation
 resource "azurerm_virtual_machine_extension" "example" {
   name                 = "Site24x7.site24x7-linuxserver-agent-linux"
   virtual_machine_id   = azurerm_virtual_machine.example.id
