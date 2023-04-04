@@ -79,7 +79,7 @@ type WebsiteMonitor struct {
 	UseNameServer             bool     `json:"use_name_server,omitempty"`
 	ForcedIPs                 string   `json:"forced_ips,omitempty"`
 	UpStatusCodes             string   `json:"up_status_codes,omitempty"`
-	FollowRedirect            bool     `json:"follow_redirect"`
+	FollowHTTPRedirection     bool     `json:"follow_redirect"`
 	SSLProtocol               string   `json:"ssl_protocol,omitempty"`
 	HTTPProtocol              string   `json:"http_protocol,omitempty"`
 	UseAlpn                   bool     `json:"use_alpn"`

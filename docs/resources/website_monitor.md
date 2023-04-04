@@ -163,6 +163,9 @@ resource "site24x7_website_monitor" "website_monitor" {
   // (Optional) Provide a comma-separated list of HTTP status codes that indicate a successful response. You can specify individual status codes, as well as ranges separated with a colon. Default: ""
   up_status_codes = "200,404"
 
+  // (Optional) Enter true to follow up to 10 HTTP redirection responses or false not to follow HTTP redirections. Default value is true.
+  follow_http_redirection = false
+
   // (Optional) HTTP Method to be used for accessing the website. Default value is 'G'. 'G' denotes GET, 'P' denotes POST and 'H' denotes HEAD. PUT, PATCH and DELETE are not supported.
   // See https://www.site24x7.com/help/api/#http_methods for allowed values.
   http_method = "P"
@@ -223,6 +226,7 @@ resource "site24x7_website_monitor" "website_monitor" {
 * `use_name_server` (Boolean) Resolve the IP address using Domain Name Server.
 * `forced_ips` (String) Provide the domain name or IP addresses to be used for monitoring instead of using the IPs resolved from the given URL.
 * `up_status_codes` (String) Provide a comma-separated list of HTTP status codes that indicate a successful response. You can specify individual status codes, as well as ranges separated with a colon.
+* `follow_http_redirection` (String) Enter true to follow up to 10 HTTP redirection responses or false not to follow HTTP redirections. Default value is true.
 * `ssl_protocol` (String) Specify the version of the SSL protocol. If you are not sure about the version, use Auto.
 * `http_protocol` (String) Specify the version of the HTTP protocol. Default value is H1.1.
 * `use_alpn` (Boolean) Enable ALPN to send supported protocols as part of the TLS handshake.
