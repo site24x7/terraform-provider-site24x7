@@ -24,6 +24,7 @@ import (
 // 	},
 // 	"threshold_profile_id": "123456000000815001",
 // 	"type": "URL",
+//	"follow_redirect": true,
 // 	"display_name": "google",
 // 	"user_group_ids": [
 // 	"123456000000025005"
@@ -227,6 +228,12 @@ var websiteMonitorSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Default:     "",
 		Description: "Provide a comma-separated list of HTTP status codes that indicate a successful response. You can specify individual status codes, as well as ranges separated with a colon.",
+	},
+	"follow_redirect": {
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Default:     true,
+		Description: "Enter true to follow up to 10 HTTP redirection responses or false not to follow HTTP redirections.",
 	},
 	"ssl_protocol": {
 		Type:        schema.TypeString,
@@ -505,6 +512,7 @@ func resourceDataToWebsiteMonitor(d *schema.ResourceData, client site24x7.Client
 	SSLProtocol               string   `json:"ssl_protocol,omitempty"`
 	HTTPProtocol              string   `json:"http_protocol,omitempty"`
 	UseAlpn                   bool     `json:"use_alpn"`
+	FollowRedirects           bool     `json:"follow_redirects"`
 	*/
 	websiteMonitor.HTTPMethod = d.Get("http_method").(string)
 	websiteMonitor.RequestContentType = d.Get("request_content_type").(string)
@@ -532,6 +540,7 @@ func resourceDataToWebsiteMonitor(d *schema.ResourceData, client site24x7.Client
 	websiteMonitor.SSLProtocol = d.Get("ssl_protocol").(string)
 	websiteMonitor.HTTPProtocol = d.Get("http_protocol").(string)
 	websiteMonitor.UseAlpn = d.Get("use_alpn").(bool)
+	websiteMonitor.FollowRedirect = d.Get("follow_redirect").(bool)
 
 	// ================================ Configuration Profiles ================================
 	var userGroupIDs []string
@@ -663,6 +672,7 @@ func updateWebsiteMonitorResourceData(d *schema.ResourceData, monitor *api.Websi
 	d.Set("ssl_protocol", monitor.SSLProtocol)
 	d.Set("http_protocol", monitor.HTTPProtocol)
 	d.Set("use_alpn", monitor.UseAlpn)
+	d.Set("follow_redirect", monitor.FollowRedirect)
 	// ================================ Content Checks ================================
 	if monitor.MatchingKeyword != nil {
 		d.Set("matching_keyword_value", monitor.MatchingKeyword.Value)
