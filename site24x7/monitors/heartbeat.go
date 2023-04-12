@@ -36,7 +36,7 @@ var HeartbeatMonitorSchema = map[string]*schema.Schema{
 		Description: "Name of the notification profile to be associated with the monitor.",
 	},
 	"monitor_groups": {
-		Type: schema.TypeList,
+		Type: schema.TypeSet,
 		Elem: &schema.Schema{
 			Type: schema.TypeString,
 		},
@@ -44,7 +44,7 @@ var HeartbeatMonitorSchema = map[string]*schema.Schema{
 		Description: "List of monitor groups to which the monitor has to be associated.",
 	},
 	"user_group_ids": {
-		Type: schema.TypeList,
+		Type: schema.TypeSet,
 		Elem: &schema.Schema{
 			Type: schema.TypeString,
 		},
@@ -78,7 +78,7 @@ var HeartbeatMonitorSchema = map[string]*schema.Schema{
 		Description: "List of tag names to be associated to the monitor.",
 	},
 	"third_party_service_ids": {
-		Type: schema.TypeList,
+		Type: schema.TypeSet,
 		Elem: &schema.Schema{
 			Type: schema.TypeString,
 		},
@@ -186,14 +186,14 @@ func heartbeatMonitorExists(d *schema.ResourceData, meta interface{}) (bool, err
 func resourceDataToHeartbeatMonitor(d *schema.ResourceData, client site24x7.Client) (*api.HeartbeatMonitor, error) {
 
 	var monitorGroups []string
-	for _, group := range d.Get("monitor_groups").([]interface{}) {
+	for _, group := range d.Get("monitor_groups").(*schema.Set).List() {
 		if group != nil {
 			monitorGroups = append(monitorGroups, group.(string))
 		}
 	}
 
 	var userGroupIDs []string
-	for _, id := range d.Get("user_group_ids").([]interface{}) {
+	for _, id := range d.Get("user_group_ids").(*schema.Set).List() {
 		if id != nil {
 			userGroupIDs = append(userGroupIDs, id.(string))
 		}
@@ -207,7 +207,7 @@ func resourceDataToHeartbeatMonitor(d *schema.ResourceData, client site24x7.Clie
 	}
 
 	var thirdPartyServiceIDs []string
-	for _, id := range d.Get("third_party_service_ids").([]interface{}) {
+	for _, id := range d.Get("third_party_service_ids").(*schema.Set).List() {
 		if id != nil {
 			thirdPartyServiceIDs = append(thirdPartyServiceIDs, id.(string))
 		}
