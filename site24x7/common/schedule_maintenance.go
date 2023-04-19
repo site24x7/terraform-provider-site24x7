@@ -53,6 +53,11 @@ var ScheduleMaintenanceSchema = map[string]*schema.Schema{
 		Required:    true,
 		Description: "Maintenance start time. Format - hh:mm",
 	},
+	"time_zone": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "The timezone to use for setting up the maintenance window",
+	},
 	"end_date": {
 		Type:        schema.TypeString,
 		Required:    true,
@@ -204,6 +209,7 @@ func resourceDataToScheduleMaintenance(d *schema.ResourceData) *api.ScheduleMain
 		DisplayName:       d.Get("display_name").(string),
 		Description:       d.Get("description").(string),
 		MaintenanceType:   3,
+		TimeZone:          d.Get("time_zone").(string),
 		StartDate:         d.Get("start_date").(string),
 		EndDate:           d.Get("end_date").(string),
 		StartTime:         d.Get("start_time").(string),
@@ -221,6 +227,7 @@ func updateScheduleMaintenanceResourceData(d *schema.ResourceData, scheduleMaint
 	d.Set("display_name", scheduleMaintenance.DisplayName)
 	d.Set("description", scheduleMaintenance.Description)
 	d.Set("start_date", scheduleMaintenance.StartDate)
+	d.Set("time_zone",scheduleMaintenance.TimeZone)
 	d.Set("end_date", scheduleMaintenance.EndDate)
 	d.Set("start_time", scheduleMaintenance.StartTime)
 	d.Set("end_time", scheduleMaintenance.EndTime)
