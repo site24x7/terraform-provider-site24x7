@@ -237,6 +237,7 @@ type ScheduleMaintenance struct {
 	Description       string       `json:"description"`
 	MaintenanceType   int          `json:"maintenance_type"`
 	StartTime         string       `json:"start_time"`
+	TimeZone          string       `json:"timezone"`
 	EndTime           string       `json:"end_time"`
 	StartDate         string       `json:"start_date"`
 	EndDate           string       `json:"end_date"`
