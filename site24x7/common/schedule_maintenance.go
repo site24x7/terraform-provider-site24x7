@@ -14,6 +14,7 @@ import (
 // 	"selection_type": 2,
 // 	"start_time": "19:41",
 // 	"end_time": "20:44",
+//  "timezone": "PST",
 // 	"perform_monitoring": true,
 // 	"display_name": "Test Schedule Maintenance",
 // 	"description": "Test Schedule Maintenance",
@@ -56,7 +57,7 @@ var ScheduleMaintenanceSchema = map[string]*schema.Schema{
 	"time_zone": {
 		Type:        schema.TypeString,
 		Optional:    true,
-		Description: "The timezone to use for setting up the maintenance window",
+		Description: "Time zone for your scheduled maintenance. Default value is your account timezone.",
 	},
 	"end_date": {
 		Type:        schema.TypeString,
@@ -227,7 +228,7 @@ func updateScheduleMaintenanceResourceData(d *schema.ResourceData, scheduleMaint
 	d.Set("display_name", scheduleMaintenance.DisplayName)
 	d.Set("description", scheduleMaintenance.Description)
 	d.Set("start_date", scheduleMaintenance.StartDate)
-	d.Set("time_zone",scheduleMaintenance.TimeZone)
+	d.Set("time_zone", scheduleMaintenance.TimeZone)
 	d.Set("end_date", scheduleMaintenance.EndDate)
 	d.Set("start_time", scheduleMaintenance.StartTime)
 	d.Set("end_time", scheduleMaintenance.EndTime)

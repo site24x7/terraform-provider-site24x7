@@ -122,7 +122,7 @@ var UserSchema = map[string]*schema.Schema{
 	},
 	"mobile_settings": {
 		Type:     schema.TypeMap,
-		Required: true,
+		Optional: true,
 		Elem: &schema.Resource{
 			Schema: map[string]*schema.Schema{
 				"country_code": {
