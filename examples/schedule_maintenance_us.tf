@@ -30,7 +30,7 @@ provider "site24x7" {
   data_center = "US"
 
   // (Optional) ZAAID of the customer under a MSP or BU
-  zaaid = "1234"
+  # zaaid = "1234"
 
   // (Optional) The minimum time to wait in seconds before retrying failed Site24x7 API requests.
   retry_min_wait = 1
@@ -61,7 +61,7 @@ resource "site24x7_schedule_maintenance" "schedule_maintenance_basic" {
   end_time = "20:44"
   // (Optional) Resource Type associated with this integration. Default value is '2'. Can take values 1|2|3. '1' denotes 'Monitor Group', '2' denotes 'Monitors', '3' denotes 'Tags'.
   selection_type = 2
-  // (Optional) TimeZone to be used when setting the schedule maintenance window.Default value is your account timezone.
+  // (Optional) Time zone for your scheduled maintenance. Default value is your account timezone.
   time_zone = "GMT"
   // (Optional) Monitors that need to be associated with the maintenance window when the selection_type = 2.
   monitors = ["123456000007534005"]

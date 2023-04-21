@@ -23,7 +23,7 @@ resource "site24x7_user" "user_basic" {
   // (Required) Email address of the user. Email verification has to be done manually.
   email_address = "jim@example.com"
 
-  // (Required) Phone number configurations to receive alerts.
+  // (Optional) Phone number configurations to receive alerts.
   mobile_settings = {
     "country_code" = "93"
     "mobile_number"= "434388234"
@@ -68,7 +68,6 @@ resource "site24x7_user" "user_basic" {
 * `display_name` (String) Name of the user.
 * `email_address` (String) Email address of the user. Email verification has to be done manually.
 * `user_role` (Number) Role assigned to the user for accessing Site24x7. Role will be updated only after the user accepts the invitation. Refer https://www.site24x7.com/help/api/#site24x7_user_constants.
-* `mobile_settings` (Map) Phone number configurations to receive alerts. {country_code: $country_code, mobile_number: $mobile_number, sms_provider_id: $sms_providers, call_provider_id: $voice_call_provider}. Refer https://www.site24x7.com/help/api/#alerting_constants
 * `notification_medium` (List of Number) Medium through which you’d wish to receive the notifications. Default value is 1. '1' denotes 'Email', '2' denotes 'SMS', '3' denotes 'Voice Call'. 
 * `down_notification_medium` (List of Number) Medium through which you’d wish to receive the Down alerts. Default value is 1. '1' denotes 'Email', '2' denotes 'SMS', '3' denotes 'Voice Call'.
 * `critical_notification_medium` (List of Number) Medium through which you’d wish to receive the Critical alerts. Default value is 1. '1' denotes 'Email', '2' denotes 'SMS', '3' denotes 'Voice Call'.
@@ -79,6 +78,7 @@ resource "site24x7_user" "user_basic" {
 ### Optional
 
 * `id` (String) The ID of this resource.
+* `mobile_settings` (Map) Phone number configurations to receive alerts. {country_code: $country_code, mobile_number: $mobile_number, sms_provider_id: $sms_providers, call_provider_id: $voice_call_provider}. Refer https://www.site24x7.com/help/api/#alerting_constants
 * `job_title` (Number) Provide your job title to be added in Site24x7. Refer https://www.site24x7.com/help/api/#job_title
 * `selection_type` (Number) Resource type associated to this user. Default value is '0'. Can take values 0|1. '0' denotes 'All Monitors', '1' denotes 'Monitor Group'. 'monitor_groups' attribute is mandatory when the 'selection_type' is '1'.
 * `monitor_groups` (List of String) List of monitor groups to which the user has access to. 'monitor_groups' attribute is mandatory when the 'selection_type' is '1'.

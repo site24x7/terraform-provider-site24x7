@@ -98,12 +98,6 @@ resource "site24x7_user" "user_example" {
   // (Required) Email address of the user. Email verification has to be done manually.
   email_address = "jim@example.com"
 
-  // (Required) Phone number configurations to receive alerts.
-  mobile_settings = {
-    "country_code" = "93"
-    "mobile_number"= "434388234"
-  }
-
   // (Required) Medium through which you’d wish to receive the notifications. Default value is 1. '1' denotes 'Email', '2' denotes 'SMS', '3' denotes 'Voice Call'.
   notification_medium = [
     1,
@@ -131,6 +125,12 @@ resource "site24x7_user" "user_example" {
   up_notification_medium = [
     1,
   ]
+
+  // (Optional) Phone number configurations to receive alerts.
+  mobile_settings = {
+    "country_code" = "93"
+    "mobile_number"= "434388234"
+  }
 
   // (Optional) Provide your job title to be added in Site24x7. Refer https://www.site24x7.com/help/api/#job_title
   job_title = 1
