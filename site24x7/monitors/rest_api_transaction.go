@@ -618,6 +618,7 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 
 			StepsDetailsItem[i] = api.StepDetails{
 				StepUrl: j.(map[string]interface{})["step_url"].(string),
+				DisplayName: v.(map[string]interface{})["display_name"].(string),
 				HTTPMethod: j.(map[string]interface{})["http_method"].(string),
 				RequestContentType: j.(map[string]interface{})["request_content_type"].(string),
 				RequestBody: j.(map[string]interface{})["request_body"].(string),
@@ -650,6 +651,7 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 		StepsItems[k]  = api.Steps{
 			DisplayName: v.(map[string]interface{})["display_name"].(string),
 			StepsDetails: StepsDetailsItem,
+			MonitorID: d.Id(),
 		}
 	}
 

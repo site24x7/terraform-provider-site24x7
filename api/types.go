@@ -82,6 +82,7 @@ type Steps struct {
 
 type StepDetails struct {
 	StepUrl 			      string				 `json:"step_url"`
+	DisplayName   			  string   	  			 `json:"display_name"`
 	// HTTP Configuration
 	Timeout 				  int					 `json:"timeout"`
 	HTTPMethod                string                 `json:"http_method"`
