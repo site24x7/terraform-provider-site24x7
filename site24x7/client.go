@@ -90,6 +90,7 @@ type Client interface {
 	HeartbeatMonitors() monitors.HeartbeatMonitors
 	ServerMonitors() monitors.ServerMonitors
 	RestApiMonitors() monitors.RestApiMonitors
+	RestApiTransactionMonitors() monitors.RestApiTransactionMonitors
 	AmazonMonitors() monitors.AmazonMonitors
 	NotificationProfiles() endpoints.NotificationProfiles
 	ThresholdProfiles() endpoints.ThresholdProfiles
@@ -207,6 +208,11 @@ func (c *client) ServerMonitors() monitors.ServerMonitors {
 // RestApiMonitors implements Client.
 func (c *client) RestApiMonitors() monitors.RestApiMonitors {
 	return monitors.NewRestApiMonitors(c.restClient)
+}
+
+// RestApiTransactionMonitors implements Client.
+func (c *client) RestApiTransactionMonitors() monitors.RestApiTransactionMonitors {
+	return monitors.NewRestApiTransactionMonitors(c.restClient)
 }
 
 // MonitorGroups implements Client.

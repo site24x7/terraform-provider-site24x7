@@ -73,6 +73,45 @@ type SearchConfig struct {
 	Hash     string `json:"hash,omitempty"`
 }
 
+
+type Steps struct {
+	DisplayName    string   `json:"display_name"`
+	StepsDetails   []StepDetails  `json:"step_details"`
+}
+
+type StepDetails struct {
+	StepUrl 			      string				 `json:"step_url"`
+	// HTTP Configuration
+	Timeout 				  int					 `json:"timeout"`
+	HTTPMethod                string                 `json:"http_method"`
+	RequestContentType        string                 `json:"request_content_type,omitempty"`
+	RequestBody               string                 `json:"request_param,omitempty"`
+	RequestHeaders            []Header               `json:"custom_headers,omitempty"`
+	GraphQL                   map[string]interface{} `json:"graphql,omitempty"`
+	UserAgent                 string                 `json:"user_agent,omitempty"`
+	AuthMethod                string                 `json:"auth_method,omitempty"`
+	AuthUser                  string                 `json:"auth_user,omitempty"`
+	AuthPass                  string                 `json:"auth_pass,omitempty"`
+	OAuth2Provider            string                 `json:"oauth2_provider,omitempty"`
+	ClientCertificatePassword string                 `json:"client_certificate_password,omitempty"`
+	JwtID                     string                 `json:"jwt_id,omitempty"`
+	UseNameServer             bool                   `json:"use_name_server"`
+	HTTPProtocol              string                 `json:"http_protocol,omitempty"`
+	SSLProtocol               string                 `json:"ssl_protocol,omitempty"`
+	UpStatusCodes             string                 `json:"up_status_codes,omitempty"`
+	UseAlpn                   bool                   `json:"use_alpn"`
+	// Content Check
+	ResponseContentType string                 `json:"response_type"`
+	MatchJSON           map[string]interface{} `json:"match_json,omitempty"`
+	JSONSchema          map[string]interface{} `json:"json_schema,omitempty"`
+	JSONSchemaCheck     bool                   `json:"json_schema_check,omitempty"`
+	MatchingKeyword     map[string]interface{} `json:"matching_keyword,omitempty"`
+	UnmatchingKeyword   map[string]interface{} `json:"unmatching_keyword,omitempty"`
+	MatchCase           bool                   `json:"match_case"`
+	MatchRegex          map[string]interface{} `json:"match_regex,omitempty"`
+	ResponseHeaders     HTTPResponseHeader     `json:"response_headers_check,omitempty"`
+}
+
 type HTTPResponseHeader struct {
 	Severity Status   `json:"severity"`
 	Value    []Header `json:"value"`

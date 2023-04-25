@@ -11,7 +11,7 @@ help:
 .PHONY: build
 build: ## build terraform-provider-site24x7
 	go build \
-		-ldflags "-s -w" \
+		-gcflags "all=-N -l" \
 		-o $(BINARY) \
 		main.go
 

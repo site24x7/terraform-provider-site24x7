@@ -22,6 +22,7 @@ Site24x7TerraformResourceVsMonitorType = {
 	"site24x7_website_monitor" : "URL",
 	"site24x7_ssl_monitor" : "SSL_CERT",
 	"site24x7_rest_api_monitor" : "RESTAPI",
+	"site24x7_rest_api_transaction_monitor" : "RESTAPISEQ",
 	"site24x7_server_monitor" : "SERVER",
 	"site24x7_tag" : "TAG",
 }
