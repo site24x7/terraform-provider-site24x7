@@ -20,50 +20,59 @@ func TestNewRestApiTransactionMonitors(t *testing.T) {
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
-				restApiMonitor := &api.RestApiMonitor{
+				restApiTransactionMonitor := &api.RestApiTransactionMonitor{
 					DisplayName:               "foo",
-					Type:                      string(api.RESTAPI),
-					Website:                   "www.test.tld",
+					Type:                      string(api.RESTAPISEQ),
 					CheckFrequency:            "5",
-					Timeout:                   10,
-					HTTPMethod:                "G",
-					HTTPProtocol:              "H1.1",
-					SSLProtocol:               "Auto",
-					UseAlpn:                   false,
-					UseIPV6:                   false,
-					RequestBody:               "req_param",
-					RequestContentType:        "JSON",
-					ResponseContentType:       "T",
-					OAuth2Provider:            "provider",
-					ClientCertificatePassword: "pass",
-					JwtID:                     "111",
 					LocationProfileID:         "456",
 					NotificationProfileID:     "789",
 					ThresholdProfileID:        "012",
-					UseNameServer:             true,
-					MatchCase:                 true,
-					UserAgent:                 "firefox",
-					MonitorGroups:             []string{"234", "567"},
-					UserGroupIDs:              []string{"123", "456"},
-					TagIDs:                    []string{"123"},
-					AuthUser:                  "username",
-					AuthPass:                  "password",
-					ResponseHeaders: api.HTTPResponseHeader{
-						Severity: api.Trouble,
-						Value: []api.Header{
-							{
-								Name:  "Accept-Encoding",
-								Value: "gzip",
-							},
-							{
-								Name:  "Cache-Control",
-								Value: "nocache",
+					Steps: [] api.Steps{
+						{
+							DisplayName: "Step 1",
+							StepsDetails: [] api.StepDetails{
+								{
+									StepUrl:                   "www.test.tld",
+									Timeout:                   10,
+									HTTPMethod:                "G",
+									HTTPProtocol:              "H1.1",
+									SSLProtocol:               "Auto",
+									UseAlpn:                   false,
+									RequestBody:               "req_param",
+									RequestContentType:        "JSON",
+									ResponseContentType:       "T",
+									OAuth2Provider:            "provider",
+									ClientCertificatePassword: "pass",
+									JwtID:                     "111",
+									UseNameServer:             true,
+									MatchCase:                 true,
+									UserAgent:                 "firefox",
+									AuthUser:                  "username",
+									AuthPass:                  "password",
+									ResponseHeaders: api.HTTPResponseHeader{
+										Severity: api.Trouble,
+										Value: []api.Header{
+											{
+												Name:  "Accept-Encoding",
+												Value: "gzip",
+											},
+											{
+												Name:  "Cache-Control",
+												Value: "nocache",
+											},
+										},
+									},
+
+								},
 							},
 						},
 					},
+					MonitorGroups:             []string{"234", "567"},
+					UserGroupIDs:              []string{"123", "456"},
+					TagIDs:                    []string{"123"},
 				}
 
-				_, err := NewRestApiMonitors(c).Create(restApiMonitor)
+				_, err := NewRestApiTransactionMonitors(c).Create(restApiTransactionMonitor)
 				require.NoError(t, err)
 			},
 		},
@@ -74,41 +83,102 @@ func TestNewRestApiTransactionMonitors(t *testing.T) {
 			StatusCode:   200,
 			ResponseBody: validation.Fixture(t, "responses/get_rest_api_monitor.json"),
 			Fn: func(t *testing.T, c rest.Client) {
-				restApiMonitor, err := NewRestApiMonitors(c).Get("897654345678")
+				restApiTransactionMonitor, err := NewRestApiTransactionMonitors(c).Get("897654345678")
 				require.NoError(t, err)
 
-				expected := &api.RestApiMonitor{
+				expected := &api.RestApiTransactionMonitor{
 					MonitorID:                 "897654345678",
 					DisplayName:               "foo",
-					Type:                      string(api.RESTAPI),
-					Website:                   "www.test.tld",
+					Type:                      string(api.RESTAPISEQ),
 					CheckFrequency:            "5",
-					Timeout:                   10,
-					HTTPMethod:                "G",
-					HTTPProtocol:              "H1.1",
-					SSLProtocol:               "Auto",
-					UseAlpn:                   false,
-					UseIPV6:                   false,
-					RequestBody:               "req_param",
-					RequestContentType:        "JSON",
-					ResponseContentType:       "T",
-					OAuth2Provider:            "provider",
-					ClientCertificatePassword: "pass",
-					JwtID:                     "111",
+					Steps: [] api.Steps{
+						{
+							DisplayName: "Step 1",
+							StepsDetails: [] api.StepDetails{
+								{
+									StepUrl:                   "www.test.tld",
+									Timeout:                   10,
+									HTTPMethod:                "G",
+									HTTPProtocol:              "H1.1",
+									SSLProtocol:               "Auto",
+									UseAlpn:                   false,
+									RequestBody:               "req_param",
+									RequestContentType:        "JSON",
+									ResponseContentType:       "T",
+									OAuth2Provider:            "provider",
+									ClientCertificatePassword: "pass",
+									JwtID:                     "111",
+									UseNameServer:             true,
+									MatchCase:                 true,
+									JSONSchemaCheck:           false,
+									UserAgent:                 "firefox",
+									AuthUser:                  "username",
+									AuthPass:                  "password",
+									ResponseHeaders: api.HTTPResponseHeader{
+										Severity: api.Trouble,
+										Value: []api.Header{
+											{
+												Name:  "Accept-Encoding",
+												Value: "gzip",
+											},
+											{
+												Name:  "Cache-Control",
+												Value: "nocache",
+											},
+										},
+									},
+
+								},
+							},
+						},
+						{
+							DisplayName: "Step 2",
+							StepsDetails: [] api.StepDetails{
+								{
+									StepUrl:                   "www.test.tld",
+									Timeout:                   10,
+									HTTPMethod:                "G",
+									HTTPProtocol:              "H1.1",
+									SSLProtocol:               "Auto",
+									UseAlpn:                   false,
+									RequestBody:               "req_param",
+									RequestContentType:        "JSON",
+									ResponseContentType:       "T",
+									OAuth2Provider:            "provider",
+									ClientCertificatePassword: "pass",
+									JwtID:                     "111",
+									UseNameServer:             true,
+									MatchCase:                 true,
+									JSONSchemaCheck:           false,
+									UserAgent:                 "firefox",
+									AuthUser:                  "username",
+									AuthPass:                  "password",
+									ResponseHeaders: api.HTTPResponseHeader{
+										Severity: api.Trouble,
+										Value: []api.Header{
+											{
+												Name:  "Accept-Encoding",
+												Value: "gzip",
+											},
+											{
+												Name:  "Cache-Control",
+												Value: "nocache",
+											},
+										},
+									},
+
+								},
+							},
+						},
+					},
 					LocationProfileID:         "456",
 					NotificationProfileID:     "789",
 					ThresholdProfileID:        "012",
-					UseNameServer:             true,
-					MatchCase:                 true,
-					JSONSchemaCheck:           false,
-					UserAgent:                 "firefox",
 					MonitorGroups:             []string{"234", "567"},
 					UserGroupIDs:              []string{"123", "456"},
-					AuthUser:                  "username",
-					AuthPass:                  "password",
 				}
 
-				assert.Equal(t, expected, restApiMonitor)
+				assert.Equal(t, expected, restApiTransactionMonitor)
 			},
 		},
 		{
@@ -118,73 +188,195 @@ func TestNewRestApiTransactionMonitors(t *testing.T) {
 			StatusCode:   200,
 			ResponseBody: validation.Fixture(t, "responses/list_rest_api_monitors.json"),
 			Fn: func(t *testing.T, c rest.Client) {
-				restApiMonitors, err := NewRestApiMonitors(c).List()
+				restApiTransactionMonitor, err := NewRestApiTransactionMonitors(c).List()
 				require.NoError(t, err)
 
-				expected := []*api.RestApiMonitor{
+				expected := []*api.RestApiTransactionMonitor{
 					{
 						MonitorID:                 "897654345678",
 						DisplayName:               "foo",
-						Type:                      string(api.RESTAPI),
-						Website:                   "www.test.tld",
+						Type:                      string(api.RESTAPISEQ),
 						CheckFrequency:            "5",
-						Timeout:                   10,
-						HTTPMethod:                "G",
-						HTTPProtocol:              "H1.1",
-						SSLProtocol:               "Auto",
-						UseAlpn:                   false,
-						UseIPV6:                   false,
-						RequestBody:               "req_param",
-						RequestContentType:        "JSON",
-						ResponseContentType:       "T",
-						OAuth2Provider:            "provider",
-						ClientCertificatePassword: "pass",
-						JwtID:                     "111",
 						LocationProfileID:         "456",
 						NotificationProfileID:     "789",
 						ThresholdProfileID:        "012",
-						UseNameServer:             true,
-						MatchCase:                 true,
-						JSONSchemaCheck:           false,
-						UserAgent:                 "firefox",
+						Steps: [] api.Steps{
+							{
+								DisplayName: "Step 1",
+								StepsDetails: [] api.StepDetails{
+									{
+										StepUrl:                   "www.test.tld",
+										Timeout:                   10,
+										HTTPMethod:                "G",
+										HTTPProtocol:              "H1.1",
+										SSLProtocol:               "Auto",
+										UseAlpn:                   false,
+										RequestBody:               "req_param",
+										RequestContentType:        "JSON",
+										ResponseContentType:       "T",
+										OAuth2Provider:            "provider",
+										ClientCertificatePassword: "pass",
+										JwtID:                     "111",
+										UseNameServer:             true,
+										MatchCase:                 true,
+										JSONSchemaCheck:           false,
+										UserAgent:                 "firefox",
+										AuthUser:                  "username",
+										AuthPass:                  "password",
+										ResponseHeaders: api.HTTPResponseHeader{
+											Severity: api.Trouble,
+											Value: []api.Header{
+												{
+													Name:  "Accept-Encoding",
+													Value: "gzip",
+												},
+												{
+													Name:  "Cache-Control",
+													Value: "nocache",
+												},
+											},
+										},
+
+									},
+								},
+							},
+							{
+								DisplayName: "Step 2",
+								StepsDetails: [] api.StepDetails{
+									{
+										StepUrl:                   "www.test.tld",
+										Timeout:                   10,
+										HTTPMethod:                "G",
+										HTTPProtocol:              "H1.1",
+										SSLProtocol:               "Auto",
+										UseAlpn:                   false,
+										RequestBody:               "req_param",
+										RequestContentType:        "JSON",
+										ResponseContentType:       "T",
+										OAuth2Provider:            "provider",
+										ClientCertificatePassword: "pass",
+										JwtID:                     "111",
+										UseNameServer:             true,
+										MatchCase:                 true,
+										JSONSchemaCheck:           false,
+										UserAgent:                 "firefox",
+										AuthUser:                  "username",
+										AuthPass:                  "password",
+										ResponseHeaders: api.HTTPResponseHeader{
+											Severity: api.Trouble,
+											Value: []api.Header{
+												{
+													Name:  "Accept-Encoding",
+													Value: "gzip",
+												},
+												{
+													Name:  "Cache-Control",
+													Value: "nocache",
+												},
+											},
+										},
+
+									},
+								},
+							},
+						},
 						MonitorGroups:             []string{"234", "567"},
 						UserGroupIDs:              []string{"123", "456"},
-						AuthUser:                  "username",
-						AuthPass:                  "password",
 					},
 					{
 						MonitorID:                 "933654345678",
 						DisplayName:               "foo",
-						Type:                      string(api.RESTAPI),
-						Website:                   "www.test.tld",
+						Type:                      string(api.RESTAPISEQ),
+						Steps: [] api.Steps{
+							{
+								DisplayName: "Step 1",
+								StepsDetails: [] api.StepDetails{
+									{
+										StepUrl:                   "www.test.tld",
+										Timeout:                   10,
+										HTTPMethod:                "G",
+										HTTPProtocol:              "H1.1",
+										SSLProtocol:               "Auto",
+										UseAlpn:                   false,
+										RequestBody:               "req_param",
+										RequestContentType:        "JSON",
+										ResponseContentType:       "T",
+										OAuth2Provider:            "provider",
+										ClientCertificatePassword: "pass",
+										JwtID:                     "111",
+										UseNameServer:             true,
+										MatchCase:                 true,
+										JSONSchemaCheck:           false,
+										UserAgent:                 "firefox",
+										AuthUser:                  "username",
+										AuthPass:                  "password",
+										ResponseHeaders: api.HTTPResponseHeader{
+											Severity: api.Trouble,
+											Value: []api.Header{
+												{
+													Name:  "Accept-Encoding",
+													Value: "gzip",
+												},
+												{
+													Name:  "Cache-Control",
+													Value: "nocache",
+												},
+											},
+										},
+
+									},
+								},
+							},
+							{
+								DisplayName: "Step 2",
+								StepsDetails: [] api.StepDetails{
+									{
+										StepUrl:                   "www.test.tld",
+										Timeout:                   10,
+										HTTPMethod:                "G",
+										HTTPProtocol:              "H1.1",
+										SSLProtocol:               "Auto",
+										UseAlpn:                   false,
+										RequestBody:               "req_param",
+										RequestContentType:        "JSON",
+										ResponseContentType:       "T",
+										OAuth2Provider:            "provider",
+										ClientCertificatePassword: "pass",
+										JwtID:                     "111",
+										UseNameServer:             true,
+										MatchCase:                 true,
+										JSONSchemaCheck:           false,
+										UserAgent:                 "firefox",
+										AuthUser:                  "username",
+										AuthPass:                  "password",
+										ResponseHeaders: api.HTTPResponseHeader{
+											Severity: api.Trouble,
+											Value: []api.Header{
+												{
+													Name:  "Accept-Encoding",
+													Value: "gzip",
+												},
+												{
+													Name:  "Cache-Control",
+													Value: "nocache",
+												},
+											},
+										},
+
+									},
+								},
+							},
+						},
 						CheckFrequency:            "5",
-						Timeout:                   10,
-						HTTPMethod:                "G",
-						HTTPProtocol:              "H1.1",
-						SSLProtocol:               "Auto",
-						UseAlpn:                   false,
-						UseIPV6:                   false,
-						RequestBody:               "req_param",
-						RequestContentType:        "JSON",
-						ResponseContentType:       "T",
-						OAuth2Provider:            "provider",
-						ClientCertificatePassword: "pass",
-						JwtID:                     "111",
 						LocationProfileID:         "456",
 						NotificationProfileID:     "789",
 						ThresholdProfileID:        "012",
-						UseNameServer:             true,
-						MatchCase:                 true,
-						JSONSchemaCheck:           false,
-						UserAgent:                 "firefox",
 						MonitorGroups:             []string{"234", "567"},
 						UserGroupIDs:              []string{"123", "456"},
-						AuthUser:                  "username",
-						AuthPass:                  "password",
 					},
 				}
 
-				assert.Equal(t, expected, restApiMonitors)
+				assert.Equal(t, expected, restApiTransactionMonitor)
 			},
 		},
 		{
@@ -195,51 +387,98 @@ func TestNewRestApiTransactionMonitors(t *testing.T) {
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
-				restApiMonitor := &api.RestApiMonitor{
+				restApiTransactionMonitor := &api.RestApiTransactionMonitor{
 					MonitorID:                 "123",
 					DisplayName:               "foo",
-					Type:                      string(api.RESTAPI),
-					Website:                   "www.test.tld",
+					Type:                      string(api.RESTAPISEQ),
 					CheckFrequency:            "5",
-					Timeout:                   10,
-					HTTPMethod:                "G",
-					HTTPProtocol:              "H1.1",
-					SSLProtocol:               "Auto",
-					UseAlpn:                   false,
-					UseIPV6:                   false,
-					RequestBody:               "req_param",
-					RequestContentType:        "JSON",
-					ResponseContentType:       "T",
-					OAuth2Provider:            "provider",
-					ClientCertificatePassword: "pass",
-					JwtID:                     "111",
 					LocationProfileID:         "456",
 					NotificationProfileID:     "789",
 					ThresholdProfileID:        "012",
-					UseNameServer:             true,
-					MatchCase:                 true,
-					UserAgent:                 "firefox",
-					MonitorGroups:             []string{"234", "567"},
-					UserGroupIDs:              []string{"123", "456"},
-					TagIDs:                    []string{"123"},
-					AuthUser:                  "username",
-					AuthPass:                  "password",
-					ResponseHeaders: api.HTTPResponseHeader{
-						Severity: api.Trouble,
-						Value: []api.Header{
-							{
-								Name:  "Accept-Encoding",
-								Value: "gzip",
+					Steps: [] api.Steps{
+						{
+							DisplayName: "Step 1",
+							StepsDetails: [] api.StepDetails{
+								{
+									StepUrl:                   "www.test.tld",
+									Timeout:                   10,
+									HTTPMethod:                "G",
+									HTTPProtocol:              "H1.1",
+									SSLProtocol:               "Auto",
+									UseAlpn:                   false,
+									RequestBody:               "req_param",
+									RequestContentType:        "JSON",
+									ResponseContentType:       "T",
+									OAuth2Provider:            "provider",
+									ClientCertificatePassword: "pass",
+									JwtID:                     "111",
+									UseNameServer:             true,
+									MatchCase:                 true,
+									UserAgent:                 "firefox",
+									AuthUser:                  "username",
+									AuthPass:                  "password",
+									ResponseHeaders: api.HTTPResponseHeader{
+										Severity: api.Trouble,
+										Value: []api.Header{
+											{
+												Name:  "Accept-Encoding",
+												Value: "gzip",
+											},
+											{
+												Name:  "Cache-Control",
+												Value: "nocache",
+											},
+										},
+									},
+
+								},
 							},
-							{
-								Name:  "Cache-Control",
-								Value: "nocache",
+						},
+						{
+							DisplayName: "Step 2",
+							StepsDetails: [] api.StepDetails{
+								{
+									StepUrl:                   "www.test.tld",
+									Timeout:                   10,
+									HTTPMethod:                "G",
+									HTTPProtocol:              "H1.1",
+									SSLProtocol:               "Auto",
+									UseAlpn:                   false,
+									RequestBody:               "req_param",
+									RequestContentType:        "JSON",
+									ResponseContentType:       "T",
+									OAuth2Provider:            "provider",
+									ClientCertificatePassword: "pass",
+									JwtID:                     "111",
+									UseNameServer:             true,
+									MatchCase:                 true,
+									UserAgent:                 "firefox",
+									AuthUser:                  "username",
+									AuthPass:                  "password",
+									ResponseHeaders: api.HTTPResponseHeader{
+										Severity: api.Trouble,
+										Value: []api.Header{
+											{
+												Name:  "Accept-Encoding",
+												Value: "gzip",
+											},
+											{
+												Name:  "Cache-Control",
+												Value: "nocache",
+											},
+										},
+									},
+
+								},
 							},
 						},
 					},
+					MonitorGroups:             []string{"234", "567"},
+					UserGroupIDs:              []string{"123", "456"},
+					TagIDs:                    []string{"123"},
 				}
 
-				_, err := NewRestApiMonitors(c).Update(restApiMonitor)
+				_, err := NewRestApiTransactionMonitors(c).Update(restApiTransactionMonitor)
 				require.NoError(t, err)
 			},
 		},
@@ -249,7 +488,7 @@ func TestNewRestApiTransactionMonitors(t *testing.T) {
 			ExpectedPath: "/monitors/123",
 			StatusCode:   200,
 			Fn: func(t *testing.T, c rest.Client) {
-				require.NoError(t, NewRestApiMonitors(c).Delete("123"))
+				require.NoError(t, NewRestApiTransactionMonitors(c).Delete("123"))
 			},
 		},
 	})
