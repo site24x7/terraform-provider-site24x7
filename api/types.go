@@ -75,8 +75,9 @@ type SearchConfig struct {
 
 
 type Steps struct {
-	DisplayName    string   `json:"display_name"`
+	DisplayName    string   	  `json:"display_name"`
 	StepsDetails   []StepDetails  `json:"step_details"`
+	MonitorID  	   string      	  `json:"monitor_id"`
 }
 
 type StepDetails struct {
