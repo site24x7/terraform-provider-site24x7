@@ -34,7 +34,7 @@ terraform {
   required_providers {
     site24x7 = {
       source  = "site24x7/site24x7"
-            
+
     }
   }
 }
@@ -229,16 +229,16 @@ To fetch all the server monitor IDs using the datasource `site24x7_monitors` pas
 
 ```terraform
 
-    // Data source to fetch all SERVER monitors
-    data "site24x7_monitors" "s247monitors" {
-      // (Optional) Type of the monitor. (eg) RESTAPI, SSL_CERT, URL, SERVER etc.
-      monitor_type = "SERVER"
-    }
+// Data source to fetch all SERVER monitors
+data "site24x7_monitors" "s247monitors" {
+  // (Optional) Type of the monitor. (eg) RESTAPI, SSL_CERT, URL, SERVER etc.
+  monitor_type = "SERVER"
+}
 
-    resource "local_file" "key" {
-      filename = "${path.module}/utilities/importer/monitors_to_import.json"
-      content  = jsonencode(data.site24x7_monitors.s247monitors.ids)
-    }
+resource "local_file" "key" {
+  filename = "${path.module}/utilities/importer/monitors_to_import.json"
+  content  = jsonencode(data.site24x7_monitors.s247monitors.ids)
+}
 
 ```
 
@@ -270,11 +270,11 @@ Copy the empty configurations(similar to the one given below) generated in the f
 
 ```terraform
 
-    resource "site24x7_server_monitor" "SERVER_123456000025786003" {
-    }
+resource "site24x7_server_monitor" "SERVER_123456000025786003" {
+}
 
-    resource "site24x7_server_monitor" "SERVER_123456000027570003" {
-    }
+resource "site24x7_server_monitor" "SERVER_123456000027570003" {
+}
 
 ```
 
@@ -290,17 +290,17 @@ Copy the resource configurations(similar to the one given below) generated in th
 
 ```terraform
 
-    resource "site24x7_server_monitor" "SERVER_123456000025786003" {
-      perform_automation = true
-      log_needed = true
-      notification_profile_id = "123456000000029001"
-      tag_ids = ["123456000024829001", "123456000024829005"]
-      poll_interval = 1
-      monitor_groups = ["123456000000120011"]
-      threshold_profile_id = "123456000000029003"
-      user_group_ids = ["123456000000025005", "123456000000025009"]
-      display_name = "ubuntu-server"
-    }
+resource "site24x7_server_monitor" "SERVER_123456000025786003" {
+  perform_automation = true
+  log_needed = true
+  notification_profile_id = "123456000000029001"
+  tag_ids = ["123456000024829001", "123456000024829005"]
+  poll_interval = 1
+  monitor_groups = ["123456000000120011"]
+  threshold_profile_id = "123456000000029003"
+  user_group_ids = ["123456000000025005", "123456000000025009"]
+  display_name = "ubuntu-server"
+}
 
 ```
 
@@ -381,7 +381,7 @@ This project is licensed under the MIT License - see [LICENSE](https://github.co
 
 The Site24x7 Terraform Provider uses code from the following library:
 
- * [Bonial.com](https://github.com/Bonial-International-GmbH), MIT License
+* [Bonial.com](https://github.com/Bonial-International-GmbH), MIT License
 
 
 
