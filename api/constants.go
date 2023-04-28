@@ -21,6 +21,7 @@ const (
 	HOMEPAGE  MonitorType = "HOMEPAGE"
 	SSL_CERT  MonitorType = "SSL_CERT"
 	RESTAPI   MonitorType = "RESTAPI"
+	RESTAPISEQ MonitorType = "RESTAPISEQ"
 	AMAZON    MonitorType = "AMAZON"
 	SERVER    MonitorType = "SERVER"
 	HEARTBEAT MonitorType = "HEARTBEAT"

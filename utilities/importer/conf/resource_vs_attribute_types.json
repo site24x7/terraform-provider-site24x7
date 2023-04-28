@@ -44,6 +44,24 @@
         "user_group_names": "str",
         "website": "str"
     },
+    "site24x7_rest_api_transaction_monitor": {
+        "display_name": "str",
+        "check_frequency" : "str",
+        "location_profile_id": "str",
+        "location_profile_name": "str",
+        "notification_profile_id": "str",
+        "notification_profile_name": "str",
+        "threshold_profile_id": "str",
+        "monitor_groups": "list",
+        "dependency_resource_ids": "list",
+        "user_group_ids":"list",
+        "user_group_names": "str",
+        "tag_ids": "list",
+        "tag_names": "str",
+        "third_party_service_ids": "list",
+        "actions": "map",
+        "steps": "list"
+    },
     "site24x7_server_monitor": {
         "display_name": "str",
         "log_needed": "bool",

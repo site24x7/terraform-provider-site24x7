@@ -34,7 +34,7 @@ terraform {
   required_providers {
     site24x7 = {
       source  = "site24x7/site24x7"
-      
+
     }
   }
 }
@@ -47,6 +47,7 @@ A terraform provider for managing the following resources in Site24x7:
 - Web Page Speed (Browser) Monitor - [site24x7_web_page_speed_monitor](examples/web_page_speed_monitor_us.tf) ([Site24x7 Web Page Speed Monitor API doc](https://www.site24x7.com/help/api/#web-page-speed-(browser)))
 - SSL Certificate Monitor - [site24x7_ssl_monitor](examples/ssl_monitor_us.tf) ([Site24x7 SSL Certificate Monitor API doc](https://www.site24x7.com/help/api/#ssl-certificate))
 - Rest API Monitor - [site24x7_rest_api_monitor](examples/rest_api_monitor_us.tf) ([Site24x7 Rest API Monitor API doc](https://www.site24x7.com/help/api/#rest-api))
+- Rest API Transaction Monitor - [site24x7_rest_api_transaction_monitor](examples/rest_api_transaction_monitor_us.tf) ([Site24x7 Rest API Transaction Monitor API doc](https://www.site24x7.com/help/api/#rest-api-transaction))
 - Server Monitor - [site24x7_server_monitor](examples/server_monitor_us.tf) ([Terraform Server Monitor doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/resources/server_monitor))
 - Heartbeat Monitor - [site24x7_heartbeat_monitor](examples/heartbeat_monitor_us.tf) ([Site24x7 Heartbeat Monitor API doc](https://www.site24x7.com/help/api/#heartbeat))
 - URL IT Automation - [site24x7_url_action](examples/it_automation_us.tf) ([Site24x7 IT Automation API doc](https://www.site24x7.com/help/api/#it-automation))
@@ -160,7 +161,7 @@ resource "site24x7_website_monitor" "website_monitor_us" {
 
 ## Steps to generate Site24x7 OAuth credentials
 
-Site24x7 REST APIs uses the OAuth 2.0 protocol to authorize and authenticate calls. To generate Site24x7 OAuth credentials(`SITE24X7_OAUTH2_CLIENT_ID`, `SITE24X7_OAUTH2_CLIENT_SECRET` and `SITE24X7_OAUTH2_REFRESH_TOKEN`) please follow the steps below 
+Site24x7 REST APIs uses the OAuth 2.0 protocol to authorize and authenticate calls. To generate Site24x7 OAuth credentials(`SITE24X7_OAUTH2_CLIENT_ID`, `SITE24X7_OAUTH2_CLIENT_SECRET` and `SITE24X7_OAUTH2_REFRESH_TOKEN`) please follow the steps below
 
 1. Visit https://api-console.zoho.com/
 2. Choose the self client option.
@@ -228,16 +229,16 @@ To fetch all the server monitor IDs using the datasource `site24x7_monitors` pas
 
 ```terraform
 
-    // Data source to fetch all SERVER monitors
-    data "site24x7_monitors" "s247monitors" {
-        // (Optional) Type of the monitor. (eg) RESTAPI, SSL_CERT, URL, SERVER etc.
-        monitor_type = "SERVER"
-    }
+// Data source to fetch all SERVER monitors
+data "site24x7_monitors" "s247monitors" {
+  // (Optional) Type of the monitor. (eg) RESTAPI, SSL_CERT, URL, SERVER etc.
+  monitor_type = "SERVER"
+}
 
-    resource "local_file" "key" {
-        filename = "${path.module}/utilities/importer/monitors_to_import.json"
-        content  = jsonencode(data.site24x7_monitors.s247monitors.ids)
-    }
+resource "local_file" "key" {
+  filename = "${path.module}/utilities/importer/monitors_to_import.json"
+  content  = jsonencode(data.site24x7_monitors.s247monitors.ids)
+}
 
 ```
 
@@ -269,11 +270,11 @@ Copy the empty configurations(similar to the one given below) generated in the f
 
 ```terraform
 
-    resource "site24x7_server_monitor" "SERVER_123456000025786003" {
-    }
+resource "site24x7_server_monitor" "SERVER_123456000025786003" {
+}
 
-    resource "site24x7_server_monitor" "SERVER_123456000027570003" {
-    }
+resource "site24x7_server_monitor" "SERVER_123456000027570003" {
+}
 
 ```
 
@@ -289,17 +290,17 @@ Copy the resource configurations(similar to the one given below) generated in th
 
 ```terraform
 
-  resource "site24x7_server_monitor" "SERVER_123456000025786003" { 
-      perform_automation = true 
-      log_needed = true 
-      notification_profile_id = "123456000000029001" 
-      tag_ids = ["123456000024829001", "123456000024829005"] 
-      poll_interval = 1 
-      monitor_groups = ["123456000000120011"] 
-      threshold_profile_id = "123456000000029003" 
-      user_group_ids = ["123456000000025005", "123456000000025009"] 
-      display_name = "ubuntu-server"
-  }
+resource "site24x7_server_monitor" "SERVER_123456000025786003" {
+  perform_automation = true
+  log_needed = true
+  notification_profile_id = "123456000000029001"
+  tag_ids = ["123456000024829001", "123456000024829005"]
+  poll_interval = 1
+  monitor_groups = ["123456000000120011"]
+  threshold_profile_id = "123456000000029003"
+  user_group_ids = ["123456000000025005", "123456000000025009"]
+  display_name = "ubuntu-server"
+}
 
 ```
 
@@ -380,7 +381,7 @@ This project is licensed under the MIT License - see [LICENSE](https://github.co
 
 The Site24x7 Terraform Provider uses code from the following library:
 
- * [Bonial.com](https://github.com/Bonial-International-GmbH), MIT License
+* [Bonial.com](https://github.com/Bonial-International-GmbH), MIT License
 
 
 
