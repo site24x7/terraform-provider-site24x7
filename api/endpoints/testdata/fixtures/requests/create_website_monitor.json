@@ -55,6 +55,7 @@
   "use_ipv6": false,
   "use_alpn": false,
   "up_status_codes": "200",
+  "follow_redirect" : false,
   "response_headers_check": {
     "severity": 2,
     "value": [
