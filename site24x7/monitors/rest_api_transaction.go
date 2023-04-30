@@ -12,6 +12,110 @@ import (
 	"strconv"
 )
 
+
+// Sample RESTAPI TRANSACTION POST JSON
+
+//{
+//"check_frequency": "5",
+//"display_name": "foo",
+//"location_profile_id": "111111000000025013",
+//"notification_profile_id": "111111000000029001",
+//"steps": [{
+//"display_name": "Step 1",
+//"monitor_id": "",
+//"step_details": [{
+//"auth_pass": "password",
+//"auth_user": "username",
+//"client_certificate_password": "pass",
+//"display_name": "Step 1",
+//"http_method": "G",
+//"http_protocol": "H1.1",
+//"match_case": true,
+//"oauth2_provider": "provider",
+//"request_content_type": "JSON",
+//"request_param": "req_param",
+//"response_headers_check": {
+//"severity": 2,
+//"value": [{
+//"name": "Accept-Encoding",
+//"value": "gzip"
+//}, {
+//"name": "Cache-Control",
+//"value": "nocache"
+//}]
+//},
+//"unmatching_keyword": {
+//"value": "aaa",
+//"severity": 2
+//},
+//"matching_keyword": {
+//"value": "bbb",
+//"severity": 2
+//},
+//"match_regex": {
+//"severity": 0,
+//"value": "*.a.*"
+//},
+//"response_type": "T",
+//"ssl_protocol": "Auto",
+//"step_url": "www.test.tld",
+//"timeout": 10,
+//"use_alpn": false,
+//"use_name_server": true,
+//"user_agent": "firefox"
+//}]
+//},{
+//"display_name": "Step 2",
+//"monitor_id": "",
+//"step_details": [{
+//"auth_pass": "password",
+//"auth_user": "username",
+//"client_certificate_password": "pass",
+//"display_name": "Step 2",
+//"http_method": "G",
+//"http_protocol": "H1.1",
+//"match_case": true,
+//"oauth2_provider": "provider",
+//"request_content_type": "JSON",
+//"request_param": "req_param",
+//"unmatching_keyword": {
+//"value": "aaa",
+//"severity": 2
+//},
+//"matching_keyword": {
+//"value": "bbb",
+//"severity": 2
+//},
+//"match_regex": {
+//"severity": 0,
+//"value": "*.a.*"
+//},
+//"response_headers_check": {
+//"severity": 2,
+//"value": [{
+//"name": "Accept-Encoding",
+//"value": "gzip"
+//}, {
+//"name": "Cache-Control",
+//"value": "nocache"
+//}]
+//},
+//"response_type": "T",
+//"ssl_protocol": "Auto",
+//"step_url": "www.test.tld",
+//"timeout": 10,
+//"use_alpn": false,
+//"use_name_server": true,
+//"user_agent": "firefox"
+//}]
+//}
+//],
+//"tag_ids": [],
+//"threshold_profile_id": "111111000021519001",
+//"type": "RESTAPISEQ",
+//"user_group_ids": ["111111000000025005"]
+//}
+
 var RestApiTransactionMonitorSchema = map[string]*schema.Schema{
 	"display_name": {
 		Type:        schema.TypeString,
