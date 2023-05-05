@@ -13,10 +13,10 @@ import (
 func TestNewRestApiTransactionMonitors(t *testing.T) {
 	validation.RunTests(t, []*validation.EndpointTest{
 		{
-			Name:         "create rest api monitor",
+			Name:         "create rest api transaction monitor",
 			ExpectedVerb: "POST",
 			ExpectedPath: "/monitors",
-			ExpectedBody: validation.Fixture(t, "requests/create_rest_api_monitor.json"),
+			ExpectedBody: validation.Fixture(t, "requests/create_rest_api_transaction_monitor.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
@@ -33,6 +33,7 @@ func TestNewRestApiTransactionMonitors(t *testing.T) {
 							StepsDetails: [] api.StepDetails{
 								{
 									StepUrl:                   "www.test.tld",
+									DisplayName: 			   "Step 1",
 									Timeout:                   10,
 									HTTPMethod:                "G",
 									HTTPProtocol:              "H1.1",
@@ -49,6 +50,69 @@ func TestNewRestApiTransactionMonitors(t *testing.T) {
 									UserAgent:                 "firefox",
 									AuthUser:                  "username",
 									AuthPass:                  "password",
+									MatchingKeyword: map[string]interface{}{
+										"severity": 2,
+										"value":    "bbb",
+									},
+									UnmatchingKeyword: map[string]interface{}{
+										"severity": 2,
+										"value":    "aaa",
+									},
+									MatchRegex: map[string]interface{}{
+										"severity": 0,
+										"value":    "*.a.*",
+									},
+									ResponseHeaders: api.HTTPResponseHeader{
+										Severity: api.Trouble,
+										Value: []api.Header{
+											{
+												Name:  "Accept-Encoding",
+												Value: "gzip",
+											},
+											{
+												Name:  "Cache-Control",
+												Value: "nocache",
+											},
+										},
+									},
+
+								},
+							},
+						},
+						{
+							DisplayName: "Step 2",
+							StepsDetails: [] api.StepDetails{
+								{
+									StepUrl:                   "www.test.tld",
+									DisplayName: 			   "Step 2",
+									Timeout:                   10,
+									HTTPMethod:                "G",
+									HTTPProtocol:              "H1.1",
+									SSLProtocol:               "Auto",
+									UseAlpn:                   false,
+									RequestBody:               "req_param",
+									RequestContentType:        "JSON",
+									ResponseContentType:       "T",
+									OAuth2Provider:            "provider",
+									ClientCertificatePassword: "pass",
+									JwtID:                     "111",
+									UseNameServer:             true,
+									MatchCase:                 true,
+									UserAgent:                 "firefox",
+									AuthUser:                  "username",
+									AuthPass:                  "password",
+									MatchingKeyword: map[string]interface{}{
+										"severity": 2,
+										"value":    "bbb",
+									},
+									UnmatchingKeyword: map[string]interface{}{
+										"severity": 2,
+										"value":    "aaa",
+									},
+									MatchRegex: map[string]interface{}{
+										"severity": 0,
+										"value":    "*.a.*",
+									},
 									ResponseHeaders: api.HTTPResponseHeader{
 										Severity: api.Trouble,
 										Value: []api.Header{
@@ -77,11 +141,11 @@ func TestNewRestApiTransactionMonitors(t *testing.T) {
 			},
 		},
 		{
-			Name:         "get rest api monitor",
+			Name:         "get rest api transaction monitor",
 			ExpectedVerb: "GET",
 			ExpectedPath: "/monitors/897654345678",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "responses/get_rest_api_monitor.json"),
+			ResponseBody: validation.Fixture(t, "responses/get_rest_api_transaction_monitor.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				restApiTransactionMonitor, err := NewRestApiTransactionMonitors(c).Get("897654345678")
 				require.NoError(t, err)
@@ -182,11 +246,11 @@ func TestNewRestApiTransactionMonitors(t *testing.T) {
 			},
 		},
 		{
-			Name:         "list rest api monitors",
+			Name:         "list rest api transaction monitors",
 			ExpectedVerb: "GET",
 			ExpectedPath: "/monitors",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "responses/list_rest_api_monitors.json"),
+			ResponseBody: validation.Fixture(t, "responses/list_rest_api_transaction_monitors.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				restApiTransactionMonitor, err := NewRestApiTransactionMonitors(c).List()
 				require.NoError(t, err)
@@ -380,10 +444,10 @@ func TestNewRestApiTransactionMonitors(t *testing.T) {
 			},
 		},
 		{
-			Name:         "update rest api monitor",
+			Name:         "update rest api transaction monitor",
 			ExpectedVerb: "PUT",
 			ExpectedPath: "/monitors/123",
-			ExpectedBody: validation.Fixture(t, "requests/update_rest_api_monitor.json"),
+			ExpectedBody: validation.Fixture(t, "requests/update_rest_api_transaction_monitor.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
@@ -434,44 +498,6 @@ func TestNewRestApiTransactionMonitors(t *testing.T) {
 								},
 							},
 						},
-						{
-							DisplayName: "Step 2",
-							StepsDetails: [] api.StepDetails{
-								{
-									StepUrl:                   "www.test.tld",
-									Timeout:                   10,
-									HTTPMethod:                "G",
-									HTTPProtocol:              "H1.1",
-									SSLProtocol:               "Auto",
-									UseAlpn:                   false,
-									RequestBody:               "req_param",
-									RequestContentType:        "JSON",
-									ResponseContentType:       "T",
-									OAuth2Provider:            "provider",
-									ClientCertificatePassword: "pass",
-									JwtID:                     "111",
-									UseNameServer:             true,
-									MatchCase:                 true,
-									UserAgent:                 "firefox",
-									AuthUser:                  "username",
-									AuthPass:                  "password",
-									ResponseHeaders: api.HTTPResponseHeader{
-										Severity: api.Trouble,
-										Value: []api.Header{
-											{
-												Name:  "Accept-Encoding",
-												Value: "gzip",
-											},
-											{
-												Name:  "Cache-Control",
-												Value: "nocache",
-											},
-										},
-									},
-
-								},
-							},
-						},
 					},
 					MonitorGroups:             []string{"234", "567"},
 					UserGroupIDs:              []string{"123", "456"},
@@ -483,7 +509,7 @@ func TestNewRestApiTransactionMonitors(t *testing.T) {
 			},
 		},
 		{
-			Name:         "delete rest api monitor",
+			Name:         "delete rest api transaction monitor",
 			ExpectedVerb: "DELETE",
 			ExpectedPath: "/monitors/123",
 			StatusCode:   200,

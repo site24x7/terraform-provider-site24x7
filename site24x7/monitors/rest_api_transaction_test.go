@@ -11,7 +11,7 @@ import (
 )
 
 func TestRestApiTransactionMonitorCreate(t *testing.T) {
-	d := restApiMonitorTransactionTestResourceData(t)
+	d := restApiTransactionMonitorTestResourceData(t)
 
 	c := fake.NewClient()
 
@@ -28,12 +28,13 @@ func TestRestApiTransactionMonitorCreate(t *testing.T) {
 		TagIDs:                    []string{"123"},
 		Steps: 					   []api.Steps{
 			{
-				DisplayName: "Step1",
+				DisplayName: "Step2",
 				StepsDetails: []api.StepDetails{
 					{
 						StepUrl: "www.test.tld",
-						Timeout:                   10,
+						Timeout:                   0,
 						HTTPMethod:                "G",
+						DisplayName: 			   "Step2",
 						HTTPProtocol:              "H1.1",
 						SSLProtocol:               "Auto",
 						UseAlpn:                   false,
@@ -61,27 +62,25 @@ func TestRestApiTransactionMonitorCreate(t *testing.T) {
 						JSONSchemaCheck:           false,
 						UserAgent:                 "firefox",
 						MatchingKeyword: map[string]interface{}{
-							"severity": "2",
-							"value":    "aaa",
+
 						},
 						UnmatchingKeyword: map[string]interface{}{
-							"severity": "2",
-							"value":    "bbb",
+
 						},
 						MatchRegex: map[string]interface{}{
-							"severity": "0",
-							"value":    "*.a.*",
+
 						},
 
 					},
 				},
 			},
 			{
-				DisplayName: "Step2",
+				DisplayName: "Step1",
 				StepsDetails: []api.StepDetails{
 					{
 						StepUrl: "www.test.tld",
-						Timeout:                   10,
+						Timeout:                   0,
+						DisplayName: 			   "Step1",
 						HTTPMethod:                "G",
 						HTTPProtocol:              "H1.1",
 						SSLProtocol:               "Auto",
@@ -110,16 +109,13 @@ func TestRestApiTransactionMonitorCreate(t *testing.T) {
 						JSONSchemaCheck:           false,
 						UserAgent:                 "firefox",
 						MatchingKeyword: map[string]interface{}{
-							"severity": "2",
-							"value":    "aaa",
+
 						},
 						UnmatchingKeyword: map[string]interface{}{
-							"severity": "2",
-							"value":    "bbb",
+
 						},
 						MatchRegex: map[string]interface{}{
-							"severity": "0",
-							"value":    "*.a.*",
+
 						},
 
 					},
@@ -187,11 +183,11 @@ func TestRestApiTransactionMonitorCreate(t *testing.T) {
 
 	c.FakeTags.On("List").Return(tags, nil)
 
-	c.FakeRestApiMonitors.On("Create", a).Return(a, nil).Once()
+	c.FakeRestApiTransactionMonitors.On("Create", a).Return(a, nil).Once()
 
 	require.NoError(t, restApiTransactionMonitorCreate(d, c))
 
-	c.FakeRestApiMonitors.On("Create", a).Return(a, apierrors.NewStatusError(500, "error")).Once()
+	c.FakeRestApiTransactionMonitors.On("Create", a).Return(a, apierrors.NewStatusError(500, "error")).Once()
 
 	err := restApiTransactionMonitorCreate(d, c)
 
@@ -199,7 +195,7 @@ func TestRestApiTransactionMonitorCreate(t *testing.T) {
 }
 
 func TestRestApiTransactionMonitorUpdate(t *testing.T) {
-	d := restApiMonitorTransactionTestResourceData(t)
+	d := restApiTransactionMonitorTestResourceData(t)
 	d.SetId("123")
 
 	c := fake.NewClient()
@@ -207,15 +203,17 @@ func TestRestApiTransactionMonitorUpdate(t *testing.T) {
 	a := &api.RestApiTransactionMonitor{
 		MonitorID:                 "123",
 		DisplayName:               "foo",
-		Type:                      string(api.RESTAPI),
+		Type:                      string(api.RESTAPISEQ),
 		CheckFrequency:            "5",
 		Steps: 					   []api.Steps{
 			{
-				DisplayName: "Step1",
+				DisplayName: "Step2",
+				MonitorID: "123",
 				StepsDetails: []api.StepDetails{
 					{
 						StepUrl: "www.test.tld",
-						Timeout:                   10,
+						DisplayName: "Step2",
+						Timeout:                   0,
 						HTTPMethod:                "G",
 						HTTPProtocol:              "H1.1",
 						SSLProtocol:               "Auto",
@@ -233,6 +231,15 @@ func TestRestApiTransactionMonitorUpdate(t *testing.T) {
 						AuthMethod:                "B",
 						AuthUser:                  "username",
 						AuthPass:                  "",
+						MatchingKeyword: 		   map[string]interface{}{
+
+						},
+						UnmatchingKeyword:         map[string]interface{}{
+
+						},
+						MatchRegex:                map[string]interface{}{
+
+						},
 						RequestHeaders: []api.Header{
 							{
 								Name:  "Accept",
@@ -247,11 +254,13 @@ func TestRestApiTransactionMonitorUpdate(t *testing.T) {
 				},
 			},
 			{
-				DisplayName: "Step2",
+				DisplayName: "Step1",
+				MonitorID: "123",
 				StepsDetails: []api.StepDetails{
 					{
 						StepUrl: "www.test.tld",
-						Timeout:                   10,
+						DisplayName: "Step1",
+						Timeout:                   0,
 						HTTPMethod:                "G",
 						HTTPProtocol:              "H1.1",
 						SSLProtocol:               "Auto",
@@ -269,6 +278,15 @@ func TestRestApiTransactionMonitorUpdate(t *testing.T) {
 						AuthMethod:                "B",
 						AuthUser:                  "username",
 						AuthPass:                  "",
+						MatchingKeyword: 		   map[string]interface{}{
+
+						},
+						UnmatchingKeyword:         map[string]interface{}{
+
+						},
+						MatchRegex:                map[string]interface{}{
+
+						},
 						RequestHeaders: []api.Header{
 							{
 								Name:  "Accept",
@@ -372,11 +390,11 @@ func TestRestApiTransactionMonitorUpdate(t *testing.T) {
 	}
 	c.FakeTags.On("List").Return(tags, nil)
 
-	c.FakeRestApiMonitors.On("Update", a).Return(a, nil).Once()
+	c.FakeRestApiTransactionMonitors.On("Update", a).Return(a, nil).Once()
 
 	require.NoError(t, restApiTransactionMonitorUpdate(d, c))
 
-	c.FakeRestApiMonitors.On("Update", a).Return(a, apierrors.NewStatusError(500, "error")).Once()
+	c.FakeRestApiTransactionMonitors.On("Update", a).Return(a, apierrors.NewStatusError(500, "error")).Once()
 
 	err := restApiTransactionMonitorUpdate(d, c)
 
@@ -384,16 +402,16 @@ func TestRestApiTransactionMonitorUpdate(t *testing.T) {
 }
 
 func TestRestApiTransactionMonitorRead(t *testing.T) {
-	d := restApiMonitorTransactionTestResourceData(t)
+	d := restApiTransactionMonitorTestResourceData(t)
 	d.SetId("123")
 
 	c := fake.NewClient()
 
-	c.FakeRestApiMonitors.On("Get", "123").Return(&api.RestApiMonitor{}, nil).Once()
+	c.FakeRestApiTransactionMonitors.On("Get", "123").Return(&api.RestApiMonitor{}, nil).Once()
 
 	require.NoError(t, restApiTransactionMonitorRead(d, c))
 
-	c.FakeRestApiMonitors.On("Get", "123").Return(nil, apierrors.NewStatusError(500, "error")).Once()
+	c.FakeRestApiTransactionMonitors.On("Get", "123").Return(nil, apierrors.NewStatusError(500, "error")).Once()
 
 	err := restApiTransactionMonitorRead(d, c)
 
@@ -401,41 +419,41 @@ func TestRestApiTransactionMonitorRead(t *testing.T) {
 }
 
 func TestRestApiTransactionMonitorDelete(t *testing.T) {
-	d := restApiMonitorTransactionTestResourceData(t)
+	d := restApiTransactionMonitorTestResourceData(t)
 	d.SetId("123")
 
 	c := fake.NewClient()
 
-	c.FakeRestApiMonitors.On("Delete", "123").Return(nil).Once()
+	c.FakeRestApiTransactionMonitors.On("Delete", "123").Return(nil).Once()
 
 	require.NoError(t, restApiTransactionMonitorDelete(d, c))
 
-	c.FakeRestApiMonitors.On("Delete", "123").Return(apierrors.NewStatusError(404, "not found")).Once()
+	c.FakeRestApiTransactionMonitors.On("Delete", "123").Return(apierrors.NewStatusError(404, "not found")).Once()
 
 	require.NoError(t, restApiTransactionMonitorDelete(d, c))
 }
 
 func TestRestApiTransactionMonitorExists(t *testing.T) {
-	d := restApiMonitorTransactionTestResourceData(t)
+	d := restApiTransactionMonitorTestResourceData(t)
 	d.SetId("123")
 
 	c := fake.NewClient()
 
-	c.FakeRestApiMonitors.On("Get", "123").Return(&api.RestApiMonitor{}, nil).Once()
+	c.FakeRestApiTransactionMonitors.On("Get", "123").Return(&api.RestApiMonitor{}, nil).Once()
 
 	exists, err := restApiTransactionMonitorExists(d, c)
 
 	require.NoError(t, err)
 	assert.True(t, exists)
 
-	c.FakeRestApiMonitors.On("Get", "123").Return(nil, apierrors.NewStatusError(404, "not found")).Once()
+	c.FakeRestApiTransactionMonitors.On("Get", "123").Return(nil, apierrors.NewStatusError(404, "not found")).Once()
 
 	exists, err = restApiTransactionMonitorExists(d, c)
 
 	require.NoError(t, err)
 	assert.False(t, exists)
 
-	c.FakeRestApiMonitors.On("Get", "123").Return(nil, apierrors.NewStatusError(500, "error")).Once()
+	c.FakeRestApiTransactionMonitors.On("Get", "123").Return(nil, apierrors.NewStatusError(500, "error")).Once()
 
 	exists, err = restApiTransactionMonitorExists(d, c)
 
@@ -443,7 +461,7 @@ func TestRestApiTransactionMonitorExists(t *testing.T) {
 	assert.False(t, exists)
 }
 
-func restApiMonitorTransactionTestResourceData(t *testing.T) *schema.ResourceData {
+func restApiTransactionMonitorTestResourceData(t *testing.T) *schema.ResourceData {
 	return schema.TestResourceDataRaw(t, RestApiTransactionMonitorSchema, map[string]interface{}{
 		"display_name":                "foo",
 		"type":                        string(api.RESTAPISEQ),

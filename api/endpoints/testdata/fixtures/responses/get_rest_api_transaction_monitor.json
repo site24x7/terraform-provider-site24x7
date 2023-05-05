@@ -1,0 +1,94 @@
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "monitor_id": "897654345678",
+    "display_name": "foo",
+    "type": "RESTAPISEQ",
+    "steps": [{
+      "display_name": "Step 1",
+      "monitor_id": "",
+      "step_details": [{
+        "http_method": "G",
+        "http_protocol": "H1.1",
+        "ssl_protocol": "Auto",
+        "use_alpn": false,
+        "use_ipv6": false,
+        "request_content_type": "JSON",
+        "response_type": "T",
+        "request_param": "req_param",
+        "timeout": 10,
+        "use_name_server": true,
+        "json_schema_check": false,
+        "auth_user": "username",
+        "auth_pass": "password",
+        "oauth2_provider": "provider",
+        "client_certificate_password": "pass",
+        "jwt_id": "111",
+        "match_case": true,
+        "user_agent": "firefox",
+        "display_name": "",
+        "response_headers_check": {
+          "severity": 2,
+          "value": [{
+            "name": "Accept-Encoding",
+            "value": "gzip"
+          }, {
+            "name": "Cache-Control",
+            "value": "nocache"
+          }]
+        },
+        "step_url": "www.test.tld"
+      }]
+    },
+    {
+      "display_name": "Step 2",
+      "monitor_id": "",
+      "step_details": [{
+        "http_method": "G",
+        "http_protocol": "H1.1",
+        "ssl_protocol": "Auto",
+        "use_alpn": false,
+        "use_ipv6": false,
+        "request_content_type": "JSON",
+        "response_type": "T",
+        "request_param": "req_param",
+        "timeout": 10,
+        "use_name_server": true,
+        "json_schema_check": false,
+        "auth_user": "username",
+        "auth_pass": "password",
+        "oauth2_provider": "provider",
+        "client_certificate_password": "pass",
+        "jwt_id": "111",
+        "match_case": true,
+        "user_agent": "firefox",
+        "display_name": "",
+        "response_headers_check": {
+          "severity": 2,
+          "value": [{
+            "name": "Accept-Encoding",
+            "value": "gzip"
+          }, {
+            "name": "Cache-Control",
+            "value": "nocache"
+          }]
+        },
+        "step_url": "www.test.tld"
+      }]
+    }
+    ],
+    "check_frequency": "5",
+    "location_profile_id": "456",
+    "notification_profile_id": "789",
+    "threshold_profile_id": "012",
+    "monitor_groups": [
+      "234",
+      "567"
+    ],
+    "user_group_ids": [
+      "123",
+      "456"
+    ]
+  }
+}
