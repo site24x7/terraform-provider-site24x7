@@ -89,11 +89,6 @@ resource "site24x7_rest_api_transaction_monitor" "rest_api_transaction_monitor_e
       // (Required) Domain address for the step.
       step_url = "https://www.example1.com"
 
-      // (Optional) Map of custom HTTP headers to send.
-      custom_headers = {
-        "Accept" = "application/json"
-      }
-
       // (Optional) Check for the keyword in the website response.
       matching_keyword = {
         severity= 2

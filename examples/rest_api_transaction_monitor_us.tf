@@ -141,11 +141,6 @@ resource "site24x7_rest_api_transaction_monitor" "rest_api_transaction_monitor_e
           // (Optional)  Timeout for connecting to REST API Default value is 10. Range 1 - 45.
           timeout = 10
 
-          // (Optional) Map of custom HTTP headers to send.
-          custom_headers = {
-            "Accept" = "application/json"
-          }
-
           // (Optional) Check for the keyword in the website response.
           matching_keyword = {
             severity= 2
