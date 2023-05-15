@@ -2,16 +2,16 @@ package monitors
 
 import (
 	"fmt"
+	"sort"
+	"strconv"
+
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
 	log "github.com/sirupsen/logrus"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
 	"github.com/site24x7/terraform-provider-site24x7/site24x7"
-	"sort"
-	"strconv"
 )
-
 
 // Sample RESTAPI TRANSACTION POST JSON
 
@@ -125,8 +125,8 @@ var RestApiTransactionMonitorSchema = map[string]*schema.Schema{
 	"check_frequency": {
 		Type:        schema.TypeString,
 		Optional:    true,
-		Default:     "1",
-		Description: "Interval at which your website has to be monitored. Default value is 1 minute.",
+		Default:     "5",
+		Description: "Interval at which your RESRAPI has to be monitored. Default value is 5 minute.",
 	},
 	// Configuration Profiles
 	"location_profile_id": {
@@ -193,7 +193,7 @@ var RestApiTransactionMonitorSchema = map[string]*schema.Schema{
 	},
 	"tag_ids": {
 		Type: schema.TypeSet,
-		Elem: &schema.Schema{
+		Elem: &schema.Schema{	
 			Type: schema.TypeString,
 		},
 		Optional:    true,
@@ -222,8 +222,8 @@ var RestApiTransactionMonitorSchema = map[string]*schema.Schema{
 		Elem:        schema.TypeString,
 		Description: "Action to be performed on monitor status changes.",
 	},
-	"steps" :{
-		Type: schema.TypeSet,
+	"steps": {
+		Type:     schema.TypeSet,
 		Required: true,
 		Elem: &schema.Resource{
 			Schema: map[string]*schema.Schema{
@@ -232,8 +232,8 @@ var RestApiTransactionMonitorSchema = map[string]*schema.Schema{
 					Required:    true,
 					Description: "Display Name for the monitor.",
 				},
-				"step_details":{
-					Type: schema.TypeSet,
+				"step_details": {
+					Type:     schema.TypeSet,
 					Required: true,
 					Elem: &schema.Resource{
 						Schema: map[string]*schema.Schema{
@@ -572,7 +572,6 @@ func restApiTransactionMonitorExists(d *schema.ResourceData, meta interface{}) (
 	return true, nil
 }
 
-
 func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site24x7.Client) (*api.RestApiTransactionMonitor, error) {
 
 	var monitorGroups []string
@@ -641,7 +640,7 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 		StepsDetails := v.(map[string]interface{})["step_details"].(*schema.Set)
 		StepsDetailsItem := make([]api.StepDetails, StepsDetails.Len())
 
-		for i, j := range StepsDetails.List(){
+		for i, j := range StepsDetails.List() {
 			// Request Headers
 			requestHeaderMap := j.(map[string]interface{})["request_headers"].(map[string]interface{})
 			requestHeaderKeys := make([]string, 0, len(requestHeaderMap))
@@ -650,13 +649,13 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 			}
 			sort.Strings(requestHeaderKeys)
 			requestHeaders := make([]api.Header, len(requestHeaderKeys))
-			for i,k := range requestHeaderKeys {
+			for i, k := range requestHeaderKeys {
 				requestHeaders[i] = api.Header{Name: k, Value: requestHeaderMap[k].(string)}
 			}
 
 			// HTTP Response Headers
 			var httpResponseHeader api.HTTPResponseHeader
-			log.Println("response header",httpResponseHeader)
+			log.Println("response header", httpResponseHeader)
 			responseHeaderMap := j.(map[string]interface{})["response_headers"].(map[string]interface{})
 			if len(responseHeaderMap) > 0 {
 				reponseHeaderKeys := make([]string, 0, len(responseHeaderMap))
@@ -665,7 +664,7 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 				}
 				sort.Strings(reponseHeaderKeys)
 				responseHeaders := make([]api.Header, len(reponseHeaderKeys))
-				log.Println("response header",reponseHeaderKeys);
+				log.Println("response header", reponseHeaderKeys)
 				for i, k := range reponseHeaderKeys {
 					responseHeaders[i] = api.Header{Name: k, Value: responseHeaderMap[k].(string)}
 				}
@@ -718,64 +717,63 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 				GraphQL = graphqlMap
 			}
 
-			log.Println("Postman",j.(map[string]interface{})["request_content_type"].(string))
+			log.Println("Postman", j.(map[string]interface{})["request_content_type"].(string))
 
 			StepsDetailsItem[i] = api.StepDetails{
-				StepUrl: j.(map[string]interface{})["step_url"].(string),
-				DisplayName: v.(map[string]interface{})["display_name"].(string),
-				HTTPMethod: j.(map[string]interface{})["http_method"].(string),
-				RequestContentType: j.(map[string]interface{})["request_content_type"].(string),
-				RequestBody: j.(map[string]interface{})["request_body"].(string),
-				RequestHeaders: requestHeaders,
-				GraphQL:GraphQL,
-				UserAgent:j.(map[string]interface{})["user_agent"].(string),
-				AuthMethod:j.(map[string]interface{})["auth_method"].(string),
-				AuthUser:j.(map[string]interface{})["auth_user"].(string),
-				AuthPass:j.(map[string]interface{})["auth_pass"].(string),
-				OAuth2Provider:j.(map[string]interface{})["oauth2_provider"].(string),
-				ClientCertificatePassword:j.(map[string]interface{})["client_certificate_password"].(string),
-				JwtID:j.(map[string]interface{})["jwt_id"].(string),
-				UseNameServer:j.(map[string]interface{})["use_name_server"].(bool),
-				HTTPProtocol:j.(map[string]interface{})["http_protocol"].(string),
-				SSLProtocol:j.(map[string]interface{})["ssl_protocol"].(string),
-				UpStatusCodes:j.(map[string]interface{})["up_status_codes"].(string),
-				UseAlpn:j.(map[string]interface{})["use_alpn"].(bool),
-				ResponseContentType:j.(map[string]interface{})["response_content_type"].(string),
-				MatchJSON:MatchJSON,
-				JSONSchema:JSONSchema,
-				JSONSchemaCheck:j.(map[string]interface{})["json_schema_check"].(bool),
-				MatchingKeyword:MatchingKeyword,
-				UnmatchingKeyword:UnmatchingKeyword,
-				MatchCase:j.(map[string]interface{})["match_case"].(bool),
-				MatchRegex:MatchRegex,
-				ResponseHeaders:httpResponseHeader,
+				StepUrl:                   j.(map[string]interface{})["step_url"].(string),
+				DisplayName:               v.(map[string]interface{})["display_name"].(string),
+				HTTPMethod:                j.(map[string]interface{})["http_method"].(string),
+				RequestContentType:        j.(map[string]interface{})["request_content_type"].(string),
+				RequestBody:               j.(map[string]interface{})["request_body"].(string),
+				RequestHeaders:            requestHeaders,
+				GraphQL:                   GraphQL,
+				UserAgent:                 j.(map[string]interface{})["user_agent"].(string),
+				AuthMethod:                j.(map[string]interface{})["auth_method"].(string),
+				AuthUser:                  j.(map[string]interface{})["auth_user"].(string),
+				AuthPass:                  j.(map[string]interface{})["auth_pass"].(string),
+				OAuth2Provider:            j.(map[string]interface{})["oauth2_provider"].(string),
+				ClientCertificatePassword: j.(map[string]interface{})["client_certificate_password"].(string),
+				JwtID:                     j.(map[string]interface{})["jwt_id"].(string),
+				UseNameServer:             j.(map[string]interface{})["use_name_server"].(bool),
+				HTTPProtocol:              j.(map[string]interface{})["http_protocol"].(string),
+				SSLProtocol:               j.(map[string]interface{})["ssl_protocol"].(string),
+				UpStatusCodes:             j.(map[string]interface{})["up_status_codes"].(string),
+				UseAlpn:                   j.(map[string]interface{})["use_alpn"].(bool),
+				ResponseContentType:       j.(map[string]interface{})["response_content_type"].(string),
+				MatchJSON:                 MatchJSON,
+				JSONSchema:                JSONSchema,
+				JSONSchemaCheck:           j.(map[string]interface{})["json_schema_check"].(bool),
+				MatchingKeyword:           MatchingKeyword,
+				UnmatchingKeyword:         UnmatchingKeyword,
+				MatchCase:                 j.(map[string]interface{})["match_case"].(bool),
+				MatchRegex:                MatchRegex,
+				ResponseHeaders:           httpResponseHeader,
 			}
 		}
 
-		StepsItems[k]  = api.Steps{
-			DisplayName: v.(map[string]interface{})["display_name"].(string),
+		StepsItems[k] = api.Steps{
+			DisplayName:  v.(map[string]interface{})["display_name"].(string),
 			StepsDetails: StepsDetailsItem,
-			MonitorID: d.Id(),
+			MonitorID:    d.Id(),
 		}
 	}
 
 	restApiTransactionMonitor := &api.RestApiTransactionMonitor{
-		MonitorID:      d.Id(),
-		DisplayName:    d.Get("display_name").(string),
-		Type:           string(api.RESTAPISEQ),
-		CheckFrequency: d.Get("check_frequency").(string),
-		LocationProfileID:         d.Get("location_profile_id").(string),
-		NotificationProfileID:     d.Get("notification_profile_id").(string),
-		ThresholdProfileID:        d.Get("threshold_profile_id").(string),
-		MonitorGroups:             monitorGroups,
-		DependencyResourceIDs:     dependencyResourceIDs,
-		UserGroupIDs:              userGroupIDs,
-		TagIDs:                    tagIDs,
-		ThirdPartyServiceIDs:      thirdPartyServiceIDs,
-		ActionIDs:                 actionRefs,
-		Steps: StepsItems,
+		MonitorID:             d.Id(),
+		DisplayName:           d.Get("display_name").(string),
+		Type:                  string(api.RESTAPISEQ),
+		CheckFrequency:        d.Get("check_frequency").(string),
+		LocationProfileID:     d.Get("location_profile_id").(string),
+		NotificationProfileID: d.Get("notification_profile_id").(string),
+		ThresholdProfileID:    d.Get("threshold_profile_id").(string),
+		MonitorGroups:         monitorGroups,
+		DependencyResourceIDs: dependencyResourceIDs,
+		UserGroupIDs:          userGroupIDs,
+		TagIDs:                tagIDs,
+		ThirdPartyServiceIDs:  thirdPartyServiceIDs,
+		ActionIDs:             actionRefs,
+		Steps:                 StepsItems,
 	}
-
 
 	// Location Profile
 	_, locationProfileErr := site24x7.SetLocationProfile(client, d, restApiTransactionMonitor)
@@ -941,7 +939,7 @@ func updateRestApiTransactionMonitorResourceData(d *schema.ResourceData, monitor
 	//		MonitorID: d.Id(),
 	//	}
 	//}
-	d.Set("steps",monitor.Steps)
+	d.Set("steps", monitor.Steps)
 	d.Set("location_profile_id", monitor.LocationProfileID)
 	d.Set("notification_profile_id", monitor.NotificationProfileID)
 	d.Set("threshold_profile_id", monitor.ThresholdProfileID)
