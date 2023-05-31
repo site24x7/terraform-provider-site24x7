@@ -31,7 +31,7 @@ provider "site24x7" {
   // when oauth2_refresh_token is set.
   # oauth2_access_token = "<SITE24X7_OAUTH2_ACCESS_TOKEN>"
 
-	// (Optional) oauth2_access_token expiry in seconds. Specify access_token_expiry when oauth2_access_token is configured.
+  // (Optional) oauth2_access_token expiry in seconds. Specify access_token_expiry when oauth2_access_token is configured.
   # access_token_expiry = "0"
 
   // (Optional) ZAAID of the customer under a MSP or BU
@@ -65,7 +65,7 @@ resource "site24x7_website_monitor" "website_monitor_example" {
   // See https://www.site24x7.com/help/api/#check-interval for all supported values.
   check_frequency = "1"
 
-  // (Optional) Name of the Location Profile that has to be associated with the monitor. 
+  // (Optional) Name of the Location Profile that has to be associated with the monitor.
   // Either specify location_profile_id or location_profile_name.
   // If location_profile_id and location_profile_name are omitted,
   // the first profile returned by the /api/location_profiles endpoint
@@ -93,10 +93,10 @@ resource "site24x7_website_monitor" "website_monitor_example" {
 resource "site24x7_dns_server_monitor" "dns_monitor_basic" {
   // (Required) Name for the monitor.
   display_name              = "Nowatt basic DNS monitor - Terraform"
-  
+
   // (Required) DNS Name Server to be monitored
   dns_host                  = "185.43.51.84"
-  
+
   // (Required) Domain name to be resolved.
   domain_name               = "www.nowatt.com"
 }
@@ -114,7 +114,7 @@ resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_basic" {
   // See https://www.site24x7.com/help/api/#check-interval for all supported values.
   check_frequency = "15"
 
-  // (Optional) Name of the Location Profile that has to be associated with the monitor. 
+  // (Optional) Name of the Location Profile that has to be associated with the monitor.
   // Either specify location_profile_id or location_profile_name.
   // If location_profile_id and location_profile_name are omitted,
   // the first profile returned by the /api/location_profiles endpoint
@@ -123,5 +123,3 @@ resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_basic" {
   location_profile_name = "North America"
 
 }
-
-

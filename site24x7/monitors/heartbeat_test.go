@@ -23,9 +23,9 @@ func TestHeartbeatMonitorCreate(t *testing.T) {
 		ThresholdProfileID:    "012",
 		NotificationProfileID: "789",
 		MonitorGroups:         []string{"234", "567"},
-		UserGroupIDs:          []string{"123", "456"},
+		UserGroupIDs:          []string{"456","123"},
 		TagIDs:                []string{"123"},
-		ThirdPartyServiceIDs:  []string{"123", "456"},
+		ThirdPartyServiceIDs:  []string{"456","123"},
 		OnCallScheduleID:      "1244",
 	}
 
@@ -100,9 +100,9 @@ func TestHeartbeatMonitorUpdate(t *testing.T) {
 		ThresholdProfileID:    "012",
 		NotificationProfileID: "789",
 		MonitorGroups:         []string{"234", "567"},
-		UserGroupIDs:          []string{"123", "456"},
+		UserGroupIDs:          []string{"456","123"},
 		TagIDs:                []string{"123"},
-		ThirdPartyServiceIDs:  []string{"123", "456"},
+		ThirdPartyServiceIDs:  []string{"456","123"},
 		OnCallScheduleID:      "1244",
 	}
 

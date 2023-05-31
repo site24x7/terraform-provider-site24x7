@@ -73,6 +73,46 @@ type SearchConfig struct {
 	Hash     string `json:"hash,omitempty"`
 }
 
+type Steps struct {
+	DisplayName  string        `json:"display_name"`
+	StepsDetails []StepDetails `json:"step_details"`
+	MonitorID    string        `json:"monitor_id"`
+}
+
+type StepDetails struct {
+	StepUrl     string `json:"step_url"`
+	DisplayName string `json:"display_name"`
+	// HTTP Configuration
+	Timeout                   int                    `json:"timeout"`
+	HTTPMethod                string                 `json:"http_method"`
+	RequestContentType        string                 `json:"request_content_type,omitempty"`
+	RequestBody               string                 `json:"request_param,omitempty"`
+	RequestHeaders            []Header               `json:"custom_headers,omitempty"`
+	GraphQL                   map[string]interface{} `json:"graphql,omitempty"`
+	UserAgent                 string                 `json:"user_agent,omitempty"`
+	AuthMethod                string                 `json:"auth_method,omitempty"`
+	AuthUser                  string                 `json:"auth_user,omitempty"`
+	AuthPass                  string                 `json:"auth_pass,omitempty"`
+	OAuth2Provider            string                 `json:"oauth2_provider,omitempty"`
+	ClientCertificatePassword string                 `json:"client_certificate_password,omitempty"`
+	JwtID                     string                 `json:"jwt_id,omitempty"`
+	UseNameServer             bool                   `json:"use_name_server"`
+	HTTPProtocol              string                 `json:"http_protocol,omitempty"`
+	SSLProtocol               string                 `json:"ssl_protocol,omitempty"`
+	UpStatusCodes             string                 `json:"up_status_codes,omitempty"`
+	UseAlpn                   bool                   `json:"use_alpn"`
+	// Content Check
+	ResponseContentType string                 `json:"response_type"`
+	MatchJSON           map[string]interface{} `json:"match_json,omitempty"`
+	JSONSchema          map[string]interface{} `json:"json_schema,omitempty"`
+	JSONSchemaCheck     bool                   `json:"json_schema_check,omitempty"`
+	MatchingKeyword     map[string]interface{} `json:"matching_keyword,omitempty"`
+	UnmatchingKeyword   map[string]interface{} `json:"unmatching_keyword,omitempty"`
+	MatchCase           bool                   `json:"match_case"`
+	MatchRegex          map[string]interface{} `json:"match_regex,omitempty"`
+	ResponseHeaders     HTTPResponseHeader     `json:"response_headers_check,omitempty"`
+}
+
 type HTTPResponseHeader struct {
 	Severity Status   `json:"severity"`
 	Value    []Header `json:"value"`
@@ -274,26 +314,27 @@ type Location struct {
 
 // Setup other users who can login to Site24x7 and receive instant notifications about outages.
 type User struct {
-	_                   struct{}               `type:"structure"` // Enforces key based initialization.
-	ID                  string                 `json:"user_id,omitempty"`
-	DisplayName         string                 `json:"display_name"`
-	Email               string                 `json:"email_address"`
-	SelectionType       ResourceType           `json:"selection_type"`
-	UserRole            int                    `json:"user_role"`
-	JobTitle            int                    `json:"job_title,omitempty"`
-	MobileSettings      map[string]interface{} `json:"mobile_settings,omitempty"`
-	AlertSettings       map[string]interface{} `json:"alert_settings"`
-	TwitterSettings     map[string]interface{} `json:"twitter_settings,omitempty"`
-	IsEditAllowed       bool                   `json:"is_edit_allowed,omitempty"`
-	IsClientPortalUser  bool                   `json:"is_client_portal_user,omitempty"`
-	IsAccountContact    bool                   `json:"is_account_contact,omitempty"`
-	IsContact           bool                   `json:"is_contact,omitempty"`
-	IsInvited           bool                   `json:"is_invited,omitempty"`
-	SubscribeNewsletter bool                   `json:"subscribe_newsletter,omitempty"`
-	UserGroupIDs        []string               `json:"user_groups,omitempty"`
-	NotificationMedium  []int                  `json:"notify_medium"`
-	Monitors            []string               `json:"monitors,omitempty"`
-	MonitorGroups       []string               `json:"monitor_groups,omitempty"`
+	_                         struct{}               `type:"structure"` // Enforces key based initialization.
+	ID                        string                 `json:"user_id,omitempty"`
+	DisplayName               string                 `json:"display_name"`
+	Email                     string                 `json:"email_address"`
+	SelectionType             ResourceType           `json:"selection_type"`
+	UserRole                  int                    `json:"user_role"`
+	JobTitle                  int                    `json:"job_title,omitempty"`
+	MobileSettings            map[string]interface{} `json:"mobile_settings,omitempty"`
+	AlertSettings             map[string]interface{} `json:"alert_settings"`
+	TwitterSettings           map[string]interface{} `json:"twitter_settings,omitempty"`
+	IsEditAllowed             bool                   `json:"is_edit_allowed,omitempty"`
+	IsClientPortalUser        bool                   `json:"is_client_portal_user,omitempty"`
+	IsAccountContact          bool                   `json:"is_account_contact,omitempty"`
+	IsContact                 bool                   `json:"is_contact,omitempty"`
+	IsInvited                 bool                   `json:"is_invited,omitempty"`
+	SubscribeNewsletter       bool                   `json:"subscribe_newsletter,omitempty"`
+	UserGroupIDs              []string               `json:"user_groups,omitempty"`
+	NotificationMedium        []int                  `json:"notify_medium"`
+	Monitors                  []string               `json:"monitors,omitempty"`
+	MonitorGroups             []string               `json:"monitor_groups,omitempty"`
+	Consent_for_non_eu_alerts bool                   `json:"consent_for_non_eu_alerts"`
 }
 
 func (user *User) String() string {

@@ -28,6 +28,8 @@ resource "site24x7_schedule_maintenance" "schedule_maintenance_basic" {
   start_time = "19:41"
   // (Required) Maintenance end time. Format - hh:mm
   end_time = "20:44"
+  // (Optional) Time zone for your scheduled maintenance. Default value is your account timezone.
+  time_zone = "GMT"
   // (Optional) Resource Type associated with this integration. Default value is '2'. Can take values 1|2|3. '1' denotes 'Monitor Group', '2' denotes 'Monitors', '3' denotes 'Tags'.
   selection_type = 2
   // (Optional) Monitors that need to be associated with the maintenance window when the selection_type = 2.
@@ -58,6 +60,7 @@ resource "site24x7_schedule_maintenance" "schedule_maintenance_basic" {
 
 * `description` (String) Description for the maintenance.
 * `selection_type` (Number) Resource Type associated with this integration. Default value is '2'. Can take values 1|2|3. '1' denotes 'Monitor Group', '2' denotes 'Monitors', '3' denotes 'Tags'. Please refer [API documentation](https://www.site24x7.com/help/api/#resource_type_constants).
+* `time_zone` (String) Time zone for your scheduled maintenance. Default value is your account timezone.
 * `monitors` (List of String) Monitors that need to be associated with the maintenance window when the selection_type = 2.
 * `monitor_groups` (List of String) Tags that need to be associated with the maintenance window when the selection_type = 3.
 * `tags` (List of String) Tags that need to be associated with the maintenance window when the selection_type = 3.

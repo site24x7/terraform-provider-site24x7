@@ -122,7 +122,7 @@ var UserSchema = map[string]*schema.Schema{
 	},
 	"mobile_settings": {
 		Type:     schema.TypeMap,
-		Required: true,
+		Optional: true,
 		Elem: &schema.Resource{
 			Schema: map[string]*schema.Schema{
 				"country_code": {
@@ -202,6 +202,12 @@ var UserSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Default:     1,
 		Description: "Denotes the email format. '0' - Text, '1' - HTML",
+	},
+	"consent_for_non_eu_alerts": {
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Default:     false,
+		Description: "The third-party providers we use to send SMS and voice alerts will process the data outside the EU region.",
 	},
 }
 
@@ -309,16 +315,17 @@ func resourceDataToUser(d *schema.ResourceData) *api.User {
 	}
 
 	user := &api.User{
-		ID:                 d.Id(),
-		DisplayName:        d.Get("display_name").(string),
-		Email:              d.Get("email_address").(string),
-		UserRole:           d.Get("user_role").(int),
-		JobTitle:           d.Get("job_title").(int),
-		MobileSettings:     d.Get("mobile_settings").(map[string]interface{}),
-		SelectionType:      api.ResourceType(d.Get("selection_type").(int)),
-		NotificationMedium: notificationMedium,
-		UserGroupIDs:       userGroupIDs,
-		MonitorGroups:      monitorGroupIDs,
+		ID:                        d.Id(),
+		DisplayName:               d.Get("display_name").(string),
+		Email:                     d.Get("email_address").(string),
+		UserRole:                  d.Get("user_role").(int),
+		JobTitle:                  d.Get("job_title").(int),
+		MobileSettings:            d.Get("mobile_settings").(map[string]interface{}),
+		SelectionType:             api.ResourceType(d.Get("selection_type").(int)),
+		NotificationMedium:        notificationMedium,
+		UserGroupIDs:              userGroupIDs,
+		MonitorGroups:             monitorGroupIDs,
+		Consent_for_non_eu_alerts: d.Get("consent_for_non_eu_alerts").(bool),
 	}
 
 	// Alert Settings
