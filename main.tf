@@ -1,6 +1,6 @@
 terraform {
   # Require Terraform version 0.15.x (recommended)
-  required_version = "> 0.15.0"
+  required_version = "~> 0.15.0"
 
   required_providers {
     site24x7 = {
@@ -92,13 +92,13 @@ resource "site24x7_website_monitor" "website_monitor_example" {
 // DNS Server API doc: https://www.site24x7.com/help/api/#dns-server
 resource "site24x7_dns_server_monitor" "dns_monitor_basic" {
   // (Required) Name for the monitor.
-  display_name              = "Nowatt basic DNS monitor - Terraform"
+  display_name = "Nowatt basic DNS monitor - Terraform"
 
   // (Required) DNS Name Server to be monitored
-  dns_host                  = "185.43.51.84"
+  dns_host = "185.43.51.84"
 
   // (Required) Domain name to be resolved.
-  domain_name               = "www.nowatt.com"
+  domain_name = "www.nowatt.com"
 }
 
 
