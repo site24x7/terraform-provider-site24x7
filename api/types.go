@@ -73,18 +73,17 @@ type SearchConfig struct {
 	Hash     string `json:"hash,omitempty"`
 }
 
-
 type Steps struct {
-	DisplayName    string   	  `json:"display_name"`
-	StepsDetails   []StepDetails  `json:"step_details"`
-	MonitorID  	   string      	  `json:"monitor_id"`
+	DisplayName  string        `json:"display_name"`
+	StepsDetails []StepDetails `json:"step_details"`
+	MonitorID    string        `json:"monitor_id"`
 }
 
 type StepDetails struct {
-	StepUrl 			      string				 `json:"step_url"`
-	DisplayName   			  string   	  			 `json:"display_name"`
+	StepUrl     string `json:"step_url"`
+	DisplayName string `json:"display_name"`
 	// HTTP Configuration
-	Timeout 				  int					 `json:"timeout"`
+	Timeout                   int                    `json:"timeout"`
 	HTTPMethod                string                 `json:"http_method"`
 	RequestContentType        string                 `json:"request_content_type,omitempty"`
 	RequestBody               string                 `json:"request_param,omitempty"`

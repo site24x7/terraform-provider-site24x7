@@ -293,6 +293,7 @@ type RestApiMonitor struct {
 	AuthMethod                string                 `json:"auth_method,omitempty"`
 	AuthUser                  string                 `json:"auth_user,omitempty"`
 	AuthPass                  string                 `json:"auth_pass,omitempty"`
+	CredentialProfileID       string   				 `json:"credential_profile_id,omitempty"`
 	OAuth2Provider            string                 `json:"oauth2_provider,omitempty"`
 	ClientCertificatePassword string                 `json:"client_certificate_password,omitempty"`
 	JwtID                     string                 `json:"jwt_id,omitempty"`
