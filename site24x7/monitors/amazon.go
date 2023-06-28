@@ -256,6 +256,6 @@ func updateAmazonMonitorResourceData(d *schema.ResourceData, amazonMonitor *api.
 	d.Set("tag_ids", amazonMonitor.TagIDs)
 	d.Set("third_party_service_ids", amazonMonitor.ThirdPartyServiceIDs)
 	d.Set("aws_discover_services", amazonMonitor.DiscoverServices)
-	d.Set("aws_external_id", amazonMonitor.AWSExternalID)
+	d.Set("external_id", amazonMonitor.AWSExternalID)
 	d.Set("role_arn", amazonMonitor.RoleARN)
 }
