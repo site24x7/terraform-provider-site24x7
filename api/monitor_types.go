@@ -330,7 +330,7 @@ type RestApiTransactionMonitor struct {
 	DisplayName    string   `json:"display_name"`
 	Type           string   `json:"type"`
 	CheckFrequency string   `json:"check_frequency"`
-	Steps		   []Steps  `json:"steps"`
+	Steps          []Steps  `json:"steps"`
 	// Configuration Profiles
 	LocationProfileID     string      `json:"location_profile_id"`
 	NotificationProfileID string      `json:"notification_profile_id"`
@@ -378,7 +378,6 @@ func (restApiMonitor *RestApiTransactionMonitor) GetTagIDs() []string {
 func (restApiMonitor *RestApiTransactionMonitor) String() string {
 	return ToString(restApiMonitor)
 }
-
 
 func (restApiMonitor *RestApiMonitor) SetLocationProfileID(locationProfileID string) {
 	restApiMonitor.LocationProfileID = locationProfileID

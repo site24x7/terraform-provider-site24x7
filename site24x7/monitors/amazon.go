@@ -13,7 +13,7 @@ var AmazonMonitorSchema = map[string]*schema.Schema{
 		Required:    true,
 		Description: "Display name for the AWS monitor.",
 	},
-	"aws_external_id": {
+	"external_id": {
 		Type:        schema.TypeString,
 		Required:    true,
 		Description: "External ID for the AWS account.",
@@ -221,7 +221,7 @@ func resourceDataToAmazonMonitor(d *schema.ResourceData, client site24x7.Client)
 		Type:                  string(api.AMAZON),
 		DiscoverFrequency:     d.Get("aws_discovery_frequency").(int),
 		DiscoverServices:      awsServicesToDiscover,
-		AWSExternalID:         d.Get("aws_external_id").(string),
+		AWSExternalID:         d.Get("external_id").(string),
 		RoleARN:               d.Get("role_arn").(string),
 		NotificationProfileID: d.Get("notification_profile_id").(string),
 		UserGroupIDs:          userGroupIDs,
@@ -256,6 +256,6 @@ func updateAmazonMonitorResourceData(d *schema.ResourceData, amazonMonitor *api.
 	d.Set("tag_ids", amazonMonitor.TagIDs)
 	d.Set("third_party_service_ids", amazonMonitor.ThirdPartyServiceIDs)
 	d.Set("aws_discover_services", amazonMonitor.DiscoverServices)
-	d.Set("aws_external_id", amazonMonitor.AWSExternalID)
+	d.Set("external_id", amazonMonitor.AWSExternalID)
 	d.Set("role_arn", amazonMonitor.RoleARN)
 }
