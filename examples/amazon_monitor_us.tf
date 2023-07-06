@@ -13,14 +13,17 @@ terraform {
 
 // Authentication API doc - https://www.site24x7.com/help/api/#authentication
 provider "site24x7" {
+  // (Security recommendation - It is always best practice to store your credentials in a Vault of your choice.)
 	// (Required) The client ID will be looked up in the SITE24X7_OAUTH2_CLIENT_ID
 	// environment variable if the attribute is empty or omitted.
 	oauth2_client_id = "<SITE24X7_OAUTH2_CLIENT_ID>"
-  (Security recommendation - IT is always a best practice to store your credentials in a Vault of your choice)
+
+  // (Security recommendation - It is always best practice to store your credentials in a Vault of your choice.)
 	// (Required) The client secret will be looked up in the SITE24X7_OAUTH2_CLIENT_SECRET
 	// environment variable if the attribute is empty or omitted.
 	oauth2_client_secret = "<SITE24X7_OAUTH2_CLIENT_SECRET>"
-  
+    
+  // (Security recommendation - It is always best practice to store your credentials in a Vault of your choice.)
 	// (Required) The refresh token will be looked up in the SITE24X7_OAUTH2_REFRESH_TOKEN
 	// environment variable if the attribute is empty or omitted.
 	oauth2_refresh_token = "<SITE24X7_OAUTH2_REFRESH_TOKEN>"
@@ -48,8 +51,10 @@ provider "site24x7" {
 resource "site24x7_amazon_monitor" "aws_monitor_basic" {
   // (Required) Display name for the monitor
   display_name = "aws_added_via_terraform"
+  // (Security recommendation - It is always best practice to store your credentials in a Vault of your choice.)
   // (Required) External ID for the AWS account
   external_id = "asdf"
+  // (Security recommendation - It is always best practice to store your credentials in a Vault of your choice.)
   // (Required) AWS Role ARN
   role_arn = "arn:aws:iam::23243:role/TerraformAdminRole"
   // (Optional) AWS discover frequency
@@ -63,8 +68,10 @@ resource "site24x7_amazon_monitor" "aws_monitor_basic" {
 resource "site24x7_amazon_monitor" "aws_monitor_site24x7" {
   // (Required) Display name for the monitor
   display_name = "aws_added_via_terraform"
+  // (Security recommendation - It is always best practice to store your credentials in a Vault of your choice.)
   // (Required) External ID for the AWS account
   external_id = "asdf"
+  // (Security recommendation - It is always best practice to store your credentials in a Vault of your choice.)
   // (Required) AWS Role ARN
   role_arn = ""
   // (Required) AWS External ID
