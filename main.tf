@@ -123,3 +123,5 @@ resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_basic" {
   location_profile_name = "North America"
 
 }
+
+

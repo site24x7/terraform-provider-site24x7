@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints"
+	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/aws"
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/common"
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/integration"
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/monitors"
@@ -106,6 +107,8 @@ type Client interface {
 	ConnectwiseIntegration() integration.ConnectwiseIntegration
 	TelegramIntegration() integration.TelegramIntegration
 	MSP() endpoints.MSP
+	AWSExternalID() aws.AWSExternalID
+	DeviceKey() common.DeviceKey
 }
 
 type client struct {
@@ -298,4 +301,14 @@ func (c *client) ThirdPartyIntegrations() integration.ThirdpartyIntegrations {
 // MSP implements Client.
 func (c *client) MSP() endpoints.MSP {
 	return endpoints.NewMSP(c.restClient)
+}
+
+// AWSExternalID implements Client.
+func (c *client) AWSExternalID() aws.AWSExternalID {
+	return aws.NewAWSExternalID(c.restClient)
+}
+
+// DeviceKey implements Client.
+func (c *client) DeviceKey() common.DeviceKey {
+	return common.NewDeviceKey(c.restClient)
 }
