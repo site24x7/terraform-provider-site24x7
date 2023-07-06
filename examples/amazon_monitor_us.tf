@@ -16,7 +16,7 @@ provider "site24x7" {
 	// (Required) The client ID will be looked up in the SITE24X7_OAUTH2_CLIENT_ID
 	// environment variable if the attribute is empty or omitted.
 	oauth2_client_id = "<SITE24X7_OAUTH2_CLIENT_ID>"
-  
+  (Security recommendation - IT is always a best practice to store your credentials in a Vault of your choice)
 	// (Required) The client secret will be looked up in the SITE24X7_OAUTH2_CLIENT_SECRET
 	// environment variable if the attribute is empty or omitted.
 	oauth2_client_secret = "<SITE24X7_OAUTH2_CLIENT_SECRET>"
