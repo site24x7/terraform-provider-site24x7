@@ -67,15 +67,15 @@ data "aws_iam_policy_document" "assume_role" {
 provider "site24x7" {
 	// (Required) The client ID will be looked up in the SITE24X7_OAUTH2_CLIENT_ID
 	// environment variable if the attribute is empty or omitted.
-	oauth2_client_id = "1000.4KEJDXRYB7NLHC8UCI8DEAROZDM96F"
+	oauth2_client_id = ""
   
 	// (Required) The client secret will be looked up in the SITE24X7_OAUTH2_CLIENT_SECRET
 	// environment variable if the attribute is empty or omitted.
-	oauth2_client_secret = "6960b4a93da0cfca9e4d8044cada362d7fc7c372a4"
+	oauth2_client_secret = ""
   
 	// (Required) The refresh token will be looked up in the SITE24X7_OAUTH2_REFRESH_TOKEN
 	// environment variable if the attribute is empty or omitted.
-	oauth2_refresh_token = "1000.9f25bed70f68a1fb1354f54505750de0.f7d1de7a8b9de65820157ac2d02ac248"
+	oauth2_refresh_token = ""
   
 	// (Required) Specify the data center from which you have obtained your
 	// OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN).
