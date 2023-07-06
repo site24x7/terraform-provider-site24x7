@@ -425,3 +425,21 @@ type MSPCustomer struct {
 func (mspCustomer *MSPCustomer) String() string {
 	return ToString(mspCustomer)
 }
+
+// Denotes a AWS external ID
+type AWSExternalID struct {
+	ID string `json:"external_id"`
+}
+
+func (awsExternalID *AWSExternalID) String() string {
+	return ToString(awsExternalID)
+}
+
+// Denotes a Device Key
+type DeviceKey struct {
+	ID string `json:"device_key"`
+}
+
+func (deviceKey *DeviceKey) String() string {
+	return ToString(deviceKey)
+}

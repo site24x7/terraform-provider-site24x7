@@ -44,8 +44,12 @@ var LocationProfileSchema = map[string]*schema.Schema{
 		Description: "Restricts polling of the resource from the selected locations alone in the Location Profile, overrides the alternate location poll logic.",
 	},
 	"outer_regions_location_consent": {
-		Type:        schema.TypeBool,
-		Optional:    true,
+		Type:     schema.TypeBool,
+		Optional: true,
+		// DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
+		// 	// Suppress diff
+		// 	return true
+		// },
 		Description: "Consent is mandatory for monitoring from countries outside the European Economic Area (EEA) and the Adequate countries. To provide your consent, set outer_regions_location_consent as true.",
 	},
 }

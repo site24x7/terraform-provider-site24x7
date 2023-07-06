@@ -13,14 +13,17 @@ terraform {
 
 // Authentication API doc - https://www.site24x7.com/help/api/#authentication
 provider "site24x7" {
+  // (Security recommendation - It is always best practice to store your credentials in a Vault of your choice.)
 	// (Required) The client ID will be looked up in the SITE24X7_OAUTH2_CLIENT_ID
 	// environment variable if the attribute is empty or omitted.
 	oauth2_client_id = "<SITE24X7_OAUTH2_CLIENT_ID>"
-  
+
+  // (Security recommendation - It is always best practice to store your credentials in a Vault of your choice.)
 	// (Required) The client secret will be looked up in the SITE24X7_OAUTH2_CLIENT_SECRET
 	// environment variable if the attribute is empty or omitted.
 	oauth2_client_secret = "<SITE24X7_OAUTH2_CLIENT_SECRET>"
-  
+    
+  // (Security recommendation - It is always best practice to store your credentials in a Vault of your choice.)
 	// (Required) The refresh token will be looked up in the SITE24X7_OAUTH2_REFRESH_TOKEN
 	// environment variable if the attribute is empty or omitted.
 	oauth2_refresh_token = "<SITE24X7_OAUTH2_REFRESH_TOKEN>"
