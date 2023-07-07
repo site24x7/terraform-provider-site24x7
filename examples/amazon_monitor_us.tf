@@ -48,12 +48,65 @@ provider "site24x7" {
   
 }
 
+# Require aws provider
+
+provider "aws" {
+  version = "~> 2.0"
+  region  = "us-east-1"
+}
+
+# resource and data block to define AWS IAM Role with the name Site24x7Infrastructure-Integrations
+
+resource "aws_iam_role" "site24x7" {
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+  name               = "Site24x7Infrastructure-Integrations"
+}
+
+# IAM role policy attachment
+
+resource "aws_iam_role_policy_attachment" "read_only_access" {
+  policy_arn = "arn:aws:iam::aws:policy/ReadOnlyAccess"
+  role       = aws_iam_role.site24x7.name
+}
+
+# IAM role policy definition
+
+data "aws_iam_policy_document" "assume_role" {
+  statement {
+    actions = [
+      "sts:AssumeRole"
+    ]
+
+    condition {
+      test = "StringEquals"
+
+      values = [
+        data.site24x7_aws_external_id.s247aws.id
+      ]
+
+      variable = "sts:ExternalId"
+    }
+
+    effect = "Allow"
+
+# Site24x7 AWS account details 
+
+    principals {
+      identifiers = [
+        "949777495771"
+      ]
+
+      type = "AWS"
+    }
+  }
+}
+
 resource "site24x7_amazon_monitor" "aws_monitor_basic" {
   // (Required) Display name for the monitor
   display_name = "aws_added_via_terraform"
   // (Security recommendation - It is always best practice to store your credentials in a Vault of your choice.)
   // (Required) External ID for the AWS account
-  external_id = "asdf"
+  external_id = data.site24x7_aws_external_id.s247aws.id
   // (Security recommendation - It is always best practice to store your credentials in a Vault of your choice.)
   // (Required) AWS Role ARN
   role_arn = "arn:aws:iam::23243:role/TerraformAdminRole"
@@ -70,7 +123,7 @@ resource "site24x7_amazon_monitor" "aws_monitor_site24x7" {
   display_name = "aws_added_via_terraform"
   // (Security recommendation - It is always best practice to store your credentials in a Vault of your choice.)
   // (Required) External ID for the AWS account
-  external_id = "asdf"
+  external_id = data.site24x7_aws_external_id.s247aws.id
   // (Security recommendation - It is always best practice to store your credentials in a Vault of your choice.)
   // (Required) AWS Role ARN
   role_arn = ""
@@ -126,3 +179,22 @@ resource "site24x7_amazon_monitor" "aws_monitor_site24x7" {
   ]
 }
 
+# Data block to get the site24x7 external ID and Role ARN details 
+
+data "site24x7_aws_external_id" "s247aws" {}
+
+// Displays AWS External ID
+output "s247_external_id" {
+  description = "AWS External ID : "
+  value       = data.site24x7_aws_external_id.s247aws.id
+}
+
+data "aws_iam_role" "role_arn" {
+	name = aws_iam_role.site24x7.name
+}
+
+// Displays AWS Role ARN
+output "rolearn" {
+  description = "AWS rolearn : "
+  value       = data.aws_iam_role.role_arn.arn
+}
