@@ -109,7 +109,7 @@ resource "site24x7_amazon_monitor" "aws_monitor_basic" {
   external_id = data.site24x7_aws_external_id.s247aws.id
   // (Security recommendation - It is always best practice to store your credentials in a Vault of your choice.)
   // (Required) AWS Role ARN
-  role_arn = "arn:aws:iam::23243:role/TerraformAdminRole"
+  role_arn = data.aws_iam_role.role_arn.arn
   // (Optional) AWS discover frequency
   aws_discovery_frequency = 5
   // (Optional) AWS services to discover. See https://www.site24x7.com/help/api/#aws_discover_services 
@@ -126,9 +126,7 @@ resource "site24x7_amazon_monitor" "aws_monitor_site24x7" {
   external_id = data.site24x7_aws_external_id.s247aws.id
   // (Security recommendation - It is always best practice to store your credentials in a Vault of your choice.)
   // (Required) AWS Role ARN
-  role_arn = ""
-  // (Required) AWS External ID
-  aws_external_id = ""
+  role_arn = data.aws_iam_role.role_arn.arn
   // (Optional) AWS discover frequency
   aws_discovery_frequency = 5
   // (Optional) AWS services to discover. See https://www.site24x7.com/help/api/#aws_discover_services 
