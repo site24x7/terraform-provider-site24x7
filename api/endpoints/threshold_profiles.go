@@ -28,6 +28,7 @@ func (c *thresholdProfiles) Get(profileID string) (*api.ThresholdProfile, error)
 	err := c.client.
 		Get().
 		Resource("threshold_profiles").
+		SetHeader("Accept", "application/json;").
 		ResourceID(profileID).
 		Do().
 		Parse(profile)
@@ -40,6 +41,7 @@ func (c *thresholdProfiles) Create(profile *api.ThresholdProfile) (*api.Threshol
 	err := c.client.
 		Post().
 		Resource("threshold_profiles").
+		SetHeader("Accept", "application/json;"). // We are overwriting the default API version 2.1 for HeartBeat monitor threshold profile addition to work.
 		AddHeader("Content-Type", "application/json;charset=UTF-8").
 		Body(profile).
 		Do().
@@ -54,6 +56,7 @@ func (c *thresholdProfiles) Update(profile *api.ThresholdProfile) (*api.Threshol
 		Put().
 		Resource("threshold_profiles").
 		ResourceID(profile.ProfileID).
+		SetHeader("Accept", "application/json;"). // We are overwriting the default API version 2.1 for HeartBeat monitor threshold profile addition to work.
 		AddHeader("Content-Type", "application/json;charset=UTF-8").
 		Body(profile).
 		Do().

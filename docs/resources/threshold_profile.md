@@ -102,7 +102,7 @@ resource "site24x7_threshold_profile" "website_threshold_profile_us" {
   }
 }
 
-// SSL Threshold Profile API doc](https://www.site24x7.com/help/api/#ssl-certificate830))
+// SSL Threshold Profile API doc](https://www.site24x7.com/help/api/#threshold-ssl-cert))
 resource "site24x7_threshold_profile" "ssl_certificate_threshold_profile_us" {
   // (Required) Name of the profile
   profile_name = "SSL_CERT Thresh - Terraform"
@@ -120,6 +120,21 @@ resource "site24x7_threshold_profile" "ssl_certificate_threshold_profile_us" {
   }
   // (Optional) Triggers alert when the ssl certificate is modified.
   ssl_cert_fingerprint_modified = false
+
+}
+
+// HEARTBEAT Threshold Profile API doc](https://www.site24x7.com/help/api/#threshold-heartbeat))
+resource "site24x7_threshold_profile" "heartbeat_threshold" {
+  // (Required) Name of the profile
+  profile_name = "Heartbeat Threshold - Terraform"
+  // (Required) Type of the profile - Denotes monitor type (eg) RESTAPI, SSL_CERT
+  type = "HEARTBEAT"
+  // (Optional) Generate Trouble Alert if not pinged for more than x mins
+  trouble_if_not_pinged_more_than = 10
+  // (Optional) Generate Down Alert if not pinged for more than x mins
+  down_if_not_pinged_more_than = 20
+  // (Optional) Generate Trouble Alert if pinged within x mins
+  trouble_if_pinged_within = 15
 
 }
 
@@ -147,6 +162,10 @@ ed.
 * `ssl_cert_days_until_expiry_trouble_threshold` (Map of Number) Configure this attribute only when type="SSL_CERT". Triggers trouble alert before the SSL certificate expires within the configured number of days. (see [below for map schema](#nestedblock--website_content_changes))
 * `ssl_cert_days_until_expiry_critical_threshold` (Map of Number) Configure this attribute only when type="SSL_CERT". Triggers critical alert before the SSL certificate expires within the configured number of days. (see [below for map schema](#nestedblock--website_content_changes))
 * `ssl_cert_fingerprint_modified` (Boolean) Configure this attribute only when type="SSL_CERT". Triggers alert when the ssl certificate is modified.
+* `trouble_if_not_pinged_more_than` (Number) Generate Trouble Alert if not pinged for more than x mins.
+* `down_if_not_pinged_more_than` (Number) Generate Down Alert if not pinged for more than x mins.
+* `trouble_if_pinged_within` (Number) Generate Trouble Alert if pinged within x mins.
+
 
 <a id="nestedblock--website_content_changes"></a>
 ### Nested Schema for `website_content_changes`, `ssl_cert_days_until_expiry_trouble_threshold`, `ssl_cert_days_until_expiry_critical_threshold`
