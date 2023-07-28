@@ -178,13 +178,17 @@ type ThresholdProfile struct {
 	Type                   string                   `json:"type"` // Denotes monitor type
 	ProfileName            string                   `json:"profile_name"`
 	ProfileType            int                      `json:"profile_type"` // 1 - Static Threshold or 2 - AI-based Threshold
-	DownLocationThreshold  int                      `json:"down_location_threshold"`
+	DownLocationThreshold  int                      `json:"down_location_threshold,omitempty"`
 	WebsiteContentModified bool                     `json:"website_content_modified,omitempty"`
 	WebsiteContentChanges  []map[string]interface{} `json:"website_content_changes,omitempty"`
 	ResponseTimeThreshold  map[string]interface{}   `json:"response_time_threshold,omitempty"`
 	// SSL_CERT attributes
 	SSLCertificateFingerprintModified map[string]interface{}   `json:"ssl_fingerprint_modified,omitempty"`
 	SSLCertificateDaysUntilExpiry     []map[string]interface{} `json:"days_until_expiry,omitempty"`
+	// HEARTBEAT attributes
+	TroubleIfNotPingedMoreThan map[string]interface{} `json:"hb_availability1,omitempty"`
+	DownIfNotPingedMoreThan    map[string]interface{} `json:"hb_availability2,omitempty"`
+	TroubleIfPingedWithin      map[string]interface{} `json:"hb_availability3,omitempty"`
 }
 
 func (thresholdProfile *ThresholdProfile) String() string {
