@@ -34,7 +34,7 @@ func TestNewRestApiTransactionMonitors(t *testing.T) {
 								{
 									StepUrl:                   "www.test.tld",
 									DisplayName: 			   "Step 1",
-									Timeout:                   10,
+									Timeout:                   "10",
 									HTTPMethod:                "G",
 									HTTPProtocol:              "H1.1",
 									SSLProtocol:               "Auto",
@@ -85,7 +85,7 @@ func TestNewRestApiTransactionMonitors(t *testing.T) {
 								{
 									StepUrl:                   "www.test.tld",
 									DisplayName: 			   "Step 2",
-									Timeout:                   10,
+									Timeout:                   "10",
 									HTTPMethod:                "G",
 									HTTPProtocol:              "H1.1",
 									SSLProtocol:               "Auto",
@@ -161,7 +161,7 @@ func TestNewRestApiTransactionMonitors(t *testing.T) {
 							StepsDetails: [] api.StepDetails{
 								{
 									StepUrl:                   "www.test.tld",
-									Timeout:                   10,
+									Timeout:                   "10",
 									HTTPMethod:                "G",
 									HTTPProtocol:              "H1.1",
 									SSLProtocol:               "Auto",
@@ -200,7 +200,7 @@ func TestNewRestApiTransactionMonitors(t *testing.T) {
 							StepsDetails: [] api.StepDetails{
 								{
 									StepUrl:                   "www.test.tld",
-									Timeout:                   10,
+									Timeout:                   "10",
 									HTTPMethod:                "G",
 									HTTPProtocol:              "H1.1",
 									SSLProtocol:               "Auto",
@@ -270,7 +270,7 @@ func TestNewRestApiTransactionMonitors(t *testing.T) {
 								StepsDetails: [] api.StepDetails{
 									{
 										StepUrl:                   "www.test.tld",
-										Timeout:                   10,
+										Timeout:                   "10",
 										HTTPMethod:                "G",
 										HTTPProtocol:              "H1.1",
 										SSLProtocol:               "Auto",
@@ -309,7 +309,7 @@ func TestNewRestApiTransactionMonitors(t *testing.T) {
 								StepsDetails: [] api.StepDetails{
 									{
 										StepUrl:                   "www.test.tld",
-										Timeout:                   10,
+										Timeout:                   "10",
 										HTTPMethod:                "G",
 										HTTPProtocol:              "H1.1",
 										SSLProtocol:               "Auto",
@@ -357,7 +357,7 @@ func TestNewRestApiTransactionMonitors(t *testing.T) {
 								StepsDetails: [] api.StepDetails{
 									{
 										StepUrl:                   "www.test.tld",
-										Timeout:                   10,
+										Timeout:                   "10",
 										HTTPMethod:                "G",
 										HTTPProtocol:              "H1.1",
 										SSLProtocol:               "Auto",
@@ -396,7 +396,7 @@ func TestNewRestApiTransactionMonitors(t *testing.T) {
 								StepsDetails: [] api.StepDetails{
 									{
 										StepUrl:                   "www.test.tld",
-										Timeout:                   10,
+										Timeout:                   "10",
 										HTTPMethod:                "G",
 										HTTPProtocol:              "H1.1",
 										SSLProtocol:               "Auto",
@@ -465,7 +465,7 @@ func TestNewRestApiTransactionMonitors(t *testing.T) {
 							StepsDetails: [] api.StepDetails{
 								{
 									StepUrl:                   "www.test.tld",
-									Timeout:                   10,
+									Timeout:                   "10",
 									HTTPMethod:                "G",
 									HTTPProtocol:              "H1.1",
 									SSLProtocol:               "Auto",

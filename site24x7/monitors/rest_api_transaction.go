@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"	
+	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
 	"github.com/site24x7/terraform-provider-site24x7/site24x7"
@@ -244,9 +244,9 @@ var RestApiTransactionMonitorSchema = map[string]*schema.Schema{
 								Description: "Rest API Url to monitors",
 							},
 							"timeout": {
-								Type:        schema.TypeInt,
+								Type:        schema.TypeString,
 								Optional:    true,
-								Default:     10,
+								Default:     "10",
 								Description: "Timeout for connecting to website. Default value is 10. Range 1 - 45.",
 							},
 							// Content Check
@@ -514,15 +514,21 @@ func restApiTransactionMonitorCreate(d *schema.ResourceData, meta interface{}) e
 }
 
 func restApiTransactionMonitorRead(d *schema.ResourceData, meta interface{}) error {
+
 	client := meta.(site24x7.Client)
 
 	restApiTransactionMonitors, err := client.RestApiTransactionMonitors().Get(d.Id())
 
+	restApiTransactionMonitorsSteps, steperr := client.RestApiTransactionMonitors().GetSteps(d.Id())
+
 	if err != nil {
 		return err
 	}
+	if steperr != nil {
+		return steperr
+	}
 
-	updateRestApiTransactionMonitorResourceData(d, restApiTransactionMonitors)
+	updateRestApiTransactionMonitorResourceData(d, restApiTransactionMonitors, restApiTransactionMonitorsSteps)
 
 	return nil
 }
@@ -808,11 +814,12 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 	return restApiTransactionMonitor, nil
 }
 
-func updateRestApiTransactionMonitorResourceData(d *schema.ResourceData, monitor *api.RestApiTransactionMonitor) {
+func updateRestApiTransactionMonitorResourceData(d *schema.ResourceData, monitor *api.RestApiTransactionMonitor, steps *[]api.Steps) {
+
 	d.Set("display_name", monitor.DisplayName)
 	d.Set("type", monitor.Type)
 	d.Set("check_frequency", monitor.CheckFrequency)
-	d.Set("steps", updateStepsDetails(monitor.Steps))
+	d.Set("steps", *steps)
 	d.Set("location_profile_id", monitor.LocationProfileID)
 	d.Set("notification_profile_id", monitor.NotificationProfileID)
 	d.Set("threshold_profile_id", monitor.ThresholdProfileID)

@@ -1,13 +1,13 @@
 package monitors
 
 import (
-	log "github.com/sirupsen/logrus"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	"github.com/site24x7/terraform-provider-site24x7/rest"
 )
 
 type RestApiTransactionMonitors interface {
 	Get(monitorID string) (*api.RestApiTransactionMonitor, error)
+	GetSteps(monitorID string) (*[]api.Steps, error)
 	Create(monitor *api.RestApiTransactionMonitor) (*api.RestApiTransactionMonitor, error)
 	Update(monitor *api.RestApiTransactionMonitor) (*api.RestApiTransactionMonitor, error)
 	Delete(monitorID string) error
@@ -34,12 +34,21 @@ func (c *restapitransactions) Get(monitorID string) (*api.RestApiTransactionMoni
 		ResourceID(monitorID).
 		Do().
 		Parse(monitor)
-
 	return monitor, err
 }
 
+func (c *restapitransactions) GetSteps(monitorID string) (*[]api.Steps, error) {
+	steps := &[]api.Steps{}
+	steperr := c.client.
+		Get().
+		Resource("monitors/steps").
+		ResourceID(monitorID).
+		Do().
+		Parse(steps)
+	return steps, steperr
+}
+
 func (c *restapitransactions) Create(monitor *api.RestApiTransactionMonitor) (*api.RestApiTransactionMonitor, error) {
-	log.Println("GetAPIBaseURL : ",monitor)
 	newMonitor := &api.RestApiTransactionMonitor{}
 	err := c.client.
 		Post().
@@ -103,4 +112,3 @@ func (c *restapitransactions) Suspend(monitorID string) error {
 		Do().
 		Err()
 }
-

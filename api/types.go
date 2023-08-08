@@ -83,7 +83,7 @@ type StepDetails struct {
 	StepUrl     string `json:"step_url"`
 	DisplayName string `json:"display_name"`
 	// HTTP Configuration
-	Timeout                   int                    `json:"timeout"`
+	Timeout                   string                 `json:"timeout"`
 	HTTPMethod                string                 `json:"http_method"`
 	RequestContentType        string                 `json:"request_content_type,omitempty"`
 	RequestBody               string                 `json:"request_param,omitempty"`

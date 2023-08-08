@@ -2,7 +2,6 @@ package monitors
 
 import (
 	"fmt"
-	"log"
 	"sort"
 	"strconv"
 
@@ -69,7 +68,7 @@ import (
 // 	"display_name": "rest api - terraform"
 //   }
 
-var RestApiMonitorSchema = map[string]*schema.Schema{
+var RestApiMonitorSchema = map[string]*schema.Schema{	
 	"display_name": {
 		Type:        schema.TypeString,
 		Required:    true,
@@ -663,7 +662,6 @@ func resourceDataToRestApiMonitor(d *schema.ResourceData, client site24x7.Client
 		restApiMonitor.MatchJSON = matchJSONData
 	}
 
-
 	if jsonSchema, ok := d.GetOk("json_schema"); ok {
 		jsonSchemaData := make(map[string]interface{})
 		jsonSchemaData["severity"] = d.Get("json_schema_severity").(int)
@@ -779,7 +777,6 @@ func updateRestApiMonitorResourceData(d *schema.ResourceData, monitor *api.RestA
 		}
 		d.Set("match_json_path", jsonPathArr)
 	}
-
 
 	if monitor.JSONSchema != nil {
 		d.Set("json_schema", monitor.JSONSchema["schema_value"].(string))
