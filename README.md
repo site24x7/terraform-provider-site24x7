@@ -42,6 +42,7 @@ terraform {
 ```
 A terraform provider for managing the following resources in Site24x7:
 
+- Amazon Monitor - [site24x7_amazon_monitor](examples/amazon_monitor_us.tf) ([Site24x7 Amazon Monitor Terraform doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/resources/amazon_monitor))
 - Website Monitor - [site24x7_website_monitor](examples/website_monitor_us.tf) ([Site24x7 Website Monitor API doc](https://www.site24x7.com/help/api/#website))
 - DNS Server Monitor - [site24x7_dns_server_monitor](examples/dns_server_monitor_us.tf) ([Site24x7 DNS Server Monitor API doc](https://www.site24x7.com/help/api/#dns-server))
 - Web Page Speed (Browser) Monitor - [site24x7_web_page_speed_monitor](examples/web_page_speed_monitor_us.tf) ([Site24x7 Web Page Speed Monitor API doc](https://www.site24x7.com/help/api/#web-page-speed-(browser)))
@@ -81,6 +82,8 @@ A terraform provider for managing the following resources in Site24x7:
 - IT automation - [site24x7_it_automation](examples/data-sources/it_automation_data_source_us.tf) ([IT automation API doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/it_automation))
 - Tag - [site24x7_tag](examples/data-sources/tag_data_source_us.tf) ([Tag API doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/tag))
 - MSP - [site24x7_msp](examples/data-sources/msp_data_source_us.tf) ([MSP API doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/msp))
+- AWS External ID - [site24x7_aws_external_id](examples/data-sources/aws_external_id_data_source_us.tf) ([AWS External ID Terraform doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/aws_external_id))
+- Device Key - [site24x7_device_key](examples/data-sources/device_key_data_source_us.tf) ([Device Key Terraform doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/device_key))
 
 Usage example
 -------------

@@ -48,45 +48,11 @@ provider "site24x7" {
   
 }
 
-// Data source to fetch a MSP customer
-data "site24x7_msp" "s247mspcustomer" {
-  // (Required) Regular expression denoting the name of the MSP customer.
-  customer_name_regex = "a"
-  
-}
+// Data source to fetch the AWS External ID
+data "site24x7_aws_external_id" "s247aws" {}
 
-// Displays MSP customer ID
-output "s247_msp_id" {
-  description = "MSP customer ID : "
-  value       = data.site24x7_msp.s247mspcustomer.id
-}
-
-// Displays MSP customer name
-output "s247_msp_name" {
-  description = "MSP customer name : "
-  value       = data.site24x7_msp.s247mspcustomer.customer_name
-}
-
-// Displays the matching ZAAIDs
-output "s247_matching_ids" {
-  description = "Matching MSP customer IDs : "
-  value       = data.site24x7_msp.s247mspcustomer.matching_zaaids
-}
-
-// Displays the matching ZAAIDs and names
-output "s247_matching_ids_and_names" {
-  description = "Matching MSP customer IDs and names : "
-  value       = data.site24x7_msp.s247mspcustomer.matching_zaaids_and_names
-}
-
-// Displays ZAAID of the customer
-output "s247_msp_customer_zaaid" {
-  description = "ZAAID : "
-  value       = data.site24x7_msp.s247mspcustomer.zaaid
-}
-
-// Displays user ID of the customer
-output "s247_msp_customer_userid" {
-  description = "User ID : "
-  value       = data.site24x7_msp.s247mspcustomer.user_id
+// Displays AWS External ID
+output "s247_external_id" {
+  description = "AWS External ID : "
+  value       = data.site24x7_aws_external_id.s247aws.id
 }

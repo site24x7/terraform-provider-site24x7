@@ -284,7 +284,7 @@ var websiteMonitorSchema = map[string]*schema.Schema{
 		Description: "Threshold profile to be associated with the monitor.",
 	},
 	"monitor_groups": {
-		Type: schema.TypeList,
+		Type: schema.TypeSet,
 		Elem: &schema.Schema{
 			Type: schema.TypeString,
 		},
@@ -565,7 +565,7 @@ func resourceDataToWebsiteMonitor(d *schema.ResourceData, client site24x7.Client
 	}
 
 	var monitorGroups []string
-	for _, group := range d.Get("monitor_groups").([]interface{}) {
+	for _, group := range d.Get("monitor_groups").(*schema.Set).List() {
 		if group != nil {
 			monitorGroups = append(monitorGroups, group.(string))
 		}

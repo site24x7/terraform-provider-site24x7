@@ -41,7 +41,6 @@ func NewRequest(client HTTPClient, config ClientConfig) *Request {
 	if config.MSP {
 		r.cookie = &http.Cookie{Name: "zaaid", Value: config.ZAAID}
 	}
-
 	r.AddHeader("Accept", "application/json; version=2.1")
 	r.AddHeader("User-Agent", "Site24x7TerraformProvider/1.0.0")
 	return r
@@ -75,8 +74,18 @@ func (r *Request) AddHeader(key, value string) *Request {
 	if r.header == nil {
 		r.header = http.Header{}
 	}
-
 	r.header.Add(key, value)
+	return r
+}
+
+// SetHeader adds an HTTP header to the request. - Does not append if the header key is already present.
+// Added this method to include API specific headers. (eg) When HeartBeat threshold API version is 2
+// We invoke SetHeader("Accept", "application/json; version=2") in API implementation.
+func (r *Request) SetHeader(key, value string) *Request {
+	if r.header == nil {
+		r.header = http.Header{}
+	}
+	r.header.Set(key, value)
 	return r
 }
 
@@ -135,7 +144,7 @@ func (r *Request) buildRequest() (*http.Request, error) {
 }
 
 func (r *Request) doRequest(req *http.Request) Response {
-	log.Debugf("<== %s %s %s: %s", req.Method, req.URL, req.Header.Get("Accept"), string(r.body))
+	log.Debugf("<== %s %s %s %s", req.Method, req.URL, req.Header.Get("Accept"), string(r.body))
 
 	resp, err := r.client.Do(req)
 	if err != nil {

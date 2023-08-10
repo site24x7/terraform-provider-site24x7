@@ -24,6 +24,7 @@ func TestScheduleMaintenance(t *testing.T) {
 					DisplayName:       "Schedule Maintenance",
 					Description:       "Maintenance Window",
 					MaintenanceType:   3,
+					TimeZone:          "PST",
 					StartDate:         "2022-06-02",
 					EndDate:           "2022-06-02",
 					StartTime:         "19:41",

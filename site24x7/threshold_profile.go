@@ -301,6 +301,22 @@ var ThresholdProfileSchema = map[string]*schema.Schema{
 		},
 		Description: "Triggers critical alert before the SSL certificate expires within the configured number of days.",
 	},
+	// HEARTBEAT monitor type attributes
+	"trouble_if_not_pinged_more_than": {
+		Type:        schema.TypeInt,
+		Optional:    true,
+		Description: "Generate Trouble Alert if not pinged for more than x mins.",
+	},
+	"down_if_not_pinged_more_than": {
+		Type:        schema.TypeInt,
+		Optional:    true,
+		Description: "Generate Down Alert if not pinged for more than x mins.",
+	},
+	"trouble_if_pinged_within": {
+		Type:        schema.TypeInt,
+		Optional:    true,
+		Description: "Generate Trouble Alert if pinged within x mins",
+	},
 }
 
 func ResourceSite24x7ThresholdProfile() *schema.Resource {
@@ -397,6 +413,8 @@ func resourceDataToThresholdProfile(d *schema.ResourceData) *api.ThresholdProfil
 	// SSL_CERT attributes
 	if monitorType == string(api.SSL_CERT) {
 		setSSLCertificateAttributes(d, thresholdProfileToReturn)
+	} else if monitorType == string(api.HEARTBEAT) {
+		setHeartBeatAttributes(d, thresholdProfileToReturn)
 	} else {
 		setCommonAttributes(d, thresholdProfileToReturn)
 	}
@@ -414,6 +432,8 @@ func updateThresholdProfileResourceData(d *schema.ResourceData, thresholdProfile
 
 	if monitorType == string(api.SSL_CERT) {
 		setSSLCertificateResourceData(d, thresholdProfile)
+	} else if monitorType == string(api.HEARTBEAT) {
+		setHeartBeatResourceData(d, thresholdProfile)
 	} else {
 		setCommonResourceData(d, thresholdProfile)
 	}
@@ -461,6 +481,57 @@ func setSSLCertificateResourceData(d *schema.ResourceData, thresholdProfile *api
 	if thresholdProfile.SSLCertificateFingerprintModified != nil {
 		d.Set("ssl_cert_fingerprint_modified", thresholdProfile.SSLCertificateFingerprintModified["value"].(bool))
 	}
+}
+
+func setHeartBeatAttributes(d *schema.ResourceData, thresholdProfile *api.ThresholdProfile) {
+	troubleIfNotPingedMoreThanMap := make(map[string]interface{})
+	if troubleIfNotPingedMoreThan, ok := d.GetOk("trouble_if_not_pinged_more_than"); ok {
+		troubleIfNotPingedMoreThanMap["comparison_operator"] = 1
+		troubleIfNotPingedMoreThanMap["trouble"] = troubleIfNotPingedMoreThan
+		troubleIfNotPingedMoreThanMap["strategy"] = 1
+		troubleIfNotPingedMoreThanMap["polls_check"] = 5
+		thresholdProfile.TroubleIfNotPingedMoreThan = troubleIfNotPingedMoreThanMap
+	}
+	downIfNotPingedMoreThanMap := make(map[string]interface{})
+	if downIfNotPingedMoreThan, ok := d.GetOk("down_if_not_pinged_more_than"); ok {
+		downIfNotPingedMoreThanMap["comparison_operator"] = 1
+		downIfNotPingedMoreThanMap["trouble"] = downIfNotPingedMoreThan
+		downIfNotPingedMoreThanMap["strategy"] = 1
+		downIfNotPingedMoreThanMap["polls_check"] = 5
+		thresholdProfile.DownIfNotPingedMoreThan = downIfNotPingedMoreThanMap
+	}
+	troubleIfPingedWithinMap := make(map[string]interface{})
+	if troubleIfPingedWithin, ok := d.GetOk("trouble_if_pinged_within"); ok {
+		troubleIfPingedWithinMap["comparison_operator"] = 1
+		troubleIfPingedWithinMap["trouble"] = troubleIfPingedWithin
+		troubleIfPingedWithinMap["strategy"] = 1
+		troubleIfPingedWithinMap["polls_check"] = 5
+		thresholdProfile.TroubleIfPingedWithin = troubleIfPingedWithinMap
+	}
+}
+
+func setHeartBeatResourceData(d *schema.ResourceData, thresholdProfile *api.ThresholdProfile) {
+	if thresholdProfile.TroubleIfNotPingedMoreThan != nil {
+		if troubleIfNotPingedMoreThan, ok := thresholdProfile.TroubleIfNotPingedMoreThan["trouble"]; ok {
+			d.Set("trouble_if_not_pinged_more_than", troubleIfNotPingedMoreThan)
+
+		}
+	}
+
+	if thresholdProfile.DownIfNotPingedMoreThan != nil {
+		if downIfNotPingedMoreThan, ok := thresholdProfile.DownIfNotPingedMoreThan["trouble"]; ok {
+			d.Set("down_if_not_pinged_more_than", downIfNotPingedMoreThan)
+
+		}
+	}
+
+	if thresholdProfile.TroubleIfPingedWithin != nil {
+		if troubleIfPingedWithin, ok := thresholdProfile.TroubleIfPingedWithin["trouble"]; ok {
+			d.Set("trouble_if_pinged_within", troubleIfPingedWithin)
+
+		}
+	}
+
 }
 
 func setCommonAttributes(d *schema.ResourceData, thresholdProfile *api.ThresholdProfile) {

@@ -178,13 +178,17 @@ type ThresholdProfile struct {
 	Type                   string                   `json:"type"` // Denotes monitor type
 	ProfileName            string                   `json:"profile_name"`
 	ProfileType            int                      `json:"profile_type"` // 1 - Static Threshold or 2 - AI-based Threshold
-	DownLocationThreshold  int                      `json:"down_location_threshold"`
+	DownLocationThreshold  int                      `json:"down_location_threshold,omitempty"`
 	WebsiteContentModified bool                     `json:"website_content_modified,omitempty"`
 	WebsiteContentChanges  []map[string]interface{} `json:"website_content_changes,omitempty"`
 	ResponseTimeThreshold  map[string]interface{}   `json:"response_time_threshold,omitempty"`
 	// SSL_CERT attributes
 	SSLCertificateFingerprintModified map[string]interface{}   `json:"ssl_fingerprint_modified,omitempty"`
 	SSLCertificateDaysUntilExpiry     []map[string]interface{} `json:"days_until_expiry,omitempty"`
+	// HEARTBEAT attributes
+	TroubleIfNotPingedMoreThan map[string]interface{} `json:"hb_availability1,omitempty"`
+	DownIfNotPingedMoreThan    map[string]interface{} `json:"hb_availability2,omitempty"`
+	TroubleIfPingedWithin      map[string]interface{} `json:"hb_availability3,omitempty"`
 }
 
 func (thresholdProfile *ThresholdProfile) String() string {
@@ -277,6 +281,7 @@ type ScheduleMaintenance struct {
 	Description       string       `json:"description"`
 	MaintenanceType   int          `json:"maintenance_type"`
 	StartTime         string       `json:"start_time"`
+	TimeZone          string       `json:"timezone"`
 	EndTime           string       `json:"end_time"`
 	StartDate         string       `json:"start_date"`
 	EndDate           string       `json:"end_date"`
@@ -313,26 +318,27 @@ type Location struct {
 
 // Setup other users who can login to Site24x7 and receive instant notifications about outages.
 type User struct {
-	_                   struct{}               `type:"structure"` // Enforces key based initialization.
-	ID                  string                 `json:"user_id,omitempty"`
-	DisplayName         string                 `json:"display_name"`
-	Email               string                 `json:"email_address"`
-	SelectionType       ResourceType           `json:"selection_type"`
-	UserRole            int                    `json:"user_role"`
-	JobTitle            int                    `json:"job_title,omitempty"`
-	MobileSettings      map[string]interface{} `json:"mobile_settings,omitempty"`
-	AlertSettings       map[string]interface{} `json:"alert_settings"`
-	TwitterSettings     map[string]interface{} `json:"twitter_settings,omitempty"`
-	IsEditAllowed       bool                   `json:"is_edit_allowed,omitempty"`
-	IsClientPortalUser  bool                   `json:"is_client_portal_user,omitempty"`
-	IsAccountContact    bool                   `json:"is_account_contact,omitempty"`
-	IsContact           bool                   `json:"is_contact,omitempty"`
-	IsInvited           bool                   `json:"is_invited,omitempty"`
-	SubscribeNewsletter bool                   `json:"subscribe_newsletter,omitempty"`
-	UserGroupIDs        []string               `json:"user_groups,omitempty"`
-	NotificationMedium  []int                  `json:"notify_medium"`
-	Monitors            []string               `json:"monitors,omitempty"`
-	MonitorGroups       []string               `json:"monitor_groups,omitempty"`
+	_                         struct{}               `type:"structure"` // Enforces key based initialization.
+	ID                        string                 `json:"user_id,omitempty"`
+	DisplayName               string                 `json:"display_name"`
+	Email                     string                 `json:"email_address"`
+	SelectionType             ResourceType           `json:"selection_type"`
+	UserRole                  int                    `json:"user_role"`
+	JobTitle                  int                    `json:"job_title,omitempty"`
+	MobileSettings            map[string]interface{} `json:"mobile_settings,omitempty"`
+	AlertSettings             map[string]interface{} `json:"alert_settings"`
+	TwitterSettings           map[string]interface{} `json:"twitter_settings,omitempty"`
+	IsEditAllowed             bool                   `json:"is_edit_allowed,omitempty"`
+	IsClientPortalUser        bool                   `json:"is_client_portal_user,omitempty"`
+	IsAccountContact          bool                   `json:"is_account_contact,omitempty"`
+	IsContact                 bool                   `json:"is_contact,omitempty"`
+	IsInvited                 bool                   `json:"is_invited,omitempty"`
+	SubscribeNewsletter       bool                   `json:"subscribe_newsletter,omitempty"`
+	UserGroupIDs              []string               `json:"user_groups,omitempty"`
+	NotificationMedium        []int                  `json:"notify_medium"`
+	Monitors                  []string               `json:"monitors,omitempty"`
+	MonitorGroups             []string               `json:"monitor_groups,omitempty"`
+	Consent_for_non_eu_alerts bool                   `json:"consent_for_non_eu_alerts"`
 }
 
 func (user *User) String() string {
@@ -422,4 +428,22 @@ type MSPCustomer struct {
 
 func (mspCustomer *MSPCustomer) String() string {
 	return ToString(mspCustomer)
+}
+
+// Denotes a AWS external ID
+type AWSExternalID struct {
+	ID string `json:"external_id"`
+}
+
+func (awsExternalID *AWSExternalID) String() string {
+	return ToString(awsExternalID)
+}
+
+// Denotes a Device Key
+type DeviceKey struct {
+	ID string `json:"device_key"`
+}
+
+func (deviceKey *DeviceKey) String() string {
+	return ToString(deviceKey)
 }

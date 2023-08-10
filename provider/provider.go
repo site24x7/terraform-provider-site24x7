@@ -9,6 +9,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/site24x7/terraform-provider-site24x7/backoff"
 	"github.com/site24x7/terraform-provider-site24x7/site24x7"
+	"github.com/site24x7/terraform-provider-site24x7/site24x7/aws"
 	"github.com/site24x7/terraform-provider-site24x7/site24x7/common"
 	"github.com/site24x7/terraform-provider-site24x7/site24x7/integration"
 	"github.com/site24x7/terraform-provider-site24x7/site24x7/monitors"
@@ -77,11 +78,12 @@ func Provider() terraform.ResourceProvider {
 		},
 
 		ResourcesMap: map[string]*schema.Resource{
-			"site24x7_website_monitor":         monitors.ResourceSite24x7WebsiteMonitor(),
-			"site24x7_web_page_speed_monitor":  monitors.ResourceSite24x7WebPageSpeedMonitor(),
-			"site24x7_ssl_monitor":             monitors.ResourceSite24x7SSLMonitor(),
-			"site24x7_rest_api_monitor":        monitors.ResourceSite24x7RestApiMonitor(),
-			"site24x7_rest_api_transaction_monitor": monitors.ResourceSite24x7RestApiTransactionMonitor(),
+			"site24x7_amazon_monitor":         monitors.ResourceSite24x7AmazonMonitor(),
+			"site24x7_website_monitor":        monitors.ResourceSite24x7WebsiteMonitor(),
+			"site24x7_web_page_speed_monitor": monitors.ResourceSite24x7WebPageSpeedMonitor(),
+			"site24x7_ssl_monitor":            monitors.ResourceSite24x7SSLMonitor(),
+			"site24x7_rest_api_monitor":       monitors.ResourceSite24x7RestApiMonitor(),
+			// "site24x7_rest_api_transaction_monitor": monitors.ResourceSite24x7RestApiTransactionMonitor(),
 			"site24x7_server_monitor":          monitors.ResourceSite24x7ServerMonitor(),
 			"site24x7_heartbeat_monitor":       monitors.ResourceSite24x7HeartbeatMonitor(),
 			"site24x7_dns_server_monitor":      monitors.ResourceSite24x7DNSServerMonitor(),
@@ -111,10 +113,12 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_notification_profile": site24x7.DataSourceSite24x7NotificationProfile(),
 			"site24x7_monitor_group":        site24x7.DataSourceSite24x7MonitorGroup(),
 			// "site24x7_subgroup":             site24x7.DataSourceSite24x7Subgroup(),
-			"site24x7_user_group":    site24x7.DataSourceSite24x7UserGroup(),
-			"site24x7_it_automation": site24x7.DataSourceSite24x7ITAutomation(),
-			"site24x7_tag":           site24x7.DataSourceSite24x7Tag(),
-			"site24x7_msp":           site24x7.DataSourceSite24x7MSP(),
+			"site24x7_user_group":      site24x7.DataSourceSite24x7UserGroup(),
+			"site24x7_it_automation":   site24x7.DataSourceSite24x7ITAutomation(),
+			"site24x7_tag":             site24x7.DataSourceSite24x7Tag(),
+			"site24x7_msp":             site24x7.DataSourceSite24x7MSP(),
+			"site24x7_aws_external_id": aws.DataSourceSite24x7AWSExternalID(),
+			"site24x7_device_key":      common.DataSourceSite24x7DeviceKey(),
 		},
 
 		ConfigureFunc: providerConfigure,
