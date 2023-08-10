@@ -68,7 +68,7 @@ import (
 // 	"display_name": "rest api - terraform"
 //   }
 
-var RestApiMonitorSchema = map[string]*schema.Schema{
+var RestApiMonitorSchema = map[string]*schema.Schema{	
 	"display_name": {
 		Type:        schema.TypeString,
 		Required:    true,
@@ -115,12 +115,13 @@ var RestApiMonitorSchema = map[string]*schema.Schema{
 		Type:         schema.TypeInt,
 		Optional:     true,
 		Default:      2,
-		ValidateFunc: validation.IntInSlice([]int{0, 2}), // 0 - Down, 2 - Trouble
+		ValidateFunc: validation.IntInSlice([]int{0, 2}), // 0 - Down, 2 - +Trouble
 		Description:  "Trigger an alert when the JSON path assertion fails during a test. Alert type constant. Can be either 0 or 2. '0' denotes Down and '2' denotes Trouble. Default value is 2.",
 	},
 	"json_schema": {
 		Type:        schema.TypeString,
 		Optional:    true,
+		Default:     "{}",
 		Description: "JSON schema to be validated against the JSON response.",
 	},
 	"json_schema_severity": {
@@ -262,6 +263,11 @@ var RestApiMonitorSchema = map[string]*schema.Schema{
 			// Suppress diff - Password in API response is encrypted.
 			return true
 		},
+	},
+	"credential_profile_id": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Credential Profile to associate.",
 	},
 	"oauth2_provider": {
 		Type:        schema.TypeString,
@@ -611,6 +617,7 @@ func resourceDataToRestApiMonitor(d *schema.ResourceData, client site24x7.Client
 		AuthMethod:                d.Get("auth_method").(string),
 		AuthUser:                  d.Get("auth_user").(string),
 		AuthPass:                  d.Get("auth_pass").(string),
+		CredentialProfileID:       d.Get("credential_profile_id").(string),
 		MatchCase:                 d.Get("match_case").(bool),
 		JSONSchemaCheck:           d.Get("json_schema_check").(bool),
 		UseNameServer:             d.Get("use_name_server").(bool),
@@ -722,6 +729,7 @@ func updateRestApiMonitorResourceData(d *schema.ResourceData, monitor *api.RestA
 	d.Set("auth_method", monitor.AuthMethod)
 	d.Set("auth_user", monitor.AuthUser)
 	d.Set("auth_pass", monitor.AuthPass)
+	d.Set("credential_profile_id", monitor.CredentialProfileID)
 	d.Set("oauth2_provider", monitor.OAuth2Provider)
 	d.Set("client_certificate_password", monitor.ClientCertificatePassword)
 	d.Set("jwt_id", monitor.JwtID)
@@ -769,6 +777,7 @@ func updateRestApiMonitorResourceData(d *schema.ResourceData, monitor *api.RestA
 		}
 		d.Set("match_json_path", jsonPathArr)
 	}
+
 	if monitor.JSONSchema != nil {
 		d.Set("json_schema", monitor.JSONSchema["schema_value"].(string))
 		d.Set("json_schema_severity", int(monitor.JSONSchema["severity"].(float64)))

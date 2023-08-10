@@ -293,6 +293,7 @@ type RestApiMonitor struct {
 	AuthMethod                string                 `json:"auth_method,omitempty"`
 	AuthUser                  string                 `json:"auth_user,omitempty"`
 	AuthPass                  string                 `json:"auth_pass,omitempty"`
+	CredentialProfileID       string                 `json:"credential_profile_id,omitempty"`
 	OAuth2Provider            string                 `json:"oauth2_provider,omitempty"`
 	ClientCertificatePassword string                 `json:"client_certificate_password,omitempty"`
 	JwtID                     string                 `json:"jwt_id,omitempty"`
@@ -321,62 +322,6 @@ type RestApiMonitor struct {
 	TagIDs                []string    `json:"tag_ids,omitempty"`
 	ThirdPartyServiceIDs  []string    `json:"third_party_services,omitempty"`
 	ActionIDs             []ActionRef `json:"action_ids,omitempty"`
-}
-
-// Denotes the REST API Transaction monitor resource in Site24x7.
-type RestApiTransactionMonitor struct {
-	_              struct{} `type:"structure"` // Enforces key based initialization.
-	MonitorID      string   `json:"monitor_id,omitempty"`
-	DisplayName    string   `json:"display_name"`
-	Type           string   `json:"type"`
-	CheckFrequency string   `json:"check_frequency"`
-	Steps          []Steps  `json:"steps"`
-	// Configuration Profiles
-	LocationProfileID     string      `json:"location_profile_id"`
-	NotificationProfileID string      `json:"notification_profile_id"`
-	ThresholdProfileID    string      `json:"threshold_profile_id"`
-	MonitorGroups         []string    `json:"monitor_groups,omitempty"`
-	DependencyResourceIDs []string    `json:"dependency_resource_ids,omitempty"`
-	UserGroupIDs          []string    `json:"user_group_ids,omitempty"`
-	TagIDs                []string    `json:"tag_ids,omitempty"`
-	ThirdPartyServiceIDs  []string    `json:"third_party_services,omitempty"`
-	ActionIDs             []ActionRef `json:"action_ids,omitempty"`
-}
-
-func (restApiMonitor *RestApiTransactionMonitor) SetLocationProfileID(locationProfileID string) {
-	restApiMonitor.LocationProfileID = locationProfileID
-}
-
-func (restApiMonitor *RestApiTransactionMonitor) GetLocationProfileID() string {
-	return restApiMonitor.LocationProfileID
-}
-
-func (restApiMonitor *RestApiTransactionMonitor) SetNotificationProfileID(notificationProfileID string) {
-	restApiMonitor.NotificationProfileID = notificationProfileID
-}
-
-func (restApiMonitor *RestApiTransactionMonitor) GetNotificationProfileID() string {
-	return restApiMonitor.NotificationProfileID
-}
-
-func (restApiMonitor *RestApiTransactionMonitor) SetUserGroupIDs(userGroupIDs []string) {
-	restApiMonitor.UserGroupIDs = userGroupIDs
-}
-
-func (restApiMonitor *RestApiTransactionMonitor) GetUserGroupIDs() []string {
-	return restApiMonitor.UserGroupIDs
-}
-
-func (restApiMonitor *RestApiTransactionMonitor) SetTagIDs(tagIDs []string) {
-	restApiMonitor.TagIDs = tagIDs
-}
-
-func (restApiMonitor *RestApiTransactionMonitor) GetTagIDs() []string {
-	return restApiMonitor.TagIDs
-}
-
-func (restApiMonitor *RestApiTransactionMonitor) String() string {
-	return ToString(restApiMonitor)
 }
 
 func (restApiMonitor *RestApiMonitor) SetLocationProfileID(locationProfileID string) {
@@ -413,6 +358,62 @@ func (restApiMonitor *RestApiMonitor) GetTagIDs() []string {
 
 func (restApiMonitor *RestApiMonitor) String() string {
 	return ToString(restApiMonitor)
+}
+
+// Denotes the REST API Transaction monitor resource in Site24x7.
+type RestApiTransactionMonitor struct {
+	_              struct{} `type:"structure"` // Enforces key based initialization.
+	MonitorID      string   `json:"monitor_id,omitempty"`
+	DisplayName    string   `json:"display_name"`
+	Type           string   `json:"type"`
+	CheckFrequency string   `json:"check_frequency"`
+	Steps          []Steps  `json:"steps"`
+	// Configuration Profiles
+	LocationProfileID     string      `json:"location_profile_id"`
+	NotificationProfileID string      `json:"notification_profile_id"`
+	ThresholdProfileID    string      `json:"threshold_profile_id"`
+	MonitorGroups         []string    `json:"monitor_groups,omitempty"`
+	DependencyResourceIDs []string    `json:"dependency_resource_ids,omitempty"`
+	UserGroupIDs          []string    `json:"user_group_ids,omitempty"`
+	TagIDs                []string    `json:"tag_ids,omitempty"`
+	ThirdPartyServiceIDs  []string    `json:"third_party_services,omitempty"`
+	ActionIDs             []ActionRef `json:"action_ids,omitempty"`
+}
+
+func (restApiTransactionMonitor *RestApiTransactionMonitor) SetLocationProfileID(locationProfileID string) {
+	restApiTransactionMonitor.LocationProfileID = locationProfileID
+}
+
+func (restApiTransactionMonitor *RestApiTransactionMonitor) GetLocationProfileID() string {
+	return restApiTransactionMonitor.LocationProfileID
+}
+
+func (restApiTransactionMonitor *RestApiTransactionMonitor) SetNotificationProfileID(notificationProfileID string) {
+	restApiTransactionMonitor.NotificationProfileID = notificationProfileID
+}
+
+func (restApiTransactionMonitor *RestApiTransactionMonitor) GetNotificationProfileID() string {
+	return restApiTransactionMonitor.NotificationProfileID
+}
+
+func (restApiTransactionMonitor *RestApiTransactionMonitor) SetUserGroupIDs(userGroupIDs []string) {
+	restApiTransactionMonitor.UserGroupIDs = userGroupIDs
+}
+
+func (restApiTransactionMonitor *RestApiTransactionMonitor) GetUserGroupIDs() []string {
+	return restApiTransactionMonitor.UserGroupIDs
+}
+
+func (restApiTransactionMonitor *RestApiTransactionMonitor) SetTagIDs(tagIDs []string) {
+	restApiTransactionMonitor.TagIDs = tagIDs
+}
+
+func (restApiTransactionMonitor *RestApiTransactionMonitor) GetTagIDs() []string {
+	return restApiTransactionMonitor.TagIDs
+}
+
+func (restApiTransactionMonitor *RestApiTransactionMonitor) String() string {
+	return ToString(restApiTransactionMonitor)
 }
 
 // Denotes the Amazon monitor resource in Site24x7.
