@@ -73,7 +73,7 @@ resource "site24x7_website_monitor" "website_monitor_example" {
   // used.
   location_profile_name = "North America"
 
-  // (Optional) HTTP Method to be used for accessing the website. Default value is 'G'. 'G' denotes GET, 'P' denotes POST and 'H' denotes HEAD. PUT, PATCH and DELETE are not supported.
+  // (Optional) HTTP Method to be used for accessing the website.Default value is 'G'. 'G' denotes GET, 'P' denotes POST, 'U' denotes PUT and 'D' denotes DELETE. HEAD is not supported.
   http_method = "P"
 
   // (Optional) Provide content type for request params when http_method is 'P'. 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML and 'F' denotes FORM

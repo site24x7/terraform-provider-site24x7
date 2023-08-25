@@ -196,7 +196,7 @@ resource "site24x7_rest_api_transaction_monitor" "rest_api_transaction_monitor_e
           // JSON ASSERTION ATTRIBUTES ================
 
           // ================ HTTP POST with request body
-          // (Optional) HTTP Method to be used for accessing the website. Default value is 'G'. 'G' denotes GET, 'P' denotes POST and 'H' denotes HEAD. PUT, PATCH and DELETE are not supported.
+          // (Optional) HTTP Method to be used for accessing the website. Default value is 'G'. 'G' denotes GET, 'P' denotes POST, 'U' denotes PUT and 'D' denotes DELETE. HEAD is not supported.
           http_method = "P"
           // (Optional) Provide content type for request params when http_method is 'P'. 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML and 'F' denotes FORM
           request_content_type = "J"

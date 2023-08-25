@@ -364,7 +364,7 @@ var RestApiTransactionMonitorSchema = map[string]*schema.Schema{
 								Type:        schema.TypeString,
 								Optional:    true,
 								Default:     "G",
-								Description: "HTTP Method to be used for accessing the website. Default value is 'G'. 'G' denotes GET, 'P' denotes POST and 'H' denotes HEAD. PUT, PATCH and DELETE are not supported.",
+								Description: "HTTP Method to be used for accessing the website. Default value is 'G'. 'G' denotes GET, 'P' denotes POST, 'U' denotes PUT and 'D' denotes DELETE. HEAD is not supported.",
 							},
 							"use_ipv6": {
 								Type:        schema.TypeBool,
