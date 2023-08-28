@@ -20,6 +20,14 @@ func (e *RestApiTransactionMonitor) Get(monitorID string) (*api.RestApiTransacti
 	return nil, args.Error(1)
 }
 
+func (e *RestApiTransactionMonitor) GetSteps(monitorID string) (*[]api.Steps, error) {
+	args := e.Called(monitorID)
+	if obj, ok := args.Get(0).(*[]api.Steps); ok {
+		return obj, args.Error(1)
+	}
+	return nil, args.Error(1)
+}
+
 func (e *RestApiTransactionMonitor) Create(monitor *api.RestApiTransactionMonitor) (*api.RestApiTransactionMonitor, error) {
 	args := e.Called(monitor)
 	if obj, ok := args.Get(0).(*api.RestApiTransactionMonitor); ok {
