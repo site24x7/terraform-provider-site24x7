@@ -468,6 +468,60 @@ var RestApiTransactionMonitorSchema = map[string]*schema.Schema{
 								Default:     false,
 								Description: "Enable ALPN to send supported protocols as part of the TLS handshake.",
 							},
+							"response_variables": {
+								Type:     schema.TypeMap,
+								Optional: true,
+								Elem: &schema.Resource{
+									Schema: map[string]*schema.Schema{
+										"response_type": {
+											Type:         schema.TypeString,
+											Required:     true,
+											ValidateFunc: validation.IntInSlice([]int{0, 2}), // Trouble or Down
+										},
+										"variables": {
+											Type:     schema.TypeSet,
+											Optional: true,
+											Computed: true,
+											Elem: &schema.Resource{
+												Schema: map[string]*schema.Schema{
+													"name": {
+														Type:        schema.TypeString,
+														Required:    true,
+														Description: "Store the name of parameter forwarding variable path",
+													},
+													"value": {
+														Type:        schema.TypeString,
+														Required:    true,
+														Description: "Storing the parameter forwarding variable path",
+													},
+												},
+											},
+											Description: "List of Parameter forwarding variables",
+										},
+									},
+								},
+								Description: "Response Format to send response type and parameter forwarding variable",
+							},
+							"dynamic_header_params": {
+								Type:     schema.TypeSet,
+								Optional: true,
+								Computed: true,
+								Elem: &schema.Resource{
+									Schema: map[string]*schema.Schema{
+										"name": {
+											Type:        schema.TypeString,
+											Required:    true,
+											Description: "Store the name of parameter forwarding variable path",
+										},
+										"value": {
+											Type:        schema.TypeString,
+											Required:    true,
+											Description: "Storing the parameter forwarding variable path",
+										},
+									},
+								},
+								Description: "List of Response Header/Cookies Format to send the parameter forwarding variable",
+							},
 						},
 					},
 					Description: "API request details related to this step",
@@ -660,6 +714,41 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 				requestHeaders[i] = api.Header{Name: k, Value: requestHeaderMap[k].(string)}
 			}
 
+			// Dynamic Header Params changes
+
+			var httpResponseVariable api.HTTPResponseVariable
+			responseVariableMap := j.(map[string]interface{})["response_variable"].(map[string]interface{})
+			if len(responseVariableMap) > 0 {
+				responseVariableKeys := make([]string, 0, len(responseVariableMap))
+				for k := range responseVariableMap {
+					responseVariableKeys = append(responseVariableKeys, k)
+				}
+				sort.Strings(responseVariableKeys)
+				responseVariables := make([]api.Header, len(responseVariableKeys))
+
+				for i, k := range responseVariableKeys {
+					responseVariables[i] = api.Header{Name: k, Value: responseVariableMap[k].(string)}
+				}
+				httpResponseVariable.ResponseType = api.ResponseType(j.(map[string]interface{})["response_type"].(string))
+				httpResponseVariable.Variables = responseVariables
+			}
+
+			var dynamicHeaderParams api.HTTPDynamicHeaderParams
+			dynamicHeaderParamsMap := j.(map[string]interface{})["dynamic_header_params"].(map[string]interface{})
+			if len(dynamicHeaderParamsMap) > 0 {
+				dynamicHeaderParamsKeys := make([]string, 0, len(dynamicHeaderParamsMap))
+				for k := range dynamicHeaderParamsMap {
+					dynamicHeaderParamsKeys = append(dynamicHeaderParamsKeys, k)
+				}
+				sort.Strings(dynamicHeaderParamsKeys)
+				dynamicReponseVariables := make([]api.Header, len(dynamicHeaderParamsKeys))
+
+				for i, k := range dynamicHeaderParamsKeys {
+					dynamicReponseVariables[i] = api.Header{Name: k, Value: dynamicHeaderParamsMap[k].(string)}
+				}
+				dynamicHeaderParams.Variables = dynamicReponseVariables
+			}
+
 			// HTTP Response Headers
 			var httpResponseHeader api.HTTPResponseHeader
 			responseHeaderMap := j.(map[string]interface{})["response_headers"].(map[string]interface{})
@@ -751,6 +840,8 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 				MatchCase:                 j.(map[string]interface{})["match_case"].(bool),
 				MatchRegex:                MatchRegex,
 				ResponseHeaders:           httpResponseHeader,
+				ResponseVariable:          httpResponseVariable,
+				DynamicHeaderParams:       dynamicHeaderParams,
 			}
 		}
 
