@@ -53,10 +53,6 @@ provider "site24x7" {
   max_retries = 4
 }
 
-// Website Monitor API doc: https://www.site24x7.com/help/api/#website
-resource "site24x7_website_monitor" "website_monitor_example" {
-  // (Required) Display name for the monitor
-  display_name = "Website Monitor - Terraform"
 
   // (Required) Website address to monitor.
   website = "https://www.example.com"
@@ -100,4 +96,3 @@ resource "site24x7_dns_server_monitor" "dns_monitor_basic" {
   // (Required) Domain name to be resolved.
   domain_name               = "www.nowatt.com"
 }
-
