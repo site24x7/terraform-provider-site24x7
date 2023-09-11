@@ -468,7 +468,7 @@ var RestApiTransactionMonitorSchema = map[string]*schema.Schema{
 								Default:     false,
 								Description: "Enable ALPN to send supported protocols as part of the TLS handshake.",
 							},
-							"response_variables": {
+							"response_variable": {
 								Type:     schema.TypeMap,
 								Optional: true,
 								Elem: &schema.Resource{
@@ -481,7 +481,6 @@ var RestApiTransactionMonitorSchema = map[string]*schema.Schema{
 										"variables": {
 											Type:     schema.TypeSet,
 											Optional: true,
-											Computed: true,
 											Elem: &schema.Resource{
 												Schema: map[string]*schema.Schema{
 													"name": {
@@ -503,24 +502,31 @@ var RestApiTransactionMonitorSchema = map[string]*schema.Schema{
 								Description: "Response Format to send response type and parameter forwarding variable",
 							},
 							"dynamic_header_params": {
-								Type:     schema.TypeSet,
+								Type:     schema.TypeMap,
 								Optional: true,
-								Computed: true,
 								Elem: &schema.Resource{
 									Schema: map[string]*schema.Schema{
-										"name": {
-											Type:        schema.TypeString,
-											Required:    true,
-											Description: "Store the name of parameter forwarding variable path",
-										},
-										"value": {
-											Type:        schema.TypeString,
-											Required:    true,
-											Description: "Storing the parameter forwarding variable path",
+										"variables": {
+											Type:     schema.TypeSet,
+											Optional: true,
+											Elem: &schema.Resource{
+												Schema: map[string]*schema.Schema{
+													"name": {
+														Type:        schema.TypeString,
+														Required:    true,
+														Description: "Store the name of parameter forwarding variable path",
+													},
+													"value": {
+														Type:        schema.TypeString,
+														Required:    true,
+														Description: "Storing the parameter forwarding variable path",
+													},
+												},
+											},
+											Description: "List of Response Header/Cookies Format to send the parameter forwarding variable",
 										},
 									},
 								},
-								Description: "List of Response Header/Cookies Format to send the parameter forwarding variable",
 							},
 						},
 					},
