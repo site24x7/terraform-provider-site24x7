@@ -477,12 +477,12 @@ var RestApiTransactionMonitorSchema = map[string]*schema.Schema{
 							"response_variables": {
 								Type:        schema.TypeMap,
 								Optional:    true,
-								Description: "Response Format to send list of parameter forwarding variables",
+								Description: "Provide the Response Variable for parameter forwarding in Map format. ",
 							},
 							"dynamic_header_params": {
 								Type:        schema.TypeMap,
 								Optional:    true,
-								Description: "List of Response Header/Cookies Format to send the parameter forwarding variable",
+								Description: "Provide the Response Header/Cookies for parameter forwarding in Map format.",
 							},
 						},
 					},

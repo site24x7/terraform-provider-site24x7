@@ -219,17 +219,17 @@ resource "site24x7_rest_api_transaction_monitor" "rest_api_transaction_monitor_e
 
           // ================ PARAMETER FORWARDING ATTRIBUTES
 
-          // (Optional) Provide Response Format for Parameter Forwarding.
+          // (Optional) Provide the Response Format for Parameter Forwarding.
 
           dynamic_param_response_type="J"
 
-          // (Optional) Map of Response variable for Parameter Forwarding to send.
+          // (Optional) Provide the Response Variable for parameter forwarding in Map format. 
 
           response_variables ={
             "template_id0"="$.data.template_id"
           }
 
-          // (Optional) Map of Response Header/Cookies for Parameter Forwarding to send.
+          // (Optional) Provide the Response Header/Cookies for parameter forwarding in Map format.
 
           dynamic_header_params ={
             "Accept" = "application/json"
