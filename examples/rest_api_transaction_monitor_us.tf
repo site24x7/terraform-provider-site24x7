@@ -216,6 +216,26 @@ resource "site24x7_rest_api_transaction_monitor" "rest_api_transaction_monitor_e
           // (Optional) Provide the GraphQL variables to get specific response from GraphQL based API service. request_content_type = "G"
           graphql_variables = "{\n    \"FilmId\":\"ZmlsbXM6NQ==\"\n}"
           // GRAPHQL ATTRIBUTES ================
+
+          // ================ PARAMETER FORWARDING ATTRIBUTES
+
+          // (Optional) Provide Response Format for Parameter Forwarding.
+
+          dynamic_param_response_type="J"
+
+          // (Optional) Map of Response variable for Parameter Forwarding to send.
+
+          response_variables ={
+            "template_id0"="$.data.template_id"
+          }
+
+          // (Optional) Map of Response Header/Cookies for Parameter Forwarding to send.
+
+          dynamic_header_params ={
+            "Accept" = "application/json"
+          }
+
+          //  PARAMETER FORWARDING ATTRIBUTES ================
       }
   }
 }
