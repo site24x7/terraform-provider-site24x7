@@ -80,6 +80,7 @@ type WebsiteMonitor struct {
 	ForcedIPs                 string   `json:"forced_ips,omitempty"`
 	UpStatusCodes             string   `json:"up_status_codes,omitempty"`
 	FollowHTTPRedirection     bool     `json:"follow_redirect"`
+	IgnoreCertError           bool     `json:"ignore_cert_err"`
 	SSLProtocol               string   `json:"ssl_protocol,omitempty"`
 	HTTPProtocol              string   `json:"http_protocol,omitempty"`
 	UseAlpn                   bool     `json:"use_alpn"`
