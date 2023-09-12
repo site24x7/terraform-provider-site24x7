@@ -468,65 +468,21 @@ var RestApiTransactionMonitorSchema = map[string]*schema.Schema{
 								Default:     false,
 								Description: "Enable ALPN to send supported protocols as part of the TLS handshake.",
 							},
-							"response_variable": {
-								Type:     schema.TypeMap,
-								Optional: true,
-								Elem: &schema.Resource{
-									Schema: map[string]*schema.Schema{
-										"response_type": {
-											Type:         schema.TypeString,
-											Required:     true,
-											ValidateFunc: validation.IntInSlice([]int{0, 2}), // Trouble or Down
-										},
-										"variables": {
-											Type:     schema.TypeSet,
-											Optional: true,
-											Elem: &schema.Resource{
-												Schema: map[string]*schema.Schema{
-													"name": {
-														Type:        schema.TypeString,
-														Required:    true,
-														Description: "Store the name of parameter forwarding variable path",
-													},
-													"value": {
-														Type:        schema.TypeString,
-														Required:    true,
-														Description: "Storing the parameter forwarding variable path",
-													},
-												},
-											},
-											Description: "List of Parameter forwarding variables",
-										},
-									},
-								},
-								Description: "Response Format to send response type and parameter forwarding variable",
+							"dynamic_param_response_type": {
+								Type:        schema.TypeString,
+								Optional:    true,
+								Default:     "T",
+								Description: "Store the Response Format of Parameter forwarding",
+							},
+							"response_variables": {
+								Type:        schema.TypeMap,
+								Optional:    true,
+								Description: "Response Format to send list of parameter forwarding variables",
 							},
 							"dynamic_header_params": {
-								Type:     schema.TypeMap,
-								Optional: true,
-								Elem: &schema.Resource{
-									Schema: map[string]*schema.Schema{
-										"variables": {
-											Type:     schema.TypeSet,
-											Optional: true,
-											Elem: &schema.Resource{
-												Schema: map[string]*schema.Schema{
-													"name": {
-														Type:        schema.TypeString,
-														Required:    true,
-														Description: "Store the name of parameter forwarding variable path",
-													},
-													"value": {
-														Type:        schema.TypeString,
-														Required:    true,
-														Description: "Storing the parameter forwarding variable path",
-													},
-												},
-											},
-											Description: "List of Response Header/Cookies Format to send the parameter forwarding variable",
-										},
-									},
-								},
+								Type:        schema.TypeMap,
+								Optional:    true,
+								Description: "List of Response Header/Cookies Format to send the parameter forwarding variable",
 							},
 						},
 					},
@@ -720,10 +676,27 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 				requestHeaders[i] = api.Header{Name: k, Value: requestHeaderMap[k].(string)}
 			}
 
+			// HTTP Response Headers
+			var httpResponseHeader api.HTTPResponseHeader
+			responseHeaderMap := j.(map[string]interface{})["response_headers"].(map[string]interface{})
+			if len(responseHeaderMap) > 0 {
+				reponseHeaderKeys := make([]string, 0, len(responseHeaderMap))
+				for k := range responseHeaderMap {
+					reponseHeaderKeys = append(reponseHeaderKeys, k)
+				}
+				sort.Strings(reponseHeaderKeys)
+				responseHeaders := make([]api.Header, len(reponseHeaderKeys))
+				for i, k := range reponseHeaderKeys {
+					responseHeaders[i] = api.Header{Name: k, Value: responseHeaderMap[k].(string)}
+				}
+				httpResponseHeader.Severity = api.Status(j.(map[string]interface{})["response_headers_severity"].(int))
+				httpResponseHeader.Value = responseHeaders
+			}
+
 			// Dynamic Header Params changes
 
 			var httpResponseVariable api.HTTPResponseVariable
-			responseVariableMap := j.(map[string]interface{})["response_variable"].(map[string]interface{})
+			responseVariableMap := j.(map[string]interface{})["response_variables"].(map[string]interface{})
 			if len(responseVariableMap) > 0 {
 				responseVariableKeys := make([]string, 0, len(responseVariableMap))
 				for k := range responseVariableMap {
@@ -735,7 +708,7 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 				for i, k := range responseVariableKeys {
 					responseVariables[i] = api.Header{Name: k, Value: responseVariableMap[k].(string)}
 				}
-				httpResponseVariable.ResponseType = api.ResponseType(j.(map[string]interface{})["response_type"].(string))
+				httpResponseVariable.ResponseType = api.ResponseType(j.(map[string]interface{})["dynamic_param_response_type"].(string))
 				httpResponseVariable.Variables = responseVariables
 			}
 
@@ -753,23 +726,6 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 					dynamicReponseVariables[i] = api.Header{Name: k, Value: dynamicHeaderParamsMap[k].(string)}
 				}
 				dynamicHeaderParams.Variables = dynamicReponseVariables
-			}
-
-			// HTTP Response Headers
-			var httpResponseHeader api.HTTPResponseHeader
-			responseHeaderMap := j.(map[string]interface{})["response_headers"].(map[string]interface{})
-			if len(responseHeaderMap) > 0 {
-				reponseHeaderKeys := make([]string, 0, len(responseHeaderMap))
-				for k := range responseHeaderMap {
-					reponseHeaderKeys = append(reponseHeaderKeys, k)
-				}
-				sort.Strings(reponseHeaderKeys)
-				responseHeaders := make([]api.Header, len(reponseHeaderKeys))
-				for i, k := range reponseHeaderKeys {
-					responseHeaders[i] = api.Header{Name: k, Value: responseHeaderMap[k].(string)}
-				}
-				httpResponseHeader.Severity = api.Status(j.(map[string]interface{})["response_headers_severity"].(int))
-				httpResponseHeader.Value = responseHeaders
 			}
 
 			var MatchRegex map[string]interface{}

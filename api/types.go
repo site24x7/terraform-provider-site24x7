@@ -113,7 +113,7 @@ type StepDetails struct {
 	MatchCase           bool                    `json:"match_case"`
 	MatchRegex          map[string]interface{}  `json:"match_regex,omitempty"`
 	ResponseHeaders     HTTPResponseHeader      `json:"response_headers_check,omitempty"`
-	ResponseVariable    HTTPResponseVariable    `json:"response_variable,omitempty"`
+	ResponseVariable    HTTPResponseVariable    `json:"response_variables,omitempty"`
 	DynamicHeaderParams HTTPDynamicHeaderParams `json:"dynamic_header_params,omitempty"`
 }
 
