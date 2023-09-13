@@ -219,6 +219,10 @@ resource "site24x7_website_monitor" "website_monitor" {
   // (Optional) Enter true to follow up to 10 HTTP redirection responses or false not to follow HTTP redirections. Default value is true.
   follow_http_redirection = false
 
+  // (Optional) Enter true or false to Trust the Server SSL Certificate. Default value is true.
+
+  ignore_cert_err = true
+
   // (Optional) Provide a comma-separated list of HTTP status codes that indicate a successful response. You can specify individual status codes, as well as ranges separated with a colon. Default: ""
   up_status_codes = "200,404"
 

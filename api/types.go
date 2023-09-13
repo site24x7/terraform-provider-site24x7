@@ -9,6 +9,8 @@ import (
 
 type Status int
 
+type ResponseType string
+
 // Custom unmarshaller that allows the value to be both a
 // string and an integer, always unmarshals into integer
 //
@@ -102,20 +104,31 @@ type StepDetails struct {
 	UpStatusCodes             string                 `json:"up_status_codes,omitempty"`
 	UseAlpn                   bool                   `json:"use_alpn"`
 	// Content Check
-	ResponseContentType string                 `json:"response_type"`
-	MatchJSON           map[string]interface{} `json:"match_json,omitempty"`
-	JSONSchema          map[string]interface{} `json:"json_schema,omitempty"`
-	JSONSchemaCheck     bool                   `json:"json_schema_check,omitempty"`
-	MatchingKeyword     map[string]interface{} `json:"matching_keyword,omitempty"`
-	UnmatchingKeyword   map[string]interface{} `json:"unmatching_keyword,omitempty"`
-	MatchCase           bool                   `json:"match_case"`
-	MatchRegex          map[string]interface{} `json:"match_regex,omitempty"`
-	ResponseHeaders     HTTPResponseHeader     `json:"response_headers_check,omitempty"`
+	ResponseContentType string                  `json:"response_type"`
+	MatchJSON           map[string]interface{}  `json:"match_json,omitempty"`
+	JSONSchema          map[string]interface{}  `json:"json_schema,omitempty"`
+	JSONSchemaCheck     bool                    `json:"json_schema_check,omitempty"`
+	MatchingKeyword     map[string]interface{}  `json:"matching_keyword,omitempty"`
+	UnmatchingKeyword   map[string]interface{}  `json:"unmatching_keyword,omitempty"`
+	MatchCase           bool                    `json:"match_case"`
+	MatchRegex          map[string]interface{}  `json:"match_regex,omitempty"`
+	ResponseHeaders     HTTPResponseHeader      `json:"response_headers_check,omitempty"`
+	ResponseVariable    HTTPResponseVariable    `json:"response_variables,omitempty"`
+	DynamicHeaderParams HTTPDynamicHeaderParams `json:"dynamic_header_params,omitempty"`
 }
 
 type HTTPResponseHeader struct {
 	Severity Status   `json:"severity"`
 	Value    []Header `json:"value"`
+}
+
+type HTTPResponseVariable struct {
+	ResponseType ResponseType `json:"response_type"`
+	Variables    []Header     `json:"variables"`
+}
+
+type HTTPDynamicHeaderParams struct {
+	Variables []Header `json:"variables"`
 }
 
 type ActionRef struct {

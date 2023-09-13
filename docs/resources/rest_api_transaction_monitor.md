@@ -164,6 +164,26 @@ resource "site24x7_rest_api_transaction_monitor" "rest_api_transaction_monitor_e
       // (Optional) Provide the GraphQL variables to get specific response from GraphQL based API service. request_content_type = "G"
       graphql_variables = "{\n    \"FilmId\":\"ZmlsbXM6NQ==\"\n}"
       // GRAPHQL ATTRIBUTES ================
+      
+      // ================ PARAMETER FORWARDING ATTRIBUTES
+
+      // (Optional) Provide the Response Format for Parameter Forwarding.
+
+      dynamic_param_response_type="J"
+
+      // (Optional) Provide the Response Variable for parameter forwarding in Map format. 
+
+      response_variables ={
+        "template_id0"="$.data.template_id"
+      }
+
+      // (Optional) Provide the Response Header/Cookies for parameter forwarding in Map format.
+
+      dynamic_header_params ={
+        "Accept" = "application/json"
+      }
+
+      //  PARAMETER FORWARDING ATTRIBUTES ================
     }
   }
 }
@@ -217,6 +237,9 @@ resource "site24x7_rest_api_transaction_monitor" "rest_api_transaction_monitor_e
 * `match_regex` (Map of String) Match the regular expression in the website response.
 * `response_headers` (Map of String) A Map of Header name and value.
 * `response_headers_severity` (Number) Severity with which alert has to raised when the header is found in the website response. Default value is 2. '0' denotes Down and '2' denotes Trouble.
+* `dynamic_param_response_type` (String) Response format for parameter forwarding.
+* `response_variables` (Map of String) Provide the Response Variable for parameter forwarding in Map format.
+* `dynamic_header_params` (Map of String) Provide the Response Header/Cookies for parameter forwarding in Map format.
 * `location_profile_id` (String) Location profile to be associated with the monitor.
 * `location_profile_name` (String) Name of the location profile to be associated with the monitor.
 * `notification_profile_id` (String) Notification profile to be associated with the monitor. Either specify notification_profile_id or notification_profile_name. If notification_profile_id and notification_profile_name are omitted, the first profile returned by the /api/notification_profiles endpoint will be used.
