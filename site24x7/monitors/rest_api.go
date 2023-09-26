@@ -595,6 +595,15 @@ func resourceDataToRestApiMonitor(d *schema.ResourceData, client site24x7.Client
 		httpResponseHeader.Value = responseHeaders
 	}
 
+	// log.Println("get Authendication URL  : ", d.Get("oauth2_provider"))
+	// var auth_method = "B"
+	// if d.Get("oauth2_provider") != nil && len(d.Get("oauth2_provider").(string)) > 2 {
+	// 	auth_method = "O"
+	// }
+	// if d.Get("jwt_id") != nil && len(d.Get("jwt_id").(string)) > 2 {
+	// 	auth_method = "W"
+	// }
+
 	restApiMonitor := &api.RestApiMonitor{
 		MonitorID:      d.Id(),
 		DisplayName:    d.Get("display_name").(string),

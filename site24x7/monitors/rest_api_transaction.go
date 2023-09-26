@@ -7,6 +7,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
+	log "github.com/sirupsen/logrus"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
 	"github.com/site24x7/terraform-provider-site24x7/site24x7"
@@ -222,7 +223,7 @@ var RestApiTransactionMonitorSchema = map[string]*schema.Schema{
 		Description: "Action to be performed on monitor status changes.",
 	},
 	"steps": {
-		Type:     schema.TypeSet,
+		Type:     schema.TypeList,
 		Optional: true,
 		Computed: true,
 		Elem: &schema.Resource{
@@ -233,7 +234,7 @@ var RestApiTransactionMonitorSchema = map[string]*schema.Schema{
 					Description: "Display Name for the monitor.",
 				},
 				"step_details": {
-					Type:     schema.TypeSet,
+					Type:     schema.TypeList,
 					Computed: true,
 					Optional: true,
 					Elem: &schema.Resource{
@@ -657,13 +658,13 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 
 	// Steps Configuration
 
-	Steps := d.Get("steps").(*schema.Set)
-	StepsItems := make([]api.Steps, Steps.Len())
-	for k, v := range Steps.List() {
-		StepsDetails := v.(map[string]interface{})["step_details"].(*schema.Set)
-		StepsDetailsItem := make([]api.StepDetails, StepsDetails.Len())
+	Steps := d.Get("steps").([]interface{})
+	StepsItems := make([]api.Steps, len(Steps))
+	for k, v := range Steps {
+		StepsDetails := v.(map[string]interface{})["step_details"].([]interface{})
+		StepsDetailsItem := make([]api.StepDetails, len(StepsDetails))
 
-		for i, j := range StepsDetails.List() {
+		for i, j := range StepsDetails {
 			// Request Headers
 			requestHeaderMap := j.(map[string]interface{})["request_headers"].(map[string]interface{})
 			requestHeaderKeys := make([]string, 0, len(requestHeaderMap))
@@ -772,9 +773,10 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 				graphqlMap["variables"] = d.Get("graphql_variables").(string)
 				GraphQL = graphqlMap
 			}
-
+			i = 0
 			StepsDetailsItem[i] = api.StepDetails{
 				StepUrl:                   j.(map[string]interface{})["step_url"].(string),
+				Timeout:                   j.(map[string]interface{})["timeout"].(string),
 				DisplayName:               v.(map[string]interface{})["display_name"].(string),
 				HTTPMethod:                j.(map[string]interface{})["http_method"].(string),
 				RequestContentType:        j.(map[string]interface{})["request_content_type"].(string),
@@ -872,7 +874,176 @@ func updateRestApiTransactionMonitorResourceData(d *schema.ResourceData, monitor
 	d.Set("display_name", monitor.DisplayName)
 	d.Set("type", monitor.Type)
 	d.Set("check_frequency", monitor.CheckFrequency)
-	d.Set("steps", *steps)
+	StepsItems := make([]api.Steps, len(*steps))
+	for k, step := range *steps {
+		log.Println("Steps ", k)
+		StepsDetails := step.StepsDetails
+		StepsDetailsItem := make([]api.StepDetails, len(StepsDetails))
+
+		for i, stepObject := range StepsDetails {
+			log.Println("Step Details : ", i)
+			// Request Headers
+			requestHeaderMap := stepObject.RequestHeaders
+			requestHeaderKeys := make([]string, 0, len(requestHeaderMap))
+			headerValuesMap := make(map[string]interface{})
+			for _, k := range requestHeaderMap {
+				requestHeaderKeys = append(requestHeaderKeys, k.Name)
+				headerValuesMap[k.Name] = k.Value
+			}
+			sort.Strings(requestHeaderKeys)
+			requestHeaders := make([]api.Header, len(requestHeaderKeys))
+			for i, k := range requestHeaderKeys {
+				requestHeaders[i] = api.Header{Name: k, Value: headerValuesMap[k].(string)}
+			}
+
+			// HTTP Response Headers
+			var httpResponseHeader api.HTTPResponseHeader
+			responseHeaderMap := stepObject.ResponseHeaders.Value
+			if len(responseHeaderMap) > 0 {
+				reponseHeaderKeys := make([]string, 0, len(responseHeaderMap))
+				headerValuesMap := make(map[string]interface{})
+				for _, k := range responseHeaderMap {
+					reponseHeaderKeys = append(reponseHeaderKeys, k.Name)
+					headerValuesMap[k.Name] = k.Value
+				}
+				sort.Strings(reponseHeaderKeys)
+				responseHeaders := make([]api.Header, len(reponseHeaderKeys))
+				for i, k := range reponseHeaderKeys {
+					responseHeaders[i] = api.Header{Name: k, Value: headerValuesMap[k].(string)}
+				}
+				httpResponseHeader.Severity = stepObject.ResponseHeaders.Severity
+				httpResponseHeader.Value = responseHeaders
+			}
+
+			// Dynamic Header Params changes
+
+			var httpResponseVariable api.HTTPResponseVariable
+			responseVariableMap := stepObject.ResponseVariable.Variables
+			if len(responseVariableMap) > 0 {
+				responseVariableKeys := make([]string, 0, len(responseVariableMap))
+				headerValuesMap := make(map[string]interface{})
+				for _, k := range responseVariableMap {
+					responseVariableKeys = append(responseVariableKeys, k.Name)
+					headerValuesMap[k.Name] = k.Value
+				}
+				sort.Strings(responseVariableKeys)
+				responseVariables := make([]api.Header, len(responseVariableKeys))
+
+				for i, k := range responseVariableKeys {
+					responseVariables[i] = api.Header{Name: k, Value: headerValuesMap[k].(string)}
+				}
+				httpResponseVariable.ResponseType = stepObject.ResponseVariable.ResponseType
+				httpResponseVariable.Variables = responseVariables
+			}
+
+			var dynamicHeaderParams api.HTTPDynamicHeaderParams
+			dynamicHeaderParamsMap := stepObject.DynamicHeaderParams.Variables
+			if len(dynamicHeaderParamsMap) > 0 {
+				log.Println("dynamic header params:", dynamicHeaderParams)
+				dynamicHeaderParamsKeys := make([]string, 0, len(dynamicHeaderParamsMap))
+				headerValuesMap := make(map[string]interface{})
+				for _, k := range dynamicHeaderParamsMap {
+					dynamicHeaderParamsKeys = append(dynamicHeaderParamsKeys, k.Name)
+					headerValuesMap[k.Name] = k.Value
+				}
+				sort.Strings(dynamicHeaderParamsKeys)
+				dynamicReponseVariables := make([]api.Header, len(dynamicHeaderParamsKeys))
+
+				for i, k := range dynamicHeaderParamsKeys {
+					dynamicReponseVariables[i] = api.Header{Name: k, Value: headerValuesMap[k].(string)}
+				}
+				dynamicHeaderParams.Variables = dynamicReponseVariables
+			}
+
+			var MatchRegex map[string]interface{}
+			if stepObject.MatchRegex != nil {
+				MatchRegex = stepObject.MatchRegex
+			}
+
+			var MatchingKeyword map[string]interface{}
+			if stepObject.MatchingKeyword != nil {
+				MatchingKeyword = stepObject.MatchingKeyword
+			}
+
+			var UnmatchingKeyword map[string]interface{}
+			if stepObject.UnmatchingKeyword != nil {
+				UnmatchingKeyword = stepObject.UnmatchingKeyword
+			}
+
+			var MatchJSON map[string]interface{}
+			if matchJSONPath, ok := stepObject.MatchJSON["jsonpath"]; ok {
+				var jsonPathList []map[string]interface{}
+				for _, jsonPath := range matchJSONPath.([]interface{}) {
+					matchPathMap := make(map[string]interface{})
+					matchPathMap["name"] = jsonPath.(string)
+					jsonPathList = append(jsonPathList, matchPathMap)
+				}
+				matchJSONData := make(map[string]interface{})
+				matchJSONData["jsonpath"] = jsonPathList
+				matchJSONData["severity"] = stepObject.MatchJSON["severity"]
+				MatchJSON = matchJSONData
+			}
+
+			var JSONSchema map[string]interface{}
+			if stepObject.JSONSchema != nil {
+				jsonSchemaData := make(map[string]interface{})
+				jsonSchemaData["severity"] = stepObject.JSONSchema["severity"]
+				jsonSchemaData["schema_value"] = stepObject.JSONSchema["schema_value"]
+				JSONSchema = jsonSchemaData
+			}
+
+			var GraphQL map[string]interface{}
+			if stepObject.GraphQL != nil {
+				graphqlMap := make(map[string]interface{})
+				graphqlMap["query"] = stepObject.JSONSchema["query"]
+				graphqlMap["variables"] = stepObject.JSONSchema["variables"]
+				GraphQL = graphqlMap
+			}
+			i = 0
+			StepsDetailsItem[i] = api.StepDetails{
+				StepUrl:                   stepObject.StepUrl,
+				Timeout:                   stepObject.Timeout,
+				StepId:                    stepObject.StepId,
+				DisplayName:               step.DisplayName,
+				HTTPMethod:                stepObject.HTTPMethod,
+				RequestContentType:        stepObject.RequestContentType,
+				RequestBody:               stepObject.RequestBody,
+				RequestHeaders:            requestHeaders,
+				GraphQL:                   GraphQL,
+				UserAgent:                 stepObject.UserAgent,
+				AuthMethod:                stepObject.AuthMethod,
+				AuthUser:                  stepObject.AuthUser,
+				AuthPass:                  stepObject.AuthPass,
+				OAuth2Provider:            stepObject.OAuth2Provider,
+				ClientCertificatePassword: stepObject.ClientCertificatePassword,
+				JwtID:                     stepObject.JwtID,
+				UseNameServer:             stepObject.UseNameServer,
+				HTTPProtocol:              stepObject.HTTPProtocol,
+				SSLProtocol:               stepObject.SSLProtocol,
+				UpStatusCodes:             stepObject.UpStatusCodes,
+				UseAlpn:                   stepObject.UseAlpn,
+				ResponseContentType:       stepObject.ResponseContentType,
+				MatchJSON:                 MatchJSON,
+				JSONSchema:                JSONSchema,
+				JSONSchemaCheck:           stepObject.JSONSchemaCheck,
+				MatchingKeyword:           MatchingKeyword,
+				UnmatchingKeyword:         UnmatchingKeyword,
+				MatchCase:                 stepObject.MatchCase,
+				MatchRegex:                MatchRegex,
+				ResponseHeaders:           httpResponseHeader,
+				ResponseVariable:          httpResponseVariable,
+				DynamicHeaderParams:       dynamicHeaderParams,
+			}
+		}
+
+		StepsItems[k] = api.Steps{
+			DisplayName:  step.DisplayName,
+			StepsDetails: StepsDetailsItem,
+			MonitorID:    step.MonitorID,
+			StepId:       step.StepId,
+		}
+	}
+	d.Set("steps", StepsItems)
 	d.Set("location_profile_id", monitor.LocationProfileID)
 	d.Set("notification_profile_id", monitor.NotificationProfileID)
 	d.Set("threshold_profile_id", monitor.ThresholdProfileID)
