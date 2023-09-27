@@ -220,7 +220,8 @@ resource "site24x7_rest_api_transaction_monitor" "rest_api_transaction_monitor_e
 * `client_certificate_password` (String) Password of the uploaded client certificate.
 * `auth_pass` (String) Authentication user name to access the website.
 * `auth_user` (String) Authentication password to access the website.
-* `oauth2_provider` (String) Provider ID of the OAuth Provider to be associated with the monitor.
+* `auth_method` (String) Authentication method to access the website. Default value is 'B'. 'B' denotes Basic/NTLM. 'O' denotes OAuth 2 and 'W' denotes Web Token
+* `oauth2_provider` (String) Provider ID of the OAuth Provider to be associated with the monitor. Default value for auth_method is "O".
 * `jwt_id` (String) Token ID of the Web Token to be associated with the monitor.
 * `up_status_codes` (String) Provide a comma-separated list of HTTP status codes that indicate a successful response. You can specify individual status codes, as well as ranges separated with a colon.
 * `use_name_server` (Boolean) Resolve the IP address using Domain Name Server.

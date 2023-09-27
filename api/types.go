@@ -78,10 +78,12 @@ type SearchConfig struct {
 type Steps struct {
 	DisplayName  string        `json:"display_name"`
 	StepsDetails []StepDetails `json:"step_details"`
-	MonitorID    string        `json:"monitor_id"`
+	MonitorID    string        `json:"monitor_id,omitempty"`
+	StepId       string        `json:"step_id,omitempty"`
 }
 
 type StepDetails struct {
+	StepId      string `json:"step_id,omitempty"`
 	StepUrl     string `json:"step_url"`
 	DisplayName string `json:"display_name"`
 	// HTTP Configuration
