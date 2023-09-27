@@ -179,8 +179,8 @@ var dnsServerMonitorSchema = map[string]*schema.Schema{
 		Description: "Value to be checked against resolved values. Choose a JSON Format based on your configured lookup type. See https://www.site24x7.com/help/api/#constants for details",
 	},
 	"on_call_schedule_id": {
-		Type:     schema.TypeString,
-		Optional: true,
+		Type:        schema.TypeString,
+		Optional:    true,
 		Description: "if user_group_ids is not choosen,	On-Call Schedule of your choice.",
 	},
 	// Configuration Profiles
@@ -275,7 +275,7 @@ var dnsServerMonitorSchema = map[string]*schema.Schema{
 		Type:        schema.TypeMap,
 		Optional:    true,
 		Elem:        schema.TypeString,
-		Description: "Action to be performed on monitor status changes.",
+		Description: "Action to be performed on monitor IT Automation templates.",
 	},
 }
 
