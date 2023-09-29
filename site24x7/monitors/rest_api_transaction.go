@@ -698,6 +698,7 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 
 			var httpResponseVariable api.HTTPResponseVariable
 			responseVariableMap := j.(map[string]interface{})["response_variables"].(map[string]interface{})
+			log.Println("GetAPIBaseURL : ", len(responseVariableMap))
 			if len(responseVariableMap) > 0 {
 				responseVariableKeys := make([]string, 0, len(responseVariableMap))
 				for k := range responseVariableMap {
@@ -710,6 +711,10 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 					responseVariables[i] = api.Header{Name: k, Value: responseVariableMap[k].(string)}
 				}
 				httpResponseVariable.ResponseType = api.ResponseType(j.(map[string]interface{})["dynamic_param_response_type"].(string))
+				httpResponseVariable.Variables = responseVariables
+			} else {
+				responseVariables := make([]api.Header, 0)
+				httpResponseVariable.ResponseType = ""
 				httpResponseVariable.Variables = responseVariables
 			}
 
@@ -727,6 +732,9 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 					dynamicReponseVariables[i] = api.Header{Name: k, Value: dynamicHeaderParamsMap[k].(string)}
 				}
 				dynamicHeaderParams.Variables = dynamicReponseVariables
+			} else {
+				responseVariables := make([]api.Header, 0)
+				dynamicHeaderParams.Variables = responseVariables
 			}
 
 			var MatchRegex map[string]interface{}
