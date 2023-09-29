@@ -110,9 +110,9 @@ var webPageSpeedMonitorSchema = map[string]*schema.Schema{
 		Description: "Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure.",
 	},
 	"website_type": {
-		Type:     schema.TypeInt,
-		Optional: true,
-		Default:  1,
+		Type:        schema.TypeInt,
+		Optional:    true,
+		Default:     1,
 		Description: "Type of content the website page has. 1 - Static Website,	2 - Dynamic Website, 3 - Flash-Based Website.",
 	},
 	"browser_type": {
@@ -302,7 +302,7 @@ var webPageSpeedMonitorSchema = map[string]*schema.Schema{
 		Type:        schema.TypeMap,
 		Optional:    true,
 		Elem:        schema.TypeString,
-		Description: "Action to be performed on monitor status changes.",
+		Description: "Action to be performed on monitor IT Automation templates.",
 	},
 }
 

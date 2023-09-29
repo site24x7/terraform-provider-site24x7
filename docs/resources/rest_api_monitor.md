@@ -224,6 +224,6 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
 * `tag_ids` (List of String) List of tags IDs to be associated to the monitor. Either specify tag_ids or tag_names.
 * `tag_names` (List of String) List of tag names to be associated to the monitor. Tag name matching works for both exact and partial match. Either specify tag_ids or tag_names.
 * `third_party_service_ids` (List of String) List of Third Party Service IDs to be associated to the monitor.
-* `actions` (Map of String) Action to be performed on monitor status changes.
+* `actions` (Map of String) Action to be performed on monitor IT Automation templates. 
 
 Refer [API documentation](https://www.site24x7.com/help/api/#rest-api) for more information about attributes.
