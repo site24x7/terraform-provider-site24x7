@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"sort"
 	"strconv"
-	"strings"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
@@ -779,13 +778,9 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 			graphqlMap := make(map[string]interface{})
 			if graphqlQuery, ok := j.(map[string]interface{})["graphql_query"]; ok {
 				graphqlMap["query"] = string(graphqlQuery.(string))
-				log.Println("Steps ", graphqlQuery.(string))
-				log.Println("Steps replace ", strings.ReplaceAll(graphqlQuery.(string), `"`, `\"`))
 			}
 			if graphqlVariable, ok := j.(map[string]interface{})["graphql_variables"]; ok {
 				graphqlMap["variables"] = string(graphqlVariable.(string))
-				log.Println("Steps ", graphqlVariable.(string))
-				log.Println("Steps replace", strings.ReplaceAll(graphqlVariable.(string), `"`, `\"`))
 			}
 			GraphQL = graphqlMap
 
