@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sort"
 	"strconv"
+	"strings"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
@@ -753,7 +754,7 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 			}
 
 			var MatchJSON map[string]interface{}
-			if matchJSONPath, ok := d.GetOk("match_json_path"); ok {
+			if matchJSONPath, ok := j.(map[string]interface{})["match_json_path"]; ok {
 				var jsonPathList []map[string]interface{}
 				for _, jsonPath := range matchJSONPath.([]interface{}) {
 					matchPathMap := make(map[string]interface{})
@@ -767,20 +768,27 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 			}
 
 			var JSONSchema map[string]interface{}
-			if jsonSchema, ok := d.GetOk("json_schema"); ok {
+			if jsonSchema, ok := j.(map[string]interface{})["json_schema"]; ok {
 				jsonSchemaData := make(map[string]interface{})
-				jsonSchemaData["severity"] = d.Get("json_schema_severity").(int)
+				jsonSchemaData["severity"] = j.(map[string]interface{})["json_schema_severity"].(int)
 				jsonSchemaData["schema_value"] = jsonSchema.(string)
 				JSONSchema = jsonSchemaData
 			}
 
 			var GraphQL map[string]interface{}
-			if graphqlQuery, ok := d.GetOk("graphql_query"); ok {
-				graphqlMap := make(map[string]interface{})
-				graphqlMap["query"] = graphqlQuery.(string)
-				graphqlMap["variables"] = d.Get("graphql_variables").(string)
-				GraphQL = graphqlMap
+			graphqlMap := make(map[string]interface{})
+			if graphqlQuery, ok := j.(map[string]interface{})["graphql_query"]; ok {
+				graphqlMap["query"] = string(graphqlQuery.(string))
+				log.Println("Steps ", graphqlQuery.(string))
+				log.Println("Steps replace ", strings.ReplaceAll(graphqlQuery.(string), `"`, `\"`))
 			}
+			if graphqlVariable, ok := j.(map[string]interface{})["graphql_variables"]; ok {
+				graphqlMap["variables"] = string(graphqlVariable.(string))
+				log.Println("Steps ", graphqlVariable.(string))
+				log.Println("Steps replace", strings.ReplaceAll(graphqlVariable.(string), `"`, `\"`))
+			}
+			GraphQL = graphqlMap
+
 			i = 0
 			StepsDetailsItem[i] = api.StepDetails{
 				StepUrl:                   j.(map[string]interface{})["step_url"].(string),
@@ -983,7 +991,7 @@ func updateRestApiTransactionMonitorResourceData(d *schema.ResourceData, monitor
 				var jsonPathList []map[string]interface{}
 				for _, jsonPath := range matchJSONPath.([]interface{}) {
 					matchPathMap := make(map[string]interface{})
-					matchPathMap["name"] = jsonPath.(string)
+					matchPathMap["name"] = jsonPath.(map[string]interface{})
 					jsonPathList = append(jsonPathList, matchPathMap)
 				}
 				matchJSONData := make(map[string]interface{})
@@ -1003,8 +1011,8 @@ func updateRestApiTransactionMonitorResourceData(d *schema.ResourceData, monitor
 			var GraphQL map[string]interface{}
 			if stepObject.GraphQL != nil {
 				graphqlMap := make(map[string]interface{})
-				graphqlMap["query"] = stepObject.JSONSchema["query"]
-				graphqlMap["variables"] = stepObject.JSONSchema["variables"]
+				graphqlMap["query"] = stepObject.GraphQL["query"]
+				graphqlMap["variables"] = stepObject.GraphQL["variables"]
 				GraphQL = graphqlMap
 			}
 			i = 0
