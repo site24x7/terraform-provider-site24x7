@@ -7,7 +7,6 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
-	log "github.com/sirupsen/logrus"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
 	"github.com/site24x7/terraform-provider-site24x7/site24x7"
@@ -698,7 +697,6 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 
 			var httpResponseVariable api.HTTPResponseVariable
 			responseVariableMap := j.(map[string]interface{})["response_variables"].(map[string]interface{})
-			log.Println("GetAPIBaseURL : ", len(responseVariableMap))
 			if len(responseVariableMap) > 0 {
 				responseVariableKeys := make([]string, 0, len(responseVariableMap))
 				for k := range responseVariableMap {
@@ -753,17 +751,19 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 			}
 
 			var MatchJSON map[string]interface{}
-			if matchJSONPath, ok := j.(map[string]interface{})["match_json_path"]; ok {
-				var jsonPathList []map[string]interface{}
-				for _, jsonPath := range matchJSONPath.([]interface{}) {
-					matchPathMap := make(map[string]interface{})
-					matchPathMap["name"] = jsonPath.(string)
-					jsonPathList = append(jsonPathList, matchPathMap)
+			if matchJSONPath, ok := j.(map[string]interface{})["match_json_path"]; len(j.(map[string]interface{})["match_json_path"].([]interface{})) > 0 {
+				if ok {
+					var jsonPathList []map[string]interface{}
+					for _, jsonPath := range matchJSONPath.([]interface{}) {
+						matchPathMap := make(map[string]interface{})
+						matchPathMap["name"] = jsonPath.(string)
+						jsonPathList = append(jsonPathList, matchPathMap)
+					}
+					matchJSONData := make(map[string]interface{})
+					matchJSONData["jsonpath"] = jsonPathList
+					matchJSONData["severity"] = j.(map[string]interface{})["match_json_path_severity"].(int)
+					MatchJSON = matchJSONData
 				}
-				matchJSONData := make(map[string]interface{})
-				matchJSONData["jsonpath"] = jsonPathList
-				matchJSONData["severity"] = j.(map[string]interface{})["match_json_path_severity"].(int)
-				MatchJSON = matchJSONData
 			}
 
 			var JSONSchema map[string]interface{}
@@ -887,12 +887,10 @@ func updateRestApiTransactionMonitorResourceData(d *schema.ResourceData, monitor
 	d.Set("check_frequency", monitor.CheckFrequency)
 	StepsItems := make([]api.Steps, len(*steps))
 	for k, step := range *steps {
-		log.Println("Steps ", k)
 		StepsDetails := step.StepsDetails
 		StepsDetailsItem := make([]api.StepDetails, len(StepsDetails))
 
 		for i, stepObject := range StepsDetails {
-			log.Println("Step Details : ", i)
 			// Request Headers
 			requestHeaderMap := stepObject.RequestHeaders
 			requestHeaderKeys := make([]string, 0, len(requestHeaderMap))
@@ -950,7 +948,6 @@ func updateRestApiTransactionMonitorResourceData(d *schema.ResourceData, monitor
 			var dynamicHeaderParams api.HTTPDynamicHeaderParams
 			dynamicHeaderParamsMap := stepObject.DynamicHeaderParams.Variables
 			if len(dynamicHeaderParamsMap) > 0 {
-				log.Println("dynamic header params:", dynamicHeaderParams)
 				dynamicHeaderParamsKeys := make([]string, 0, len(dynamicHeaderParamsMap))
 				headerValuesMap := make(map[string]interface{})
 				for _, k := range dynamicHeaderParamsMap {
