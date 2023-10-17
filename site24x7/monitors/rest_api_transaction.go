@@ -691,6 +691,10 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 				}
 				httpResponseHeader.Severity = api.Status(j.(map[string]interface{})["response_headers_severity"].(int))
 				httpResponseHeader.Value = responseHeaders
+			} else {
+				responseVariables := make([]api.Header, 0)
+				httpResponseHeader.Severity = 0
+				httpResponseHeader.Value = responseVariables
 			}
 
 			// Dynamic Header Params changes
