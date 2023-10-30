@@ -28,7 +28,7 @@ func (c *thresholdProfiles) Get(profileID string) (*api.ThresholdProfile, error)
 	err := c.client.
 		Get().
 		Resource("threshold_profiles").
-		SetHeader("Accept", "application/json;").
+		SetHeader("Accept", "application/json; version=2.1").
 		ResourceID(profileID).
 		Do().
 		Parse(profile)

@@ -462,3 +462,16 @@ type DeviceKey struct {
 func (deviceKey *DeviceKey) String() string {
 	return ToString(deviceKey)
 }
+
+type CredentialProfile struct {
+	_              struct{} `type:"structure"` // Enforces key based initialization.
+	ID             string   `json:"credential_profile_id"`
+	CredentialType int      `json:"credential_type"`
+	CredentialName string   `json:"credential_name"`
+	UserName       string   `json:"username"`
+	Password       string   `json:"password"`
+}
+
+func (credentialProfile *CredentialProfile) String() string {
+	return ToString(credentialProfile)
+}

@@ -109,6 +109,7 @@ type Client interface {
 	MSP() endpoints.MSP
 	AWSExternalID() aws.AWSExternalID
 	DeviceKey() common.DeviceKey
+	CredentialProfile() common.CredentialProfile
 }
 
 type client struct {
@@ -311,4 +312,9 @@ func (c *client) AWSExternalID() aws.AWSExternalID {
 // DeviceKey implements Client.
 func (c *client) DeviceKey() common.DeviceKey {
 	return common.NewDeviceKey(c.restClient)
+}
+
+// RestApiMonitors implements Client.
+func (c *client) CredentialProfile() common.CredentialProfile {
+	return common.NewCredentialProfile(c.restClient)
 }
