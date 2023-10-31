@@ -60,6 +60,7 @@ A terraform provider for managing the following resources in Site24x7:
 - User - [site24x7_user](examples/user_us.tf) ([Site24x7 User API doc](https://www.site24x7.com/help/api/#users))
 - Tag - [site24x7_tag](examples/tag_us.tf) ([Site24x7 Tag API doc](https://www.site24x7.com/help/api/#tags))
 - Schedule Maintenance - [site24x7_schedule_maintenance](examples/schedule_maintenance_us.tf) ([Site24x7 Schedule Maintenance API doc](https://www.site24x7.com/help/api/#schedule-maintenances))
+- Credential Profile - [site24x7_credential_profile](examples/credential_profiles_us.tf) ([Credential Profile Terraform doc](https://www.site24x7.com/help/api/#credential-profiles))
 
 #### Integrations
 
@@ -84,6 +85,7 @@ A terraform provider for managing the following resources in Site24x7:
 - MSP - [site24x7_msp](examples/data-sources/msp_data_source_us.tf) ([MSP API doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/msp))
 - AWS External ID - [site24x7_aws_external_id](examples/data-sources/aws_external_id_data_source_us.tf) ([AWS External ID Terraform doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/aws_external_id))
 - Device Key - [site24x7_device_key](examples/data-sources/device_key_data_source_us.tf) ([Device Key Terraform doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/device_key))
+- Credential Profile - [site24x7_credential_profile](examples/data-sources/credential_profile_data_source_us.tf) ([Credential Profile Terraform doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/credential_profile))
 
 Usage example
 -------------

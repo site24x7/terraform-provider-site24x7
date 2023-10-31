@@ -11,71 +11,73 @@ import (
 // Client is an implementation of site24x7.Client that stubs out all endpoints
 // with mocks. In can be used in unit tests.
 type Client struct {
-	FakeCurrentStatus          		*fake.CurrentStatus
-	FakeURLActions             		*fake.URLActions
-	FakeLocationTemplate       		*fake.LocationTemplate
-	FakeLocationProfiles       		*fake.LocationProfiles
-	FakeMonitorGroups          		*fake.MonitorGroups
-	FakeSubgroups              		*fake.Subgroups
-	FakeTags                   		*fake.Tags
-	FakeAmazonMonitors         		*fake.AmazonMonitors
-	FakeWebsiteMonitors        		*fake.WebsiteMonitors
-	FakeWebPageSpeedMonitors   		*fake.WebPageSpeedMonitors
-	FakeSSLMonitors            		*fake.SSLMonitors
-	FakeHeartbeatMonitors      		*fake.HeartbeatMonitors
-	FakeServerMonitors         		*fake.ServerMonitors
-	FakeRestApiMonitors        		*fake.RestApiMonitors
-	FakeRestApiTransactionMonitors	*fake.RestApiTransactionMonitor
-	FakeNotificationProfiles   		*fake.NotificationProfiles
-	FakeThresholdProfiles      		*fake.ThresholdProfiles
-	FakeUserGroups             		*fake.UserGroups
-	FakeUsers                  		*fake.Users
-	FakeOpsgenieIntegration    		*fake.OpsgenieIntegration
-	FakeSlackIntegration       		*fake.SlackIntegration
-	FakeWebhookIntegration     		*fake.WebhookIntegration
-	FakePagerDutyIntegration   		*fake.PagerDutyIntegration
-	FakeServiceNowIntegration  		*fake.ServiceNowIntegration
-	FakeConnectwiseIntegration 		*fake.ConnectwiseIntegration
-	FakeTelegramIntegration    		*fake.TelegramIntegration
-	FakeThirdPartyIntegrations 		*fake.ThirdPartyIntegrations
-	FakeScheduleMaintenance    		*fake.ScheduleMaintenance
-	FakeMSP                    		*fake.MSP
-	FakeDNSServerMonitors      		*fake.DNSServerMonitors
+	FakeCurrentStatus              *fake.CurrentStatus
+	FakeURLActions                 *fake.URLActions
+	FakeLocationTemplate           *fake.LocationTemplate
+	FakeLocationProfiles           *fake.LocationProfiles
+	FakeMonitorGroups              *fake.MonitorGroups
+	FakeSubgroups                  *fake.Subgroups
+	FakeTags                       *fake.Tags
+	FakeAmazonMonitors             *fake.AmazonMonitors
+	FakeWebsiteMonitors            *fake.WebsiteMonitors
+	FakeWebPageSpeedMonitors       *fake.WebPageSpeedMonitors
+	FakeSSLMonitors                *fake.SSLMonitors
+	FakeHeartbeatMonitors          *fake.HeartbeatMonitors
+	FakeServerMonitors             *fake.ServerMonitors
+	FakeRestApiMonitors            *fake.RestApiMonitors
+	FakeRestApiTransactionMonitors *fake.RestApiTransactionMonitor
+	FakeNotificationProfiles       *fake.NotificationProfiles
+	FakeThresholdProfiles          *fake.ThresholdProfiles
+	FakeUserGroups                 *fake.UserGroups
+	FakeUsers                      *fake.Users
+	FakeOpsgenieIntegration        *fake.OpsgenieIntegration
+	FakeSlackIntegration           *fake.SlackIntegration
+	FakeWebhookIntegration         *fake.WebhookIntegration
+	FakePagerDutyIntegration       *fake.PagerDutyIntegration
+	FakeServiceNowIntegration      *fake.ServiceNowIntegration
+	FakeConnectwiseIntegration     *fake.ConnectwiseIntegration
+	FakeTelegramIntegration        *fake.TelegramIntegration
+	FakeThirdPartyIntegrations     *fake.ThirdPartyIntegrations
+	FakeScheduleMaintenance        *fake.ScheduleMaintenance
+	FakeMSP                        *fake.MSP
+	FakeDNSServerMonitors          *fake.DNSServerMonitors
+	FakeCredentialProfile          *fake.CredentialProfile
 }
 
 // NewClient creates a new fake site24x7 API client.
 func NewClient() *Client {
 	return &Client{
-		FakeCurrentStatus:          	&fake.CurrentStatus{},
-		FakeURLActions:             	&fake.URLActions{},
-		FakeLocationProfiles:       	&fake.LocationProfiles{},
-		FakeLocationTemplate:       	&fake.LocationTemplate{},
-		FakeMonitorGroups:          	&fake.MonitorGroups{},
-		FakeSubgroups:              	&fake.Subgroups{},
-		FakeTags:                   	&fake.Tags{},
-		FakeAmazonMonitors:         	&fake.AmazonMonitors{},
-		FakeSSLMonitors:            	&fake.SSLMonitors{},
-		FakeHeartbeatMonitors:      	&fake.HeartbeatMonitors{},
-		FakeServerMonitors:         	&fake.ServerMonitors{},
-		FakeWebsiteMonitors:        	&fake.WebsiteMonitors{},
-		FakeDNSServerMonitors:      	&fake.DNSServerMonitors{},
-		FakeWebPageSpeedMonitors:   	&fake.WebPageSpeedMonitors{},
-		FakeRestApiMonitors:        	&fake.RestApiMonitors{},
+		FakeCurrentStatus:              &fake.CurrentStatus{},
+		FakeURLActions:                 &fake.URLActions{},
+		FakeLocationProfiles:           &fake.LocationProfiles{},
+		FakeLocationTemplate:           &fake.LocationTemplate{},
+		FakeMonitorGroups:              &fake.MonitorGroups{},
+		FakeSubgroups:                  &fake.Subgroups{},
+		FakeTags:                       &fake.Tags{},
+		FakeAmazonMonitors:             &fake.AmazonMonitors{},
+		FakeSSLMonitors:                &fake.SSLMonitors{},
+		FakeHeartbeatMonitors:          &fake.HeartbeatMonitors{},
+		FakeServerMonitors:             &fake.ServerMonitors{},
+		FakeWebsiteMonitors:            &fake.WebsiteMonitors{},
+		FakeDNSServerMonitors:          &fake.DNSServerMonitors{},
+		FakeWebPageSpeedMonitors:       &fake.WebPageSpeedMonitors{},
+		FakeRestApiMonitors:            &fake.RestApiMonitors{},
 		FakeRestApiTransactionMonitors: &fake.RestApiTransactionMonitor{},
-		FakeNotificationProfiles:   	&fake.NotificationProfiles{},
-		FakeThresholdProfiles:      	&fake.ThresholdProfiles{},
-		FakeUserGroups:             	&fake.UserGroups{},
-		FakeUsers:                  	&fake.Users{},
-		FakeOpsgenieIntegration:    	&fake.OpsgenieIntegration{},
-		FakeSlackIntegration:       	&fake.SlackIntegration{},
-		FakePagerDutyIntegration:   	&fake.PagerDutyIntegration{},
-		FakeServiceNowIntegration:  	&fake.ServiceNowIntegration{},
-		FakeWebhookIntegration:     	&fake.WebhookIntegration{},
-		FakeConnectwiseIntegration: 	&fake.ConnectwiseIntegration{},
-		FakeTelegramIntegration:   	    &fake.TelegramIntegration{},
-		FakeThirdPartyIntegrations: 	&fake.ThirdPartyIntegrations{},
-		FakeScheduleMaintenance:    	&fake.ScheduleMaintenance{},
-		FakeMSP:                    	&fake.MSP{},
+		FakeNotificationProfiles:       &fake.NotificationProfiles{},
+		FakeThresholdProfiles:          &fake.ThresholdProfiles{},
+		FakeUserGroups:                 &fake.UserGroups{},
+		FakeUsers:                      &fake.Users{},
+		FakeOpsgenieIntegration:        &fake.OpsgenieIntegration{},
+		FakeSlackIntegration:           &fake.SlackIntegration{},
+		FakePagerDutyIntegration:       &fake.PagerDutyIntegration{},
+		FakeServiceNowIntegration:      &fake.ServiceNowIntegration{},
+		FakeWebhookIntegration:         &fake.WebhookIntegration{},
+		FakeConnectwiseIntegration:     &fake.ConnectwiseIntegration{},
+		FakeTelegramIntegration:        &fake.TelegramIntegration{},
+		FakeThirdPartyIntegrations:     &fake.ThirdPartyIntegrations{},
+		FakeScheduleMaintenance:        &fake.ScheduleMaintenance{},
+		FakeMSP:                        &fake.MSP{},
+		FakeCredentialProfile:          &fake.CredentialProfile{},
 	}
 }
 
@@ -227,4 +229,9 @@ func (c *Client) ScheduleMaintenance() common.ScheduleMaintenance {
 // MSP implements Client.
 func (c *Client) MSP() endpoints.MSP {
 	return c.FakeMSP
+}
+
+// RestApiMonitors implements Client.
+func (c *Client) credentialProfile() common.CredentialProfile {
+	return c.FakeCredentialProfile
 }
