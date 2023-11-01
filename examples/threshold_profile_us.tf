@@ -58,6 +58,11 @@ resource "site24x7_threshold_profile" "website_threshold_profile_us" {
   down_location_threshold = 1
   // (Optional) Triggers alert when Website content is modified.
   website_content_modified = false
+  // (Optional) Triggers alert when not receiving the website entire HTTP response within 30 seconds.
+  read_time_out {
+    severity = 3
+    value = true
+  }
   // (Optional) Triggers alert when Website content changes by configured percentage.
   website_content_changes {
     severity     = 2

@@ -161,6 +161,11 @@ var webPageSpeedMonitorSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Description: "Authentication password to access the website.",
 	},
+	"credential_profile_id": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Credential Profile to associate.",
+	},
 	"user_agent": {
 		Type:        schema.TypeString,
 		Optional:    true,
@@ -484,12 +489,13 @@ func resourceDataToWebPageSpeedMonitor(d *schema.ResourceData, client site24x7.C
 		DeviceType:     d.Get("device_type").(string),
 		WPAResolution:  d.Get("wpa_resolution").(string),
 		// HTTP Configuration
-		HTTPMethod:    d.Get("http_method").(string),
-		CustomHeaders: customHeaders,
-		AuthUser:      d.Get("auth_user").(string),
-		AuthPass:      d.Get("auth_pass").(string),
-		UserAgent:     d.Get("user_agent").(string),
-		UpStatusCodes: d.Get("up_status_codes").(string),
+		HTTPMethod:          d.Get("http_method").(string),
+		CustomHeaders:       customHeaders,
+		AuthUser:            d.Get("auth_user").(string),
+		AuthPass:            d.Get("auth_pass").(string),
+		CredentialProfileID: d.Get("credential_profile_id").(string),
+		UserAgent:           d.Get("user_agent").(string),
+		UpStatusCodes:       d.Get("up_status_codes").(string),
 		// Content Check
 		MatchCase:             d.Get("match_case").(bool),
 		LocationProfileID:     d.Get("location_profile_id").(string),
@@ -584,6 +590,7 @@ func updateWebPageSpeedMonitorResourceData(d *schema.ResourceData, monitor *api.
 	d.Set("custom_headers", customHeaders)
 	d.Set("auth_user", monitor.AuthUser)
 	d.Set("auth_pass", monitor.AuthPass)
+	d.Set("credential_profile_id", monitor.CredentialProfileID)
 	d.Set("user_agent", monitor.UserAgent)
 	d.Set("up_status_codes", monitor.UpStatusCodes)
 

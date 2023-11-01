@@ -60,7 +60,7 @@ A terraform provider for managing the following resources in Site24x7:
 - User - [site24x7_user](examples/user_us.tf) ([Site24x7 User API doc](https://www.site24x7.com/help/api/#users))
 - Tag - [site24x7_tag](examples/tag_us.tf) ([Site24x7 Tag API doc](https://www.site24x7.com/help/api/#tags))
 - Schedule Maintenance - [site24x7_schedule_maintenance](examples/schedule_maintenance_us.tf) ([Site24x7 Schedule Maintenance API doc](https://www.site24x7.com/help/api/#schedule-maintenances))
-- Credential Profile - [site24x7_credential_profile](examples/credential_profiles_us.tf) ([Credential Profile Terraform doc](https://www.site24x7.com/help/api/#credential-profiles))
+- Credential Profile - [site24x7_credential_profile](examples/credential_profiles_us.tf) ([Credential Profile API doc](https://www.site24x7.com/help/api/#credential-profiles))
 
 #### Integrations
 
