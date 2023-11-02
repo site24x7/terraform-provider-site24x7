@@ -63,6 +63,9 @@ resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_example" {
   // (Optional) Authentication password to access the website.
   auth_pass = "thepasswd"
 
+  //(Optional) Credential Profile to associate the website with 
+  credential_profile_id = "123"
+
   // (Optional) Map of custom HTTP headers to send.
   custom_headers = {
     "Accept" = "application/json"
@@ -221,7 +224,7 @@ resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_example" {
 * `user_agent` (String) User Agent to be used while monitoring the website.
 * `auth_pass` (String) Authentication password to access the website.
 * `auth_user` (String) Authentication user name to access the website.
-* `credential_profile_id` (String) Credential Profile to associate.
+* `credential_profile_id` (String)Credential Profile to associate the website with. Notes: If you're using Auth user and Auth password, you can't configure Credential Profile
 * `up_status_codes` (String) Provide a comma-separated list of HTTP status codes that indicate a successful response. You can specify individual status codes, as well as ranges separated with a colon.
 * `matching_keyword_severity` (Number) Severity with which alert has to raised when the matching keyword is found in the website response.
 * `matching_keyword_value` (String) Check for the keyword in the website response.
