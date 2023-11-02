@@ -113,9 +113,6 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
     "Connection" = "Keep-Alive"
   }
 
-  //(Optional) Credential Profile to associate the website with 
-  credential_profile_id = "123"
-
   // HTTP Configuration
 
   //(Optional) Credential Profile to associate the website with 
