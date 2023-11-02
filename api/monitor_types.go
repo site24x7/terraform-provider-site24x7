@@ -154,12 +154,13 @@ type WebPageSpeedMonitor struct {
 	DeviceType     string   `json:"device_type"`
 	WPAResolution  string   `json:"wpa_resolution"`
 	// HTTP Configuration
-	HTTPMethod    string   `json:"http_method"`
-	CustomHeaders []Header `json:"custom_headers,omitempty"`
-	AuthUser      string   `json:"auth_user,omitempty"`
-	AuthPass      string   `json:"auth_pass,omitempty"`
-	UserAgent     string   `json:"user_agent,omitempty"`
-	UpStatusCodes string   `json:"up_status_codes,omitempty"`
+	HTTPMethod          string   `json:"http_method"`
+	CustomHeaders       []Header `json:"custom_headers,omitempty"`
+	AuthUser            string   `json:"auth_user,omitempty"`
+	AuthPass            string   `json:"auth_pass,omitempty"`
+	CredentialProfileID string   `json:"credential_profile_id,omitempty"`
+	UserAgent           string   `json:"user_agent,omitempty"`
+	UpStatusCodes       string   `json:"up_status_codes,omitempty"`
 	// Content Check
 	MatchingKeyword   *ValueAndSeverity `json:"matching_keyword,omitempty"`
 	UnmatchingKeyword *ValueAndSeverity `json:"unmatching_keyword,omitempty"`

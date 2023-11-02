@@ -196,6 +196,7 @@ type ThresholdProfile struct {
 	DownLocationThreshold  int                      `json:"down_location_threshold,omitempty"`
 	WebsiteContentModified bool                     `json:"website_content_modified,omitempty"`
 	WebsiteContentChanges  []map[string]interface{} `json:"website_content_changes,omitempty"`
+	ReadTimeOut            map[string]interface{}   `json:"read_time_out,omitempty"`
 	ResponseTimeThreshold  map[string]interface{}   `json:"response_time_threshold,omitempty"`
 	// SSL_CERT attributes
 	SSLCertificateFingerprintModified map[string]interface{}   `json:"ssl_fingerprint_modified,omitempty"`
@@ -249,6 +250,8 @@ func (thresholdProfile *ThresholdProfile) UnmarshalJSON(rawValue []byte) error {
 			}
 		} else if k == "response_time_threshold" {
 			thresholdProfile.ResponseTimeThreshold = v.(map[string]interface{})
+		} else if k == "read_time_out" {
+			thresholdProfile.ReadTimeOut = v.(map[string]interface{})
 		}
 	}
 	return nil

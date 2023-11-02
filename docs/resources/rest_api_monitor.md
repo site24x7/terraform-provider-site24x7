@@ -114,6 +114,10 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
   }
 
   // HTTP Configuration
+
+  //(Optional) Credential Profile to associate the website with 
+  credential_profile_id = "123"
+
   // (Optional) Provide a comma-separated list of HTTP status codes that indicate a successful response.
   // You can specify individual status codes, as well as ranges separated with a colon.
   up_status_codes = "400:500"
@@ -195,6 +199,7 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
 * `client_certificate_password` (String) Password of the uploaded client certificate.
 * `auth_pass` (String) Authentication user name to access the website.
 * `auth_user` (String) Authentication password to access the website.
+* `credential_profile_id` (String)Credential Profile to associate the website with. Notes: If you're using Auth user and Auth password, you can't configure Credential Profile
 * `oauth2_provider` (String) Provider ID of the OAuth Provider to be associated with the monitor.
 * `jwt_id` (String) Token ID of the Web Token to be associated with the monitor.
 * `up_status_codes` (String) Provide a comma-separated list of HTTP status codes that indicate a successful response. You can specify individual status codes, as well as ranges separated with a colon.

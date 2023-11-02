@@ -86,6 +86,13 @@ var ThresholdProfileSchema = map[string]*schema.Schema{
 		ValidateFunc: validation.IntInSlice([]int{1, 2}),
 		Description:  "Static Threshold(1) or AI-based Threshold(2)",
 	},
+	"profile_type_name": {
+		Type:         schema.TypeInt,
+		Optional:     true,
+		Default:      1,
+		ValidateFunc: validation.IntInSlice([]int{1, 2}),
+		Description:  "Static Threshold(1) or AI-based Threshold(2)",
+	},
 	"down_location_threshold": {
 		Type:         schema.TypeInt,
 		Optional:     true,
@@ -97,6 +104,24 @@ var ThresholdProfileSchema = map[string]*schema.Schema{
 		Type:        schema.TypeBool,
 		Optional:    true,
 		Description: "Triggers alert when the website content is modified.",
+	},
+	"read_time_out": {
+		Type:     schema.TypeMap,
+		Optional: true,
+		Elem: &schema.Resource{
+			Schema: map[string]*schema.Schema{
+				"severity": {
+					Type:         schema.TypeInt,
+					Required:     true,
+					ValidateFunc: validation.IntInSlice([]int{0, 2, 3}), //Down or Trouble or Critical
+				},
+				"value": {
+					Type:     schema.TypeBool,
+					Required: true,
+				},
+			},
+		},
+		Description: "Triggers alert when not receiving the website entire HTTP response within 30 seconds.",
 	},
 	"website_content_changes": {
 		Type:     schema.TypeList,
@@ -550,6 +575,10 @@ func setCommonAttributes(d *schema.ResourceData, thresholdProfile *api.Threshold
 	}
 	thresholdProfile.WebsiteContentChanges = websiteContentChanges
 
+	if readTimeOut, ok := d.GetOk("read_time_out"); ok {
+		thresholdProfile.ReadTimeOut = readTimeOut.(map[string]interface{})
+	}
+
 	// Response Time Threshold
 	var setResponseTimeThresholdMap bool
 	responseTimeThresholdMap := make(map[string]interface{})
@@ -594,6 +623,7 @@ func setCommonResourceData(d *schema.ResourceData, thresholdProfile *api.Thresho
 	d.Set("down_location_threshold", thresholdProfile.DownLocationThreshold)
 	d.Set("website_content_modified", thresholdProfile.WebsiteContentModified)
 	d.Set("website_content_changes", thresholdProfile.WebsiteContentChanges)
+	d.Set("read_time_out", thresholdProfile.ReadTimeOut)
 	// Response Time Primary Threshold
 	if primaryThreshold, ok := thresholdProfile.ResponseTimeThreshold["primary"]; ok {
 		primaryThresholdList := primaryThreshold.([]interface{})

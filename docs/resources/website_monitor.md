@@ -33,6 +33,9 @@ resource "site24x7_website_monitor" "website_monitor" {
   // (Optional) Authentication password to access the website.
   auth_pass = "thepasswd"
 
+  //(Optional) Credential Profile to associate the website with 
+  credential_profile_id = "123"
+
   // (Optional) Check for the keyword in the website response.
   matching_keyword_value = "foo"
 
@@ -224,7 +227,7 @@ resource "site24x7_website_monitor" "website_monitor" {
 * `auth_method` (String) Authentication method to access the website. Default value is 'B'. 'B' denotes Basic/NTLM. 'O' denotes OAuth 2 and 'W' denotes Web Token.
 * `auth_pass` (String) Authentication password to access the website.
 * `auth_user` (String) Authentication user name to access the website.
-* `credential_profile_id` (String) Credential Profile to associate.
+* `credential_profile_id` (String)Credential Profile to associate the website with. Notes: If you're using Auth user and Auth password, you can't configure Credential Profile
 * `client_certificate_password` (String) Password of the client certificate.
 * `use_name_server` (Boolean) Resolve the IP address using Domain Name Server.
 * `forced_ips` (String) Provide the domain name or IP addresses to be used for monitoring instead of using the IPs resolved from the given URL.
