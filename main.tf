@@ -16,15 +16,15 @@ terraform {
 provider "site24x7" {
   // (Required) The client ID will be looked up in the SITE24X7_OAUTH2_CLIENT_ID
   // environment variable if the attribute is empty or omitted.
-  # oauth2_client_id = "<SITE24X7_OAUTH2_CLIENT_ID>"
+  oauth2_client_id = "1000.0D485VEM89FTBJT1P2ORWJZO9ABAFO"
 
   // (Required) The client secret will be looked up in the SITE24X7_OAUTH2_CLIENT_SECRET
   // environment variable if the attribute is empty or omitted.
-  # oauth2_client_secret = "<SITE24X7_OAUTH2_CLIENT_SECRET>"
+  oauth2_client_secret = "7203f0267db4943c44105b99f2d582ccbf5e58e698"
 
   // (Required) The refresh token will be looked up in the SITE24X7_OAUTH2_REFRESH_TOKEN
   // environment variable if the attribute is empty or omitted.
-  # oauth2_refresh_token = "<SITE24X7_OAUTH2_REFRESH_TOKEN>"
+  oauth2_refresh_token = "1000.335dbfb8d379481a6904e6f46af675ee.86a2db587e30443a4177e0ea9e134c68"
 
   // (Optional) The access token will be looked up in the SITE24X7_OAUTH2_ACCESS_TOKEN
   // environment variable if the attribute is empty or omitted. You need not configure oauth2_access_token
@@ -89,15 +89,58 @@ resource "site24x7_website_monitor" "website_monitor_example" {
   # tag_ids = [site24x7_tag.tag_us.id]
 }
 
-// DNS Server API doc: https://www.site24x7.com/help/api/#dns-server
-resource "site24x7_dns_server_monitor" "dns_monitor_basic" {
-  // (Required) Name for the monitor.
-  display_name              = "Nowatt basic DNS monitor - Terraform"
 
-  // (Required) DNS Name Server to be monitored
-  dns_host                  = "185.43.51.84"
-
-  // (Required) Domain name to be resolved.
-  domain_name               = "www.nowatt.com"
+// DomainExpiry Server API doc: https://www.site24x7.com/help/api/#domain-expiry
+resource "site24x7_domain_expiry_monitor" "domain_expiry_monitor_basic" {
+  // (Required) Display name for the monitor
+  display_name = "Javatpoint"
+  host_name = "afternic.com"
+  port=443
+  timeout = 30
+  expire_days=30
+  location_profile_name = "North America"
+  ignore_registry_date = true
+  type = "DOMAINEXPIRY"
 }
+
+
+// DomainExpiry Server API doc: https://www.site24x7.com/help/api/#domain-expiry
+resource "site24x7_domain_expiry_monitor" "domain_expiry_monitor_basic1" {
+  // (Required) Display name for the monitor
+  display_name = "daily-data to Dynamic Json check"
+  host_name = "file.com"
+  port=443
+  timeout = 30
+  expire_days=30
+  location_profile_name = "North America"
+  ignore_registry_date = true
+  type = "DOMAINEXPIRY"
+}
+
+// DomainExpiry Server API doc: https://www.site24x7.com/help/api/#domain-expiry
+resource "site24x7_domain_expiry_monitor" "domain_expiry_monitor_basic2" {
+  // (Required) Display name for the monitor
+  display_name = "daily-data to Dynamic Json check"
+  host_name = "file.com"
+  port=443
+  timeout = 30
+  expire_days=30
+  location_profile_name = "North America"
+  ignore_registry_date = true
+  type = "DOMAINEXPIRY"
+}
+
+// DomainExpiry Server API doc: https://www.site24x7.com/help/api/#domain-expiry
+resource "site24x7_domain_expiry_monitor" "domain_expiry_monitor_basic3" {
+  // (Required) Display name for the monitor
+  display_name = "daily-data Dynamic Json check"
+  host_name = "file.com"
+  port=443
+  timeout = 30
+  expire_days=30
+  location_profile_name = "North America"
+  ignore_registry_date = true
+  type = "DOMAINEXPIRY"
+}
+
 

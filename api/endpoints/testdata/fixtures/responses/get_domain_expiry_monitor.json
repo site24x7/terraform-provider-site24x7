@@ -1,0 +1,28 @@
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "monitor_id": "123",
+        "display_name": "foo",
+        "type": "DOMAINEXPIRY",
+        "host_name": "www.example.com",
+        "port" : 43,
+        "timeout": 30,
+        "expire_days": 30,
+        "location_profile_id": "456",
+        "notification_profile_id": "789",
+        "on_call_schedule_id":"234",
+        "ignore_registry_date":false,
+        "monitor_groups": [
+            "234",
+            "567"
+        ],
+        "user_group_ids": [
+            "123",
+            "456"
+        ],
+    "tag_ids": [
+            "123"
+        ]
+    }
+}

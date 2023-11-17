@@ -469,6 +469,63 @@ func (amazonMonitor *AmazonMonitor) String() string {
 	return ToString(amazonMonitor)
 }
 
+// Denotes the Domain Expiry monitor resource in Site24x7.
+type DomainExpiryMonitor struct {
+	_                     struct{}    `type:"structure"` // Enforces key based initialization.
+	MonitorID             string      `json:"monitor_id,omitempty"`
+	DisplayName           string      `json:"display_name"`
+	Type                  string      `json:"type"`
+	HostName              string      `json:"host_name"`
+	Port                  interface{} `json:"port"`
+	Timeout               int         `json:"timeout"`
+	ExpireDays            int         `json:"expire_days"`
+	LocationProfileID     string      `json:"location_profile_id"`
+	NotificationProfileID string      `json:"notification_profile_id"`
+	UserGroupIDs          []string    `json:"user_group_ids,omitempty"`
+	OnCallScheduleID      string      `json:"on_call_schedule_id,omitempty"`
+	IgnoreRegistryDate    bool        `json:"ignore_registry_date,omitempty"`
+	MonitorGroups         []string    `json:"monitor_groups,omitempty"`
+	ActionIDs             []ActionRef `json:"action_ids,omitempty"`
+	ThirdPartyServiceIDs  []string    `json:"third_party_services,omitempty"`
+	TagIDs                []string    `json:"tag_ids,omitempty"`
+}
+
+func (domainExpiryMonitor *DomainExpiryMonitor) SetLocationProfileID(locationProfileID string) {
+	domainExpiryMonitor.LocationProfileID = locationProfileID
+}
+
+func (domainExpiryMonitor *DomainExpiryMonitor) GetLocationProfileID() string {
+	return domainExpiryMonitor.LocationProfileID
+}
+
+func (domainExpiryMonitor *DomainExpiryMonitor) SetNotificationProfileID(notificationProfileID string) {
+	domainExpiryMonitor.NotificationProfileID = notificationProfileID
+}
+
+func (domainExpiryMonitor *DomainExpiryMonitor) GetNotificationProfileID() string {
+	return domainExpiryMonitor.NotificationProfileID
+}
+
+func (domainExpiryMonitor *DomainExpiryMonitor) SetUserGroupIDs(userGroupIDs []string) {
+	domainExpiryMonitor.UserGroupIDs = userGroupIDs
+}
+
+func (domainExpiryMonitor *DomainExpiryMonitor) GetUserGroupIDs() []string {
+	return domainExpiryMonitor.UserGroupIDs
+}
+
+func (domainExpiryMonitor *DomainExpiryMonitor) SetTagIDs(tagIDs []string) {
+	domainExpiryMonitor.TagIDs = tagIDs
+}
+
+func (domainExpiryMonitor *DomainExpiryMonitor) GetTagIDs() []string {
+	return domainExpiryMonitor.TagIDs
+}
+
+func (domainExpiryMonitor *DomainExpiryMonitor) String() string {
+	return ToString(domainExpiryMonitor)
+}
+
 // Denotes the server monitor resource in Site24x7.
 type ServerMonitor struct {
 	_                     struct{} `type:"structure"` // Enforces key based initialization.
