@@ -102,6 +102,7 @@
     },
     "site24x7_domain_expiry_monitor": {
         "display_name": "str",
+        "type":"str",
         "host_name" :"str",
         "domain_name": "str",
         "port":"int",

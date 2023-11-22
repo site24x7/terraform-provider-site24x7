@@ -481,6 +481,7 @@ type DomainExpiryMonitor struct {
 	Timeout               int         `json:"timeout"`
 	UseIPV6               bool        `json:"use_ipv6"`
 	ExpireDays            int         `json:"expire_days"`
+	PerformAutomation     bool        `json:"perform_automation"`
 	LocationProfileID     string      `json:"location_profile_id"`
 	NotificationProfileID string      `json:"notification_profile_id"`
 	UserGroupIDs          []string    `json:"user_group_ids,omitempty"`

@@ -96,7 +96,7 @@ resource "site24x7_domain_expiry_monitor" "domain_expiry_monitor_basic" {
  	  severity= 0
  	  value= "test(.*)\\d"
  	}
-
+  perform_automation=true
   location_profile_name = "North America"
   ignore_registry_date = false
   type = "DOMAINEXPIRY"

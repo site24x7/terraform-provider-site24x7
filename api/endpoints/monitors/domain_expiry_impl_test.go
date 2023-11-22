@@ -13,10 +13,10 @@ import (
 func TestDomainExpiryMonitors(t *testing.T) {
 	validation.RunTests(t, []*validation.EndpointTest{
 		{
-			Name:         "create rest api monitor",
+			Name:         "create domain-expiry-monitor",
 			ExpectedVerb: "POST",
 			ExpectedPath: "/monitors",
-			ExpectedBody: validation.Fixture(t, "requests/create_rest_api_monitor.json"),
+			ExpectedBody: validation.Fixture(t, "requests/create_domain_expiry_monitor.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
@@ -35,11 +35,11 @@ func TestDomainExpiryMonitors(t *testing.T) {
 			},
 		},
 		{
-			Name:         "get rest api monitor",
+			Name:         "get domain expiry monitor",
 			ExpectedVerb: "GET",
 			ExpectedPath: "/monitors/897654345678",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "responses/get_rest_api_monitor.json"),
+			ResponseBody: validation.Fixture(t, "responses/get_domain_expiry_monitor.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				domainExpiryMonitor, err := NewDomainExpiryMonitors(c).Get("897654345678")
 				require.NoError(t, err)
@@ -47,7 +47,7 @@ func TestDomainExpiryMonitors(t *testing.T) {
 				expected := &api.DomainExpiryMonitor{
 					MonitorID:             "897654345678",
 					DisplayName:           "foo",
-					Type:                  string(api.RESTAPI),
+					Type:                  string(api.DOMAINEXPIRY),
 					LocationProfileID:     "456",
 					NotificationProfileID: "789",
 					MonitorGroups:         []string{"234", "567"},
@@ -58,11 +58,11 @@ func TestDomainExpiryMonitors(t *testing.T) {
 			},
 		},
 		{
-			Name:         "list rest api monitors",
+			Name:         "list domain expiry monitors",
 			ExpectedVerb: "GET",
 			ExpectedPath: "/monitors",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "responses/list_rest_api_monitors.json"),
+			ResponseBody: validation.Fixture(t, "responses/list_domain_expiry_monitors.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				domainExpiryMonitor, err := NewDomainExpiryMonitors(c).List()
 				require.NoError(t, err)
@@ -81,7 +81,7 @@ func TestDomainExpiryMonitors(t *testing.T) {
 					{
 						MonitorID:             "933654345678",
 						DisplayName:           "foo",
-						Type:                  string(api.RESTAPI),
+						Type:                  string(api.DOMAINEXPIRY),
 						Timeout:               10,
 						LocationProfileID:     "456",
 						NotificationProfileID: "789",
@@ -94,17 +94,17 @@ func TestDomainExpiryMonitors(t *testing.T) {
 			},
 		},
 		{
-			Name:         "update rest api monitor",
+			Name:         "update domain expiry monitor",
 			ExpectedVerb: "PUT",
 			ExpectedPath: "/monitors/123",
-			ExpectedBody: validation.Fixture(t, "requests/update_rest_api_monitor.json"),
+			ExpectedBody: validation.Fixture(t, "requests/update_domain_expiry_monitor.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
 				domainExpiryMonitor := &api.DomainExpiryMonitor{
 					MonitorID:             "123",
 					DisplayName:           "foo",
-					Type:                  string(api.RESTAPI),
+					Type:                  string(api.DOMAINEXPIRY),
 					Timeout:               10,
 					LocationProfileID:     "456",
 					NotificationProfileID: "789",
@@ -118,7 +118,7 @@ func TestDomainExpiryMonitors(t *testing.T) {
 			},
 		},
 		{
-			Name:         "delete rest api monitor",
+			Name:         "delete domain expiry monitor",
 			ExpectedVerb: "DELETE",
 			ExpectedPath: "/monitors/123",
 			StatusCode:   200,

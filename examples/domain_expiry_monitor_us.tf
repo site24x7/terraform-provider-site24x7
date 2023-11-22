@@ -48,7 +48,7 @@ provider "site24x7" {
   
   }
 
-// Site24x7 SSL Certificate Monitor API doc - https://www.site24x7.com/help/api/#domain-expiry
+// Site24x7 Domain Expiry monitor API doc - https://www.site24x7.com/help/api/#domain-expiry
 resource "site24x7_ssl_monitor" "doamin_expiry_monitor_basic" {
   // (Required) Display name for the monitor
   display_name = "Example domain expiry Monitor"
@@ -56,22 +56,12 @@ resource "site24x7_ssl_monitor" "doamin_expiry_monitor_basic" {
   // (Required) host name of the monitor
   host_name = "www.example.com"
 
-    //Domain name for the monitor
-    domain_name = "whois.iana.org"
-  // (Optional) Name of the Location Profile that has to be associated with the monitor. 
-  // Either specify location_profile_id or location_profile_name.
-  // If location_profile_id and location_profile_name are omitted,
-  // the first profile returned by the /api/location_profiles endpoint
-  // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
-  // used.
-  location_profile_name = "North America"
-
 }
 
-// Site24x7 SSL Certificate Monitor API doc - https://www.site24x7.com/help/api/#ssl-certificate
+// Site24x7 Domain Expiry monitor API doc - https://www.site24x7.com/help/api/#domain-expiry
 resource "site24x7_domain_expiry_monitor" "domain_expiry_monitor_us" {
   // (Required) Display name for the monitor
-  display_name = "Example SSL Monitor"
+  display_name = "Example domainexpiry Monitor"
 
   // (Required) host name of the monitor
   host_name = "www.example.com"
@@ -94,22 +84,16 @@ resource "site24x7_domain_expiry_monitor" "domain_expiry_monitor_us" {
   // used.
   location_profile_name = "North America"
 
-  // (Optional) Notification profile to be associated with the monitor. If
-  // omitted, the first profile returned by the /api/notification_profiles
-  // endpoint (https://www.site24x7.com/help/api/#list-notification-profiles)
-  // will be used.
-  notification_profile_id = "123"
-
 // (Optional) Check for the keyword in the website response.
   matching_keyword = {
  	  severity= 2
- 	  value= "aaa"
+ 	  value= "sample"
  	}
   
   // (Optional) Check for non existence of keyword in the website response.
   unmatching_keyword = {
  	  severity= 2
- 	  value= "bbb"
+ 	  value= "smile"
  	}
   
   // (Optional) Match the regular expression in the website response.
@@ -117,8 +101,17 @@ resource "site24x7_domain_expiry_monitor" "domain_expiry_monitor_us" {
  	  severity= 2
  	  value= ".*aaa.*"
  	}
+  // (Optional) Map of status to actions that should be performed on monitor
+  // status changes. See
+  // https://www.site24x7.com/help/api/#action-rule-constants for all available
+  // status values.
+  actions = {1=465545643755}
 
-actions = {1=465545643755}
+  // (Optional) Notification profile to be associated with the monitor. If
+  // omitted, the first profile returned by the /api/notification_profiles
+  // endpoint (https://www.site24x7.com/help/api/#list-notification-profiles)
+  // will be used.
+  notification_profile_id = "123"
 
   // (Optional) Name of the notification profile that has to be associated with the monitor.
   // Profile name matching works for both exact and partial match.
@@ -134,7 +127,6 @@ actions = {1=465545643755}
     "123",
     "456"
   ]
-
 
   // (Optional) List if user group IDs to be notified on down. 
   // Either specify user_group_ids or user_group_names. If omitted, the

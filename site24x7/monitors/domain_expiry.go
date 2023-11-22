@@ -58,6 +58,11 @@ var DomainExpiryMonitorSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Description: "Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure.",
 	},
+	"perform_automation": {
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Description: "To perform automation or not",
+	},
 	"location_profile_id": {
 		Type:        schema.TypeString,
 		Optional:    true,
@@ -360,6 +365,7 @@ func resourceDataToDomainExpiryMonitor(d *schema.ResourceData, client site24x7.C
 		UseIPV6:               d.Get("use_ipv6").(bool),
 		LocationProfileID:     d.Get("location_profile_id").(string),
 		NotificationProfileID: d.Get("notification_profile_id").(string),
+		PerformAutomation:     d.Get("perform_automation").(bool),
 		OnCallScheduleID:      d.Get("on_call_schedule_id").(string),
 		MatchCase:             d.Get("match_case").(bool),
 		IgnoreRegistryDate:    d.Get("ignore_registry_date").(bool),
@@ -416,6 +422,7 @@ func updateDomainExpiryMonitorResourceData(d *schema.ResourceData, monitor *api.
 	d.Set("expire_days", monitor.ExpireDays)
 	d.Set("use_ipv6", monitor.UseIPV6)
 	d.Set("location_profile_id", monitor.LocationProfileID)
+	d.Set("perform_automation", monitor.PerformAutomation)
 	if monitor.MatchingKeyword != nil {
 		matchingKeywordMap := make(map[string]interface{})
 		matchingKeywordMap["severity"] = int(monitor.MatchingKeyword["severity"].(float64))

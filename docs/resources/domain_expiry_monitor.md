@@ -83,9 +83,20 @@ resource "site24x7_domain_expiry_monitor"
 
 ### Required
 * `display_name` (String) Display Name for the monitor.
-
+* `type` DOMAINEXPIRY
 ### Optional
 * `id` (String) The ID of this resource.
+* `host_name`(String)Registered domain name.
+* `domain_name`(String)Who is server.
+* `port`(int)  Whois Server Port
+* `timeout`(int) Timeout for connecting to the host.
+* `use_ipv6`(bool) Prefer IPV6
+* `expire_days`(int) Day threshold for domain expiry notification.
+* `ignore_registry_date`(bool)Ignores the registry expiry date and prefer registrar expiry date when notifying for domain expiry.
+* `matching_keyword` (Map of String) Check for the keyword in the website response.
+* `unmatching_keyword` (Map of String) Check for non existence of keyword in the website response.
+* `match_case` (Boolean) Perform case sensitive keyword search or not.
+* `match_regex` (Map of String) Match the regular expression in the website response.
 * `notification_profile_id` (String) Notification profile to be associated with the monitor. Either specify notification_profile_id or notification_profile_name. If notification_profile_id and notification_profile_name are omitted, the first profile returned by the /api/notification_profiles endpoint will be used.
 * `notification_profile_name` (String) Name of the notification profile to be associated with the monitor. Profile name matching works for both exact and partial match.
 * `monitor_groups` (List of String) List of monitor groups to which the monitor has to be associated.
