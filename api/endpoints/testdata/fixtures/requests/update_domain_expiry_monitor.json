@@ -3,6 +3,7 @@
     "display_name": "foo",
     "type": "DOMAINEXPIRY",
     "host_name": "www.example.com",
+    "domain_name":"whois.iana.org",
     "port" : 43,
     "timeout": 30,
     "expire_days": 30,

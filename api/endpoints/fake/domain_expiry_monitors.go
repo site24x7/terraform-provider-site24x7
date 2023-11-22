@@ -21,6 +21,7 @@ func (e *DomainExpiryMonitors) Get(monitorID string) (*api.DomainExpiryMonitor, 
 }
 
 func (e *DomainExpiryMonitors) Create(monitor *api.DomainExpiryMonitor) (*api.DomainExpiryMonitor, error) {
+
 	args := e.Called(monitor)
 	if obj, ok := args.Get(0).(*api.DomainExpiryMonitor); ok {
 		return obj, args.Error(1)

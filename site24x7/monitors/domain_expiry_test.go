@@ -269,7 +269,7 @@ func TestDomainExpiryMonitorExists(t *testing.T) {
 func domainExpiryMonitorTestResourceData(t *testing.T) *schema.ResourceData {
 	return schema.TestResourceDataRaw(t, DomainExpiryMonitorSchema, map[string]interface{}{
 		"display_name":            "foo",
-		"type":                    "RESTAPI",
+		"type":                    "DOMAINEXPIRY",
 		"host_name":               "www.example.com",
 		"port":                    43,
 		"timeout":                 30,

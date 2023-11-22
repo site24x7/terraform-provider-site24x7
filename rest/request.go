@@ -144,7 +144,7 @@ func (r *Request) buildRequest() (*http.Request, error) {
 }
 
 func (r *Request) doRequest(req *http.Request) Response {
-	log.Debugf("<== %s %s %s %s", req.Method, req.URL, req.Header.Get("Accept"), string(r.body))
+	log.Printf("<== %s %s %s %s", req.Method, req.URL, req.Header.Get("Accept"), string(r.body))
 
 	resp, err := r.client.Do(req)
 	if err != nil {

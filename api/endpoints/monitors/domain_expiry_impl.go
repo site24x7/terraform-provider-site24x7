@@ -1,6 +1,8 @@
 package monitors
 
 import (
+	"log"
+
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	"github.com/site24x7/terraform-provider-site24x7/rest"
 )
@@ -27,6 +29,7 @@ func NewDomainExpiryMonitors(client rest.Client) DomainExpiryMonitors {
 
 func (c *domainExpiryMonitors) Get(monitorID string) (*api.DomainExpiryMonitor, error) {
 	monitor := &api.DomainExpiryMonitor{}
+
 	err := c.client.
 		Get().
 		Resource("monitors").
@@ -52,6 +55,7 @@ func (c *domainExpiryMonitors) Create(monitor *api.DomainExpiryMonitor) (*api.Do
 
 func (c *domainExpiryMonitors) Update(monitor *api.DomainExpiryMonitor) (*api.DomainExpiryMonitor, error) {
 	updatedMonitor := &api.DomainExpiryMonitor{}
+	log.Println("ignore_registry_date inside create : ", updatedMonitor)
 	err := c.client.
 		Put().
 		Resource("monitors").

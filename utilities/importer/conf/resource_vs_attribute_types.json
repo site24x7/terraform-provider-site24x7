@@ -62,6 +62,7 @@
         "actions": "map",
         "steps": "list"
     },
+    
     "site24x7_server_monitor": {
         "display_name": "str",
         "log_needed": "bool",
@@ -96,6 +97,33 @@
         "third_party_service_ids": "list",
         "threshold_profile_id": "str",
         "timeout": "int",
+        "user_group_ids": "list",
+        "user_group_names": "str"
+    },
+    "site24x7_domain_expiry_monitor": {
+        "display_name": "str",
+        "host_name" :"str",
+        "domain_name": "str",
+        "port":"int",
+        "timeout":"int",
+        "use_ipv6":"bool",
+        "expire_days": "int",
+        "ignore_registry_date": "bool",
+        "location_profile_id": "str",
+        "location_profile_name": "str",
+        "monitor_groups": "list",
+        "notification_profile_id": "str",
+        "notification_profile_name": "str",
+        "matching_keyword":"str",
+        "unmatching_keyword":"str",
+        "match_case":"bool",
+        "match_regex":"str",
+        "tag_ids": "list",
+        "tag_names": "str",
+        "perform_automation":"bool",
+        "actions":"map",
+        "third_party_service_ids": "list",
+        "on_call_schedule_id":"str",
         "user_group_ids": "list",
         "user_group_names": "str"
     },

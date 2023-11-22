@@ -476,18 +476,25 @@ type DomainExpiryMonitor struct {
 	DisplayName           string      `json:"display_name"`
 	Type                  string      `json:"type"`
 	HostName              string      `json:"host_name"`
+	WhoIsServer           string      `json:"domain_name"`
 	Port                  interface{} `json:"port"`
 	Timeout               int         `json:"timeout"`
+	UseIPV6               bool        `json:"use_ipv6"`
 	ExpireDays            int         `json:"expire_days"`
 	LocationProfileID     string      `json:"location_profile_id"`
 	NotificationProfileID string      `json:"notification_profile_id"`
 	UserGroupIDs          []string    `json:"user_group_ids,omitempty"`
 	OnCallScheduleID      string      `json:"on_call_schedule_id,omitempty"`
-	IgnoreRegistryDate    bool        `json:"ignore_registry_date,omitempty"`
+	IgnoreRegistryDate    bool        `json:"ignore_registry_date"`
 	MonitorGroups         []string    `json:"monitor_groups,omitempty"`
 	ActionIDs             []ActionRef `json:"action_ids,omitempty"`
 	ThirdPartyServiceIDs  []string    `json:"third_party_services,omitempty"`
 	TagIDs                []string    `json:"tag_ids,omitempty"`
+	// Content Check
+	MatchingKeyword   map[string]interface{} `json:"matching_keyword,omitempty"`
+	UnmatchingKeyword map[string]interface{} `json:"unmatching_keyword,omitempty"`
+	MatchCase         bool                   `json:"match_case"`
+	MatchRegex        map[string]interface{} `json:"match_regex,omitempty"`
 }
 
 func (domainExpiryMonitor *DomainExpiryMonitor) SetLocationProfileID(locationProfileID string) {

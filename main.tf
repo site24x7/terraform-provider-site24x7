@@ -53,94 +53,56 @@ provider "site24x7" {
   max_retries = 4
 }
 
-// Website Monitor API doc: https://www.site24x7.com/help/api/#website
-resource "site24x7_website_monitor" "website_monitor_example" {
-  // (Required) Display name for the monitor
-  display_name = "Website Monitor - Terraform"
 
-  // (Required) Website address to monitor.
-  website = "https://www.example.com"
-
-  // (Optional) Interval at which your website has to be monitored.
-  // See https://www.site24x7.com/help/api/#check-interval for all supported values.
-  check_frequency = "1"
-
-  // (Optional) Name of the Location Profile that has to be associated with the monitor.
-  // Either specify location_profile_id or location_profile_name.
-  // If location_profile_id and location_profile_name are omitted,
-  // the first profile returned by the /api/location_profiles endpoint
-  // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
-  // used.
-  location_profile_name = "North America"
-
-  // (Optional) HTTP Method to be used for accessing the website.Default value is 'G'. 'G' denotes GET, 'P' denotes POST, 'U' denotes PUT and 'D' denotes DELETE. HEAD is not supported.
-  http_method = "P"
-
-  // (Optional) Provide content type for request params when http_method is 'P'. 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML and 'F' denotes FORM
-  request_content_type = "J"
-
-  // (Optional) Provide the content to be passed in the request body while accessing the website.
-  request_body = "{\"user_name\":\"joe\"}"
-
-  // (Optional) Map of custom HTTP headers to send.
-  request_headers = {
-    "Accept" = "application/json"
-  }
-  # tag_ids = [site24x7_tag.tag_us.id]
-}
-
-
-// DomainExpiry Server API doc: https://www.site24x7.com/help/api/#domain-expiry
-resource "site24x7_domain_expiry_monitor" "domain_expiry_monitor_basic" {
-  // (Required) Display name for the monitor
-  display_name = "Javatpoint"
-  host_name = "afternic.com"
-  port=443
-  timeout = 30
-  expire_days=30
-  location_profile_name = "North America"
-  ignore_registry_date = true
-  type = "DOMAINEXPIRY"
-}
-
-
-// DomainExpiry Server API doc: https://www.site24x7.com/help/api/#domain-expiry
-resource "site24x7_domain_expiry_monitor" "domain_expiry_monitor_basic1" {
-  // (Required) Display name for the monitor
-  display_name = "daily-data to Dynamic Json check"
-  host_name = "file.com"
-  port=443
-  timeout = 30
-  expire_days=30
-  location_profile_name = "North America"
-  ignore_registry_date = true
-  type = "DOMAINEXPIRY"
-}
-
-// DomainExpiry Server API doc: https://www.site24x7.com/help/api/#domain-expiry
-resource "site24x7_domain_expiry_monitor" "domain_expiry_monitor_basic2" {
-  // (Required) Display name for the monitor
-  display_name = "daily-data to Dynamic Json check"
-  host_name = "file.com"
-  port=443
-  timeout = 30
-  expire_days=30
-  location_profile_name = "North America"
-  ignore_registry_date = true
-  type = "DOMAINEXPIRY"
-}
 
 // DomainExpiry Server API doc: https://www.site24x7.com/help/api/#domain-expiry
 resource "site24x7_domain_expiry_monitor" "domain_expiry_monitor_basic3" {
   // (Required) Display name for the monitor
-  display_name = "daily-data Dynamic Json check"
+  display_name = "ignore registry 1"
   host_name = "file.com"
+  domain_name="whios.iana.org"
   port=443
-  timeout = 30
-  expire_days=30
+  timeout = 50
+  expire_days=40
+  use_ipv6=true
+  //matching_keyword={2="aaa"}
   location_profile_name = "North America"
-  ignore_registry_date = true
+  ignore_registry_date = false
   type = "DOMAINEXPIRY"
+  actions={0=456418000001238121}
+   on_call_schedule_id = "456418000001258016"
+  
+}
+// DomainExpiry Server API doc: https://www.site24x7.com/help/api/#domain-expiry
+resource "site24x7_domain_expiry_monitor" "domain_expiry_monitor_basic" {
+  // (Required) Display name for the monitor
+  display_name = "ignore registry 2"
+  host_name = "file.com"
+  domain_name="whios.iana.org"
+  port=443
+  timeout = 50
+  expire_days=40
+  use_ipv6=false
+  match_case=false 
+  matching_keyword = {
+ 	  severity= 2
+ 	  value= "aaa"
+ 	}
+  unmatching_keyword = {
+ 	  severity= 0
+ 	  value= "bbb"
+ 	}
+  match_regex = {
+ 	  severity= 0
+ 	  value= "test(.*)\\d"
+ 	}
+
+  location_profile_name = "North America"
+  ignore_registry_date = false
+  type = "DOMAINEXPIRY"
+  actions={1=456418000001238121}
+  notification_profile_name="System Generated"
+  
 }
 
 

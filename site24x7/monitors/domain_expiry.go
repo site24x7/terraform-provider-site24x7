@@ -1,10 +1,13 @@
 package monitors
 
 import (
+	"fmt"
+	"log"
 	"sort"
 	"strconv"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
 	"github.com/site24x7/terraform-provider-site24x7/site24x7"
@@ -26,6 +29,12 @@ var DomainExpiryMonitorSchema = map[string]*schema.Schema{
 		Required:    true,
 		Description: "Registered domain name.",
 	},
+	"domain_name": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Default:     "whois.iana.org",
+		Description: "Specify the name of the Whois server from where you wish to query the domain data.",
+	},
 	"port": {
 		Type:        schema.TypeInt,
 		Optional:    true,
@@ -40,9 +49,14 @@ var DomainExpiryMonitorSchema = map[string]*schema.Schema{
 	},
 	"expire_days": {
 		Type:        schema.TypeInt,
-		Default:     30,
 		Optional:    true,
+		Default:     30,
 		Description: "Day threshold for domain expiry notification.Range 1 - 999",
+	},
+	"use_ipv6": {
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Description: "Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure.",
 	},
 	"location_profile_id": {
 		Type:        schema.TypeString,
@@ -94,6 +108,65 @@ var DomainExpiryMonitorSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Description: "Ignores the registry expiry date and prefer registrar expiry date when notifying for domain expiry",
 	},
+	"matching_keyword": {
+		Type:     schema.TypeMap,
+		Optional: true,
+		Elem: &schema.Resource{
+			Schema: map[string]*schema.Schema{
+				"severity": {
+					Type:         schema.TypeInt,
+					Required:     true,
+					ValidateFunc: validation.IntInSlice([]int{0, 2}), // Trouble or Down
+				},
+				"value": {
+					Type:     schema.TypeString,
+					Required: true,
+				},
+			},
+		},
+		Description: "Check for the keyword in the website response.",
+	},
+	"unmatching_keyword": {
+		Type:     schema.TypeMap,
+		Optional: true,
+		Elem: &schema.Resource{
+			Schema: map[string]*schema.Schema{
+				"severity": {
+					Type:         schema.TypeInt,
+					Required:     true,
+					ValidateFunc: validation.IntInSlice([]int{0, 2}), // Trouble or Down
+				},
+				"value": {
+					Type:     schema.TypeString,
+					Required: true,
+				},
+			},
+		},
+		Description: "Check for non existence of keyword in the website response.",
+	},
+	"match_case": {
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Description: "Perform case sensitive keyword search or not.",
+	},
+	"match_regex": {
+		Type:     schema.TypeMap,
+		Optional: true,
+		Elem: &schema.Resource{
+			Schema: map[string]*schema.Schema{
+				"severity": {
+					Type:         schema.TypeInt,
+					Required:     true,
+					ValidateFunc: validation.IntInSlice([]int{0, 2}), // Trouble or Down
+				},
+				"value": {
+					Type:     schema.TypeString,
+					Required: true,
+				},
+			},
+		},
+		Description: "Match the regular expression in the website response.",
+	},
 	"monitor_groups": {
 		Type: schema.TypeList,
 		Elem: &schema.Schema{
@@ -106,7 +179,7 @@ var DomainExpiryMonitorSchema = map[string]*schema.Schema{
 		Type:        schema.TypeMap,
 		Optional:    true,
 		Elem:        schema.TypeString,
-		Description: "Action to be performed on monitor status changes",
+		Description: "Action to be performed on monitor IT Automation templates.",
 	},
 	"third_party_service_ids": {
 		Type: schema.TypeList,
@@ -185,7 +258,7 @@ func domainExpiryMonitorRead(d *schema.ResourceData, meta interface{}) error {
 
 func domainExpiryMonitorUpdate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(site24x7.Client)
-
+	log.Println("ignore_registry_date inside create : ", d.Get("ignore_registry_date"))
 	domainExpiryMonitor, err := resourceDataToDomainExpiryMonitor(d, client)
 
 	if err != nil {
@@ -198,7 +271,6 @@ func domainExpiryMonitorUpdate(d *schema.ResourceData, meta interface{}) error {
 	}
 
 	d.SetId(domainExpiryMonitor.MonitorID)
-
 	// return domainExpiryMonitorRead(d, meta)
 	return nil
 }
@@ -258,25 +330,21 @@ func resourceDataToDomainExpiryMonitor(d *schema.ResourceData, client site24x7.C
 		}
 	}
 
-	var actionRefs []api.ActionRef
-	if actionData, ok := d.GetOk("actions"); ok {
-		actionMap := actionData.(map[string]interface{})
-		actionKeys := make([]string, 0, len(actionMap))
-		for k := range actionMap {
-			actionKeys = append(actionKeys, k)
+	actionMap := d.Get("actions").(map[string]interface{})
+	var keys = make([]string, 0, len(actionMap))
+	for k := range actionMap {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	actionRefs := make([]api.ActionRef, len(keys))
+	for i, k := range keys {
+		status, err := strconv.Atoi(k)
+		if err != nil {
+			return nil, err
 		}
-		sort.Strings(actionKeys)
-		actionRefs := make([]api.ActionRef, len(actionKeys))
-		for i, k := range actionKeys {
-			status, err := strconv.Atoi(k)
-			if err != nil {
-				return nil, err
-			}
-
-			actionRefs[i] = api.ActionRef{
-				ActionID:  actionMap[k].(string),
-				AlertType: api.Status(status),
-			}
+		actionRefs[i] = api.ActionRef{
+			ActionID:  actionMap[k].(string),
+			AlertType: api.Status(status),
 		}
 	}
 
@@ -285,12 +353,15 @@ func resourceDataToDomainExpiryMonitor(d *schema.ResourceData, client site24x7.C
 		DisplayName:           d.Get("display_name").(string),
 		Type:                  string(api.DOMAINEXPIRY),
 		HostName:              d.Get("host_name").(string),
+		WhoIsServer:           d.Get("domain_name").(string),
 		Port:                  d.Get("port"),
 		Timeout:               d.Get("timeout").(int),
 		ExpireDays:            d.Get("expire_days").(int),
+		UseIPV6:               d.Get("use_ipv6").(bool),
 		LocationProfileID:     d.Get("location_profile_id").(string),
 		NotificationProfileID: d.Get("notification_profile_id").(string),
 		OnCallScheduleID:      d.Get("on_call_schedule_id").(string),
+		MatchCase:             d.Get("match_case").(bool),
 		IgnoreRegistryDate:    d.Get("ignore_registry_date").(bool),
 		MonitorGroups:         monitorGroups,
 		UserGroupIDs:          userGroupIDs,
@@ -298,6 +369,18 @@ func resourceDataToDomainExpiryMonitor(d *schema.ResourceData, client site24x7.C
 		ThirdPartyServiceIDs:  thirdPartyServiceIDs,
 		ActionIDs:             actionRefs,
 	}
+	if matchingRegex, ok := d.GetOk("match_regex"); ok {
+		domainExpiryMonitor.MatchRegex = matchingRegex.(map[string]interface{})
+	}
+
+	if matchingKeyword, ok := d.GetOk("matching_keyword"); ok {
+		domainExpiryMonitor.MatchingKeyword = matchingKeyword.(map[string]interface{})
+	}
+
+	if unmatchingKeyword, ok := d.GetOk("unmatching_keyword"); ok {
+		domainExpiryMonitor.UnmatchingKeyword = unmatchingKeyword.(map[string]interface{})
+	}
+
 	_, locationProfileErr := site24x7.SetLocationProfile(client, d, domainExpiryMonitor)
 	if locationProfileErr != nil {
 		return nil, locationProfileErr
@@ -327,10 +410,31 @@ func updateDomainExpiryMonitorResourceData(d *schema.ResourceData, monitor *api.
 	d.Set("display_name", monitor.DisplayName)
 	d.Set("type", monitor.Type)
 	d.Set("host_name", monitor.HostName)
+	d.Set("domain_name", monitor.WhoIsServer)
 	d.Set("port", monitor.Port)
 	d.Set("timeout", monitor.Timeout)
 	d.Set("expire_days", monitor.ExpireDays)
+	d.Set("use_ipv6", monitor.UseIPV6)
 	d.Set("location_profile_id", monitor.LocationProfileID)
+	if monitor.MatchingKeyword != nil {
+		matchingKeywordMap := make(map[string]interface{})
+		matchingKeywordMap["severity"] = int(monitor.MatchingKeyword["severity"].(float64))
+		matchingKeywordMap["value"] = monitor.MatchingKeyword["value"].(string)
+		d.Set("matching_keyword", matchingKeywordMap)
+	}
+	if monitor.UnmatchingKeyword != nil {
+		unmatchingKeywordMap := make(map[string]interface{})
+		unmatchingKeywordMap["severity"] = int(monitor.UnmatchingKeyword["severity"].(float64))
+		unmatchingKeywordMap["value"] = monitor.UnmatchingKeyword["value"].(string)
+		d.Set("unmatching_keyword", unmatchingKeywordMap)
+	}
+	if monitor.MatchRegex != nil {
+		matchRegexMap := make(map[string]interface{})
+		matchRegexMap["severity"] = int(monitor.MatchRegex["severity"].(float64))
+		matchRegexMap["value"] = monitor.MatchRegex["value"].(string)
+		d.Set("match_regex", matchRegexMap)
+	}
+
 	d.Set("notification_profile_id", monitor.NotificationProfileID)
 	d.Set("on_call_schedule_id", monitor.OnCallScheduleID)
 	d.Set("ignore_registry_date", monitor.IgnoreRegistryDate)
@@ -338,4 +442,10 @@ func updateDomainExpiryMonitorResourceData(d *schema.ResourceData, monitor *api.
 	d.Set("user_group_ids", monitor.UserGroupIDs)
 	d.Set("tag_ids", monitor.TagIDs)
 	d.Set("third_party_service_ids", monitor.ThirdPartyServiceIDs)
+	actions := make(map[string]interface{})
+	for _, action := range monitor.ActionIDs {
+		actions[fmt.Sprintf("%d", action.AlertType)] = action.ActionID
+	}
+
+	d.Set("actions", actions)
 }
