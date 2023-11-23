@@ -106,3 +106,8 @@ resource "site24x7_domain_expiry_monitor" "domain_expiry_monitor_basic" {
 }
 
 
+// DomainExpiry Server API doc: https://www.site24x7.com/help/api/#domain-expiry
+resource "site24x7_domain_expiry_monitor" "domain_expiry_monitor_basic" {
+  // (Required) Display name for the monitor
+  display_name = "ignore registry 2"
+  host_name = "file.com"

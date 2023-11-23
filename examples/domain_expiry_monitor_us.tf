@@ -49,7 +49,7 @@ provider "site24x7" {
   }
 
 // Site24x7 Domain Expiry monitor API doc - https://www.site24x7.com/help/api/#domain-expiry
-resource "site24x7_ssl_monitor" "doamin_expiry_monitor_basic" {
+resource "site24x7_domain_expiry_monitor" "doamin_expiry_monitor_basic" {
   // (Required) Display name for the monitor
   display_name = "Example domain expiry Monitor"
 
@@ -69,6 +69,30 @@ resource "site24x7_domain_expiry_monitor" "domain_expiry_monitor_us" {
     //Domain name for the monitor
     domain_name = "www.example.com"
 
+    //(Optional)Whois Server Port.Default value is 43
+    port=443
+
+    //Should we prefer to use IPV6 or not
+    use_ipv6=true
+
+    //(Optional)Timeout for connecting to the host.Range 1 - 45.
+    timeout=10 
+
+    //(Optional) Day threshold for domain expiry notification.Range 1 - 999.
+    expire_days=30
+
+    //(Optional)Toggle button to perform automation or not
+    perform_automation=true
+
+    //(Optional)if user_group_ids is not choosen
+    //On-Call Schedule of your choice.
+    //Create new On-Call Schedule or find your preferred On-Call Schedule ID.
+    on_call_schedule_id="456418000001258016"
+
+    //(Optional)Ignores the registry expiry date and prefer registrar expiry 
+    //date when notifying for domain expiry.
+    ignore_registry_date=true
+
   // (Optional) Location Profile to be associated with the monitor. If 
   // location_profile_id and location_profile_name are omitted,
   // the first profile returned by the /api/location_profiles endpoint
@@ -84,19 +108,19 @@ resource "site24x7_domain_expiry_monitor" "domain_expiry_monitor_us" {
   // used.
   location_profile_name = "North America"
 
-// (Optional) Check for the keyword in the website response.
+// (Optional) Check for the keyword in the response.
   matching_keyword = {
  	  severity= 2
  	  value= "sample"
  	}
   
-  // (Optional) Check for non existence of keyword in the website response.
+  // (Optional) Check for non existence of keyword in the response.
   unmatching_keyword = {
  	  severity= 2
  	  value= "smile"
  	}
   
-  // (Optional) Match the regular expression in the website response.
+  // (Optional) Match the regular expression in the response.
   match_regex = {
  	  severity= 2
  	  value= ".*aaa.*"
@@ -106,6 +130,9 @@ resource "site24x7_domain_expiry_monitor" "domain_expiry_monitor_us" {
   // https://www.site24x7.com/help/api/#action-rule-constants for all available
   // status values.
   actions = {1=465545643755}
+
+  //(Optional)Perform case sensitive keyword search or not.
+  match_case = false
 
   // (Optional) Notification profile to be associated with the monitor. If
   // omitted, the first profile returned by the /api/notification_profiles

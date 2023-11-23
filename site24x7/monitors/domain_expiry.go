@@ -31,6 +31,7 @@ var DomainExpiryMonitorSchema = map[string]*schema.Schema{
 	"domain_name": {
 		Type:        schema.TypeString,
 		Optional:    true,
+		Default:     "whios.iana.org",
 		Description: "Specify the name of the Whois server from where you wish to query the domain data.",
 	},
 	"port": {
