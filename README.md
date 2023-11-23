@@ -49,6 +49,7 @@ A terraform provider for managing the following resources in Site24x7:
 - SSL Certificate Monitor - [site24x7_ssl_monitor](examples/ssl_monitor_us.tf) ([Site24x7 SSL Certificate Monitor API doc](https://www.site24x7.com/help/api/#ssl-certificate))
 - Rest API Monitor - [site24x7_rest_api_monitor](examples/rest_api_monitor_us.tf) ([Site24x7 Rest API Monitor API doc](https://www.site24x7.com/help/api/#rest-api))
 - Rest API Transaction Monitor - [site24x7_rest_api_transaction_monitor](examples/rest_api_transaction_monitor_us.tf) ([Site24x7 Rest API Transaction Monitor API doc](https://www.site24x7.com/help/api/#rest-api-transaction))
+- Domain Expiry Monitor - [site24x7_domain_expiry_monitor](examples/domain_expiry_monitor_us.tf)([Site24x7 domain expiry monitor API doc]())
 - Server Monitor - [site24x7_server_monitor](examples/server_monitor_us.tf) ([Terraform Server Monitor doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/resources/server_monitor))
 - Heartbeat Monitor - [site24x7_heartbeat_monitor](examples/heartbeat_monitor_us.tf) ([Site24x7 Heartbeat Monitor API doc](https://www.site24x7.com/help/api/#heartbeat))
 - URL IT Automation - [site24x7_url_action](examples/it_automation_us.tf) ([Site24x7 IT Automation API doc](https://www.site24x7.com/help/api/#it-automation))
