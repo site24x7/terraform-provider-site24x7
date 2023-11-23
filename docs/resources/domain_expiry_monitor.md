@@ -12,10 +12,10 @@ Use this resource to create, update and delete a Domain-Expiry monitor in Site24
 
 ## Example Usage
 
+```hcl
 
 // Site24x7 Domain-Expiry Monitor API doc - https://www.site24x7.com/help/api/#domain-expiry
-resource "site24x7_domain_expiry_monitor" 
-"domain_expiry_monitor_example" {
+resource "site24x7_domain_expiry_monitor" "domain_expiry_monitor_example" {
 
   // (Required) Display name for the monitor
   display_name = "Domain Expiry Monitor"
@@ -137,7 +137,7 @@ resource "site24x7_domain_expiry_monitor"
   ]
 
 }
-
+```
 ## Attributes Reference
 
 ### Required
