@@ -83,10 +83,10 @@ resource "site24x7_domain_expiry_monitor"
 
 ### Required
 * `display_name` (String) Display Name for the monitor.
-* `type` DOMAINEXPIRY
+* `host_name`(String)Registered domain name.
 ### Optional
 * `id` (String) The ID of this resource.
-* `host_name`(String)Registered domain name.
+* `type` DOMAINEXPIRY
 * `domain_name`(String)Who is server.
 * `port`(int)  Whois Server Port
 * `timeout`(int) Timeout for connecting to the host.
