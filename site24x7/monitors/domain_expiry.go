@@ -2,7 +2,6 @@ package monitors
 
 import (
 	"fmt"
-	"log"
 	"sort"
 	"strconv"
 
@@ -32,7 +31,6 @@ var DomainExpiryMonitorSchema = map[string]*schema.Schema{
 	"domain_name": {
 		Type:        schema.TypeString,
 		Optional:    true,
-		Default:     "whois.iana.org",
 		Description: "Specify the name of the Whois server from where you wish to query the domain data.",
 	},
 	"port": {
@@ -263,7 +261,6 @@ func domainExpiryMonitorRead(d *schema.ResourceData, meta interface{}) error {
 
 func domainExpiryMonitorUpdate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(site24x7.Client)
-	log.Println("ignore_registry_date inside create : ", d.Get("ignore_registry_date"))
 	domainExpiryMonitor, err := resourceDataToDomainExpiryMonitor(d, client)
 
 	if err != nil {
@@ -358,7 +355,7 @@ func resourceDataToDomainExpiryMonitor(d *schema.ResourceData, client site24x7.C
 		DisplayName:           d.Get("display_name").(string),
 		Type:                  string(api.DOMAINEXPIRY),
 		HostName:              d.Get("host_name").(string),
-		WhoIsServer:           d.Get("domain_name").(string),
+		DomainName:            d.Get("domain_name").(string),
 		Port:                  d.Get("port"),
 		Timeout:               d.Get("timeout").(int),
 		ExpireDays:            d.Get("expire_days").(int),
@@ -416,7 +413,7 @@ func updateDomainExpiryMonitorResourceData(d *schema.ResourceData, monitor *api.
 	d.Set("display_name", monitor.DisplayName)
 	d.Set("type", monitor.Type)
 	d.Set("host_name", monitor.HostName)
-	d.Set("domain_name", monitor.WhoIsServer)
+	d.Set("domain_name", monitor.DomainName)
 	d.Set("port", monitor.Port)
 	d.Set("timeout", monitor.Timeout)
 	d.Set("expire_days", monitor.ExpireDays)

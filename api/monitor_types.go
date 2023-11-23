@@ -476,7 +476,7 @@ type DomainExpiryMonitor struct {
 	DisplayName           string      `json:"display_name"`
 	Type                  string      `json:"type"`
 	HostName              string      `json:"host_name"`
-	WhoIsServer           string      `json:"domain_name"`
+	DomainName            string      `json:"domain_name"`
 	Port                  interface{} `json:"port"`
 	Timeout               int         `json:"timeout"`
 	UseIPV6               bool        `json:"use_ipv6"`

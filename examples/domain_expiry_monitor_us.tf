@@ -67,7 +67,7 @@ resource "site24x7_domain_expiry_monitor" "domain_expiry_monitor_us" {
   host_name = "www.example.com"
 
     //Domain name for the monitor
-    domain_name = "whois.iana.org"
+    domain_name = "www.example.com"
 
   // (Optional) Location Profile to be associated with the monitor. If 
   // location_profile_id and location_profile_name are omitted,

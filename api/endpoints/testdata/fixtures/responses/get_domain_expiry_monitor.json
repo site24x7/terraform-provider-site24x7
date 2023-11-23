@@ -2,18 +2,18 @@
     "code": 0,
     "message": "success",
     "data": {
-        "monitor_id": "123",
-        "display_name": "foo",
-        "type": "DOMAINEXPIRY",
+        "monitor_id": "897654345678",
+        "display_name": "Domain Expiry Monitor",
         "host_name": "www.example.com",
-        "domain_name":"whois.iana.org",
-        "port" : 43,
-        "timeout": 30,
+        "domain_name" : "www.example.com",
+        "port": 443,
+        "use_ipv6": true,    
+        "timeout": 10,
         "expire_days": 30,
-        "location_profile_id": "456",
-        "notification_profile_id": "789",
         "on_call_schedule_id":"234",
         "ignore_registry_date":false,
+        "location_profile_id": "456",
+        "notification_profile_id": "789",
         "monitor_groups": [
             "234",
             "567"
@@ -24,6 +24,9 @@
         ],
     "tag_ids": [
             "123"
-        ]
+        ],
+    "perform_automation" : false,
+    "match_case" : true
+    
     }
 }

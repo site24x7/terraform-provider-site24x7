@@ -1,28 +1,16 @@
 {
-    "display_name": "foo",
-    "type": "RESTAPI",
+    "display_name": "Domain Expiry Monitor",
+    "type": "",
     "host_name": "www.example.com",
-    "domain_name":"whois.iana.org",
-    "port" : 43,
-    "timeout": 30,
+    "domain_name" : "www.example.com",
+    "port": 443,
+    "use_ipv6": true,
+    "timeout": 10,
     "expire_days": 30,
-    "unmatching_keyword": {
-        "value": "aaa",
-        "severity": 2
-   },
-   "matching_keyword": {
-     "value": "bbb",
-     "severity": 2
-   },
-   "match_regex": {
-     "severity": 0,
-     "value": "*.a.*"
-   },
-   "actions":{"0"="65654544546"},
-    "location_profile_id": "456",
-    "notification_profile_id": "789",
     "on_call_schedule_id":"234",
     "ignore_registry_date":false,
+    "location_profile_id": "456",
+    "notification_profile_id": "789",
     "monitor_groups": [
         "234",
         "567"
@@ -31,7 +19,9 @@
         "123",
         "456"
     ],
-  "tag_ids": [
+    "tag_ids": [
         "123"
-    ]
+    ],
+    "perform_automation" : true,
+    "match_case" : true
 }

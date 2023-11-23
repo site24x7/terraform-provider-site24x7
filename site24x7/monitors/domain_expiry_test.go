@@ -17,10 +17,12 @@ func TestDomainExpiryMonitorCreate(t *testing.T) {
 	c := fake.NewClient()
 
 	a := &api.DomainExpiryMonitor{
-		DisplayName:           "foo",
-		Type:                  string(api.DOMAINEXPIRY),
+		DisplayName:           "Domain Expiry Monitor",
 		HostName:              "www.example.com",
 		Timeout:               10,
+		ExpireDays:            30,
+		OnCallScheduleID:      "234",
+		IgnoreRegistryDate:    false,
 		LocationProfileID:     "456",
 		NotificationProfileID: "789",
 		MonitorGroups:         []string{"234", "567"},
@@ -91,7 +93,7 @@ func TestDomainExpiryMonitorCreate(t *testing.T) {
 
 	require.NoError(t, domainExpiryMonitorCreate(d, c))
 
-	c.FakeDomainExpiryMonitors.On("Create", a).Return(a, apierrors.NewStatusError(500, "error")).Once()
+	c.FakeDomainExpiryMonitors.On("Create	", a).Return(a, apierrors.NewStatusError(500, "error")).Once()
 
 	err := domainExpiryMonitorCreate(d, c)
 
@@ -268,21 +270,14 @@ func TestDomainExpiryMonitorExists(t *testing.T) {
 
 func domainExpiryMonitorTestResourceData(t *testing.T) *schema.ResourceData {
 	return schema.TestResourceDataRaw(t, DomainExpiryMonitorSchema, map[string]interface{}{
-		"display_name":            "foo",
-		"type":                    "DOMAINEXPIRY",
+		"display_name":            "Domain Expiry Monitor",
 		"host_name":               "www.example.com",
-		"domain_name":             "rbm_endpointurl.com",
-		"use_ipv6":                true,
-		"port":                    43,
-		"timeout":                 30,
+		"timeout":                 0,
 		"expire_days":             30,
-		"perform_automation":      true,
-		"location_profile_id":     "456",
-		"notification_profile_id": "789",
 		"on_call_schedule_id":     "234",
 		"ignore_registry_date":    false,
-		"actions":                 map[string]interface{}{"0": "435346436563"},
-		"match_case":              false,
+		"location_profile_id":     "456",
+		"notification_profile_id": "789",
 		"monitor_groups": []interface{}{
 			"234",
 			"567",
