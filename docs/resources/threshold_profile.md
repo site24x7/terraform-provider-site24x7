@@ -168,9 +168,9 @@ ed.
 * `ssl_cert_days_until_expiry_trouble_threshold` (Map of Number) Configure this attribute only when type="SSL_CERT". Triggers trouble alert before the SSL certificate expires within the configured number of days. (see [below for map schema](#nestedblock--website_content_changes))
 * `ssl_cert_days_until_expiry_critical_threshold` (Map of Number) Configure this attribute only when type="SSL_CERT". Triggers critical alert before the SSL certificate expires within the configured number of days. (see [below for map schema](#nestedblock--website_content_changes))
 * `ssl_cert_fingerprint_modified` (Boolean) Configure this attribute only when type="SSL_CERT". Triggers alert when the ssl certificate is modified.
-* `trouble_if_not_pinged_more_than` (Number) Generate Trouble Alert if not pinged for more than x mins.
-* `down_if_not_pinged_more_than` (Number) Generate Down Alert if not pinged for more than x mins.
-* `trouble_if_pinged_within` (Number) Generate Trouble Alert if pinged within x mins.
+* `trouble_if_not_pinged_more_than` (Number) Configure this attribute only when type="HEARTBEAT". Generate Trouble Alert if not pinged for more than x mins.
+* `down_if_not_pinged_more_than` (Number) Configure this attribute only when type="HEARTBEAT". Generate Down Alert if not pinged for more than x mins.
+* `trouble_if_pinged_within` (Number) Configure this attribute only when type="HEARTBEAT". Generate Trouble Alert if pinged within x mins.
 
 
 <a id="nestedblock--website_content_changes"></a>
