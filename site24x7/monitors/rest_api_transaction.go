@@ -7,7 +7,6 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
-	log "github.com/sirupsen/logrus"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
 	"github.com/site24x7/terraform-provider-site24x7/site24x7"
@@ -193,7 +192,7 @@ var RestApiTransactionMonitorSchema = map[string]*schema.Schema{
 	},
 	"tag_ids": {
 		Type: schema.TypeSet,
-		Elem: &schema.Schema{	
+		Elem: &schema.Schema{
 			Type: schema.TypeString,
 		},
 		Optional:    true,
@@ -220,11 +219,12 @@ var RestApiTransactionMonitorSchema = map[string]*schema.Schema{
 		Type:        schema.TypeMap,
 		Optional:    true,
 		Elem:        schema.TypeString,
-		Description: "Action to be performed on monitor status changes.",
+		Description: "Action to be performed on monitor IT Automation templates.",
 	},
 	"steps": {
-		Type:     schema.TypeSet,
-		Required: true,
+		Type:     schema.TypeList,
+		Optional: true,
+		Computed: true,
 		Elem: &schema.Resource{
 			Schema: map[string]*schema.Schema{
 				"display_name": {
@@ -233,8 +233,9 @@ var RestApiTransactionMonitorSchema = map[string]*schema.Schema{
 					Description: "Display Name for the monitor.",
 				},
 				"step_details": {
-					Type:     schema.TypeSet,
-					Required: true,
+					Type:     schema.TypeList,
+					Computed: true,
+					Optional: true,
 					Elem: &schema.Resource{
 						Schema: map[string]*schema.Schema{
 							"step_url": {
@@ -243,9 +244,9 @@ var RestApiTransactionMonitorSchema = map[string]*schema.Schema{
 								Description: "Rest API Url to monitors",
 							},
 							"timeout": {
-								Type:        schema.TypeInt,
+								Type:        schema.TypeString,
 								Optional:    true,
-								Default:     10,
+								Default:     "10",
 								Description: "Timeout for connecting to website. Default value is 10. Range 1 - 45.",
 							},
 							// Content Check
@@ -363,7 +364,7 @@ var RestApiTransactionMonitorSchema = map[string]*schema.Schema{
 								Type:        schema.TypeString,
 								Optional:    true,
 								Default:     "G",
-								Description: "HTTP Method to be used for accessing the website. Default value is 'G'. 'G' denotes GET, 'P' denotes POST and 'H' denotes HEAD. PUT, PATCH and DELETE are not supported.",
+								Description: "HTTP Method to be used for accessing the website. Default value is 'G'. 'G' denotes GET, 'P' denotes POST, 'U' denotes PUT and 'D' denotes DELETE. HEAD is not supported.",
 							},
 							"use_ipv6": {
 								Type:        schema.TypeBool,
@@ -467,6 +468,22 @@ var RestApiTransactionMonitorSchema = map[string]*schema.Schema{
 								Default:     false,
 								Description: "Enable ALPN to send supported protocols as part of the TLS handshake.",
 							},
+							"dynamic_param_response_type": {
+								Type:        schema.TypeString,
+								Optional:    true,
+								Default:     "T",
+								Description: "Store the Response Format of Parameter forwarding",
+							},
+							"response_variables": {
+								Type:        schema.TypeMap,
+								Optional:    true,
+								Description: "Provide the Response Variable for parameter forwarding in Map format. ",
+							},
+							"dynamic_header_params": {
+								Type:        schema.TypeMap,
+								Optional:    true,
+								Description: "Provide the Response Header/Cookies for parameter forwarding in Map format.",
+							},
 						},
 					},
 					Description: "API request details related to this step",
@@ -493,7 +510,7 @@ func ResourceSite24x7RestApiTransactionMonitor() *schema.Resource {
 }
 
 func restApiTransactionMonitorCreate(d *schema.ResourceData, meta interface{}) error {
-	log.Println("monitor Type", RestApiTransactionMonitorSchema)
+
 	client := meta.(site24x7.Client)
 
 	restApiTransactionMonitor, err := resourceDataToRestApiTransactionMonitor(d, client)
@@ -513,15 +530,21 @@ func restApiTransactionMonitorCreate(d *schema.ResourceData, meta interface{}) e
 }
 
 func restApiTransactionMonitorRead(d *schema.ResourceData, meta interface{}) error {
+
 	client := meta.(site24x7.Client)
 
 	restApiTransactionMonitors, err := client.RestApiTransactionMonitors().Get(d.Id())
 
+	restApiTransactionMonitorsSteps, steperr := client.RestApiTransactionMonitors().GetSteps(d.Id())
+
 	if err != nil {
 		return err
 	}
+	if steperr != nil {
+		return steperr
+	}
 
-	updateRestApiTransactionMonitorResourceData(d, restApiTransactionMonitors)
+	updateRestApiTransactionMonitorResourceData(d, restApiTransactionMonitors, restApiTransactionMonitorsSteps)
 
 	return nil
 }
@@ -634,13 +657,13 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 
 	// Steps Configuration
 
-	Steps := d.Get("steps").(*schema.Set)
-	StepsItems := make([]api.Steps, Steps.Len())
-	for k, v := range Steps.List() {
-		StepsDetails := v.(map[string]interface{})["step_details"].(*schema.Set)
-		StepsDetailsItem := make([]api.StepDetails, StepsDetails.Len())
+	Steps := d.Get("steps").([]interface{})
+	StepsItems := make([]api.Steps, len(Steps))
+	for k, v := range Steps {
+		StepsDetails := v.(map[string]interface{})["step_details"].([]interface{})
+		StepsDetailsItem := make([]api.StepDetails, len(StepsDetails))
 
-		for i, j := range StepsDetails.List() {
+		for i, j := range StepsDetails {
 			// Request Headers
 			requestHeaderMap := j.(map[string]interface{})["request_headers"].(map[string]interface{})
 			requestHeaderKeys := make([]string, 0, len(requestHeaderMap))
@@ -655,7 +678,6 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 
 			// HTTP Response Headers
 			var httpResponseHeader api.HTTPResponseHeader
-			log.Println("response header", httpResponseHeader)
 			responseHeaderMap := j.(map[string]interface{})["response_headers"].(map[string]interface{})
 			if len(responseHeaderMap) > 0 {
 				reponseHeaderKeys := make([]string, 0, len(responseHeaderMap))
@@ -664,12 +686,57 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 				}
 				sort.Strings(reponseHeaderKeys)
 				responseHeaders := make([]api.Header, len(reponseHeaderKeys))
-				log.Println("response header", reponseHeaderKeys)
 				for i, k := range reponseHeaderKeys {
 					responseHeaders[i] = api.Header{Name: k, Value: responseHeaderMap[k].(string)}
 				}
 				httpResponseHeader.Severity = api.Status(j.(map[string]interface{})["response_headers_severity"].(int))
 				httpResponseHeader.Value = responseHeaders
+			} else {
+				responseVariables := make([]api.Header, 0)
+				httpResponseHeader.Severity = 0
+				httpResponseHeader.Value = responseVariables
+			}
+
+			// Dynamic Header Params changes
+
+			var httpResponseVariable api.HTTPResponseVariable
+			responseVariableMap := j.(map[string]interface{})["response_variables"].(map[string]interface{})
+			if len(responseVariableMap) > 0 {
+				responseVariableKeys := make([]string, 0, len(responseVariableMap))
+				for k := range responseVariableMap {
+					responseVariableKeys = append(responseVariableKeys, k)
+				}
+				sort.Strings(responseVariableKeys)
+				responseVariables := make([]api.Header, len(responseVariableKeys))
+
+				for i, k := range responseVariableKeys {
+					responseVariables[i] = api.Header{Name: k, Value: responseVariableMap[k].(string)}
+				}
+				httpResponseVariable.ResponseType = api.ResponseType(j.(map[string]interface{})["dynamic_param_response_type"].(string))
+				httpResponseVariable.Variables = responseVariables
+			} else {
+				responseVariables := make([]api.Header, 0)
+				httpResponseVariable.ResponseType = ""
+				httpResponseVariable.Variables = responseVariables
+			}
+
+			var dynamicHeaderParams api.HTTPDynamicHeaderParams
+			dynamicHeaderParamsMap := j.(map[string]interface{})["dynamic_header_params"].(map[string]interface{})
+			if len(dynamicHeaderParamsMap) > 0 {
+				dynamicHeaderParamsKeys := make([]string, 0, len(dynamicHeaderParamsMap))
+				for k := range dynamicHeaderParamsMap {
+					dynamicHeaderParamsKeys = append(dynamicHeaderParamsKeys, k)
+				}
+				sort.Strings(dynamicHeaderParamsKeys)
+				dynamicReponseVariables := make([]api.Header, len(dynamicHeaderParamsKeys))
+
+				for i, k := range dynamicHeaderParamsKeys {
+					dynamicReponseVariables[i] = api.Header{Name: k, Value: dynamicHeaderParamsMap[k].(string)}
+				}
+				dynamicHeaderParams.Variables = dynamicReponseVariables
+			} else {
+				responseVariables := make([]api.Header, 0)
+				dynamicHeaderParams.Variables = responseVariables
 			}
 
 			var MatchRegex map[string]interface{}
@@ -688,39 +755,43 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 			}
 
 			var MatchJSON map[string]interface{}
-			if matchJSONPath, ok := d.GetOk("match_json_path"); ok {
-				var jsonPathList []map[string]interface{}
-				for _, jsonPath := range matchJSONPath.([]interface{}) {
-					matchPathMap := make(map[string]interface{})
-					matchPathMap["name"] = jsonPath.(string)
-					jsonPathList = append(jsonPathList, matchPathMap)
+			if matchJSONPath, ok := j.(map[string]interface{})["match_json_path"]; len(j.(map[string]interface{})["match_json_path"].([]interface{})) > 0 {
+				if ok {
+					var jsonPathList []map[string]interface{}
+					for _, jsonPath := range matchJSONPath.([]interface{}) {
+						matchPathMap := make(map[string]interface{})
+						matchPathMap["name"] = jsonPath.(string)
+						jsonPathList = append(jsonPathList, matchPathMap)
+					}
+					matchJSONData := make(map[string]interface{})
+					matchJSONData["jsonpath"] = jsonPathList
+					matchJSONData["severity"] = j.(map[string]interface{})["match_json_path_severity"].(int)
+					MatchJSON = matchJSONData
 				}
-				matchJSONData := make(map[string]interface{})
-				matchJSONData["jsonpath"] = jsonPathList
-				matchJSONData["severity"] = j.(map[string]interface{})["match_json_path_severity"].(int)
-				MatchJSON = matchJSONData
 			}
 
 			var JSONSchema map[string]interface{}
-			if jsonSchema, ok := d.GetOk("json_schema"); ok {
+			if jsonSchema, ok := j.(map[string]interface{})["json_schema"]; ok {
 				jsonSchemaData := make(map[string]interface{})
-				jsonSchemaData["severity"] = d.Get("json_schema_severity").(int)
+				jsonSchemaData["severity"] = j.(map[string]interface{})["json_schema_severity"].(int)
 				jsonSchemaData["schema_value"] = jsonSchema.(string)
 				JSONSchema = jsonSchemaData
 			}
 
 			var GraphQL map[string]interface{}
-			if graphqlQuery, ok := d.GetOk("graphql_query"); ok {
-				graphqlMap := make(map[string]interface{})
-				graphqlMap["query"] = graphqlQuery.(string)
-				graphqlMap["variables"] = d.Get("graphql_variables").(string)
-				GraphQL = graphqlMap
+			graphqlMap := make(map[string]interface{})
+			if graphqlQuery, ok := j.(map[string]interface{})["graphql_query"]; ok {
+				graphqlMap["query"] = string(graphqlQuery.(string))
 			}
+			if graphqlVariable, ok := j.(map[string]interface{})["graphql_variables"]; ok {
+				graphqlMap["variables"] = string(graphqlVariable.(string))
+			}
+			GraphQL = graphqlMap
 
-			log.Println("Postman", j.(map[string]interface{})["request_content_type"].(string))
-
+			i = 0
 			StepsDetailsItem[i] = api.StepDetails{
 				StepUrl:                   j.(map[string]interface{})["step_url"].(string),
+				Timeout:                   j.(map[string]interface{})["timeout"].(string),
 				DisplayName:               v.(map[string]interface{})["display_name"].(string),
 				HTTPMethod:                j.(map[string]interface{})["http_method"].(string),
 				RequestContentType:        j.(map[string]interface{})["request_content_type"].(string),
@@ -748,6 +819,8 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 				MatchCase:                 j.(map[string]interface{})["match_case"].(bool),
 				MatchRegex:                MatchRegex,
 				ResponseHeaders:           httpResponseHeader,
+				ResponseVariable:          httpResponseVariable,
+				DynamicHeaderParams:       dynamicHeaderParams,
 			}
 		}
 
@@ -811,135 +884,178 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 	return restApiTransactionMonitor, nil
 }
 
-func updateRestApiTransactionMonitorResourceData(d *schema.ResourceData, monitor *api.RestApiTransactionMonitor) {
+func updateRestApiTransactionMonitorResourceData(d *schema.ResourceData, monitor *api.RestApiTransactionMonitor, steps *[]api.Steps) {
+
 	d.Set("display_name", monitor.DisplayName)
 	d.Set("type", monitor.Type)
 	d.Set("check_frequency", monitor.CheckFrequency)
-	//steps := monitor.Steps
-	//stepsItems := make([]api.Steps, len(steps))
-	//
-	//for k,v := range steps {
-	//	stepsDetails := v.StepsDetails
-	//	stepsDetailsItem := make([]api.StepDetails, len(stepsDetails))
-	//
-	//	for i, j := range stepsDetails {
-	//		// Request Headers
-	//		requestHeaderMap := j.RequestHeaders
-	//		requestHeaderKeys := make([]string, 0, len(requestHeaderMap))
-	//		for _,k := range requestHeaderMap {
-	//			requestHeaderKeys = append(requestHeaderKeys, k.Name)
-	//		}
-	//		sort.Strings(requestHeaderKeys)
-	//		requestHeaders := make([]api.Header, len(requestHeaderKeys))
-	//		for i,k := range requestHeaderKeys {
-	//			requestHeaders[i] = api.Header{Name: k, Value: requestHeaderMap[k].(string)}
-	//		}
-	//
-	//		// HTTP Response Headers
-	//		var httpResponseHeader api.HTTPResponseHeader
-	//		log.Println("response header",httpResponseHeader)
-	//		responseHeaderMap := j.(map[string]interface{})["response_headers"].(map[string]interface{})
-	//		if len(responseHeaderMap) > 0 {
-	//			reponseHeaderKeys := make([]string, 0, len(responseHeaderMap))
-	//			for k := range responseHeaderMap {
-	//				reponseHeaderKeys = append(reponseHeaderKeys, k)
-	//			}
-	//			sort.Strings(reponseHeaderKeys)
-	//			responseHeaders := make([]api.Header, len(reponseHeaderKeys))
-	//			log.Println("response header",reponseHeaderKeys);
-	//			for i, k := range reponseHeaderKeys {
-	//				responseHeaders[i] = api.Header{Name: k, Value: responseHeaderMap[k].(string)}
-	//			}
-	//			httpResponseHeader.Severity = api.Status(j.(map[string]interface{})["response_headers_severity"].(int))
-	//			httpResponseHeader.Value = responseHeaders
-	//		}
-	//
-	//		var MatchRegex map[string]interface{}
-	//		if matchingRegex, ok := j.(map[string]interface{})["match_regex"]; ok {
-	//			MatchRegex = matchingRegex.(map[string]interface{})
-	//		}
-	//
-	//		var MatchingKeyword map[string]interface{}
-	//		if matchingKeyword, ok := j.(map[string]interface{})["matching_keyword"]; ok {
-	//			MatchingKeyword = matchingKeyword.(map[string]interface{})
-	//		}
-	//
-	//		var UnmatchingKeyword map[string]interface{}
-	//		if unmatchingKeyword, ok := j.(map[string]interface{})["unmatching_keyword"]; ok {
-	//			UnmatchingKeyword = unmatchingKeyword.(map[string]interface{})
-	//		}
-	//
-	//		var MatchJSON map[string]interface{}
-	//		if matchJSONPath, ok := d.GetOk("match_json_path"); ok {
-	//			var jsonPathList []map[string]interface{}
-	//			for _, jsonPath := range matchJSONPath.([]interface{}) {
-	//				matchPathMap := make(map[string]interface{})
-	//				matchPathMap["name"] = jsonPath.(string)
-	//				jsonPathList = append(jsonPathList, matchPathMap)
-	//			}
-	//			matchJSONData := make(map[string]interface{})
-	//			matchJSONData["jsonpath"] = jsonPathList
-	//			matchJSONData["severity"] = j.(map[string]interface{})["match_json_path_severity"].(int)
-	//			MatchJSON = matchJSONData
-	//		}
-	//
-	//		var JSONSchema map[string]interface{}
-	//		if jsonSchema, ok := d.GetOk("json_schema"); ok {
-	//			jsonSchemaData := make(map[string]interface{})
-	//			jsonSchemaData["severity"] = d.Get("json_schema_severity").(int)
-	//			jsonSchemaData["schema_value"] = jsonSchema.(string)
-	//			JSONSchema = jsonSchemaData
-	//		}
-	//
-	//		var GraphQL map[string]interface{}
-	//		if graphqlQuery, ok := d.GetOk("graphql_query"); ok {
-	//			graphqlMap := make(map[string]interface{})
-	//			graphqlMap["query"] = graphqlQuery.(string)
-	//			graphqlMap["variables"] = d.Get("graphql_variables").(string)
-	//			GraphQL = graphqlMap
-	//		}
-	//
-	//		log.Println("Postman",j.(map[string]interface{})["request_content_type"].(string))
-	//
-	//		stepsDetailsItem[i] = api.StepDetails{
-	//			StepUrl: j.(map[string]interface{})["step_url"].(string),
-	//			DisplayName: v.(map[string]interface{})["display_name"].(string),
-	//			HTTPMethod: j.(map[string]interface{})["http_method"].(string),
-	//			RequestContentType: j.(map[string]interface{})["request_content_type"].(string),
-	//			RequestBody: j.(map[string]interface{})["request_body"].(string),
-	//			RequestHeaders: requestHeaders,
-	//			GraphQL:GraphQL,
-	//			UserAgent:j.(map[string]interface{})["user_agent"].(string),
-	//			AuthMethod:j.(map[string]interface{})["auth_method"].(string),
-	//			AuthUser:j.(map[string]interface{})["auth_user"].(string),
-	//			AuthPass:j.(map[string]interface{})["auth_pass"].(string),
-	//			OAuth2Provider:j.(map[string]interface{})["oauth2_provider"].(string),
-	//			ClientCertificatePassword:j.(map[string]interface{})["client_certificate_password"].(string),
-	//			JwtID:j.(map[string]interface{})["jwt_id"].(string),
-	//			UseNameServer:j.(map[string]interface{})["use_name_server"].(bool),
-	//			HTTPProtocol:j.(map[string]interface{})["http_protocol"].(string),
-	//			SSLProtocol:j.(map[string]interface{})["ssl_protocol"].(string),
-	//			UpStatusCodes:j.(map[string]interface{})["up_status_codes"].(string),
-	//			UseAlpn:j.(map[string]interface{})["use_alpn"].(bool),
-	//			ResponseContentType:j.(map[string]interface{})["response_content_type"].(string),
-	//			MatchJSON:MatchJSON,
-	//			JSONSchema:JSONSchema,
-	//			JSONSchemaCheck:j.(map[string]interface{})["json_schema_check"].(bool),
-	//			MatchingKeyword:MatchingKeyword,
-	//			UnmatchingKeyword:UnmatchingKeyword,
-	//			MatchCase:j.(map[string]interface{})["match_case"].(bool),
-	//			MatchRegex:MatchRegex,
-	//			ResponseHeaders:httpResponseHeader,
-	//		}
-	//	}
-	//
-	//	stepsItems[k]  = api.Steps{
-	//		DisplayName: v.(map[string]interface{})["display_name"].(string),
-	//		StepsDetails: stepsDetailsItem,
-	//		MonitorID: d.Id(),
-	//	}
-	//}
-	d.Set("steps", monitor.Steps)
+	StepsItems := make([]api.Steps, len(*steps))
+	for k, step := range *steps {
+		StepsDetails := step.StepsDetails
+		StepsDetailsItem := make([]api.StepDetails, len(StepsDetails))
+
+		for i, stepObject := range StepsDetails {
+			// Request Headers
+			requestHeaderMap := stepObject.RequestHeaders
+			requestHeaderKeys := make([]string, 0, len(requestHeaderMap))
+			headerValuesMap := make(map[string]interface{})
+			for _, k := range requestHeaderMap {
+				requestHeaderKeys = append(requestHeaderKeys, k.Name)
+				headerValuesMap[k.Name] = k.Value
+			}
+			sort.Strings(requestHeaderKeys)
+			requestHeaders := make([]api.Header, len(requestHeaderKeys))
+			for i, k := range requestHeaderKeys {
+				requestHeaders[i] = api.Header{Name: k, Value: headerValuesMap[k].(string)}
+			}
+
+			// HTTP Response Headers
+			var httpResponseHeader api.HTTPResponseHeader
+			responseHeaderMap := stepObject.ResponseHeaders.Value
+			if len(responseHeaderMap) > 0 {
+				reponseHeaderKeys := make([]string, 0, len(responseHeaderMap))
+				headerValuesMap := make(map[string]interface{})
+				for _, k := range responseHeaderMap {
+					reponseHeaderKeys = append(reponseHeaderKeys, k.Name)
+					headerValuesMap[k.Name] = k.Value
+				}
+				sort.Strings(reponseHeaderKeys)
+				responseHeaders := make([]api.Header, len(reponseHeaderKeys))
+				for i, k := range reponseHeaderKeys {
+					responseHeaders[i] = api.Header{Name: k, Value: headerValuesMap[k].(string)}
+				}
+				httpResponseHeader.Severity = stepObject.ResponseHeaders.Severity
+				httpResponseHeader.Value = responseHeaders
+			}
+
+			// Dynamic Header Params changes
+
+			var httpResponseVariable api.HTTPResponseVariable
+			responseVariableMap := stepObject.ResponseVariable.Variables
+			if len(responseVariableMap) > 0 {
+				responseVariableKeys := make([]string, 0, len(responseVariableMap))
+				headerValuesMap := make(map[string]interface{})
+				for _, k := range responseVariableMap {
+					responseVariableKeys = append(responseVariableKeys, k.Name)
+					headerValuesMap[k.Name] = k.Value
+				}
+				sort.Strings(responseVariableKeys)
+				responseVariables := make([]api.Header, len(responseVariableKeys))
+
+				for i, k := range responseVariableKeys {
+					responseVariables[i] = api.Header{Name: k, Value: headerValuesMap[k].(string)}
+				}
+				httpResponseVariable.ResponseType = stepObject.ResponseVariable.ResponseType
+				httpResponseVariable.Variables = responseVariables
+			}
+
+			var dynamicHeaderParams api.HTTPDynamicHeaderParams
+			dynamicHeaderParamsMap := stepObject.DynamicHeaderParams.Variables
+			if len(dynamicHeaderParamsMap) > 0 {
+				dynamicHeaderParamsKeys := make([]string, 0, len(dynamicHeaderParamsMap))
+				headerValuesMap := make(map[string]interface{})
+				for _, k := range dynamicHeaderParamsMap {
+					dynamicHeaderParamsKeys = append(dynamicHeaderParamsKeys, k.Name)
+					headerValuesMap[k.Name] = k.Value
+				}
+				sort.Strings(dynamicHeaderParamsKeys)
+				dynamicReponseVariables := make([]api.Header, len(dynamicHeaderParamsKeys))
+
+				for i, k := range dynamicHeaderParamsKeys {
+					dynamicReponseVariables[i] = api.Header{Name: k, Value: headerValuesMap[k].(string)}
+				}
+				dynamicHeaderParams.Variables = dynamicReponseVariables
+			}
+
+			var MatchRegex map[string]interface{}
+			if stepObject.MatchRegex != nil {
+				MatchRegex = stepObject.MatchRegex
+			}
+
+			var MatchingKeyword map[string]interface{}
+			if stepObject.MatchingKeyword != nil {
+				MatchingKeyword = stepObject.MatchingKeyword
+			}
+
+			var UnmatchingKeyword map[string]interface{}
+			if stepObject.UnmatchingKeyword != nil {
+				UnmatchingKeyword = stepObject.UnmatchingKeyword
+			}
+
+			var MatchJSON map[string]interface{}
+			if matchJSONPath, ok := stepObject.MatchJSON["jsonpath"]; ok {
+				var jsonPathList []map[string]interface{}
+				for _, jsonPath := range matchJSONPath.([]interface{}) {
+					matchPathMap := make(map[string]interface{})
+					matchPathMap["name"] = jsonPath.(map[string]interface{})
+					jsonPathList = append(jsonPathList, matchPathMap)
+				}
+				matchJSONData := make(map[string]interface{})
+				matchJSONData["jsonpath"] = jsonPathList
+				matchJSONData["severity"] = stepObject.MatchJSON["severity"]
+				MatchJSON = matchJSONData
+			}
+
+			var JSONSchema map[string]interface{}
+			if stepObject.JSONSchema != nil {
+				jsonSchemaData := make(map[string]interface{})
+				jsonSchemaData["severity"] = stepObject.JSONSchema["severity"]
+				jsonSchemaData["schema_value"] = stepObject.JSONSchema["schema_value"]
+				JSONSchema = jsonSchemaData
+			}
+
+			var GraphQL map[string]interface{}
+			if stepObject.GraphQL != nil {
+				graphqlMap := make(map[string]interface{})
+				graphqlMap["query"] = stepObject.GraphQL["query"]
+				graphqlMap["variables"] = stepObject.GraphQL["variables"]
+				GraphQL = graphqlMap
+			}
+			i = 0
+			StepsDetailsItem[i] = api.StepDetails{
+				StepUrl:                   stepObject.StepUrl,
+				Timeout:                   stepObject.Timeout,
+				StepId:                    stepObject.StepId,
+				DisplayName:               step.DisplayName,
+				HTTPMethod:                stepObject.HTTPMethod,
+				RequestContentType:        stepObject.RequestContentType,
+				RequestBody:               stepObject.RequestBody,
+				RequestHeaders:            requestHeaders,
+				GraphQL:                   GraphQL,
+				UserAgent:                 stepObject.UserAgent,
+				AuthMethod:                stepObject.AuthMethod,
+				AuthUser:                  stepObject.AuthUser,
+				AuthPass:                  stepObject.AuthPass,
+				OAuth2Provider:            stepObject.OAuth2Provider,
+				ClientCertificatePassword: stepObject.ClientCertificatePassword,
+				JwtID:                     stepObject.JwtID,
+				UseNameServer:             stepObject.UseNameServer,
+				HTTPProtocol:              stepObject.HTTPProtocol,
+				SSLProtocol:               stepObject.SSLProtocol,
+				UpStatusCodes:             stepObject.UpStatusCodes,
+				UseAlpn:                   stepObject.UseAlpn,
+				ResponseContentType:       stepObject.ResponseContentType,
+				MatchJSON:                 MatchJSON,
+				JSONSchema:                JSONSchema,
+				JSONSchemaCheck:           stepObject.JSONSchemaCheck,
+				MatchingKeyword:           MatchingKeyword,
+				UnmatchingKeyword:         UnmatchingKeyword,
+				MatchCase:                 stepObject.MatchCase,
+				MatchRegex:                MatchRegex,
+				ResponseHeaders:           httpResponseHeader,
+				ResponseVariable:          httpResponseVariable,
+				DynamicHeaderParams:       dynamicHeaderParams,
+			}
+		}
+
+		StepsItems[k] = api.Steps{
+			DisplayName:  step.DisplayName,
+			StepsDetails: StepsDetailsItem,
+			MonitorID:    step.MonitorID,
+			StepId:       step.StepId,
+		}
+	}
+	d.Set("steps", StepsItems)
 	d.Set("location_profile_id", monitor.LocationProfileID)
 	d.Set("notification_profile_id", monitor.NotificationProfileID)
 	d.Set("threshold_profile_id", monitor.ThresholdProfileID)

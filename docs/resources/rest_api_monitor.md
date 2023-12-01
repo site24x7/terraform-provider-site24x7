@@ -114,6 +114,10 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
   }
 
   // HTTP Configuration
+
+  //(Optional) Credential Profile to associate the website with 
+  credential_profile_id = "123"
+
   // (Optional) Provide a comma-separated list of HTTP status codes that indicate a successful response.
   // You can specify individual status codes, as well as ranges separated with a colon.
   up_status_codes = "400:500"
@@ -143,7 +147,7 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
   // JSON ASSERTION ATTRIBUTES ================
 
   // ================ HTTP POST with request body
-  // (Optional) HTTP Method to be used for accessing the website. Default value is 'G'. 'G' denotes GET, 'P' denotes POST and 'H' denotes HEAD. PUT, PATCH and DELETE are not supported.
+  // (Optional) HTTP Method to be used for accessing the website.  Default value is 'G'. 'G' denotes GET, 'P' denotes POST, 'U' denotes PUT and 'D' denotes DELETE. HEAD is not supported.
   http_method = "P"
   // (Optional) Provide content type for request params when http_method is 'P'. 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML and 'F' denotes FORM
   request_content_type = "J"
@@ -181,7 +185,7 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
 * `check_frequency` (String) Interval at which your website has to be monitored. Default value is 1 minute.
 * `timeout` (Number) Timeout for connecting to website. Default value is 10. Range 1 - 45.
 * `use_ipv6` (Boolean) Select IPv6 for monitoring the websites hosted with IPv6 address. If you choose non IPv6 supported locations, monitoring will happen through IPv4.
-* `http_method` (String) HTTP Method to be used for accessing the website. Default value is 'G'. 'G' denotes GET, 'P' denotes POST and 'H' denotes HEAD. PUT, PATCH and DELETE are not supported.
+* `http_method` (String) HTTP Method to be used for accessing the website. Default value is 'G'. 'G' denotes GET, 'P' denotes POST, 'U' denotes PUT and 'D' denotes DELETE. HEAD is not supported.
 * `request_content_type` (String) Provide content type for request params when http_method is 'P'. 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML, 'F' denotes FORM and 'G' denotes GRAPHQL.
 * `request_body` (String) Provide the content to be passed in the request body while accessing the website.
 * `request_headers` (Map of String) A Map of request header name and value.
@@ -190,11 +194,12 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
 * ~~`request_param` (String) Provide parameters to be passed while accessing the website.~~ (Deprecated: https://github.com/site24x7/terraform-provider-site24x7/pull/94/files#diff-48dba37a89bbad21af6c4d8b66fd20583aadfca584594b57793cdd14f4d6330fL262)
 * `ssl_protocol` (String) Specify the version of the SSL protocol. If you are not sure about the version, use Auto.
 * `use_alpn` (Boolean) Enable ALPN to send supported protocols as part of the TLS handshake.
-* `http_method` (String) HTTP Method to be used for accessing the website. Default value is 'G'. 'G' denotes GET, 'P' denotes POST and 'H' denotes HEAD. PUT, PATCH and DELETE are not supported.
+* `http_method` (String) HTTP Method to be used for accessing the website.  Default value is 'G'. 'G' denotes GET, 'P' denotes POST, 'U' denotes PUT and 'D' denotes DELETE. HEAD is not supported.
 * `http_protocol` (String) Specify the version of the HTTP protocol. Default value is H1.1.
 * `client_certificate_password` (String) Password of the uploaded client certificate.
 * `auth_pass` (String) Authentication user name to access the website.
 * `auth_user` (String) Authentication password to access the website.
+* `credential_profile_id` (String)Credential Profile to associate the website with. Notes: If you're using Auth user and Auth password, you can't configure Credential Profile
 * `oauth2_provider` (String) Provider ID of the OAuth Provider to be associated with the monitor.
 * `jwt_id` (String) Token ID of the Web Token to be associated with the monitor.
 * `up_status_codes` (String) Provide a comma-separated list of HTTP status codes that indicate a successful response. You can specify individual status codes, as well as ranges separated with a colon.
@@ -224,6 +229,6 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
 * `tag_ids` (List of String) List of tags IDs to be associated to the monitor. Either specify tag_ids or tag_names.
 * `tag_names` (List of String) List of tag names to be associated to the monitor. Tag name matching works for both exact and partial match. Either specify tag_ids or tag_names.
 * `third_party_service_ids` (List of String) List of Third Party Service IDs to be associated to the monitor.
-* `actions` (Map of String) Action to be performed on monitor status changes.
+* `actions` (Map of String) Action to be performed on monitor IT Automation templates. 
 
 Refer [API documentation](https://www.site24x7.com/help/api/#rest-api) for more information about attributes.

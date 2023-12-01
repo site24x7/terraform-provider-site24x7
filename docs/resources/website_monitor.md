@@ -33,6 +33,9 @@ resource "site24x7_website_monitor" "website_monitor" {
   // (Optional) Authentication password to access the website.
   auth_pass = "thepasswd"
 
+  //(Optional) Credential Profile to associate the website with 
+  credential_profile_id = "123"
+
   // (Optional) Check for the keyword in the website response.
   matching_keyword_value = "foo"
 
@@ -166,6 +169,9 @@ resource "site24x7_website_monitor" "website_monitor" {
   // (Optional) Enter true to follow up to 10 HTTP redirection responses or false not to follow HTTP redirections. Default value is true.
   follow_http_redirection = false
 
+  // (Optional) Enter true or false to Trust the Server SSL Certificate. Default value is true.
+  ignore_cert_err = true
+
   // (Optional) HTTP Method to be used for accessing the website. Default value is 'G'. 'G' denotes GET, 'P' denotes POST and 'H' denotes HEAD. PUT, PATCH and DELETE are not supported.
   // See https://www.site24x7.com/help/api/#http_methods for allowed values.
   http_method = "P"
@@ -221,12 +227,13 @@ resource "site24x7_website_monitor" "website_monitor" {
 * `auth_method` (String) Authentication method to access the website. Default value is 'B'. 'B' denotes Basic/NTLM. 'O' denotes OAuth 2 and 'W' denotes Web Token.
 * `auth_pass` (String) Authentication password to access the website.
 * `auth_user` (String) Authentication user name to access the website.
-* `credential_profile_id` (String) Credential Profile to associate.
+* `credential_profile_id` (String)Credential Profile to associate the website with. Notes: If you're using Auth user and Auth password, you can't configure Credential Profile
 * `client_certificate_password` (String) Password of the client certificate.
 * `use_name_server` (Boolean) Resolve the IP address using Domain Name Server.
 * `forced_ips` (String) Provide the domain name or IP addresses to be used for monitoring instead of using the IPs resolved from the given URL.
 * `up_status_codes` (String) Provide a comma-separated list of HTTP status codes that indicate a successful response. You can specify individual status codes, as well as ranges separated with a colon.
 * `follow_http_redirection` (String) Enter true to follow up to 10 HTTP redirection responses or false not to follow HTTP redirections. Default value is true.
+* `ignore_cert_err` (Boolean) Enter true or false to Trust the Server SSL Certificate. Default value is true.
 * `ssl_protocol` (String) Specify the version of the SSL protocol. If you are not sure about the version, use Auto.
 * `http_protocol` (String) Specify the version of the HTTP protocol. Default value is H1.1.
 * `use_alpn` (Boolean) Enable ALPN to send supported protocols as part of the TLS handshake.
@@ -242,7 +249,7 @@ resource "site24x7_website_monitor" "website_monitor" {
 * `tag_ids` (List of String) List of tags IDs to be associated to the monitor. Either specify tag_ids or tag_names.
 * `tag_names` (List of String) List of tag names to be associated to the monitor. Tag name matching works for both exact and partial match. Either specify tag_ids or tag_names.
 * `third_party_service_ids` (List of String) List of Third Party Service IDs to be associated to the monitor.
-* `actions` (Map of String) Action to be performed on monitor status changes.
+* `actions` (Map of String) Action to be performed on monitor IT Automation templates. 
 
 
 Refer [API documentation](https://www.site24x7.com/help/api/#website) for more information about attributes.

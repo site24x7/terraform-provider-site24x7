@@ -90,6 +90,7 @@ type Client interface {
 	SSLMonitors() monitors.SSLMonitors
 	HeartbeatMonitors() monitors.HeartbeatMonitors
 	ServerMonitors() monitors.ServerMonitors
+	DomainExpiryMonitors() monitors.DomainExpiryMonitors
 	RestApiMonitors() monitors.RestApiMonitors
 	RestApiTransactionMonitors() monitors.RestApiTransactionMonitors
 	AmazonMonitors() monitors.AmazonMonitors
@@ -109,6 +110,7 @@ type Client interface {
 	MSP() endpoints.MSP
 	AWSExternalID() aws.AWSExternalID
 	DeviceKey() common.DeviceKey
+	CredentialProfile() common.CredentialProfile
 }
 
 type client struct {
@@ -206,6 +208,11 @@ func (c *client) HeartbeatMonitors() monitors.HeartbeatMonitors {
 // ServerMonitors implements Client.
 func (c *client) ServerMonitors() monitors.ServerMonitors {
 	return monitors.NewServerMonitors(c.restClient)
+}
+
+// DomainExpiryMonitors implements Client.
+func (c *client) DomainExpiryMonitors() monitors.DomainExpiryMonitors {
+	return monitors.NewDomainExpiryMonitors(c.restClient)
 }
 
 // RestApiMonitors implements Client.
@@ -311,4 +318,9 @@ func (c *client) AWSExternalID() aws.AWSExternalID {
 // DeviceKey implements Client.
 func (c *client) DeviceKey() common.DeviceKey {
 	return common.NewDeviceKey(c.restClient)
+}
+
+// RestApiMonitors implements Client.
+func (c *client) CredentialProfile() common.CredentialProfile {
+	return common.NewCredentialProfile(c.restClient)
 }

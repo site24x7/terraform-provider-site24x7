@@ -229,6 +229,12 @@ var websiteMonitorSchema = map[string]*schema.Schema{
 		Default:     "",
 		Description: "Provide a comma-separated list of HTTP status codes that indicate a successful response. You can specify individual status codes, as well as ranges separated with a colon.",
 	},
+	"ignore_cert_err": {
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Default:     true,
+		Description: "Enter true or false to Trust the Server SSL Certificate. Default value is true.",
+	},
 	"follow_http_redirection": {
 		Type:        schema.TypeBool,
 		Optional:    true,
@@ -345,7 +351,7 @@ var websiteMonitorSchema = map[string]*schema.Schema{
 		Type:        schema.TypeMap,
 		Optional:    true,
 		Elem:        schema.TypeString,
-		Description: "Action to be performed on monitor status changes.",
+		Description: "Action to be performed on monitor IT Automation templates.",
 	},
 }
 
@@ -541,6 +547,7 @@ func resourceDataToWebsiteMonitor(d *schema.ResourceData, client site24x7.Client
 	websiteMonitor.HTTPProtocol = d.Get("http_protocol").(string)
 	websiteMonitor.UseAlpn = d.Get("use_alpn").(bool)
 	websiteMonitor.FollowHTTPRedirection = d.Get("follow_http_redirection").(bool)
+	websiteMonitor.IgnoreCertError = d.Get("ignore_cert_err").(bool)
 
 	// ================================ Configuration Profiles ================================
 	var userGroupIDs []string
@@ -673,6 +680,7 @@ func updateWebsiteMonitorResourceData(d *schema.ResourceData, monitor *api.Websi
 	d.Set("http_protocol", monitor.HTTPProtocol)
 	d.Set("use_alpn", monitor.UseAlpn)
 	d.Set("follow_http_redirection", monitor.FollowHTTPRedirection)
+	d.Set("ignore_cert_err", monitor.IgnoreCertError)
 	// ================================ Content Checks ================================
 	if monitor.MatchingKeyword != nil {
 		d.Set("matching_keyword_value", monitor.MatchingKeyword.Value)

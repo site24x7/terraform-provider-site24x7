@@ -49,6 +49,7 @@ A terraform provider for managing the following resources in Site24x7:
 - SSL Certificate Monitor - [site24x7_ssl_monitor](examples/ssl_monitor_us.tf) ([Site24x7 SSL Certificate Monitor API doc](https://www.site24x7.com/help/api/#ssl-certificate))
 - Rest API Monitor - [site24x7_rest_api_monitor](examples/rest_api_monitor_us.tf) ([Site24x7 Rest API Monitor API doc](https://www.site24x7.com/help/api/#rest-api))
 - Rest API Transaction Monitor - [site24x7_rest_api_transaction_monitor](examples/rest_api_transaction_monitor_us.tf) ([Site24x7 Rest API Transaction Monitor API doc](https://www.site24x7.com/help/api/#rest-api-transaction))
+- Domain Expiry Monitor - [site24x7_domain_expiry_monitor](examples/domain_expiry_monitor_us.tf)([Site24x7 domain expiry monitor API doc]())
 - Server Monitor - [site24x7_server_monitor](examples/server_monitor_us.tf) ([Terraform Server Monitor doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/resources/server_monitor))
 - Heartbeat Monitor - [site24x7_heartbeat_monitor](examples/heartbeat_monitor_us.tf) ([Site24x7 Heartbeat Monitor API doc](https://www.site24x7.com/help/api/#heartbeat))
 - URL IT Automation - [site24x7_url_action](examples/it_automation_us.tf) ([Site24x7 IT Automation API doc](https://www.site24x7.com/help/api/#it-automation))
@@ -60,6 +61,7 @@ A terraform provider for managing the following resources in Site24x7:
 - User - [site24x7_user](examples/user_us.tf) ([Site24x7 User API doc](https://www.site24x7.com/help/api/#users))
 - Tag - [site24x7_tag](examples/tag_us.tf) ([Site24x7 Tag API doc](https://www.site24x7.com/help/api/#tags))
 - Schedule Maintenance - [site24x7_schedule_maintenance](examples/schedule_maintenance_us.tf) ([Site24x7 Schedule Maintenance API doc](https://www.site24x7.com/help/api/#schedule-maintenances))
+- Credential Profile - [site24x7_credential_profile](examples/credential_profiles_us.tf) ([Credential Profile API doc](https://www.site24x7.com/help/api/#credential-profiles))
 
 #### Integrations
 
@@ -84,6 +86,7 @@ A terraform provider for managing the following resources in Site24x7:
 - MSP - [site24x7_msp](examples/data-sources/msp_data_source_us.tf) ([MSP API doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/msp))
 - AWS External ID - [site24x7_aws_external_id](examples/data-sources/aws_external_id_data_source_us.tf) ([AWS External ID Terraform doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/aws_external_id))
 - Device Key - [site24x7_device_key](examples/data-sources/device_key_data_source_us.tf) ([Device Key Terraform doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/device_key))
+- Credential Profile - [site24x7_credential_profile](examples/data-sources/credential_profile_data_source_us.tf) ([Credential Profile Terraform doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/data-sources/credential_profile))
 
 Usage example
 -------------

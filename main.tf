@@ -16,15 +16,15 @@ terraform {
 provider "site24x7" {
   // (Required) The client ID will be looked up in the SITE24X7_OAUTH2_CLIENT_ID
   // environment variable if the attribute is empty or omitted.
-  # oauth2_client_id = "<SITE24X7_OAUTH2_CLIENT_ID>"
+  oauth2_client_id = "<SITE24X7_CLIENT_ID>"
 
   // (Required) The client secret will be looked up in the SITE24X7_OAUTH2_CLIENT_SECRET
   // environment variable if the attribute is empty or omitted.
-  # oauth2_client_secret = "<SITE24X7_OAUTH2_CLIENT_SECRET>"
+  oauth2_client_secret = "<SITE24X7_CLIENT_SECRET>"
 
   // (Required) The refresh token will be looked up in the SITE24X7_OAUTH2_REFRESH_TOKEN
   // environment variable if the attribute is empty or omitted.
-  # oauth2_refresh_token = "<SITE24X7_OAUTH2_REFRESH_TOKEN>"
+  oauth2_refresh_token = "<SITE24X7_REFRESH_TOKEN>"
 
   // (Optional) The access token will be looked up in the SITE24X7_OAUTH2_ACCESS_TOKEN
   // environment variable if the attribute is empty or omitted. You need not configure oauth2_access_token
@@ -53,51 +53,61 @@ provider "site24x7" {
   max_retries = 4
 }
 
-// Website Monitor API doc: https://www.site24x7.com/help/api/#website
-resource "site24x7_website_monitor" "website_monitor_example" {
+
+
+// DomainExpiry Server API doc: https://www.site24x7.com/help/api/#domain-expiry
+resource "site24x7_domain_expiry_monitor" "domain_expiry_monitor_basic3" {
   // (Required) Display name for the monitor
-  display_name = "Website Monitor - Terraform"
-
-  // (Required) Website address to monitor.
-  website = "https://www.example.com"
-
-  // (Optional) Interval at which your website has to be monitored.
-  // See https://www.site24x7.com/help/api/#check-interval for all supported values.
-  check_frequency = "1"
-
-  // (Optional) Name of the Location Profile that has to be associated with the monitor.
-  // Either specify location_profile_id or location_profile_name.
-  // If location_profile_id and location_profile_name are omitted,
-  // the first profile returned by the /api/location_profiles endpoint
-  // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
-  // used.
+  display_name = "ignore registry 1"
+  host_name = "file.com"
+  domain_name="whios.iana.org"
+  port=443
+  timeout = 50
+  expire_days=40
+  use_ipv6=true
+  //matching_keyword={2="aaa"}
   location_profile_name = "North America"
-
-  // (Optional) HTTP Method to be used for accessing the website. Default value is 'G'. 'G' denotes GET, 'P' denotes POST and 'H' denotes HEAD. PUT, PATCH and DELETE are not supported.
-  http_method = "P"
-
-  // (Optional) Provide content type for request params when http_method is 'P'. 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML and 'F' denotes FORM
-  request_content_type = "J"
-
-  // (Optional) Provide the content to be passed in the request body while accessing the website.
-  request_body = "{\"user_name\":\"joe\"}"
-
-  // (Optional) Map of custom HTTP headers to send.
-  request_headers = {
-    "Accept" = "application/json"
-  }
-  # tag_ids = [site24x7_tag.tag_us.id]
+  ignore_registry_date = false
+  type = "DOMAINEXPIRY"
+  actions={0=456418000001238121}
+   on_call_schedule_id = "456418000001258016"
+  
+}
+// DomainExpiry Server API doc: https://www.site24x7.com/help/api/#domain-expiry
+resource "site24x7_domain_expiry_monitor" "domain_expiry_monitor_basic" {
+  // (Required) Display name for the monitor
+  display_name = "ignore registry 2"
+  host_name = "file.com"
+  domain_name="whios.iana.org"
+  port=443
+  timeout = 50
+  expire_days=40
+  use_ipv6=false
+  match_case=false 
+  matching_keyword = {
+ 	  severity= 2
+ 	  value= "aaa"
+ 	}
+  unmatching_keyword = {
+ 	  severity= 0
+ 	  value= "bbb"
+ 	}
+  match_regex = {
+ 	  severity= 0
+ 	  value= "test(.*)\\d"
+ 	}
+  perform_automation=true
+  location_profile_name = "North America"
+  ignore_registry_date = false
+  type = "DOMAINEXPIRY"
+  actions={1=456418000001238121}
+  notification_profile_name="System Generated"
+  
 }
 
-// DNS Server API doc: https://www.site24x7.com/help/api/#dns-server
-resource "site24x7_dns_server_monitor" "dns_monitor_basic" {
-  // (Required) Name for the monitor.
-  display_name              = "Nowatt basic DNS monitor - Terraform"
 
-  // (Required) DNS Name Server to be monitored
-  dns_host                  = "185.43.51.84"
-
-  // (Required) Domain name to be resolved.
-  domain_name               = "www.nowatt.com"
-}
-
+// DomainExpiry Server API doc: https://www.site24x7.com/help/api/#domain-expiry
+resource "site24x7_domain_expiry_monitor" "domain_expiry_monitor_basic" {
+  // (Required) Display name for the monitor
+  display_name = "ignore registry 2"
+  host_name = "file.com"

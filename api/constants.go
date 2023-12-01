@@ -17,13 +17,14 @@ const (
 	Tags        ResourceType = 3
 
 	// Type of the Site24x7 resource.
-	URL       MonitorType = "URL"
-	HOMEPAGE  MonitorType = "HOMEPAGE"
-	SSL_CERT  MonitorType = "SSL_CERT"
-	RESTAPI   MonitorType = "RESTAPI"
-	RESTAPISEQ MonitorType = "RESTAPISEQ"
-	AMAZON    MonitorType = "AMAZON"
-	SERVER    MonitorType = "SERVER"
-	HEARTBEAT MonitorType = "HEARTBEAT"
-	DNS       MonitorType = "DNS"
+	URL          MonitorType = "URL"
+	HOMEPAGE     MonitorType = "HOMEPAGE"
+	SSL_CERT     MonitorType = "SSL_CERT"
+	RESTAPI      MonitorType = "RESTAPI"
+	RESTAPISEQ   MonitorType = "RESTAPISEQ"
+	AMAZON       MonitorType = "AMAZON"
+	SERVER       MonitorType = "SERVER"
+	HEARTBEAT    MonitorType = "HEARTBEAT"
+	DNS          MonitorType = "DNS"
+	DOMAINEXPIRY MonitorType = "DOMAINEXPIRY"
 )

@@ -80,6 +80,7 @@ type WebsiteMonitor struct {
 	ForcedIPs                 string   `json:"forced_ips,omitempty"`
 	UpStatusCodes             string   `json:"up_status_codes,omitempty"`
 	FollowHTTPRedirection     bool     `json:"follow_redirect"`
+	IgnoreCertError           bool     `json:"ignore_cert_err"`
 	SSLProtocol               string   `json:"ssl_protocol,omitempty"`
 	HTTPProtocol              string   `json:"http_protocol,omitempty"`
 	UseAlpn                   bool     `json:"use_alpn"`
@@ -153,12 +154,13 @@ type WebPageSpeedMonitor struct {
 	DeviceType     string   `json:"device_type"`
 	WPAResolution  string   `json:"wpa_resolution"`
 	// HTTP Configuration
-	HTTPMethod    string   `json:"http_method"`
-	CustomHeaders []Header `json:"custom_headers,omitempty"`
-	AuthUser      string   `json:"auth_user,omitempty"`
-	AuthPass      string   `json:"auth_pass,omitempty"`
-	UserAgent     string   `json:"user_agent,omitempty"`
-	UpStatusCodes string   `json:"up_status_codes,omitempty"`
+	HTTPMethod          string   `json:"http_method"`
+	CustomHeaders       []Header `json:"custom_headers,omitempty"`
+	AuthUser            string   `json:"auth_user,omitempty"`
+	AuthPass            string   `json:"auth_pass,omitempty"`
+	CredentialProfileID string   `json:"credential_profile_id,omitempty"`
+	UserAgent           string   `json:"user_agent,omitempty"`
+	UpStatusCodes       string   `json:"up_status_codes,omitempty"`
 	// Content Check
 	MatchingKeyword   *ValueAndSeverity `json:"matching_keyword,omitempty"`
 	UnmatchingKeyword *ValueAndSeverity `json:"unmatching_keyword,omitempty"`
@@ -293,6 +295,7 @@ type RestApiMonitor struct {
 	AuthMethod                string                 `json:"auth_method,omitempty"`
 	AuthUser                  string                 `json:"auth_user,omitempty"`
 	AuthPass                  string                 `json:"auth_pass,omitempty"`
+	CredentialProfileID       string                 `json:"credential_profile_id,omitempty"`
 	OAuth2Provider            string                 `json:"oauth2_provider,omitempty"`
 	ClientCertificatePassword string                 `json:"client_certificate_password,omitempty"`
 	JwtID                     string                 `json:"jwt_id,omitempty"`
@@ -321,62 +324,6 @@ type RestApiMonitor struct {
 	TagIDs                []string    `json:"tag_ids,omitempty"`
 	ThirdPartyServiceIDs  []string    `json:"third_party_services,omitempty"`
 	ActionIDs             []ActionRef `json:"action_ids,omitempty"`
-}
-
-// Denotes the REST API Transaction monitor resource in Site24x7.
-type RestApiTransactionMonitor struct {
-	_              struct{} `type:"structure"` // Enforces key based initialization.
-	MonitorID      string   `json:"monitor_id,omitempty"`
-	DisplayName    string   `json:"display_name"`
-	Type           string   `json:"type"`
-	CheckFrequency string   `json:"check_frequency"`
-	Steps          []Steps  `json:"steps"`
-	// Configuration Profiles
-	LocationProfileID     string      `json:"location_profile_id"`
-	NotificationProfileID string      `json:"notification_profile_id"`
-	ThresholdProfileID    string      `json:"threshold_profile_id"`
-	MonitorGroups         []string    `json:"monitor_groups,omitempty"`
-	DependencyResourceIDs []string    `json:"dependency_resource_ids,omitempty"`
-	UserGroupIDs          []string    `json:"user_group_ids,omitempty"`
-	TagIDs                []string    `json:"tag_ids,omitempty"`
-	ThirdPartyServiceIDs  []string    `json:"third_party_services,omitempty"`
-	ActionIDs             []ActionRef `json:"action_ids,omitempty"`
-}
-
-func (restApiMonitor *RestApiTransactionMonitor) SetLocationProfileID(locationProfileID string) {
-	restApiMonitor.LocationProfileID = locationProfileID
-}
-
-func (restApiMonitor *RestApiTransactionMonitor) GetLocationProfileID() string {
-	return restApiMonitor.LocationProfileID
-}
-
-func (restApiMonitor *RestApiTransactionMonitor) SetNotificationProfileID(notificationProfileID string) {
-	restApiMonitor.NotificationProfileID = notificationProfileID
-}
-
-func (restApiMonitor *RestApiTransactionMonitor) GetNotificationProfileID() string {
-	return restApiMonitor.NotificationProfileID
-}
-
-func (restApiMonitor *RestApiTransactionMonitor) SetUserGroupIDs(userGroupIDs []string) {
-	restApiMonitor.UserGroupIDs = userGroupIDs
-}
-
-func (restApiMonitor *RestApiTransactionMonitor) GetUserGroupIDs() []string {
-	return restApiMonitor.UserGroupIDs
-}
-
-func (restApiMonitor *RestApiTransactionMonitor) SetTagIDs(tagIDs []string) {
-	restApiMonitor.TagIDs = tagIDs
-}
-
-func (restApiMonitor *RestApiTransactionMonitor) GetTagIDs() []string {
-	return restApiMonitor.TagIDs
-}
-
-func (restApiMonitor *RestApiTransactionMonitor) String() string {
-	return ToString(restApiMonitor)
 }
 
 func (restApiMonitor *RestApiMonitor) SetLocationProfileID(locationProfileID string) {
@@ -413,6 +360,62 @@ func (restApiMonitor *RestApiMonitor) GetTagIDs() []string {
 
 func (restApiMonitor *RestApiMonitor) String() string {
 	return ToString(restApiMonitor)
+}
+
+// Denotes the REST API Transaction monitor resource in Site24x7.
+type RestApiTransactionMonitor struct {
+	_              struct{} `type:"structure"` // Enforces key based initialization.
+	MonitorID      string   `json:"monitor_id,omitempty"`
+	DisplayName    string   `json:"display_name"`
+	Type           string   `json:"type"`
+	CheckFrequency string   `json:"check_frequency"`
+	Steps          []Steps  `json:"steps"`
+	// Configuration Profiles
+	LocationProfileID     string      `json:"location_profile_id"`
+	NotificationProfileID string      `json:"notification_profile_id"`
+	ThresholdProfileID    string      `json:"threshold_profile_id"`
+	MonitorGroups         []string    `json:"monitor_groups,omitempty"`
+	DependencyResourceIDs []string    `json:"dependency_resource_ids,omitempty"`
+	UserGroupIDs          []string    `json:"user_group_ids,omitempty"`
+	TagIDs                []string    `json:"tag_ids,omitempty"`
+	ThirdPartyServiceIDs  []string    `json:"third_party_services,omitempty"`
+	ActionIDs             []ActionRef `json:"action_ids,omitempty"`
+}
+
+func (restApiTransactionMonitor *RestApiTransactionMonitor) SetLocationProfileID(locationProfileID string) {
+	restApiTransactionMonitor.LocationProfileID = locationProfileID
+}
+
+func (restApiTransactionMonitor *RestApiTransactionMonitor) GetLocationProfileID() string {
+	return restApiTransactionMonitor.LocationProfileID
+}
+
+func (restApiTransactionMonitor *RestApiTransactionMonitor) SetNotificationProfileID(notificationProfileID string) {
+	restApiTransactionMonitor.NotificationProfileID = notificationProfileID
+}
+
+func (restApiTransactionMonitor *RestApiTransactionMonitor) GetNotificationProfileID() string {
+	return restApiTransactionMonitor.NotificationProfileID
+}
+
+func (restApiTransactionMonitor *RestApiTransactionMonitor) SetUserGroupIDs(userGroupIDs []string) {
+	restApiTransactionMonitor.UserGroupIDs = userGroupIDs
+}
+
+func (restApiTransactionMonitor *RestApiTransactionMonitor) GetUserGroupIDs() []string {
+	return restApiTransactionMonitor.UserGroupIDs
+}
+
+func (restApiTransactionMonitor *RestApiTransactionMonitor) SetTagIDs(tagIDs []string) {
+	restApiTransactionMonitor.TagIDs = tagIDs
+}
+
+func (restApiTransactionMonitor *RestApiTransactionMonitor) GetTagIDs() []string {
+	return restApiTransactionMonitor.TagIDs
+}
+
+func (restApiTransactionMonitor *RestApiTransactionMonitor) String() string {
+	return ToString(restApiTransactionMonitor)
 }
 
 // Denotes the Amazon monitor resource in Site24x7.
@@ -464,6 +467,71 @@ func (amazonMonitor *AmazonMonitor) GetTagIDs() []string {
 
 func (amazonMonitor *AmazonMonitor) String() string {
 	return ToString(amazonMonitor)
+}
+
+// Denotes the Domain Expiry monitor resource in Site24x7.
+type DomainExpiryMonitor struct {
+	_                     struct{}    `type:"structure"` // Enforces key based initialization.
+	MonitorID             string      `json:"monitor_id,omitempty"`
+	DisplayName           string      `json:"display_name"`
+	Type                  string      `json:"type"`
+	HostName              string      `json:"host_name"`
+	DomainName            string      `json:"domain_name"`
+	Port                  interface{} `json:"port"`
+	Timeout               int         `json:"timeout"`
+	UseIPV6               bool        `json:"use_ipv6"`
+	ExpireDays            int         `json:"expire_days"`
+	PerformAutomation     bool        `json:"perform_automation"`
+	LocationProfileID     string      `json:"location_profile_id"`
+	NotificationProfileID string      `json:"notification_profile_id"`
+	UserGroupIDs          []string    `json:"user_group_ids,omitempty"`
+	OnCallScheduleID      string      `json:"on_call_schedule_id,omitempty"`
+	IgnoreRegistryDate    bool        `json:"ignore_registry_date"`
+	MonitorGroups         []string    `json:"monitor_groups,omitempty"`
+	ActionIDs             []ActionRef `json:"action_ids,omitempty"`
+	ThirdPartyServiceIDs  []string    `json:"third_party_services,omitempty"`
+	TagIDs                []string    `json:"tag_ids,omitempty"`
+	// Content Check
+	MatchingKeyword   map[string]interface{} `json:"matching_keyword,omitempty"`
+	UnmatchingKeyword map[string]interface{} `json:"unmatching_keyword,omitempty"`
+	MatchCase         bool                   `json:"match_case"`
+	MatchRegex        map[string]interface{} `json:"match_regex,omitempty"`
+}
+
+func (domainExpiryMonitor *DomainExpiryMonitor) SetLocationProfileID(locationProfileID string) {
+	domainExpiryMonitor.LocationProfileID = locationProfileID
+}
+
+func (domainExpiryMonitor *DomainExpiryMonitor) GetLocationProfileID() string {
+	return domainExpiryMonitor.LocationProfileID
+}
+
+func (domainExpiryMonitor *DomainExpiryMonitor) SetNotificationProfileID(notificationProfileID string) {
+	domainExpiryMonitor.NotificationProfileID = notificationProfileID
+}
+
+func (domainExpiryMonitor *DomainExpiryMonitor) GetNotificationProfileID() string {
+	return domainExpiryMonitor.NotificationProfileID
+}
+
+func (domainExpiryMonitor *DomainExpiryMonitor) SetUserGroupIDs(userGroupIDs []string) {
+	domainExpiryMonitor.UserGroupIDs = userGroupIDs
+}
+
+func (domainExpiryMonitor *DomainExpiryMonitor) GetUserGroupIDs() []string {
+	return domainExpiryMonitor.UserGroupIDs
+}
+
+func (domainExpiryMonitor *DomainExpiryMonitor) SetTagIDs(tagIDs []string) {
+	domainExpiryMonitor.TagIDs = tagIDs
+}
+
+func (domainExpiryMonitor *DomainExpiryMonitor) GetTagIDs() []string {
+	return domainExpiryMonitor.TagIDs
+}
+
+func (domainExpiryMonitor *DomainExpiryMonitor) String() string {
+	return ToString(domainExpiryMonitor)
 }
 
 // Denotes the server monitor resource in Site24x7.

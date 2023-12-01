@@ -115,6 +115,9 @@ resource "site24x7_rest_api_transaction_monitor" "rest_api_transaction_monitor_e
       }
 
       // HTTP Configuration
+
+      //(Optional) Credential Profile to associate the website with 
+      credential_profile_id = "123"
       // (Optional) Provide a comma-separated list of HTTP status codes that indicate a successful response.
       // You can specify individual status codes, as well as ranges separated with a colon.
       up_status_codes = "400:500"
@@ -144,7 +147,7 @@ resource "site24x7_rest_api_transaction_monitor" "rest_api_transaction_monitor_e
       // JSON ASSERTION ATTRIBUTES ================
 
       // ================ HTTP POST with request body
-      // (Optional) HTTP Method to be used for accessing the website. Default value is 'G'. 'G' denotes GET, 'P' denotes POST and 'H' denotes HEAD. PUT, PATCH and DELETE are not supported.
+      // (Optional) HTTP Method to be used for accessing the website.  Default value is 'G'. 'G' denotes GET, 'P' denotes POST, 'U' denotes PUT and 'D' denotes DELETE. HEAD is not supported.
       http_method = "P"
       // (Optional) Provide content type for request params when http_method is 'P'. 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML and 'F' denotes FORM
       request_content_type = "J"
@@ -164,6 +167,26 @@ resource "site24x7_rest_api_transaction_monitor" "rest_api_transaction_monitor_e
       // (Optional) Provide the GraphQL variables to get specific response from GraphQL based API service. request_content_type = "G"
       graphql_variables = "{\n    \"FilmId\":\"ZmlsbXM6NQ==\"\n}"
       // GRAPHQL ATTRIBUTES ================
+      
+      // ================ PARAMETER FORWARDING ATTRIBUTES
+
+      // (Optional) Provide the Response Format for Parameter Forwarding.
+
+      dynamic_param_response_type="J"
+
+      // (Optional) Provide the Response Variable for parameter forwarding in Map format. 
+
+      response_variables ={
+        "template_id0"="$.data.template_id"
+      }
+
+      // (Optional) Provide the Response Header/Cookies for parameter forwarding in Map format.
+
+      dynamic_header_params ={
+        "Accept" = "application/json"
+      }
+
+      //  PARAMETER FORWARDING ATTRIBUTES ================
     }
   }
 }
@@ -186,7 +209,7 @@ resource "site24x7_rest_api_transaction_monitor" "rest_api_transaction_monitor_e
 * `check_frequency` (String) Interval at which your website has to be monitored. Default value is 1 minute.
 * `timeout` (Number) Timeout for connecting to website. Default value is 10. Range 1 - 45.
 * `use_ipv6` (Boolean) Select IPv6 for monitoring the websites hosted with IPv6 address. If you choose non IPv6 supported locations, monitoring will happen through IPv4.
-* `http_method` (String) HTTP Method to be used for accessing the website. Default value is 'G'. 'G' denotes GET, 'P' denotes POST and 'H' denotes HEAD. PUT, PATCH and DELETE are not supported.
+* `http_method` (String) HTTP Method to be used for accessing the website.  Default value is 'G'. 'G' denotes GET, 'P' denotes POST, 'U' denotes PUT and 'D' denotes DELETE. HEAD is not supported.
 * `request_content_type` (String) Provide content type for request params when http_method is 'P'. 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML, 'F' denotes FORM and 'G' denotes GRAPHQL.
 * `request_body` (String) Provide the content to be passed in the request body while accessing the website.
 * `request_headers` (Map of String) A Map of request header name and value.
@@ -195,12 +218,14 @@ resource "site24x7_rest_api_transaction_monitor" "rest_api_transaction_monitor_e
 * ~~`request_param` (String) Provide parameters to be passed while accessing the website.~~ (Deprecated: https://github.com/site24x7/terraform-provider-site24x7/pull/94/files#diff-48dba37a89bbad21af6c4d8b66fd20583aadfca584594b57793cdd14f4d6330fL262)
 * `ssl_protocol` (String) Specify the version of the SSL protocol. If you are not sure about the version, use Auto.
 * `use_alpn` (Boolean) Enable ALPN to send supported protocols as part of the TLS handshake.
-* `http_method` (String) HTTP Method to be used for accessing the website. Default value is 'G'. 'G' denotes GET, 'P' denotes POST and 'H' denotes HEAD. PUT, PATCH and DELETE are not supported.
+* `http_method` (String) HTTP Method to be used for accessing the website.  Default value is 'G'. 'G' denotes GET, 'P' denotes POST, 'U' denotes PUT and 'D' denotes DELETE. HEAD is not supported.
 * `http_protocol` (String) Specify the version of the HTTP protocol. Default value is H1.1.
 * `client_certificate_password` (String) Password of the uploaded client certificate.
 * `auth_pass` (String) Authentication user name to access the website.
 * `auth_user` (String) Authentication password to access the website.
-* `oauth2_provider` (String) Provider ID of the OAuth Provider to be associated with the monitor.
+* `auth_method` (String) Authentication method to access the website. Default value is 'B'. 'B' denotes Basic/NTLM. 'O' denotes OAuth 2 and 'W' denotes Web Token
+* `credential_profile_id` (String)Credential Profile to associate the website with. Notes: If you're using Auth user and Auth password, you can't configure Credential Profile
+* `oauth2_provider` (String) Provider ID of the OAuth Provider to be associated with the monitor. Default value for auth_method is "O".
 * `jwt_id` (String) Token ID of the Web Token to be associated with the monitor.
 * `up_status_codes` (String) Provide a comma-separated list of HTTP status codes that indicate a successful response. You can specify individual status codes, as well as ranges separated with a colon.
 * `use_name_server` (Boolean) Resolve the IP address using Domain Name Server.
@@ -217,6 +242,9 @@ resource "site24x7_rest_api_transaction_monitor" "rest_api_transaction_monitor_e
 * `match_regex` (Map of String) Match the regular expression in the website response.
 * `response_headers` (Map of String) A Map of Header name and value.
 * `response_headers_severity` (Number) Severity with which alert has to raised when the header is found in the website response. Default value is 2. '0' denotes Down and '2' denotes Trouble.
+* `dynamic_param_response_type` (String) Response format for parameter forwarding.
+* `response_variables` (Map of String) Provide the Response Variable for parameter forwarding in Map format.
+* `dynamic_header_params` (Map of String) Provide the Response Header/Cookies for parameter forwarding in Map format.
 * `location_profile_id` (String) Location profile to be associated with the monitor.
 * `location_profile_name` (String) Name of the location profile to be associated with the monitor.
 * `notification_profile_id` (String) Notification profile to be associated with the monitor. Either specify notification_profile_id or notification_profile_name. If notification_profile_id and notification_profile_name are omitted, the first profile returned by the /api/notification_profiles endpoint will be used.
@@ -229,6 +257,6 @@ resource "site24x7_rest_api_transaction_monitor" "rest_api_transaction_monitor_e
 * `tag_ids` (List of String) List of tags IDs to be associated to the monitor. Either specify tag_ids or tag_names.
 * `tag_names` (List of String) List of tag names to be associated to the monitor. Tag name matching works for both exact and partial match. Either specify tag_ids or tag_names.
 * `third_party_service_ids` (List of String) List of Third Party Service IDs to be associated to the monitor.
-* `actions` (Map of String) Action to be performed on monitor status changes.
+* `actions` (Map of String) Action to be performed on monitor IT Automation templates. 
 
 Refer [API documentation](https://www.site24x7.com/help/api/#rest-api-transaction) for more information about attributes.

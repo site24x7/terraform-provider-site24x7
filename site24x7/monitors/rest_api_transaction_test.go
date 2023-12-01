@@ -1,13 +1,14 @@
 package monitors
 
 import (
+	"testing"
+
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
 	"github.com/site24x7/terraform-provider-site24x7/fake"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 func TestRestApiTransactionMonitorCreate(t *testing.T) {
@@ -16,25 +17,25 @@ func TestRestApiTransactionMonitorCreate(t *testing.T) {
 	c := fake.NewClient()
 
 	a := &api.RestApiTransactionMonitor{
-		DisplayName:               "foo",
-		Type:                      string(api.RESTAPISEQ),
-		CheckFrequency:            "5",
-		LocationProfileID:         "456",
-		NotificationProfileID:     "789",
-		ThresholdProfileID:        "012",
-		MonitorGroups:             []string{"234", "567"},
-		DependencyResourceIDs:     []string{"234", "567"},
-		UserGroupIDs:              []string{"123", "456"},
-		TagIDs:                    []string{"123"},
-		Steps: 					   []api.Steps{
+		DisplayName:           "foo",
+		Type:                  string(api.RESTAPISEQ),
+		CheckFrequency:        "5",
+		LocationProfileID:     "456",
+		NotificationProfileID: "789",
+		ThresholdProfileID:    "012",
+		MonitorGroups:         []string{"234", "567"},
+		DependencyResourceIDs: []string{"234", "567"},
+		UserGroupIDs:          []string{"123", "456"},
+		TagIDs:                []string{"123"},
+		Steps: []api.Steps{
 			{
 				DisplayName: "Step2",
 				StepsDetails: []api.StepDetails{
 					{
-						StepUrl: "www.test.tld",
-						Timeout:                   0,
+						StepUrl:                   "www.test.tld",
+						Timeout:                   "0",
 						HTTPMethod:                "G",
-						DisplayName: 			   "Step2",
+						DisplayName:               "Step2",
 						HTTPProtocol:              "H1.1",
 						SSLProtocol:               "Auto",
 						UseAlpn:                   false,
@@ -57,20 +58,13 @@ func TestRestApiTransactionMonitorCreate(t *testing.T) {
 								Value: "nocache",
 							},
 						},
-						UseNameServer:             true,
-						MatchCase:                 true,
-						JSONSchemaCheck:           false,
-						UserAgent:                 "firefox",
-						MatchingKeyword: map[string]interface{}{
-
-						},
-						UnmatchingKeyword: map[string]interface{}{
-
-						},
-						MatchRegex: map[string]interface{}{
-
-						},
-
+						UseNameServer:     true,
+						MatchCase:         true,
+						JSONSchemaCheck:   false,
+						UserAgent:         "firefox",
+						MatchingKeyword:   map[string]interface{}{},
+						UnmatchingKeyword: map[string]interface{}{},
+						MatchRegex:        map[string]interface{}{},
 					},
 				},
 			},
@@ -78,9 +72,9 @@ func TestRestApiTransactionMonitorCreate(t *testing.T) {
 				DisplayName: "Step1",
 				StepsDetails: []api.StepDetails{
 					{
-						StepUrl: "www.test.tld",
-						Timeout:                   0,
-						DisplayName: 			   "Step1",
+						StepUrl:                   "www.test.tld",
+						Timeout:                   "0",
+						DisplayName:               "Step1",
 						HTTPMethod:                "G",
 						HTTPProtocol:              "H1.1",
 						SSLProtocol:               "Auto",
@@ -104,20 +98,13 @@ func TestRestApiTransactionMonitorCreate(t *testing.T) {
 								Value: "nocache",
 							},
 						},
-						UseNameServer:             true,
-						MatchCase:                 true,
-						JSONSchemaCheck:           false,
-						UserAgent:                 "firefox",
-						MatchingKeyword: map[string]interface{}{
-
-						},
-						UnmatchingKeyword: map[string]interface{}{
-
-						},
-						MatchRegex: map[string]interface{}{
-
-						},
-
+						UseNameServer:     true,
+						MatchCase:         true,
+						JSONSchemaCheck:   false,
+						UserAgent:         "firefox",
+						MatchingKeyword:   map[string]interface{}{},
+						UnmatchingKeyword: map[string]interface{}{},
+						MatchRegex:        map[string]interface{}{},
 					},
 				},
 			},
@@ -201,19 +188,19 @@ func TestRestApiTransactionMonitorUpdate(t *testing.T) {
 	c := fake.NewClient()
 
 	a := &api.RestApiTransactionMonitor{
-		MonitorID:                 "123",
-		DisplayName:               "foo",
-		Type:                      string(api.RESTAPISEQ),
-		CheckFrequency:            "5",
-		Steps: 					   []api.Steps{
+		MonitorID:      "123",
+		DisplayName:    "foo",
+		Type:           string(api.RESTAPISEQ),
+		CheckFrequency: "5",
+		Steps: []api.Steps{
 			{
 				DisplayName: "Step2",
-				MonitorID: "123",
+				MonitorID:   "123",
 				StepsDetails: []api.StepDetails{
 					{
-						StepUrl: "www.test.tld",
-						DisplayName: "Step2",
-						Timeout:                   0,
+						StepUrl:                   "www.test.tld",
+						DisplayName:               "Step2",
+						Timeout:                   "0",
 						HTTPMethod:                "G",
 						HTTPProtocol:              "H1.1",
 						SSLProtocol:               "Auto",
@@ -231,15 +218,9 @@ func TestRestApiTransactionMonitorUpdate(t *testing.T) {
 						AuthMethod:                "B",
 						AuthUser:                  "username",
 						AuthPass:                  "",
-						MatchingKeyword: 		   map[string]interface{}{
-
-						},
-						UnmatchingKeyword:         map[string]interface{}{
-
-						},
-						MatchRegex:                map[string]interface{}{
-
-						},
+						MatchingKeyword:           map[string]interface{}{},
+						UnmatchingKeyword:         map[string]interface{}{},
+						MatchRegex:                map[string]interface{}{},
 						RequestHeaders: []api.Header{
 							{
 								Name:  "Accept",
@@ -255,12 +236,12 @@ func TestRestApiTransactionMonitorUpdate(t *testing.T) {
 			},
 			{
 				DisplayName: "Step1",
-				MonitorID: "123",
+				MonitorID:   "123",
 				StepsDetails: []api.StepDetails{
 					{
-						StepUrl: "www.test.tld",
-						DisplayName: "Step1",
-						Timeout:                   0,
+						StepUrl:                   "www.test.tld",
+						DisplayName:               "Step1",
+						Timeout:                   "0",
 						HTTPMethod:                "G",
 						HTTPProtocol:              "H1.1",
 						SSLProtocol:               "Auto",
@@ -278,15 +259,9 @@ func TestRestApiTransactionMonitorUpdate(t *testing.T) {
 						AuthMethod:                "B",
 						AuthUser:                  "username",
 						AuthPass:                  "",
-						MatchingKeyword: 		   map[string]interface{}{
-
-						},
-						UnmatchingKeyword:         map[string]interface{}{
-
-						},
-						MatchRegex:                map[string]interface{}{
-
-						},
+						MatchingKeyword:           map[string]interface{}{},
+						UnmatchingKeyword:         map[string]interface{}{},
+						MatchRegex:                map[string]interface{}{},
 						RequestHeaders: []api.Header{
 							{
 								Name:  "Accept",
@@ -301,13 +276,13 @@ func TestRestApiTransactionMonitorUpdate(t *testing.T) {
 				},
 			},
 		},
-		LocationProfileID:         "456",
-		NotificationProfileID:     "789",
-		ThresholdProfileID:        "012",
-		MonitorGroups:             []string{"234", "567"},
-		DependencyResourceIDs:     []string{"234", "567"},
-		UserGroupIDs:              []string{"123", "456"},
-		TagIDs:                    []string{"123"},
+		LocationProfileID:     "456",
+		NotificationProfileID: "789",
+		ThresholdProfileID:    "012",
+		MonitorGroups:         []string{"234", "567"},
+		DependencyResourceIDs: []string{"234", "567"},
+		UserGroupIDs:          []string{"123", "456"},
+		TagIDs:                []string{"123"},
 		// ActionIDs: []api.ActionRef{
 		// 	{
 		// 		ActionID:  "123action",
@@ -463,9 +438,9 @@ func TestRestApiTransactionMonitorExists(t *testing.T) {
 
 func restApiTransactionMonitorTestResourceData(t *testing.T) *schema.ResourceData {
 	return schema.TestResourceDataRaw(t, RestApiTransactionMonitorSchema, map[string]interface{}{
-		"display_name":                "foo",
-		"type":                        string(api.RESTAPISEQ),
-		"check_frequency":             "5",
+		"display_name":            "foo",
+		"type":                    string(api.RESTAPISEQ),
+		"check_frequency":         "5",
 		"location_profile_id":     "456",
 		"notification_profile_id": "789",
 		"threshold_profile_id":    "012",
@@ -481,7 +456,7 @@ func restApiTransactionMonitorTestResourceData(t *testing.T) *schema.ResourceDat
 			"123",
 			"456",
 		},
-		"steps" : []interface{}{
+		"steps": []interface{}{
 			map[string]interface{}{
 				"display_name": "Step1",
 				"step_details": []interface{}{
@@ -503,8 +478,8 @@ func restApiTransactionMonitorTestResourceData(t *testing.T) *schema.ResourceDat
 						"jwt_id":                      "111",
 						"match_case":                  true,
 						"user_agent":                  "firefox",
-						"use_name_server":   			true,
-						"json_schema_check": 			false,
+						"use_name_server":             true,
+						"json_schema_check":           false,
 						"request_headers": map[string]interface{}{
 							"Accept":        "application/json",
 							"Cache-Control": "nocache",
@@ -533,8 +508,8 @@ func restApiTransactionMonitorTestResourceData(t *testing.T) *schema.ResourceDat
 						"jwt_id":                      "111",
 						"match_case":                  true,
 						"user_agent":                  "firefox",
-						"use_name_server":   			true,
-						"json_schema_check": 			false,
+						"use_name_server":             true,
+						"json_schema_check":           false,
 						"request_headers": map[string]interface{}{
 							"Accept":        "application/json",
 							"Cache-Control": "nocache",

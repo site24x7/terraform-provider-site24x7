@@ -36,6 +36,11 @@ resource "site24x7_threshold_profile" "website_threshold_profile_us" {
     severity     = 3
     value = 95
   }
+  // (Optional) Triggers alert when not receiving the website entire HTTP response within 30 seconds.
+  read_time_out {
+    severity = 3
+    value =true
+  }
   // (Optional) Response time threshold configuration
   primary_response_time_trouble_threshold = {
     // https://www.site24x7.com/help/api/#threshold_severity
@@ -153,6 +158,7 @@ resource "site24x7_threshold_profile" "heartbeat_threshold" {
 * `down_location_threshold` (Number) Triggers alert when the monitor is down from configured number of locations. Default value is '3'
 * `profile_type` (Number) Static Threshold(1) or AI-based Threshold(2)
 * `website_content_changes` (Block List) Triggers alert when Website content changes by configured percentage. (see [below for nested schema](#nestedblock--website_content_changes))
+* `read_time_out` (Map of String) Triggers alert when not receiving the website entire HTTP response within 30 seconds. (see [below for nested schema](#nestedblock--website_content_changes))
 * `website_content_modified` (Boolean) Triggers alert when the website content is modified.
 * `primary_response_time_trouble_threshold` (Map of Number) Response time trouble threshold for the primary monitoring location. (see [below for map schema](#nestedblock--response_time_threshold))
 * `primary_response_time_critical_threshold` (Map of Number) Response time critical threshold for the primary monitoring location. (see [below for map schema](#nestedblock--response_time_threshold))
@@ -168,7 +174,7 @@ ed.
 
 
 <a id="nestedblock--website_content_changes"></a>
-### Nested Schema for `website_content_changes`, `ssl_cert_days_until_expiry_trouble_threshold`, `ssl_cert_days_until_expiry_critical_threshold`
+### Nested Schema for `website_content_changes`,`read_time_out`, `ssl_cert_days_until_expiry_trouble_threshold`, `ssl_cert_days_until_expiry_critical_threshold`
 
 ### Required
 

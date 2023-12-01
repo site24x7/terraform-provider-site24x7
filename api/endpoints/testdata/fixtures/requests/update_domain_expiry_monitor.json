@@ -1,0 +1,28 @@
+{
+    "monitor_id": "897654345678",
+    "display_name": "Domain Expiry Monitor",
+    "type": "",
+    "host_name": "www.example.com",
+    "domain_name":"www.example.com",
+    "port":443,
+    "timeout": 10,
+    "use_ipv6":true,
+    "expire_days": 30,
+    "location_profile_id": "456",
+    "notification_profile_id": "789",
+    "on_call_schedule_id":"234",
+    "ignore_registry_date":false,
+    "monitor_groups": [
+        "234",
+        "567"
+    ],
+    "user_group_ids": [
+        "123",
+        "456"
+    ],
+  "tag_ids": [
+        "123"
+    ],
+    "perform_automation":true,
+    "match_case":true
+}

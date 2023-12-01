@@ -9,6 +9,8 @@ import (
 
 type Status int
 
+type ResponseType string
+
 // Custom unmarshaller that allows the value to be both a
 // string and an integer, always unmarshals into integer
 //
@@ -76,14 +78,16 @@ type SearchConfig struct {
 type Steps struct {
 	DisplayName  string        `json:"display_name"`
 	StepsDetails []StepDetails `json:"step_details"`
-	MonitorID    string        `json:"monitor_id"`
+	MonitorID    string        `json:"monitor_id,omitempty"`
+	StepId       string        `json:"step_id,omitempty"`
 }
 
 type StepDetails struct {
+	StepId      string `json:"step_id,omitempty"`
 	StepUrl     string `json:"step_url"`
 	DisplayName string `json:"display_name"`
 	// HTTP Configuration
-	Timeout                   int                    `json:"timeout"`
+	Timeout                   string                 `json:"timeout"`
 	HTTPMethod                string                 `json:"http_method"`
 	RequestContentType        string                 `json:"request_content_type,omitempty"`
 	RequestBody               string                 `json:"request_param,omitempty"`
@@ -102,20 +106,31 @@ type StepDetails struct {
 	UpStatusCodes             string                 `json:"up_status_codes,omitempty"`
 	UseAlpn                   bool                   `json:"use_alpn"`
 	// Content Check
-	ResponseContentType string                 `json:"response_type"`
-	MatchJSON           map[string]interface{} `json:"match_json,omitempty"`
-	JSONSchema          map[string]interface{} `json:"json_schema,omitempty"`
-	JSONSchemaCheck     bool                   `json:"json_schema_check,omitempty"`
-	MatchingKeyword     map[string]interface{} `json:"matching_keyword,omitempty"`
-	UnmatchingKeyword   map[string]interface{} `json:"unmatching_keyword,omitempty"`
-	MatchCase           bool                   `json:"match_case"`
-	MatchRegex          map[string]interface{} `json:"match_regex,omitempty"`
-	ResponseHeaders     HTTPResponseHeader     `json:"response_headers_check,omitempty"`
+	ResponseContentType string                  `json:"response_type"`
+	MatchJSON           map[string]interface{}  `json:"match_json,omitempty"`
+	JSONSchema          map[string]interface{}  `json:"json_schema,omitempty"`
+	JSONSchemaCheck     bool                    `json:"json_schema_check,omitempty"`
+	MatchingKeyword     map[string]interface{}  `json:"matching_keyword,omitempty"`
+	UnmatchingKeyword   map[string]interface{}  `json:"unmatching_keyword,omitempty"`
+	MatchCase           bool                    `json:"match_case"`
+	MatchRegex          map[string]interface{}  `json:"match_regex,omitempty"`
+	ResponseHeaders     HTTPResponseHeader      `json:"response_headers_check,omitempty"`
+	ResponseVariable    HTTPResponseVariable    `json:"response_variables,omitempty"`
+	DynamicHeaderParams HTTPDynamicHeaderParams `json:"dynamic_header_params,omitempty"`
 }
 
 type HTTPResponseHeader struct {
 	Severity Status   `json:"severity"`
 	Value    []Header `json:"value"`
+}
+
+type HTTPResponseVariable struct {
+	ResponseType ResponseType `json:"response_type"`
+	Variables    []Header     `json:"variables"`
+}
+
+type HTTPDynamicHeaderParams struct {
+	Variables []Header `json:"variables"`
 }
 
 type ActionRef struct {
@@ -181,6 +196,7 @@ type ThresholdProfile struct {
 	DownLocationThreshold  int                      `json:"down_location_threshold,omitempty"`
 	WebsiteContentModified bool                     `json:"website_content_modified,omitempty"`
 	WebsiteContentChanges  []map[string]interface{} `json:"website_content_changes,omitempty"`
+	ReadTimeOut            map[string]interface{}   `json:"read_time_out,omitempty"`
 	ResponseTimeThreshold  map[string]interface{}   `json:"response_time_threshold,omitempty"`
 	// SSL_CERT attributes
 	SSLCertificateFingerprintModified map[string]interface{}   `json:"ssl_fingerprint_modified,omitempty"`
@@ -234,6 +250,8 @@ func (thresholdProfile *ThresholdProfile) UnmarshalJSON(rawValue []byte) error {
 			}
 		} else if k == "response_time_threshold" {
 			thresholdProfile.ResponseTimeThreshold = v.(map[string]interface{})
+		} else if k == "read_time_out" {
+			thresholdProfile.ReadTimeOut = v.(map[string]interface{})
 		}
 	}
 	return nil
@@ -446,4 +464,17 @@ type DeviceKey struct {
 
 func (deviceKey *DeviceKey) String() string {
 	return ToString(deviceKey)
+}
+
+type CredentialProfile struct {
+	_              struct{} `type:"structure"` // Enforces key based initialization.
+	ID             string   `json:"credential_profile_id"`
+	CredentialType int      `json:"credential_type"`
+	CredentialName string   `json:"credential_name"`
+	UserName       string   `json:"username"`
+	Password       string   `json:"password"`
+}
+
+func (credentialProfile *CredentialProfile) String() string {
+	return ToString(credentialProfile)
 }

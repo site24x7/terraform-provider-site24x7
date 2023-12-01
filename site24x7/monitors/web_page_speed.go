@@ -110,9 +110,9 @@ var webPageSpeedMonitorSchema = map[string]*schema.Schema{
 		Description: "Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure.",
 	},
 	"website_type": {
-		Type:     schema.TypeInt,
-		Optional: true,
-		Default:  1,
+		Type:        schema.TypeInt,
+		Optional:    true,
+		Default:     1,
 		Description: "Type of content the website page has. 1 - Static Website,	2 - Dynamic Website, 3 - Flash-Based Website.",
 	},
 	"browser_type": {
@@ -160,6 +160,11 @@ var webPageSpeedMonitorSchema = map[string]*schema.Schema{
 		Type:        schema.TypeString,
 		Optional:    true,
 		Description: "Authentication password to access the website.",
+	},
+	"credential_profile_id": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Credential Profile to associate.",
 	},
 	"user_agent": {
 		Type:        schema.TypeString,
@@ -302,7 +307,7 @@ var webPageSpeedMonitorSchema = map[string]*schema.Schema{
 		Type:        schema.TypeMap,
 		Optional:    true,
 		Elem:        schema.TypeString,
-		Description: "Action to be performed on monitor status changes.",
+		Description: "Action to be performed on monitor IT Automation templates.",
 	},
 }
 
@@ -484,12 +489,13 @@ func resourceDataToWebPageSpeedMonitor(d *schema.ResourceData, client site24x7.C
 		DeviceType:     d.Get("device_type").(string),
 		WPAResolution:  d.Get("wpa_resolution").(string),
 		// HTTP Configuration
-		HTTPMethod:    d.Get("http_method").(string),
-		CustomHeaders: customHeaders,
-		AuthUser:      d.Get("auth_user").(string),
-		AuthPass:      d.Get("auth_pass").(string),
-		UserAgent:     d.Get("user_agent").(string),
-		UpStatusCodes: d.Get("up_status_codes").(string),
+		HTTPMethod:          d.Get("http_method").(string),
+		CustomHeaders:       customHeaders,
+		AuthUser:            d.Get("auth_user").(string),
+		AuthPass:            d.Get("auth_pass").(string),
+		CredentialProfileID: d.Get("credential_profile_id").(string),
+		UserAgent:           d.Get("user_agent").(string),
+		UpStatusCodes:       d.Get("up_status_codes").(string),
 		// Content Check
 		MatchCase:             d.Get("match_case").(bool),
 		LocationProfileID:     d.Get("location_profile_id").(string),
@@ -584,6 +590,7 @@ func updateWebPageSpeedMonitorResourceData(d *schema.ResourceData, monitor *api.
 	d.Set("custom_headers", customHeaders)
 	d.Set("auth_user", monitor.AuthUser)
 	d.Set("auth_pass", monitor.AuthPass)
+	d.Set("credential_profile_id", monitor.CredentialProfileID)
 	d.Set("user_agent", monitor.UserAgent)
 	d.Set("up_status_codes", monitor.UpStatusCodes)
 

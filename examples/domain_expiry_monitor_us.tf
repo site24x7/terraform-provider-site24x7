@@ -1,6 +1,6 @@
 terraform {
   # Require Terraform version 0.15.x (recommended)
-  required_version = "~> 0.15.0"
+  required_version = "~> 0.13.0"
 
   required_providers {
     site24x7 = {
@@ -48,79 +48,50 @@ provider "site24x7" {
   
   }
 
-// Website Monitor API doc: https://www.site24x7.com/help/api/#website
-resource "site24x7_website_monitor" "website_monitor_example" {
+// Site24x7 Domain Expiry monitor API doc - https://www.site24x7.com/help/api/#domain-expiry
+resource "site24x7_domain_expiry_monitor" "doamin_expiry_monitor_basic" {
   // (Required) Display name for the monitor
-  display_name = "Example Monitor"
+  display_name = "Example domain expiry Monitor"
 
-  // (Required) Website address to monitor.
-  website = "https://www.example.com"
-
-  // (Optional) Interval at which your website has to be monitored.
-  // See https://www.site24x7.com/help/api/#check-interval for all supported values.
-  check_frequency = "1"
-
-  // (Optional) Name of the Location Profile that has to be associated with the monitor. 
-  // Either specify location_profile_id or location_profile_name.
-  // If location_profile_id and location_profile_name are omitted,
-  // the first profile returned by the /api/location_profiles endpoint
-  // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
-  // used.
-  location_profile_name = "North America"
+  // (Required) host name of the monitor
+  host_name = "www.example.com"
 
 }
 
-// Website Monitor API doc: https://www.site24x7.com/help/api/#website
-resource "site24x7_website_monitor" "website_monitor" {
+// Site24x7 Domain Expiry monitor API doc - https://www.site24x7.com/help/api/#domain-expiry
+resource "site24x7_domain_expiry_monitor" "domain_expiry_monitor_us" {
   // (Required) Display name for the monitor
-  display_name = "mymonitor"
+  display_name = "Example domainexpiry Monitor"
 
-  // (Required) Website address to monitor.
-  website = "https://foo.bar"
+  // (Required) host name of the monitor
+  host_name = "www.example.com"
 
-  // (Optional) Check interval for monitoring. Default: 1. See
-  // https://www.site24x7.com/help/api/#check-interval for all supported
-  // values.
-  check_frequency = "1"
+    //Domain name for the monitor
+    domain_name = "www.example.com"
 
-  // (Optional) Authentication user name to access the website.
-  auth_user = "theuser"
+    //(Optional)Whois Server Port.Default value is 43
+    port=443
 
-  // (Optional) Authentication password to access the website.
-  auth_pass = "thepasswd"
+    //Should we prefer to use IPV6 or not
+    use_ipv6=true
 
-  // (Optional) Check for the keyword in the website response.
-  matching_keyword_value = "foo"
+    //(Optional)Timeout for connecting to the host.Range 1 - 45.
+    timeout=10 
 
-  // (Optional) Alert type to match on. See
-  // https://www.site24x7.com/help/api/#alert-type-constants for available
-  // values.
-  matching_keyword_severity = 2
+    //(Optional) Day threshold for domain expiry notification.Range 1 - 999.
+    expire_days=30
 
-  // (Optional) Check for non existence of keyword in the website response.
-  unmatching_keyword_value = "error"
+    //(Optional)Toggle button to perform automation or not
+    perform_automation=true
 
-  // (Optional) Alert type to match on. See
-  // https://www.site24x7.com/help/api/#alert-type-constants for available
-  // values.
-  unmatching_keyword_severity = 2
+    //(Optional)if user_group_ids is not choosen
+    //On-Call Schedule of your choice.
+    //Create new On-Call Schedule or find your preferred On-Call Schedule ID.
+    on_call_schedule_id="456418000001258016"
 
-  // (Optional) Match the regular expression in the website response.
-  match_regex_value = ".*imprint.*"
-
-  // (Optional) Alert type to match on. See
-  // https://www.site24x7.com/help/api/#alert-type-constants for available
-  // values.
-  match_regex_severity = 2
-
-  // (Optional) Perform case sensitive keyword search or not. Default: false.
-  match_case = true
-
-  // (Optional) User Agent to be used while monitoring the website.
-  user_agent = "some user agent string"
-
-  // (Optional) Timeout for connecting to website. Range 1 - 45. Default: 10
-  timeout = 10
+    //(Optional)Ignores the registry expiry date and prefer registrar expiry 
+    //date when notifying for domain expiry.
+    ignore_registry_date=true
 
   // (Optional) Location Profile to be associated with the monitor. If 
   // location_profile_id and location_profile_name are omitted,
@@ -137,6 +108,32 @@ resource "site24x7_website_monitor" "website_monitor" {
   // used.
   location_profile_name = "North America"
 
+// (Optional) Check for the keyword in the response.
+  matching_keyword = {
+ 	  severity= 2
+ 	  value= "sample"
+ 	}
+  
+  // (Optional) Check for non existence of keyword in the response.
+  unmatching_keyword = {
+ 	  severity= 2
+ 	  value= "smile"
+ 	}
+  
+  // (Optional) Match the regular expression in the response.
+  match_regex = {
+ 	  severity= 2
+ 	  value= ".*aaa.*"
+ 	}
+  // (Optional) Map of status to actions that should be performed on monitor
+  // status changes. See
+  // https://www.site24x7.com/help/api/#action-rule-constants for all available
+  // status values.
+  actions = {1=465545643755}
+
+  //(Optional)Perform case sensitive keyword search or not.
+  match_case = false
+
   // (Optional) Notification profile to be associated with the monitor. If
   // omitted, the first profile returned by the /api/notification_profiles
   // endpoint (https://www.site24x7.com/help/api/#list-notification-profiles)
@@ -152,20 +149,8 @@ resource "site24x7_website_monitor" "website_monitor" {
   // used.
   notification_profile_name = "Terraform Profile"
 
-  // (Optional) Threshold profile to be associated with the monitor. If
-  // omitted, the first profile returned by the /api/threshold_profiles
-  // endpoint for the website monitor (https://www.site24x7.com/help/api/#list-threshold-profiles) will
-  // be used.
-  threshold_profile_id = "123"
-
   // (Optional) List of monitor group IDs to associate the monitor to.
   monitor_groups = [
-    "123",
-    "456"
-  ]
-
-  // (Optional) List of dependent resource IDs. Suppress alert when dependent monitor(s) is down.
-  dependency_resource_ids = [
     "123",
     "456"
   ]
@@ -204,48 +189,4 @@ resource "site24x7_website_monitor" "website_monitor" {
   third_party_service_ids = [
     "4567"
   ]
-
-  // (Optional) Map of status to actions that should be performed on monitor
-  // status changes. See
-  // https://www.site24x7.com/help/api/#action-rule-constants for all available
-  // status values.
-  actions = {
-    "1" = "123"
-  }
-
-  // (Optional) Resolve the IP address using Domain Name Server. Default: true.
-  use_name_server = false
-
-  // (Optional) Enter true to follow up to 10 HTTP redirection responses or false not to follow HTTP redirections. Default value is true.
-  follow_http_redirection = false
-
-  // (Optional) Enter true or false to Trust the Server SSL Certificate. Default value is true.
-
-  ignore_cert_err = true
-
-  // (Optional) Provide a comma-separated list of HTTP status codes that indicate a successful response. You can specify individual status codes, as well as ranges separated with a colon. Default: ""
-  up_status_codes = "200,404"
-
-  // (Optional) HTTP Method to be used for accessing the website. Default value is 'G'. 'G' denotes GET, 'P' denotes POST and 'H' denotes HEAD. PUT, PATCH and DELETE are not supported.
-  // See https://www.site24x7.com/help/api/#http_methods for allowed values.
-  http_method = "P"
-
-  // (Optional) Provide content type for request params when http_method is 'P'. 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML and 'F' denotes FORM
-  request_content_type = "J"
-
-  // (Optional) Provide the content to be passed in the request body while accessing the website.
-  request_body = "{\"user_name\":\"joe\"}"
-  
-  // (Optional) Map of custom HTTP headers to send.
-  request_headers = {
-    "Accept" = "application/json"
-  }
-
-  // (Optional) Map of HTTP response headers to check.
-  response_headers_severity = 0 // Can take values 0 or 2. '0' denotes Down and '2' denotes Trouble.
-  response_headers = {
-    "Content-Encoding" = "gzip"
-    "Connection" = "Keep-Alive"
-  }
 }
-
