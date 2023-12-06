@@ -16,15 +16,15 @@ terraform {
 provider "site24x7" {
   // (Required) The client ID will be looked up in the SITE24X7_OAUTH2_CLIENT_ID
   // environment variable if the attribute is empty or omitted.
-  oauth2_client_id = "<SITE24X7_CLIENT_ID>"
+  oauth2_client_id = "1000.0D485VEM89FTBJT1P2ORWJZO9ABAFO"
 
   // (Required) The client secret will be looked up in the SITE24X7_OAUTH2_CLIENT_SECRET
   // environment variable if the attribute is empty or omitted.
-  oauth2_client_secret = "<SITE24X7_CLIENT_SECRET>"
+  oauth2_client_secret = "7203f0267db4943c44105b99f2d582ccbf5e58e698"
 
   // (Required) The refresh token will be looked up in the SITE24X7_OAUTH2_REFRESH_TOKEN
   // environment variable if the attribute is empty or omitted.
-  oauth2_refresh_token = "<SITE24X7_REFRESH_TOKEN>"
+  oauth2_refresh_token = "1000.335dbfb8d379481a6904e6f46af675ee.86a2db587e30443a4177e0ea9e134c68"
 
   // (Optional) The access token will be looked up in the SITE24X7_OAUTH2_ACCESS_TOKEN
   // environment variable if the attribute is empty or omitted. You need not configure oauth2_access_token
