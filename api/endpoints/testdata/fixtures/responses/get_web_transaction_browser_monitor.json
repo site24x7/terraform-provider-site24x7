@@ -1,0 +1,37 @@
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+        "monitor_id": "9856454535645",
+            "display_name": "RBM-www.example.com",
+            "type": "REALBROWSER",
+            "base_url": "https://www.example.com",
+            "selenium_script" : "{\"id\":\"2db8ee45-0a88-466b-bb40-23d496e3ec5e\",\"version\":\"1.1\",\"name\":\"\",\"url\":\"https:\/\/www.example.com\",\"tests\":[{\"id\":\"fd75aaa8-9d5c-427c-b0ed-af7e82cc82d9\",\"name\":\"\",\"commands\":[{\"id\":\"e9f77120-606a-438a-a508-302805cd8527\",\"comment\":\"\",\"command\":\"newStep\",\"target\":\"Loading - https:\/\/www.example.com\",\"targets\":[],\"value\":\"\",\"URL\":\"https:\/\/www.example.com\",\"stepCount\":1,\"stepTime\":\"0\",\"actionName\":\"\"},{\"id\":\"76f548c1-6cee-4a4b-a92a-302927271beb\",\"comment\":\"\",\"command\":\"open\",\"target\":\"\/\",\"targets\":[],\"value\":\"\",\"URL\":\"\",\"stepCount\":0,\"stepTime\":0,\"actionName\":\"\"}]}],\"suites\":[{\"id\":\"0d7b4e1b-5a8b-44c7-bf1b-ed0364731ea5\",\"name\":\"\",\"persistSession\":false,\"parallel\":false,\"timeout\":300,\"tests\":[\"fd75aaa8-9d5c-427c-b0ed-af7e82cc82d9\"]}],\"urls\":[\"https:\/\/www.example.com\/\"],\"plugins\":[]}",
+            "script_type": 30,
+            "check_frequency": 15,
+            "async_dc_enabled": true,
+            "browser_type":1,
+            "think_time":5,
+            "page_load_time":60,
+            "resolution":"1366,768",
+            "location_profile_id": "456",
+            "notification_profile_id": "789",
+            "on_call_schedule_id":"234",
+            "ignore_registry_date":false,
+            "threshold_profile_id":"",
+            "monitor_groups": [
+                "234",
+                "567"
+            ],
+            "user_group_ids": [
+                "123",
+                "456"
+            ],
+          "tag_ids": [
+                "123"
+            ],
+            "dependency_resource_ids":["123","456"],
+            "third_party_services":[],
+            "action_ids":[]
+    }
+}

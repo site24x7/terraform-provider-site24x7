@@ -1,0 +1,34 @@
+{
+    "monitor_id": "123",
+    "display_name": "RBM-www.javatpoint.com",
+    "type": "REALBROWSER",
+    "base_url": "https://www.javatpoint.com",
+    "selenium_script" : "{\"id\":\"bef81e4c-c58b-4187-8312-5cc0db1c2ef6\",\"version\":\"1.1\",\"name\":\"\",\"url\":\"https:\/\/www.javatpoint.com\",\"tests\":[{\"id\":\"13b0709c-ba6b-4fe6-8016-401cb308a4f0\",\"name\":\"\",\"commands\":[{\"id\":\"e325927b-5480-416f-9c17-3768d73f670b\",\"comment\":\"\",\"command\":\"newStep\",\"target\":\"Loading - https:\/\/www.javatpoint.com\",\"targets\":[],\"value\":\"\",\"URL\":\"https:\/\/www.javatpoint.com\",\"stepCount\":1,\"stepTime\":\"0\",\"actionName\":\"\"},{\"id\":\"9981d89f-101d-49bd-a2c2-e4b041dc849f\",\"comment\":\"\",\"command\":\"open\",\"target\":\"\/\",\"targets\":[],\"value\":\"\",\"URL\":\"\",\"stepCount\":0,\"stepTime\":0,\"actionName\":\"\"},{\"id\":\"86ba22ac-a3c4-4d22-9ed5-1b0455155d5b\",\"comment\":\"\",\"command\":\"mouseOver\",\"target\":\"xpath=\/\/li[5]\/a\",\"targets\":[[\"xpath=\/\/li[5]\/a\",\"xpath:position\"],[\"xpath=\/\/a[contains(@href, 'html-tutorial')]\",\"xpath:href\"],[\"linkText=HTML\",\"linkText\"],[\"xpath=\/\/a[contains(text(),'HTML')]\",\"xpath:link\"],[\"xpath=\/\/div[@id='link']\/div\/ul\/li[5]\/a\",\"xpath:idRelative\"],[\"css=ul > li:nth-child(5) > a\",\"css:finder\"]],\"value\":\"\",\"URL\":\"\",\"stepCount\":0,\"stepTime\":0,\"actionName\":\"\"},{\"id\":\"6dbcf5c9-d856-44f9-95be-a06e7ab1ad4b\",\"comment\":\"\",\"command\":\"mouseOver\",\"target\":\"xpath=\/\/li[5]\/a\",\"targets\":[[\"xpath=\/\/li[5]\/a\",\"xpath:position\"],[\"xpath=\/\/a[contains(@href, 'html-tutorial')]\",\"xpath:href\"],[\"linkText=HTML\",\"linkText\"],[\"xpath=\/\/a[contains(text(),'HTML')]\",\"xpath:link\"],[\"xpath=\/\/div[@id='link']\/div\/ul\/li[5]\/a\",\"xpath:idRelative\"],[\"css=ul > li:nth-child(5) > a\",\"css:finder\"]],\"value\":\"\",\"URL\":\"\",\"stepCount\":0,\"stepTime\":0,\"actionName\":\"\"},{\"id\":\"49e05dec-5d73-45e1-a14a-cd66dd3abc9d\",\"comment\":\"\",\"command\":\"newStep\",\"target\":\"click  HTML\",\"targets\":[],\"value\":\"\",\"URL\":\"https:\/\/www.javatpoint.com\/\",\"stepCount\":2,\"stepTime\":0,\"actionName\":\"\"},{\"id\":\"48a1ea55-124c-4872-bfb2-568ec5d2251f\",\"comment\":\"\",\"command\":\"clickAndWait\",\"target\":\"xpath=\/html\/body\/div\/div\/div[3]\/div\/ul\/li[5]\/a\",\"targets\":[[\"xpath=\/html\/body\/div\/div\/div[3]\/div\/ul\/li[5]\/a\",\"xpath:position\"],[\"xpath=\/\/a[contains(@href, 'html-tutorial')]\",\"xpath:href\"],[\"css=ul > li:nth-child(5) > a\",\"css:finder\"],[\"xpath=\/\/a[contains(text(),'HTML')]\",\"xpath:link\"],[\"linkText=HTML\",\"linkText\"],[\"xpath=\/\/div[@id='link']\/div\/ul\/li[5]\/a\",\"xpath:idRelative\"],[\"xpath=\/html\/body\/div\/div\/div\/div\/ul\/li[5]\/a\",\"xpath1:position\"]],\"value\":\"\",\"URL\":\"\",\"stepCount\":0,\"stepTime\":0,\"actionName\":\"\"},{\"id\":\"5139258e-4ddb-44f7-ad8c-ca6f3104a453\",\"comment\":\"\",\"command\":\"newStep\",\"target\":\"click  XHTML\",\"targets\":[],\"value\":\"\",\"URL\":\"https:\/\/www.javatpoint.com\/html-tutorial\",\"stepCount\":3,\"stepTime\":0,\"actionName\":\"\"},{\"id\":\"560803fc-d6cd-463a-8b96-8b645cad3589\",\"comment\":\"\",\"command\":\"clickAndWait\",\"target\":\"xpath=\/html\/body\/div\/div\/div[3]\/div\/ul\/li[3]\/a\",\"targets\":[[\"xpath=\/html\/body\/div\/div\/div[3]\/div\/ul\/li[3]\/a\",\"xpath:position\"],[\"xpath=\/\/a[contains(@href, 'xhtml-tutorial')]\",\"xpath:href\"],[\"css=ul:nth-child(1) > li:nth-child(3) > a\",\"css:finder\"],[\"xpath=\/\/a[contains(text(),'XHTML')]\",\"xpath:link\"],[\"linkText=XHTML\",\"linkText\"],[\"xpath=\/\/div[@id='link']\/div\/ul\/li[3]\/a\",\"xpath:idRelative\"],[\"xpath=\/html\/body\/div\/div\/div\/div\/ul\/li[3]\/a\",\"xpath1:position\"]],\"value\":\"\",\"URL\":\"\",\"stepCount\":0,\"stepTime\":0,\"actionName\":\"\"}]}],\"suites\":[{\"id\":\"f0f1bdde-dfd1-48f3-9f83-0b1eeda0f918\",\"name\":\"\",\"persistSession\":false,\"parallel\":false,\"timeout\":300,\"tests\":[\"13b0709c-ba6b-4fe6-8016-401cb308a4f0\"]}],\"urls\":[\"https:\/\/www.javatpoint.com\/\"],\"plugins\":[]}",
+    "script_type": 30,
+    "check_frequency": 15,
+    "async_dc_enabled": true,
+    "browser_type":1,
+    "browser_version":1010,
+    "think_time":5,
+    "page_load_time":60,
+    "resolution":"1366,768",
+    "location_profile_id": "456",
+    "notification_profile_id": "789",
+    "on_call_schedule_id":"234",
+    "ignore_registry_date":false,
+    "threshold_profile_id":"",
+    "monitor_groups": [
+        "234",
+        "567"
+    ],
+    "user_group_ids": [
+        "123",
+        "456"
+    ],
+  "tag_ids": [
+        "123"
+    ],
+    "dependency_resource_ids":["123","456"],
+    "third_party_services":[],
+    "action_ids":[]
+}

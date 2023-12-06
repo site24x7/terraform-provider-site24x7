@@ -362,6 +362,77 @@ func (restApiMonitor *RestApiMonitor) String() string {
 	return ToString(restApiMonitor)
 }
 
+// Denotes the web transaction browser monitor resource in Site24x7.
+type WebTransactionBrowserMonitor struct {
+	_                     struct{}               `type:"structure"` // Enforces key based initialization.
+	MonitorID             string                 `json:"monitor_id,omitempty"`
+	DisplayName           string                 `json:"display_name,omitempty"`
+	Type                  string                 `json:"type,omitempty"`
+	BaseURL               string                 `json:"base_url"`
+	SeleniumScript        string                 `json:"selenium_script,omitempty"`
+	ScriptType            string                 `json:"script_type,omitempty"`
+	PerformAutomation     bool                   `json:"perform_automation"`
+	CheckFrequency        string                 `json:"check_frequency"`
+	AsyncDCEnabled        bool                   `json:"async_dc_enabled"`
+	BrowserType           int                    `json:"browser_type,omitempty"`
+	ThinkTime             int                    `json:"think_time,omitempty"`
+	IgnoreCertError       bool                   `json:"ignore_cert_err"`
+	IPType                int                    `json:"ip_type"`
+	UserAgent             string                 `json:"user_agent,omitempty"`
+	BrowserVersion        int                    `json:"browser_version"`
+	PageLoadTime          int                    `json:"page_load_time"`
+	Resolution            string                 `json:"resolution,omitempty"`
+	ProxyDetails          map[string]interface{} `json:"proxy_details,omitempty"`
+	AuthDetails           map[string]interface{} `json:"auth_details,omitempty"`
+	Cookies               []Header               `json:"cookies,omitempty"`
+	ThresholdProfileId    string                 `json:"threshold_profile_id,omitempty"`
+	LocationProfileID     string                 `json:"location_profile_id"`
+	NotificationProfileID string                 `json:"notification_profile_id"`
+	UserGroupIDs          []string               `json:"user_group_ids,omitempty"`
+	OnCallScheduleID      string                 `json:"on_call_schedule_id,omitempty"`
+	DependencyResourceIDs []string               `json:"dependency_resource_ids,omitempty"`
+	MonitorGroups         []string               `json:"monitor_groups,omitempty"`
+	ActionIDs             []ActionRef            `json:"action_ids,omitempty"`
+	ThirdPartyServiceIDs  []string               `json:"third_party_services,omitempty"`
+	TagIDs                []string               `json:"tag_ids,omitempty"`
+}
+
+func (webTransactionBrowserMonitor *WebTransactionBrowserMonitor) SetLocationProfileID(locationProfileID string) {
+	webTransactionBrowserMonitor.LocationProfileID = locationProfileID
+}
+
+func (webTransactionBrowserMonitor *WebTransactionBrowserMonitor) GetLocationProfileID() string {
+	return webTransactionBrowserMonitor.LocationProfileID
+}
+
+func (webTransactionBrowserMonitor *WebTransactionBrowserMonitor) SetNotificationProfileID(notificationProfileID string) {
+	webTransactionBrowserMonitor.NotificationProfileID = notificationProfileID
+}
+
+func (webTransactionBrowserMonitor *WebTransactionBrowserMonitor) GetNotificationProfileID() string {
+	return webTransactionBrowserMonitor.NotificationProfileID
+}
+
+func (webTransactionBrowserMonitor *WebTransactionBrowserMonitor) SetUserGroupIDs(userGroupIDs []string) {
+	webTransactionBrowserMonitor.UserGroupIDs = userGroupIDs
+}
+
+func (webTransactionBrowserMonitor *WebTransactionBrowserMonitor) GetUserGroupIDs() []string {
+	return webTransactionBrowserMonitor.UserGroupIDs
+}
+
+func (webTransactionBrowserMonitor *WebTransactionBrowserMonitor) SetTagIDs(tagIDs []string) {
+	webTransactionBrowserMonitor.TagIDs = tagIDs
+}
+
+func (webTransactionBrowserMonitor *WebTransactionBrowserMonitor) GetTagIDs() []string {
+	return webTransactionBrowserMonitor.TagIDs
+}
+
+func (webTransactionBrowserMonitor *WebTransactionBrowserMonitor) String() string {
+	return ToString(webTransactionBrowserMonitor)
+}
+
 // Denotes the REST API Transaction monitor resource in Site24x7.
 type RestApiTransactionMonitor struct {
 	_              struct{} `type:"structure"` // Enforces key based initialization.

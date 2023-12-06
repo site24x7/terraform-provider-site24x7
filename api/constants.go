@@ -27,4 +27,5 @@ const (
 	HEARTBEAT    MonitorType = "HEARTBEAT"
 	DNS          MonitorType = "DNS"
 	DOMAINEXPIRY MonitorType = "DOMAINEXPIRY"
+	REALBROWSER  MonitorType = "REALBROWSER"
 )
