@@ -49,8 +49,21 @@ provider "site24x7" {
 resource "site24x7_rest_api_transaction_monitor" "rest_api_transaction_monitor_basic" {
   // (Required) Display name for the monitor
   display_name = "REST API Monitor - terraform"
-  // (Required) Website address to monitor.
-  website = "https://dummy.restapiexample.com/"
+  
+  // (Required) List of Steps details to be associated to the steps.
+
+  steps {
+
+      // (Required) Display name for the step
+      display_name = "RestAPI Transaction Monitor"
+
+      // (Required)  API request details related to this step.
+      step_details {
+
+          // (Required) Domain address for the step.
+          step_url = "https://www.example1.com"
+      }
+  }
   // (Optional) Name of the Location Profile that has to be associated with the monitor.
   // Either specify location_profile_id or location_profile_name.
   // If location_profile_id and location_profile_name are omitted,

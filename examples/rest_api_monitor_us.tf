@@ -127,12 +127,6 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
   third_party_service_ids = [
     "4567"
   ]
-
-  // (Optional) Map of custom HTTP headers to send.
-  custom_headers = {
-    "Accept" = "application/json"
-  }
-
   // (Optional) Check for the keyword in the website response.
   matching_keyword = {
  	  severity= 2
