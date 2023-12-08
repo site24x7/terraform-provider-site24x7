@@ -65,12 +65,4 @@ resource "site24x7_website_monitor" "website_monitor_example" {
   // See https://www.site24x7.com/help/api/#check-interval for all supported values.
   check_frequency = "1"
 
-  // (Optional) Name of the Location Profile that has to be associated with the monitor. 
-  // Either specify location_profile_id or location_profile_name.
-  // If location_profile_id and location_profile_name are omitted,
-  // the first profile returned by the /api/location_profiles endpoint
-  // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
-  // used.
-  # location_profile_name = "North America"
-
 }
