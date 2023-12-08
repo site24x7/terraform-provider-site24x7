@@ -74,18 +74,18 @@ resource "site24x7_website_monitor" "website_monitor_example" {
   location_profile_name = "North America"
 
   // (Optional) HTTP Method to be used for accessing the website.Default value is 'G'. 'G' denotes GET, 'P' denotes POST, 'U' denotes PUT and 'D' denotes DELETE. HEAD is not supported.
-  http_method = "P"
+          http_method = "P"
 
-  // (Optional) Provide content type for request params when http_method is 'P'. 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML and 'F' denotes FORM
-  request_content_type = "J"
+          // (Optional) Provide content type for request params when http_method is 'P'. 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML and 'F' denotes FORM
+          request_content_type = "J"
 
-  // (Optional) Provide the content to be passed in the request body while accessing the website.
-  request_body = "{\"user_name\":\"joe\"}"
+          // (Optional) Provide the content to be passed in the request body while accessing the website.
+          request_body = "{\"user_name\":\"joe\"}"
 
-  // (Optional) Map of custom HTTP headers to send.
-  request_headers = {
-    "Accept" = "application/json"
-  }
+          // (Optional) Map of custom HTTP headers to send.
+          request_headers = {
+            "Accept" = "application/json"
+          }
   # tag_ids = [site24x7_tag.tag_us.id]
 }
 
@@ -99,5 +99,5 @@ resource "site24x7_dns_server_monitor" "dns_monitor_basic" {
 
   // (Required) Domain name to be resolved.
   domain_name               = "www.nowatt.com"
-}
+          }
 
