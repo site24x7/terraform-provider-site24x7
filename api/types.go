@@ -193,7 +193,7 @@ type ThresholdProfile struct {
 	Type                   string                   `json:"type"` // Denotes monitor type
 	ProfileName            string                   `json:"profile_name"`
 	ProfileType            int                      `json:"profile_type"` // 1 - Static Threshold or 2 - AI-based Threshold
-	DownLocationThreshold  int                      `json:"down_location_threshold,omitempty"`
+	DownLocationThreshold  int                      `json:"down_location_threshold"`
 	WebsiteContentModified bool                     `json:"website_content_modified,omitempty"`
 	WebsiteContentChanges  []map[string]interface{} `json:"website_content_changes,omitempty"`
 	ReadTimeOut            map[string]interface{}   `json:"read_time_out,omitempty"`
