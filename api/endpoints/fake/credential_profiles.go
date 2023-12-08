@@ -40,3 +40,11 @@ func (e *CredentialProfile) Delete(credentialProfileID string) error {
 	args := e.Called(credentialProfileID)
 	return args.Error(0)
 }
+
+func (c *CredentialProfile) ListWebCredentials() ([]*api.CredentialProfile, error) {
+	args := c.Called()
+	if obj, ok := args.Get(0).([]*api.CredentialProfile); ok {
+		return obj, args.Error(1)
+	}
+	return nil, args.Error(1)
+}
