@@ -89,8 +89,8 @@ resource "site24x7_rest_api_transaction_monitor" "rest_api_transaction_monitor_e
       // (Required) Domain address for the step.
       step_url = "https://www.example1.com"
 
-      // (Optional) Stop on Error severity for the step.
-      severity = "0"
+      // (Optional) Stop on Error severity for the step. '0' means Stop and Notify, '1' means Proceed , '2' means Notify and Proceed
+      on_error = "0"
 
       // (Optional) Check for the keyword in the website response.
       matching_keyword = {
@@ -202,7 +202,7 @@ resource "site24x7_rest_api_transaction_monitor" "rest_api_transaction_monitor_e
 
 * `display_name` (String) Display Name for the monitor.
 * `step_url` (String) Website address to monitor.
-* `severity` (String) Stop on Error severity for the step. '0' means Stop and Notify, '1' means Proceed , '2' means Notify and Proceed
+* `on_error` (String) Stop on Error severity for the step. '0' means Stop and Notify, '1' means Proceed , '2' means Notify and Proceed
 * `step_details` (List)  API request details related to this step. 
 * `steps` (List) List of Steps details to be associated to the steps.
 * `display_name` (String) "Display name for the step"

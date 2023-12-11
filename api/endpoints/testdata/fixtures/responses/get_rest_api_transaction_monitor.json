@@ -39,7 +39,7 @@
           }]
         },
         "step_url": "www.test.tld",
-        "severity":"0"
+        "on_error":"0"
       }]
     },
     {
@@ -76,7 +76,7 @@
           }]
         },
         "step_url": "www.test.tld",
-        "severity":"0"
+        "on_error":"0"
       }]
     }
     ],

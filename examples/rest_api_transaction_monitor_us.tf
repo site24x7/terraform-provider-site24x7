@@ -151,8 +151,8 @@ resource "site24x7_rest_api_transaction_monitor" "rest_api_transaction_monitor_e
           // (Required) Domain address for the step.
           step_url = "https://www.example1.com"
 
-          // (Optional) Stop on Error severity for the step.
-          severity = 2
+          // (Optional) Stop on Error severity for the step. '0' means Stop and Notify, '1' means Proceed , '2' means Notify and Proceed.
+          on_error = 2
 
           // (Optional)  Timeout for connecting to REST API Default value is 10. Range 1 - 45.
           timeout = 10
