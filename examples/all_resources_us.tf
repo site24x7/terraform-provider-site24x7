@@ -100,12 +100,7 @@ resource "site24x7_website_monitor" "website_monitor_example" {
   // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
   // used.
   location_profile_name = "North America"
-
-  // (Optional) Map of custom HTTP headers to send.
-  custom_headers = {
-    "Accept" = "application/json"
-  }
-
+  
   // (Optional) Map of HTTP response headers to check.
   response_headers_severity = 0 // Can take values 0 or 2. '0' denotes Down and '2' denotes Trouble.
   response_headers = {
@@ -136,11 +131,6 @@ resource "site24x7_website_monitor" "web_monitor_us" {
   // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
   // used.
   location_profile_name = "North America"
-
-  // (Optional) Map of custom HTTP headers to send.
-  custom_headers = {
-    "Accept" = "application/json"
-  }
 
   // (Optional) Map of HTTP response headers to check.
   response_headers_severity = 0 // Can take values 0 or 2. '0' denotes Down and '2' denotes Trouble.
@@ -214,11 +204,6 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
   third_party_service_ids = [
     "4567"
   ]
-
-  // (Optional) Map of custom HTTP headers to send.
-  custom_headers = {
-    "Accept" = "application/json"
-  }
 
   // (Optional) Map of HTTP response headers to check.
   response_headers_severity = 0 // Can take values 0 or 2. '0' denotes Down and '2' denotes Trouble.

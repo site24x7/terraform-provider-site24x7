@@ -85,6 +85,7 @@ type Steps struct {
 type StepDetails struct {
 	StepId      string `json:"step_id,omitempty"`
 	StepUrl     string `json:"step_url"`
+	StopOnErr   int    `json:"severity"`
 	DisplayName string `json:"display_name"`
 	// HTTP Configuration
 	Timeout                   string                 `json:"timeout"`
