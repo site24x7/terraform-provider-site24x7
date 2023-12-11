@@ -33,7 +33,7 @@
       "response_type": "T",
       "ssl_protocol": "Auto",
       "step_url": "www.test.tld",
-      "on_error":"0",
+      "on_error":0,
       "timeout": 10,
       "use_alpn": false,
       "use_name_server": true,

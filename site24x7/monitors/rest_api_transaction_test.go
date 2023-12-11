@@ -462,7 +462,7 @@ func restApiTransactionMonitorTestResourceData(t *testing.T) *schema.ResourceDat
 				"step_details": []interface{}{
 					map[string]interface{}{
 						"step_url":                    "www.test.tld",
-						"on_error":                    "0",
+						"on_error":                    0,
 						"timeout":                     10,
 						"http_method":                 "G",
 						"http_protocol":               "H1.1",
@@ -493,7 +493,7 @@ func restApiTransactionMonitorTestResourceData(t *testing.T) *schema.ResourceDat
 				"step_details": []interface{}{
 					map[string]interface{}{
 						"step_url":                    "www.test.tld",
-						"on_error":                    "0",
+						"on_error":                    0,
 						"timeout":                     10,
 						"http_method":                 "G",
 						"http_protocol":               "H1.1",
