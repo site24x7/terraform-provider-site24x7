@@ -147,7 +147,7 @@ type WebPageSpeedMonitor struct {
 	Website        string   `json:"website"`
 	CheckFrequency string   `json:"check_frequency"`
 	Timeout        int      `json:"timeout"`
-	UseIPV6        bool     `json:"use_ipv6"`
+	IPType         int      `json:"ip_type"`
 	WebsiteType    int      `json:"website_type"`
 	BrowserType    int      `json:"browser_type"`
 	BrowserVersion int      `json:"browser_version"`

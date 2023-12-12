@@ -19,7 +19,7 @@ import (
 // 	"http_method": "G",
 //  "auth_user": "user name",
 //  "auth_pass": "user pass",
-// 	"use_ipv6": false,
+// 	"ip_type": 2,
 
 // 	"browser_type": 3,
 // 	"device_type": "1",
@@ -104,15 +104,16 @@ var webPageSpeedMonitorSchema = map[string]*schema.Schema{
 		Default:     30,
 		Description: "Timeout for connecting to website. Default value is 30. Range 1 - 45.",
 	},
-	"use_ipv6": {
-		Type:        schema.TypeBool,
-		Optional:    true,
-		Description: "Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure.",
-	},
-	"website_type": {
+	"ip_type": {
 		Type:        schema.TypeInt,
 		Optional:    true,
-		Default:     1,
+		Default:     2,
+		Description: "Monitoring is performed over IPv4 or IPv6 based on the value specified. 0 - use only IPv4, 1 - use only IPv6, 2 - use both IPv4 and IPv6.",
+	},
+	"website_type": {
+		Type:     schema.TypeInt,
+		Optional: true,
+		Default:  1,
 		Description: "Type of content the website page has. 1 - Static Website,	2 - Dynamic Website, 3 - Flash-Based Website.",
 	},
 	"browser_type": {
@@ -482,7 +483,7 @@ func resourceDataToWebPageSpeedMonitor(d *schema.ResourceData, client site24x7.C
 		Website:        d.Get("website").(string),
 		CheckFrequency: d.Get("check_frequency").(string),
 		Timeout:        d.Get("timeout").(int),
-		UseIPV6:        d.Get("use_ipv6").(bool),
+		IPType:         d.Get("ip_type").(int),
 		WebsiteType:    d.Get("website_type").(int),
 		BrowserType:    d.Get("browser_type").(int),
 		BrowserVersion: d.Get("browser_version").(int),
@@ -572,7 +573,7 @@ func updateWebPageSpeedMonitorResourceData(d *schema.ResourceData, monitor *api.
 	d.Set("website", monitor.Website)
 	d.Set("check_frequency", monitor.CheckFrequency)
 	d.Set("timeout", monitor.Timeout)
-	d.Set("use_ipv6", monitor.UseIPV6)
+	d.Set("ip_type", monitor.IPType)
 	d.Set("website_type", monitor.WebsiteType)
 	d.Set("browser_type", monitor.BrowserType)
 	d.Set("browser_version", monitor.BrowserVersion)

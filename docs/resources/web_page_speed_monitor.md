@@ -36,8 +36,8 @@ resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_example" {
   // (Optional) Timeout for connecting to the website. Range 1 - 45. Default: 30
   timeout = 40
 
-  // (Optional) Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure. 
-  use_ipv6 = false
+  // (Optional) Monitoring is performed over IPv4 or IPv6 based on the value specified. 0 - use only IPv4, 1 - use only IPv6, 2 - use both IPv4 and IPv6. Default value is 2.
+  ip_type = 1
 
   // (Optional) Type of content the website page has. 1 - Static Website,	2 - Dynamic Website, 3 - Flash-Based Website. Default value is 1.
   website_type = 2
@@ -213,7 +213,7 @@ resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_example" {
 * `id` (String) The ID of this resource.
 * `check_frequency` (String) Interval at which your website has to be monitored. Default value is 1 minute.
 * `timeout` (Number) Timeout for connecting to website. Default value is 10. Range 1 - 45.
-* `use_ipv6` (Number) Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure.
+* `ip_type` (Number) Monitoring is performed over IPv4 or IPv6 based on the value specified. 0 - use only IPv4, 1 - use only IPv6, 2 - use both IPv4 and IPv6. Default value is 2.
 * `website_type` (Number) Type of content the website page has. 1 - Static Website,	2 - Dynamic Website, 3 - Flash-Based Website. Default value is 1.
 * `device_type` (String) Type of the device used for running the speed test. 1 - Desktop, 2 - Mobile, 3 - Tab. Default value is "1".
 * `browser_type` (Number) Type of the browser. 1 - Firefox, 2 - Chrome. Default value is 1.
