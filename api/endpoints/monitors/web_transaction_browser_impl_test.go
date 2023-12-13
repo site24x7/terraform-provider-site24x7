@@ -13,21 +13,31 @@ import (
 func TestWebTransactionBrowserMonitors(t *testing.T) {
 	validation.RunTests(t, []*validation.EndpointTest{
 		{
-			Name:         "create rest api monitor",
+			Name:         "create web transaction browser monitor",
 			ExpectedVerb: "POST",
 			ExpectedPath: "/monitors",
-			ExpectedBody: validation.Fixture(t, "requests/create_rest_ api_monitor.json"),
+			ExpectedBody: validation.Fixture(t, "requests/create_web_transaction_browser_monitor.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
 				webTransactionBrowserMonitor := &api.WebTransactionBrowserMonitor{
-					DisplayName:           "foo",
-					Type:                  string(api.REALBROWSER),
-					LocationProfileID:     "456",
-					NotificationProfileID: "789",
-					MonitorGroups:         []string{"234", "567"},
-					UserGroupIDs:          []string{"123", "456"},
-					TagIDs:                []string{"123"},
+					DisplayName:        "RBM-Terraform",
+					Type:               string(api.REALBROWSER),
+					BaseURL:            "https://www.example.com/",
+					AsyncDCEnabled:     false,
+					CheckFrequency:     "15",
+					IgnoreCertError:    false,
+					IPType:             0,
+					SeleniumScript:     "Script for the monitor",
+					ScriptType:         "txt",
+					ThresholdProfileId: "789",
+					PageLoadTime:       0,
+					PerformAutomation:  false,
+					Resolution:         "1600,900",
+					LocationProfileID:  "456",
+					MonitorGroups:      []string{"234", "567"},
+					UserGroupIDs:       []string{"123", "456"},
+					TagIDs:             []string{"123"},
 				}
 
 				_, err := NewWebTransactionBrowserMonitors(c).Create(webTransactionBrowserMonitor)
@@ -35,56 +45,71 @@ func TestWebTransactionBrowserMonitors(t *testing.T) {
 			},
 		},
 		{
-			Name:         "get rest api monitor",
+			Name:         "get web transaction browser monitor",
 			ExpectedVerb: "GET",
 			ExpectedPath: "/monitors/897654345678",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "responses/get_rest_api_monitor.json"),
+			ResponseBody: validation.Fixture(t, "responses/get_web_transaction_browser_monitor.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				webTransactionBrowserMonitor, err := NewWebTransactionBrowserMonitors(c).Get("897654345678")
 				require.NoError(t, err)
 
 				expected := &api.WebTransactionBrowserMonitor{
-					MonitorID:             "897654345678",
-					DisplayName:           "foo",
-					Type:                  string(api.RESTAPI),
-					LocationProfileID:     "456",
-					NotificationProfileID: "789",
-					MonitorGroups:         []string{"234", "567"},
-					UserGroupIDs:          []string{"123", "456"},
+					MonitorID:          "897654345678",
+					DisplayName:        "RBM-Terraform",
+					Type:               string(api.REALBROWSER),
+					BaseURL:            "https://www.example.com/",
+					SeleniumScript:     "Script for the monitor",
+					ScriptType:         "txt",
+					ThresholdProfileId: "789",
+					Resolution:         "1600,900",
+					LocationProfileID:  "456",
+					MonitorGroups:      []string{"234", "567"},
+					UserGroupIDs:       []string{"123", "456"},
+					TagIDs:             []string{"123"},
 				}
 
 				assert.Equal(t, expected, webTransactionBrowserMonitor)
 			},
 		},
 		{
-			Name:         "list rest api monitors",
+			Name:         "list eb transaction browser monitors",
 			ExpectedVerb: "GET",
 			ExpectedPath: "/monitors",
 			StatusCode:   200,
-			ResponseBody: validation.Fixture(t, "responses/list_rest_api_monitors.json"),
+			ResponseBody: validation.Fixture(t, "responses/list_web_transaction_browser_monitor.json"),
 			Fn: func(t *testing.T, c rest.Client) {
 				webTransactionBrowserMonitor, err := NewWebTransactionBrowserMonitors(c).List()
 				require.NoError(t, err)
 
 				expected := []*api.WebTransactionBrowserMonitor{
 					{
-						MonitorID:             "897654345678",
-						DisplayName:           "foo",
-						Type:                  string(api.REALBROWSER),
-						LocationProfileID:     "456",
-						NotificationProfileID: "789",
-						MonitorGroups:         []string{"234", "567"},
-						UserGroupIDs:          []string{"123", "456"},
+						MonitorID:          "897654345678",
+						DisplayName:        "RBM-Terraform",
+						Type:               string(api.REALBROWSER),
+						BaseURL:            "https://www.example.com/",
+						SeleniumScript:     "Script for the monitor",
+						ScriptType:         "txt",
+						ThresholdProfileId: "789",
+						Resolution:         "1600,900",
+						LocationProfileID:  "456",
+						MonitorGroups:      []string{"234", "567"},
+						UserGroupIDs:       []string{"123", "456"},
+						TagIDs:             []string{"123"},
 					},
 					{
-						MonitorID:             "933654345678",
-						DisplayName:           "foo",
-						Type:                  string(api.REALBROWSER),
-						LocationProfileID:     "456",
-						NotificationProfileID: "789",
-						MonitorGroups:         []string{"234", "567"},
-						UserGroupIDs:          []string{"123", "456"},
+						MonitorID:          "987554574575",
+						DisplayName:        "RBM-Terraform",
+						Type:               string(api.REALBROWSER),
+						BaseURL:            "https://www.example.com/",
+						SeleniumScript:     "Script for the monitor",
+						ScriptType:         "txt",
+						ThresholdProfileId: "789",
+						Resolution:         "1600,900",
+						LocationProfileID:  "456",
+						MonitorGroups:      []string{"234", "567"},
+						UserGroupIDs:       []string{"123", "456"},
+						TagIDs:             []string{"123"},
 					},
 				}
 
@@ -92,22 +117,31 @@ func TestWebTransactionBrowserMonitors(t *testing.T) {
 			},
 		},
 		{
-			Name:         "update rest api monitor",
+			Name:         "update web transaction browser monitor",
 			ExpectedVerb: "PUT",
-			ExpectedPath: "/monitors/123",
-			ExpectedBody: validation.Fixture(t, "requests/update_rest_api_monitor.json"),
+			ExpectedPath: "/monitors/897654345678",
+			ExpectedBody: validation.Fixture(t, "requests/update_web_transaction_browser_monitor.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
 				webTransactionBrowserMonitor := &api.WebTransactionBrowserMonitor{
-					MonitorID:             "123",
-					DisplayName:           "foo",
-					Type:                  string(api.RESTAPI),
-					LocationProfileID:     "456",
-					NotificationProfileID: "789",
-					MonitorGroups:         []string{"234", "567"},
-					UserGroupIDs:          []string{"123", "456"},
-					TagIDs:                []string{"123"},
+					MonitorID:          "897654345678",
+					DisplayName:        "RBM-Terraform",
+					Type:               string(api.REALBROWSER),
+					BaseURL:            "https://www.example.com/",
+					AsyncDCEnabled:     false,
+					BrowserVersion:     0,
+					CheckFrequency:     "15",
+					IgnoreCertError:    false,
+					IPType:             0,
+					ThresholdProfileId: "789",
+					PageLoadTime:       0,
+					PerformAutomation:  false,
+					Resolution:         "1600,900",
+					LocationProfileID:  "456",
+					MonitorGroups:      []string{"234", "567"},
+					UserGroupIDs:       []string{"123", "456"},
+					TagIDs:             []string{"123"},
 				}
 
 				_, err := NewWebTransactionBrowserMonitors(c).Update(webTransactionBrowserMonitor)
@@ -115,12 +149,12 @@ func TestWebTransactionBrowserMonitors(t *testing.T) {
 			},
 		},
 		{
-			Name:         "delete rest api monitor",
+			Name:         "delete web transaction browser monitor",
 			ExpectedVerb: "DELETE",
-			ExpectedPath: "/monitors/123",
+			ExpectedPath: "/monitors/897654345678",
 			StatusCode:   200,
 			Fn: func(t *testing.T, c rest.Client) {
-				require.NoError(t, NewWebTransactionBrowserMonitors(c).Delete("123"))
+				require.NoError(t, NewWebTransactionBrowserMonitors(c).Delete("897654345678"))
 			},
 		},
 	})
