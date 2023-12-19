@@ -21,7 +21,9 @@ resource "site24x7_telegram_integration" "telegram_integration" {
   // (Required) Web URL of your telegram channel to which the message will be posted.
   channel_url    = "https://web.telegram.org/z/#-86576685"
   // (Required) Bot token created by botfather.
-  token    = "5334957868:ARTHGBHHmnzFiWfmzab-u-Ytrqs68dzom-TI8"
+  token    = "3468:zFiWfmzab-u-rom-TI8"
+  // (Required) Title of the incident.
+  title = "Website is Down"
   // (Optional) Resource Type associated with this integration. Default value is '0'. Can take values 0|2|3. '0' denotes 'All Monitors', '2' denotes 'Monitors', '3' denotes 'Tags'
   selection_type = 0
   // (Optional) Setting this to 'true' will send alert notifications to this third-party integration when the monitor status changes to 'Trouble'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications. Default value is 'true'.
@@ -48,7 +50,7 @@ resource "site24x7_telegram_integration" "telegram_integration" {
 * `name` (String) Display name for the integration.
 * `channel_url` (String) Web URL of your telegram channel to which the message will be posted.
 * `token` (String) Bot token created by botfather.
-
+* `title` (String) Title of the incident.
 
 
 ### Optional
