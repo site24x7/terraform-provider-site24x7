@@ -37,7 +37,7 @@ resource "site24x7_threshold_profile" "website_threshold_profile_us" {
     value = 95
   }
   // (Optional) Triggers alert when not receiving the website entire HTTP response within 30 seconds.
-  read_time_out {
+  read_time_out = {
     severity = 3
     value =true
   }
