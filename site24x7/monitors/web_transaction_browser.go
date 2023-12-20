@@ -39,6 +39,7 @@ var WebTransactionBrowserMonitorSchema = map[string]*schema.Schema{
 	},
 	"check_frequency": {
 		Type:        schema.TypeString,
+		Default:     15,
 		Optional:    true,
 		Description: "Check interval for monitoring.",
 	},
@@ -62,16 +63,19 @@ var WebTransactionBrowserMonitorSchema = map[string]*schema.Schema{
 	},
 	"think_time": {
 		Type:        schema.TypeInt,
+		Default:     1,
 		Optional:    true,
 		Description: "Think time between each steps",
 	},
 	"page_load_time": {
 		Type:        schema.TypeInt,
+		Default:     60,
 		Optional:    true,
 		Description: "Timeout for page load.",
 	},
 	"resolution": {
 		Type:        schema.TypeString,
+		Default:     "1600,900",
 		Optional:    true,
 		Description: "Screen resolution for running the script.",
 	},
@@ -117,6 +121,7 @@ var WebTransactionBrowserMonitorSchema = map[string]*schema.Schema{
 	"threshold_profile_id": {
 		Type:        schema.TypeString,
 		Optional:    true,
+		Computed:    true,
 		Description: "Threshold profile to be associated with the monitor.",
 	},
 	"user_agent": {
@@ -469,6 +474,14 @@ func resourceDataToWebTransactionBrowserMonitorCreate(d *schema.ResourceData, cl
 	_, tagsErr := site24x7.SetTags(client, d, webTransactionBrowserMonitor)
 	if tagsErr != nil {
 		return nil, tagsErr
+	}
+	if webTransactionBrowserMonitor.ThresholdProfileId == "" {
+		profile, err := site24x7.DefaultThresholdProfile(client, api.REALBROWSER)
+		if err != nil {
+			return nil, err
+		}
+		webTransactionBrowserMonitor.ThresholdProfileId = profile.ProfileID
+		d.Set("threshold_profile_id", profile)
 	}
 	return webTransactionBrowserMonitor, nil
 }

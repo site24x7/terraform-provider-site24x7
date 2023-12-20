@@ -366,21 +366,21 @@ func (restApiMonitor *RestApiMonitor) String() string {
 type WebTransactionBrowserMonitor struct {
 	_                     struct{}               `type:"structure"` // Enforces key based initialization.
 	MonitorID             string                 `json:"monitor_id,omitempty"`
-	DisplayName           string                 `json:"display_name,omitempty"`
-	Type                  string                 `json:"type,omitempty"`
+	DisplayName           string                 `json:"display_name"`
+	Type                  string                 `json:"type"`
 	BaseURL               string                 `json:"base_url"`
 	SeleniumScript        string                 `json:"selenium_script,omitempty"`
 	ScriptType            string                 `json:"script_type,omitempty"`
-	PerformAutomation     bool                   `json:"perform_automation"`
-	CheckFrequency        string                 `json:"check_frequency"`
-	AsyncDCEnabled        bool                   `json:"async_dc_enabled"`
+	PerformAutomation     bool                   `json:"perform_automation,omitempty"`
+	CheckFrequency        string                 `json:"check_frequency,omitempty"`
+	AsyncDCEnabled        bool                   `json:"async_dc_enabled,omitempty"`
 	BrowserType           int                    `json:"browser_type,omitempty"`
 	ThinkTime             int                    `json:"think_time,omitempty"`
-	IgnoreCertError       bool                   `json:"ignore_cert_err"`
-	IPType                int                    `json:"ip_type"`
+	IgnoreCertError       bool                   `json:"ignore_cert_err,omitempty"`
+	IPType                int                    `json:"ip_type,omitempty"`
 	UserAgent             string                 `json:"user_agent,omitempty"`
-	BrowserVersion        int                    `json:"browser_version"`
-	PageLoadTime          int                    `json:"page_load_time"`
+	BrowserVersion        int                    `json:"browser_version,omitempty"`
+	PageLoadTime          int                    `json:"page_load_time,omitempty"`
 	Resolution            string                 `json:"resolution,omitempty"`
 	ProxyDetails          map[string]interface{} `json:"proxy_details,omitempty"`
 	AuthDetails           map[string]interface{} `json:"auth_details,omitempty"`
