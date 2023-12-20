@@ -436,7 +436,7 @@ func resourceDataToWebTransactionBrowserMonitorCreate(d *schema.ResourceData, cl
 		//ParallelPolling:       d.Get("parallel_polling").(bool),
 		LocationProfileID:     d.Get("location_profile_id").(string),
 		NotificationProfileID: d.Get("notification_profile_id").(string),
-		ThresholdProfileId:    d.Get("threshold_profile_id").(string),
+		ThresholdProfileID:    d.Get("threshold_profile_id").(string),
 		OnCallScheduleID:      d.Get("on_call_schedule_id").(string),
 		Cookies:               cookies,
 		DependencyResourceIDs: dependencyResourceIDs,
@@ -475,12 +475,12 @@ func resourceDataToWebTransactionBrowserMonitorCreate(d *schema.ResourceData, cl
 	if tagsErr != nil {
 		return nil, tagsErr
 	}
-	if webTransactionBrowserMonitor.ThresholdProfileId == "" {
+	if webTransactionBrowserMonitor.ThresholdProfileID == "" {
 		profile, err := site24x7.DefaultThresholdProfile(client, api.REALBROWSER)
 		if err != nil {
 			return nil, err
 		}
-		webTransactionBrowserMonitor.ThresholdProfileId = profile.ProfileID
+		webTransactionBrowserMonitor.ThresholdProfileID = profile.ProfileID
 		d.Set("threshold_profile_id", profile)
 	}
 	return webTransactionBrowserMonitor, nil
@@ -501,7 +501,7 @@ func updateWebTransactionBrowserMonitorResourceData(d *schema.ResourceData, moni
 	d.Set("resolution", monitor.Resolution)
 	d.Set("location_profile_id", monitor.LocationProfileID)
 	d.Set("notification_profile_id", monitor.NotificationProfileID)
-	d.Set("threshold_profile_id", monitor.ThresholdProfileId)
+	d.Set("threshold_profile_id", monitor.ThresholdProfileID)
 	d.Set("user_group_ids", monitor.UserGroupIDs)
 	d.Set("on_call_schedule_id", monitor.OnCallScheduleID)
 	d.Set("monitor_groups", monitor.MonitorGroups)

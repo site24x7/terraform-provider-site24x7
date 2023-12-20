@@ -385,7 +385,7 @@ type WebTransactionBrowserMonitor struct {
 	ProxyDetails          map[string]interface{} `json:"proxy_details,omitempty"`
 	AuthDetails           map[string]interface{} `json:"auth_details,omitempty"`
 	Cookies               []Header               `json:"cookies,omitempty"`
-	ThresholdProfileId    string                 `json:"threshold_profile_id,omitempty"`
+	ThresholdProfileID    string                 `json:"threshold_profile_id,omitempty"`
 	LocationProfileID     string                 `json:"location_profile_id"`
 	NotificationProfileID string                 `json:"notification_profile_id"`
 	UserGroupIDs          []string               `json:"user_group_ids,omitempty"`
