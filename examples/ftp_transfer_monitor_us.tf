@@ -52,8 +52,7 @@ provider "site24x7" {
 resource "site24x7_ftp_transfer_monitor" "ftp_transfer_monitor_basic" {
   // (Required) Display name for the monitor
   display_name = "FTP Transfer Monitor - Terraform"
-  hostname = "status_check"
+  host_name = "status_check"
   user_name="sas"
   destination="/home/sas/"
-  protocol="FTP"
 }
