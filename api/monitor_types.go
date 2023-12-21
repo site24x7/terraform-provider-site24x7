@@ -489,6 +489,72 @@ func (restApiTransactionMonitor *RestApiTransactionMonitor) String() string {
 	return ToString(restApiTransactionMonitor)
 }
 
+// Denotes the FTP Transfer monitor resource in Site24x7.
+type FTPTransferMonitor struct {
+	_                     struct{}    `type:"structure"` // Enforces key based initialization.
+	MonitorID             string      `json:"monitor_id,omitempty"`
+	DisplayName           string      `json:"display_name"`
+	HostName              string      `json:"host_name"`
+	Protocol              string      `json:"protocol"`
+	Type                  string      `json:"type"`
+	Port                  int         `json:"port"` // To Fix: API accepts int and returns string in response.
+	CheckFrequency        string      `json:"check_frequency"`
+	Timeout               int         `json:"timeout"`
+	CheckUpload           bool        `json:"check_upload"`
+	CheckDownload         bool        `json:"check_download"`
+	Username              string      `json:"user_name"`
+	Password              string      `json:"password"`
+	Destination           string      `json:"destination"`
+	LocationProfileID     string      `json:"location_profile_id"`
+	MonitorGroups         []string    `json:"monitor_groups,omitempty"`
+	CredentialProfileID   string      `json:"credential_profile_id,omitempty"`
+	DependencyResourceIDs []string    `json:"dependency_resource_ids,omitempty"`
+	ThresholdProfileID    string      `json:"threshold_profile_id"`
+	TagIDs                []string    `json:"tag_ids,omitempty"`
+	PerformAutomation     bool        `json:"perform_automation"`
+	ActionIDs             []ActionRef `json:"action_ids,omitempty"`
+	UserGroupIDs          []string    `json:"user_group_ids,omitempty"`
+	OnCallScheduleID      string      `json:"on_call_schedule_id,omitempty"`
+	NotificationProfileID string      `json:"notification_profile_id"`
+	ThirdPartyServiceIDs  []string    `json:"third_party_services,omitempty"`
+}
+
+func (ftpTransferMonitor *FTPTransferMonitor) SetLocationProfileID(locationProfileID string) {
+	ftpTransferMonitor.LocationProfileID = locationProfileID
+}
+
+func (ftpTransferMonitor *FTPTransferMonitor) GetLocationProfileID() string {
+	return ftpTransferMonitor.LocationProfileID
+}
+
+func (ftpTransferMonitor *FTPTransferMonitor) SetNotificationProfileID(notificationProfileID string) {
+	ftpTransferMonitor.NotificationProfileID = notificationProfileID
+}
+
+func (ftpTransferMonitor *FTPTransferMonitor) GetNotificationProfileID() string {
+	return ftpTransferMonitor.NotificationProfileID
+}
+
+func (ftpTransferMonitor *FTPTransferMonitor) SetUserGroupIDs(userGroupIDs []string) {
+	ftpTransferMonitor.UserGroupIDs = userGroupIDs
+}
+
+func (ftpTransferMonitor *FTPTransferMonitor) GetUserGroupIDs() []string {
+	return ftpTransferMonitor.UserGroupIDs
+}
+
+func (ftpTransferMonitor *FTPTransferMonitor) String() string {
+	return ToString(ftpTransferMonitor)
+}
+
+func (ftpTransferMonitor *FTPTransferMonitor) SetTagIDs(tagIDs []string) {
+	ftpTransferMonitor.TagIDs = tagIDs
+}
+
+func (ftpTransferMonitor *FTPTransferMonitor) GetTagIDs() []string {
+	return ftpTransferMonitor.TagIDs
+}
+
 // Denotes the Amazon monitor resource in Site24x7.
 type AmazonMonitor struct {
 	_                     struct{} `type:"structure"` // Enforces key based initialization.

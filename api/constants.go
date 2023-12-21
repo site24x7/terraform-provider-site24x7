@@ -28,4 +28,5 @@ const (
 	DNS          MonitorType = "DNS"
 	DOMAINEXPIRY MonitorType = "DOMAINEXPIRY"
 	REALBROWSER  MonitorType = "REALBROWSER"
+	FTP          MonitorType = "FTP"
 )
