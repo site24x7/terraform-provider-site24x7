@@ -503,8 +503,8 @@ type FTPTransferMonitor struct {
 	CheckUpload           bool        `json:"check_upload"`
 	CheckDownload         bool        `json:"check_download"`
 	Username              string      `json:"user_name"`
-	Password              string      `json:"password"`
-	Destination           string      `json:"destination"`
+	Password              string      `json:"password,omitempty"`
+	Destination           string      `json:"destination,omitempty"`
 	LocationProfileID     string      `json:"location_profile_id"`
 	MonitorGroups         []string    `json:"monitor_groups,omitempty"`
 	CredentialProfileID   string      `json:"credential_profile_id,omitempty"`

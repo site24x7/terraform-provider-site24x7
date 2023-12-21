@@ -24,6 +24,7 @@ var FTPTransferMonitorSchema = map[string]*schema.Schema{
 	"protocol": {
 		Type:        schema.TypeString,
 		Optional:    true,
+		Default:     "FTP",
 		Description: "HTTPS,SMTPS,POPS,IMAPS,FTPS or CUSTOM",
 	},
 	"type": {
@@ -34,7 +35,7 @@ var FTPTransferMonitorSchema = map[string]*schema.Schema{
 	"port": {
 		Type:        schema.TypeInt,
 		Optional:    true,
-		Default:     443,
+		Default:     21,
 		Description: "Who is Server Port",
 	},
 	"check_frequency": {
@@ -58,6 +59,7 @@ var FTPTransferMonitorSchema = map[string]*schema.Schema{
 	"check_download": {
 		Type:        schema.TypeBool,
 		Optional:    true,
+		Default:     true,
 		Description: "To check download or not",
 	},
 	"user_name": {
