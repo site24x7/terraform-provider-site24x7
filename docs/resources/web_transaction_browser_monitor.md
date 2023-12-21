@@ -56,7 +56,7 @@ Use this resource to create, upda te and delete a Web-Transaction-Browser monito
   // omitted, the first profile returned by the /api/threshold_profiles
   // endpoint for the HEARTBEAT monitor type (https://www.site24x7.com/help/api/#list-threshold-profiles) will
   // be used.
-  threshold_profile_id = "456418000000210001"
+  threshold_profile_id = "456418000342341"
 
   // (Optional) Notification profile to be associated with the monitor. If
   // omitted, the first profile returned by the /api/notification_profiles
@@ -124,23 +124,24 @@ Use this resource to create, upda te and delete a Web-Transaction-Browser monito
 * `base_url`     (String) BaseURL of the transaction.
 * `selenium_script`(String)Recorded Trasanction script to create a monitor.
 * `script_type`   (String)Recorded transaction script type.(txt , side)
-* `check_frequency` (String)Check interval for monitoring.
-* `threshold_profile_id` (String) Threshold profile to be associated with the monitor.
-* `page_load_time` Timeout for page load.
-* `cookies` Cookies for Advanced settings
+* `proxy_details` (List of String) Proxy checking in the web response
+* `cookies` (Map of String) Cookies for Advanced settings
 ### Optional
 * `display_name` (String) Display Name for the monitor.
 * `type`         (String) REALBROWSER.
-* `async_dc_enabled` (Boolean)When asynchronous data collection is enabled, polling will be carried out from all the locations at the same time. If it is disabled, polling will be done consecutively from the selected locations.
-* `think_time`  Think time between each steps.
-* `parallel_polling` Enable parallel polling to initiate data collection from all the configured monitoring locations simultaneously during hourly polls
-* `perform_automation` Check box to do automation or not
-* `resolution`  Screen resolution for running the script.
+* `check_frequency` (String)Check interval for monitoring.
+* `threshold_profile_id` (String) Threshold profile to be associated with the monitor.
+* `page_load_time` (Number)Timeout for page load.
+* `async_dc_enabled` (Boolean) When asynchronous data collection is enabled, polling will be carried out from all the locations at the same time. If it is disabled, polling will be done consecutively from the selected locations.
+* `think_time`  (Number)Think time between each steps.
+<!-- * `parallel_polling` Enable parallel polling to initiate data collection from all the configured monitoring locations simultaneously during hourly polls -->
+* `perform_automation` (Boolean) Check box to do automation or not
+* `resolution` (String) Screen resolution for running the script.
 * `browser_type` (int)Choose the browser type. 
 * `browser_version`(int)choose the browser version
 * `id` (String) The ID of this resource.
-* `ip_type` Whether ipv6 or ipv4
-* `ignore_cert_err` ssl certificate configuration for the monitor
+* `ip_type` (Boolean)Whether ipv6 or ipv4
+* `ignore_cert_err` (Boolean) ssl certificate configuration for the monitor
 * `notification_profile_id` (String) Notification profile to be associated with the monitor. Either specify notification_profile_id or notification_profile_name. If notification_profile_id and notification_profile_name are omitted, the first profile returned by the /api/notification_profiles endpoint will be used.
 * `notification_profile_name` (String) Name of the notification profile to be associated with the monitor. Profile name matching works for both exact and partial match.
 * `monitor_groups` (List of String) List of monitor groups to which the monitor has to be associated.

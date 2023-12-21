@@ -1,9 +1,12 @@
 package monitors
 
 import (
+	"fmt"
 	"log"
+	"net/url"
 	"sort"
 	"strconv"
+	"strings"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/site24x7/terraform-provider-site24x7/api"
@@ -306,6 +309,9 @@ func webTransactionBrowserMonitorUpdate(d *schema.ResourceData, meta interface{}
 		return err
 	}
 
+	webTransactionBrowserMonitor.SeleniumScript = ""
+	webTransactionBrowserMonitor.ScriptType = ""
+
 	webTransactionBrowserMonitor, err = client.WebTransactionBrowserMonitors().Update(webTransactionBrowserMonitor)
 	if err != nil {
 		return err
@@ -482,6 +488,25 @@ func resourceDataToWebTransactionBrowserMonitorCreate(d *schema.ResourceData, cl
 		}
 		webTransactionBrowserMonitor.ThresholdProfileID = profile.ProfileID
 		d.Set("threshold_profile_id", profile)
+	}
+	if webTransactionBrowserMonitor.DisplayName == "" {
+
+		urlString := d.Get("base_url").(string)
+
+		parsedURL, err := url.Parse(urlString)
+		if err != nil {
+			return nil, err
+		}
+
+		// Extract domain name (without subdomain)
+		hostnameParts := strings.Split(parsedURL.Hostname(), ".")
+		var domain = ""
+		if len(hostnameParts) >= 2 {
+			domain = "RBM-" + hostnameParts[len(hostnameParts)-2] // Get the second-to-last part
+			fmt.Println("Domain:", domain)
+		}
+		webTransactionBrowserMonitor.DisplayName = domain
+		d.Set("display_name", "RBM-"+domain)
 	}
 	return webTransactionBrowserMonitor, nil
 }
