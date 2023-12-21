@@ -60,7 +60,7 @@ var WebTransactionBrowserMonitorSchema = map[string]*schema.Schema{
 	},
 	"browser_version": {
 		Type:        schema.TypeInt,
-		Default:     1,
+		Default:     10101,
 		Optional:    true,
 		Description: "Choose the browser version",
 	},
