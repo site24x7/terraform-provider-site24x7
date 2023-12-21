@@ -137,7 +137,7 @@ var FTPTransferMonitorSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Description: "To perform automation or not",
 	},
-	"action_ids": {
+	"actions": {
 		Type:        schema.TypeMap,
 		Optional:    true,
 		Elem:        schema.TypeString,
@@ -313,25 +313,21 @@ func resourceDataToFTPTransferMonitor(d *schema.ResourceData, client site24x7.Cl
 		}
 	}
 
-	var actionRefs []api.ActionRef
-	if actionData, ok := d.GetOk("actions"); ok {
-		actionMap := actionData.(map[string]interface{})
-		actionKeys := make([]string, 0, len(actionMap))
-		for k := range actionMap {
-			actionKeys = append(actionKeys, k)
+	actionMap := d.Get("actions").(map[string]interface{})
+	var keys = make([]string, 0, len(actionMap))
+	for k := range actionMap {
+		keys = append(keys, k)
+	}
+	sort.Strings(keys)
+	actionRefs := make([]api.ActionRef, len(keys))
+	for i, k := range keys {
+		status, err := strconv.Atoi(k)
+		if err != nil {
+			return nil, err
 		}
-		sort.Strings(actionKeys)
-		actionRefs := make([]api.ActionRef, len(actionKeys))
-		for i, k := range actionKeys {
-			status, err := strconv.Atoi(k)
-			if err != nil {
-				return nil, err
-			}
-
-			actionRefs[i] = api.ActionRef{
-				ActionID:  actionMap[k].(string),
-				AlertType: api.Status(status),
-			}
+		actionRefs[i] = api.ActionRef{
+			ActionID:  actionMap[k].(string),
+			AlertType: api.Status(status),
 		}
 	}
 
