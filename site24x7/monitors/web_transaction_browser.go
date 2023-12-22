@@ -121,6 +121,11 @@ var WebTransactionBrowserMonitorSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Description: "Name of the notification profile to be associated with the monitor",
 	},
+	"custom_headers": {
+		Type:        schema.TypeMap,
+		Optional:    true,
+		Description: "A Map of Header name and value.",
+	},
 	"threshold_profile_id": {
 		Type:        schema.TypeString,
 		Optional:    true,
@@ -398,26 +403,34 @@ func resourceDataToWebTransactionBrowserMonitorCreate(d *schema.ResourceData, cl
 		}
 	}
 
-	var actionRefs []api.ActionRef
-	if actionData, ok := d.GetOk("actions"); ok {
-		actionMap := actionData.(map[string]interface{})
-		actionKeys := make([]string, 0, len(actionMap))
-		for k := range actionMap {
-			actionKeys = append(actionKeys, k)
+	actionMap := d.Get("actions").(map[string]interface{})
+	var akeys = make([]string, 0, len(actionMap))
+	for k := range actionMap {
+		akeys = append(akeys, k)
+	}
+	sort.Strings(akeys)
+	actionRefs := make([]api.ActionRef, len(akeys))
+	for i, k := range akeys {
+		status, err := strconv.Atoi(k)
+		if err != nil {
+			return nil, err
 		}
-		sort.Strings(actionKeys)
-		actionRefs := make([]api.ActionRef, len(actionKeys))
-		for i, k := range actionKeys {
-			status, err := strconv.Atoi(k)
-			if err != nil {
-				return nil, err
-			}
+		actionRefs[i] = api.ActionRef{
+			ActionID:  actionMap[k].(string),
+			AlertType: api.Status(status),
+		}
+	}
 
-			actionRefs[i] = api.ActionRef{
-				ActionID:  actionMap[k].(string),
-				AlertType: api.Status(status),
-			}
-		}
+	// Custom Headers
+	customHeaderMap := d.Get("custom_headers").(map[string]interface{})
+	var key = make([]string, 0, len(customHeaderMap))
+	for k := range customHeaderMap {
+		key = append(key, k)
+	}
+	sort.Strings(key)
+	customHeaders := make([]api.Header, len(key))
+	for i, k := range key {
+		customHeaders[i] = api.Header{Name: k, Value: customHeaderMap[k].(string)}
 	}
 
 	webTransactionBrowserMonitor := &api.WebTransactionBrowserMonitor{
@@ -445,6 +458,7 @@ func resourceDataToWebTransactionBrowserMonitorCreate(d *schema.ResourceData, cl
 		ThresholdProfileID:    d.Get("threshold_profile_id").(string),
 		OnCallScheduleID:      d.Get("on_call_schedule_id").(string),
 		Cookies:               cookies,
+		CustomHeaders:         customHeaders,
 		DependencyResourceIDs: dependencyResourceIDs,
 		MonitorGroups:         monitorGroups,
 		UserGroupIDs:          userGroupIDs,
@@ -511,6 +525,14 @@ func resourceDataToWebTransactionBrowserMonitorCreate(d *schema.ResourceData, cl
 	return webTransactionBrowserMonitor, nil
 }
 func updateWebTransactionBrowserMonitorResourceData(d *schema.ResourceData, monitor *api.WebTransactionBrowserMonitor) {
+	customHeaders := make(map[string]interface{})
+	for _, h := range monitor.CustomHeaders {
+		if h.Name == "" {
+			continue
+		}
+		customHeaders[h.Name] = h.Value
+	}
+
 	d.Set("display_name", monitor.DisplayName)
 	d.Set("type", monitor.Type)
 	d.Set("base_url", monitor.BaseURL)
@@ -527,6 +549,7 @@ func updateWebTransactionBrowserMonitorResourceData(d *schema.ResourceData, moni
 	d.Set("location_profile_id", monitor.LocationProfileID)
 	d.Set("notification_profile_id", monitor.NotificationProfileID)
 	d.Set("threshold_profile_id", monitor.ThresholdProfileID)
+	d.Set("custom_headers", customHeaders)
 	d.Set("user_group_ids", monitor.UserGroupIDs)
 	d.Set("on_call_schedule_id", monitor.OnCallScheduleID)
 	d.Set("monitor_groups", monitor.MonitorGroups)
@@ -538,6 +561,7 @@ func updateWebTransactionBrowserMonitorResourceData(d *schema.ResourceData, moni
 	d.Set("tag_ids", monitor.TagIDs)
 	//d.Set("parallel_polling", monitor.ParallelPolling)
 	d.Set("perform_automation", monitor.PerformAutomation)
+
 	if monitor.ProxyDetails != nil {
 		proxyDetailsMap := make(map[string]interface{})
 		proxyDetailsMap["webProxyUrl"] = monitor.ProxyDetails["webProxyUrl"].(string)

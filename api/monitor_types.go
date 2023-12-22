@@ -384,6 +384,7 @@ type WebTransactionBrowserMonitor struct {
 	Resolution            string                 `json:"resolution,omitempty"`
 	ProxyDetails          map[string]interface{} `json:"proxy_details,omitempty"`
 	AuthDetails           map[string]interface{} `json:"auth_details,omitempty"`
+	CustomHeaders         []Header               `json:"custom_headers,omitempty"`
 	Cookies               []Header               `json:"cookies,omitempty"`
 	ThresholdProfileID    string                 `json:"threshold_profile_id,omitempty"`
 	LocationProfileID     string                 `json:"location_profile_id"`
@@ -604,6 +605,66 @@ func (amazonMonitor *AmazonMonitor) GetTagIDs() []string {
 
 func (amazonMonitor *AmazonMonitor) String() string {
 	return ToString(amazonMonitor)
+}
+
+// Denotes the ISP monitor resource in Site24x7.
+type ISPMonitor struct {
+	_                     struct{}    `type:"structure"` // Enforces key based initialization.
+	MonitorID             string      `json:"monitor_id,omitempty"`
+	DisplayName           string      `json:"display_name"`
+	Hostname              string      `json:"hostname"`
+	UseIPV6               bool        `json:"use_ipv6,omitempty"`
+	Type                  string      `json:"type"`
+	Timeout               int         `json:"timeout,omitempty"`
+	Protocol              string      `json:"protocol,omitempty"`
+	Port                  int         `json:"port,omitempty"` // To Fix: API accepts int and returns string in response.
+	CheckFrequency        string      `json:"check_frequency"`
+	OnCallScheduleID      string      `json:"on_call_schedule_id,omitempty"`
+	LocationProfileID     string      `json:"location_profile_id"`
+	NotificationProfileID string      `json:"notification_profile_id"`
+	ThresholdProfileID    string      `json:"threshold_profile_id"`
+	MonitorGroups         []string    `json:"monitor_groups,omitempty"`
+	DependencyResourceIDs []string    `json:"dependency_resource_ids,omitempty"`
+	UserGroupIDs          []string    `json:"user_group_ids,omitempty"`
+	TagIDs                []string    `json:"tag_ids,omitempty"`
+	ThirdPartyServiceIDs  []string    `json:"third_party_services,omitempty"`
+	ActionIDs             []ActionRef `json:"action_ids,omitempty"`
+}
+
+func (ispMonitor *ISPMonitor) SetLocationProfileID(locationProfileID string) {
+	ispMonitor.LocationProfileID = locationProfileID
+}
+
+func (ispMonitor *ISPMonitor) GetLocationProfileID() string {
+	return ispMonitor.LocationProfileID
+}
+
+func (ispMonitor *ISPMonitor) SetNotificationProfileID(notificationProfileID string) {
+	ispMonitor.NotificationProfileID = notificationProfileID
+}
+
+func (ispMonitor *ISPMonitor) GetNotificationProfileID() string {
+	return ispMonitor.NotificationProfileID
+}
+
+func (ispMonitor *ISPMonitor) SetUserGroupIDs(userGroupIDs []string) {
+	ispMonitor.UserGroupIDs = userGroupIDs
+}
+
+func (ispMonitor *ISPMonitor) GetUserGroupIDs() []string {
+	return ispMonitor.UserGroupIDs
+}
+
+func (ispMonitor *ISPMonitor) String() string {
+	return ToString(ispMonitor)
+}
+
+func (ispMonitor *ISPMonitor) SetTagIDs(tagIDs []string) {
+	ispMonitor.TagIDs = tagIDs
+}
+
+func (ispMonitor *ISPMonitor) GetTagIDs() []string {
+	return ispMonitor.TagIDs
 }
 
 // Denotes the Domain Expiry monitor resource in Site24x7.

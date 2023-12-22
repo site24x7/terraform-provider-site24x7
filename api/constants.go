@@ -29,4 +29,5 @@ const (
 	DOMAINEXPIRY MonitorType = "DOMAINEXPIRY"
 	REALBROWSER  MonitorType = "REALBROWSER"
 	FTP          MonitorType = "FTP"
+	ISP          MonitorType = "ISP"
 )

@@ -1,64 +1,50 @@
 ---
 layout: "site24x7"
-page_title: "Site24x7: site24x7_ftp_transfer_monitor"
-sidebar_current: "docs-site24x7-resource-ftp-transfer-monitor"
+page_title: "Site24x7: site24x7_isp_monitor"
+sidebar_current: "docs-site24x7-resource-isp-monitor"
 description: |-
-  Create and manage a FTP Transfer monitor in Site24x7.
+  Create and manage a ISP monitor in Site24x7.
 ---
 
-# Resource: site24x7\_ftp\_transfer\_monitor
+# Resource: site24x7\_isp\_monitor
 
-Use this resource to create, update and delete a FTP Transfer monitor in Site24x7.
+Use this resource to create, update and delete a ISP monitor in Site24x7.
 
 ## Example Usage
 
 
 ```hcl
 
-// Site24x7 FTP Transfer Monitor API doc - https://www.site24x7.com/help/api/#ftp-transfer
+// Site24x7 ISP Monitor API doc - https://www.site24x7.com/help/api/
 
-resource "site24x7_ftp_transfer_monitor" "ftp_transfer_monitor_basic" {
+
+resource "site24x7_isp_monitor" "isp_monitor_basic" {
   // (Required) Display name for the monitor
-  display_name = "FTP Transfer Monitor - Terraform"
+  display_name = "ISP Monitor - Terraform"
 
   // (Required) host name of the monitor
-  host_name = "status_check"
+  hostname = "status_check"
 
-  // (Required) user name of the monitor
-  user_name="sas"
+  // (Optional) Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure. 
+  use_ipv6 = false
 
-  // (Required) destination of the monitor
-  destination="/home/sas/"
+  // (Optional) Timeout for connecting to website. Range 1 - 45. Default: 10
+  timeout = 10
 
-	//(Optional)password of the monitor
-  password="sas"
 
-  //(Optional)Whois Server Port.Default value is 43
-    port=443
+ //(Optional)Whois Server Port.Default value is 43
+ port=443
 
-	//(Optional)Protocol of the monitor
-	protocol=1
+ //(Optional)Protocol of the monitor
+ protocol=1
 
-	 //(Optional)Toggle button to perform automation or not
-    perform_automation=true
 
   // (Optional) Check interval for monitoring. Default: 1. See
   // https://www.site24x7.com/help/api/#check-interval for all supported
   // values.
   check_frequency = "1"
 
-  // (Optional) Perform upload check or not. Default: true.
-  check_upload = true
-
-
-  // (Optional) Perform download check or not. Default: true.
-  check_download = true
-
-
-  // (Optional) Timeout for connecting to website. Range 1 - 45. Default: 10
-  timeout = 10
-
-    //(Optional)if user_group_ids is not choosen
+//(Optional)if user_group_ids is not choosen
     //On-Call Schedule of your choice.
     //Create new On-Call Schedule or find your preferred On-Call Schedule ID.
     on_call_schedule_id="456418000001258016"
@@ -85,13 +71,6 @@ resource "site24x7_ftp_transfer_monitor" "ftp_transfer_monitor_basic" {
   // https://www.site24x7.com/help/api/#action-rule-constants for all available
   // status values.
   actions = {1=465545643755}
-
-
-    // (Optional) List of dependent resource IDs. Suppress alert when dependent monitor(s) is down.
-      dependency_resource_ids = [
-        "123",
-        "456"
-      ]
 
   // (Optional) Notification profile to be associated with the monitor. If
   // omitted, the first profile returned by the /api/notification_profiles
@@ -122,6 +101,13 @@ resource "site24x7_ftp_transfer_monitor" "ftp_transfer_monitor_basic" {
     "123",
   ]
 
+
+	// (Optional) List of dependent resource IDs. Suppress alert when dependent monitor(s) is down.
+	dependency_resource_ids = [
+	"123",
+	"456"
+	]
+
   // (Optional) List if user group names to be notified on down. 
   // Either specify user_group_ids or user_group_names. If omitted, the
   // first user group returned by the /api/user_groups endpoint
@@ -148,6 +134,7 @@ resource "site24x7_ftp_transfer_monitor" "ftp_transfer_monitor_basic" {
   third_party_service_ids = [
     "4567"
   ]
+
 }
 ```
 ## Attributes Reference
@@ -155,21 +142,15 @@ resource "site24x7_ftp_transfer_monitor" "ftp_transfer_monitor_basic" {
 ### Required
 * `display_name` (String) Display Name for the monitor.
 * `hostname`  (String)Host or domain name for the monitor
-* `username`    (String)username to access the file
-* `destination` (String)Destination file path of the monitor
 ### Optional
 * `id` (String) The ID of this resource.
-* `type` (String) FTP
-* `password` (String) password to access the file
-* `check_upload` (Boolean) Denotes to upload a file to FTP server.
-* `check_download` (Boolean) Denotes to download the file from FTP server.
-* `protocol`    (String) Protocol of the monitor FTP, SFTP,FTPS(Use SSL),FTPS(Use TLS)
-* `port`  (Number) Port of the monitor
-* `timeout` (Number) timeout period of the monitor
+* `check_frequency` (String) Interval at which your website has to be monitored. Default value is 1 minute.
+* `timeout` (Number) Timeout for connecting to website. Default value is 10. Range 1 - 45.
+* `use_ipv6` (Number) Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure.
+* `port` (Number) Server Port.
+* `protocol` (String) Supported protocols are ICMP,TCP,UDP
 * `dependency_resource_ids` (List) List of dependent resource IDs. Suppress alert when dependent monitor(s) is down.
 *  `check_frequency` (String)The Endpoints are mentioned at this interval
-* `credential_profile_id` (String)Credential Profile to associate the website with. Notes: If you're using Auth user and Auth password, you can't configure Credential Profile
-* `perform_automation` (Boolean) To perform automation or not
 * `notification_profile_id` (String) Notification profile to be associated with the monitor. Either specify notification_profile_id or notification_profile_name. If notification_profile_id and notification_profile_name are omitted, the first profile returned by the /api/notification_profiles endpoint will be used.
 * `notification_profile_name` (String) Name of the notification profile to be associated with the monitor. Profile name matching works for both exact and partial match.
 * `threshold_profile_id` (String) Threshold profile associated with the monitor.

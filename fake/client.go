@@ -25,6 +25,7 @@ type Client struct {
 	FakeHeartbeatMonitors             *fake.HeartbeatMonitors
 	FakeDomainExpiryMonitors          *fake.DomainExpiryMonitors
 	FakeWebTransactionBrowserMonitors *fake.WebTransactionBrowserMonitors
+	FakeISPMonitors                   *fake.ISPMonitors
 	FakeFTPTransferMonitors           *fake.FTPTransferMonitors
 	FakeServerMonitors                *fake.ServerMonitors
 	FakeRestApiMonitors               *fake.RestApiMonitors
@@ -64,6 +65,8 @@ func NewClient() *Client {
 		FakeWebsiteMonitors:               &fake.WebsiteMonitors{},
 		FakeDomainExpiryMonitors:          &fake.DomainExpiryMonitors{},
 		FakeWebTransactionBrowserMonitors: &fake.WebTransactionBrowserMonitors{},
+		FakeISPMonitors:                   &fake.ISPMonitors{},
+		FakeFTPTransferMonitors:           &fake.FTPTransferMonitors{},
 		FakeDNSServerMonitors:             &fake.DNSServerMonitors{},
 		FakeWebPageSpeedMonitors:          &fake.WebPageSpeedMonitors{},
 		FakeRestApiMonitors:               &fake.RestApiMonitors{},
@@ -144,6 +147,11 @@ func (c *Client) DomainExpiryMonitors() monitors.DomainExpiryMonitors {
 // WebTransactionBrowserMonitors implements Client.
 func (c *Client) WebTransactionBrowserMonitor() monitors.WebTransactionBrowserMonitors {
 	return c.FakeWebTransactionBrowserMonitors
+}
+
+// ISPMonitors implements Client.
+func (c *Client) ISPMonitors() monitors.ISPMonitors {
+	return c.FakeISPMonitors
 }
 
 // FTPTransferMonitors implements Client.

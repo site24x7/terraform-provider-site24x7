@@ -127,6 +127,7 @@ Use this resource to create, upda te and delete a Web-Transaction-Browser monito
 * `proxy_details` (List of String) Proxy checking in the web response
 * `cookies` (Map of String) Cookies for Advanced settings
 ### Optional
+* `id` (String) The ID of this resource.
 * `display_name` (String) Display Name for the monitor.
 * `type`         (String) REALBROWSER.
 * `check_frequency` (String)Check interval for monitoring.
@@ -137,9 +138,13 @@ Use this resource to create, upda te and delete a Web-Transaction-Browser monito
 <!-- * `parallel_polling` Enable parallel polling to initiate data collection from all the configured monitoring locations simultaneously during hourly polls -->
 * `perform_automation` (Boolean) Check box to do automation or not
 * `resolution` (String) Screen resolution for running the script.
-* `browser_type` (int)Choose the browser type. 
-* `browser_version`(int)choose the browser version
-* `id` (String) The ID of this resource.
+* `browser_type` (Number) Type of the browser. 1 - Firefox, 2 - Chrome. Default value is 1.
+* `browser_version` (Number) Version of the browser. 83 - Firefox, 88 - Chrome. Default value is 83.
+* `custom_headers` (Map of String) A Map of Header name and value.
+* `user_agent` (String) User Agent to be used while monitoring the website.
+* `auth_pass` (String) Authentication password to access the website.
+* `auth_user` (String) Authentication user name to access the website.
+* `credential_profile_id` (String)Credential Profile to associate the website with. Notes: If you're using Auth user and Auth password, you can't configure Credential Profile
 * `ip_type` (Boolean)Whether ipv6 or ipv4
 * `ignore_cert_err` (Boolean) ssl certificate configuration for the monitor
 * `notification_profile_id` (String) Notification profile to be associated with the monitor. Either specify notification_profile_id or notification_profile_name. If notification_profile_id and notification_profile_name are omitted, the first profile returned by the /api/notification_profiles endpoint will be used.

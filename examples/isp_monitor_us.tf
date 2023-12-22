@@ -48,49 +48,45 @@ provider "site24x7" {
   
 }
 
-// Site24x7 FTP Transfer Monitor API doc - https://www.site24x7.com/help/api/#ftp-transfer
-resource "site24x7_ftp_transfer_monitor" "ftp_transfer_monitor_basic" {
+// Site24x7 ISP Monitor API doc - https://www.site24x7.com/help/api/
+resource "site24x7_isp_monitor" "isp_monitor_basic" {
   // (Required) Display name for the monitor
-  display_name = "FTP Transfer Monitor - Terraform"
+  display_name = "ISP Monitor - Terraform"
 
   // (Required) host name of the monitor
-  host_name = "status_check"
+  hostname = "status_check"
 
-  // (Required) user name of the monitor
-  user_name="sas"
+}
 
-  // (Required) destination of the monitor
-  destination="/home/sas/"
 
-	//(Optional)password of the monitor
-  password="sas"
+// Site24x7 ISP Monitor API doc - https://www.site24x7.com/help/api/
+resource "site24x7_isp_monitor" "isp_monitor_basic" {
+  // (Required) Display name for the monitor
+  display_name = "ISP Monitor - Terraform"
 
-  //(Optional)Whois Server Port.Default value is 43
-    port=443
+  // (Required) host name of the monitor
+  hostname = "status_check"
 
-	//(Optional)Protocol of the monitor
-	protocol=1
+  // (Optional) Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure. 
+  use_ipv6 = false
 
-	 //(Optional)Toggle button to perform automation or not
-    perform_automation=true
+  // (Optional) Timeout for connecting to website. Range 1 - 45. Default: 10
+  timeout = 10
+
+
+ //(Optional)Whois Server Port.Default value is 43
+ port=443
+
+ //(Optional)Protocol of the monitor
+ protocol=1
+
 
   // (Optional) Check interval for monitoring. Default: 1. See
   // https://www.site24x7.com/help/api/#check-interval for all supported
   // values.
   check_frequency = "1"
 
-  // (Optional) Perform upload check or not. Default: true.
-  check_upload = true
-
-
-  // (Optional) Perform download check or not. Default: true.
-  check_download = true
-
-
-  // (Optional) Timeout for connecting to website. Range 1 - 45. Default: 10
-  timeout = 10
-
-    //(Optional)if user_group_ids is not choosen
+//(Optional)if user_group_ids is not choosen
     //On-Call Schedule of your choice.
     //Create new On-Call Schedule or find your preferred On-Call Schedule ID.
     on_call_schedule_id="456418000001258016"
@@ -117,13 +113,6 @@ resource "site24x7_ftp_transfer_monitor" "ftp_transfer_monitor_basic" {
   // https://www.site24x7.com/help/api/#action-rule-constants for all available
   // status values.
   actions = {1=465545643755}
-
-
-    // (Optional) List of dependent resource IDs. Suppress alert when dependent monitor(s) is down.
-      dependency_resource_ids = [
-        "123",
-        "456"
-      ]
 
   // (Optional) Notification profile to be associated with the monitor. If
   // omitted, the first profile returned by the /api/notification_profiles
@@ -154,6 +143,13 @@ resource "site24x7_ftp_transfer_monitor" "ftp_transfer_monitor_basic" {
     "123",
   ]
 
+
+	// (Optional) List of dependent resource IDs. Suppress alert when dependent monitor(s) is down.
+	dependency_resource_ids = [
+	"123",
+	"456"
+	]
+
   // (Optional) List if user group names to be notified on down. 
   // Either specify user_group_ids or user_group_names. If omitted, the
   // first user group returned by the /api/user_groups endpoint
@@ -180,19 +176,5 @@ resource "site24x7_ftp_transfer_monitor" "ftp_transfer_monitor_basic" {
   third_party_service_ids = [
     "4567"
   ]
-}
-// Site24x7 FTP Transfer Monitor API doc - https://www.site24x7.com/help/api/#ftp-transfer
-resource "site24x7_ftp_transfer_monitor" "ftp_transfer_monitor_basic" {
-  // (Required) Display name for the monitor
-  display_name = "FTP Transfer Monitor - Terraform"
-
-  // (Required) host name of the monitor
-  host_name = "status_check"
-
-  // (Required) user name of the monitor
-  user_name="sas"
-
-  // (Required) destination of the monitor
-  destination="/home/sas/"
 
 }
