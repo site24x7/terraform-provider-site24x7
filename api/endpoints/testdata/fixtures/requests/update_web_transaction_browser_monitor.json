@@ -1,0 +1,27 @@
+{
+        "monitor_id": "897654345678",
+        "display_name": "RBM-Terraform",
+        "type": "REALBROWSER",
+        "base_url": "https://www.example.com/",
+        "async_dc_enabled": false,
+        "browser_version":0,
+        "check_frequency":"15",
+        "ignore_cert_err":false,
+        "ip_type":0,
+        "threshold_profile_id":"789",
+        "page_load_time":0,
+        "perform_automation":false,
+        "resolution":"1600,900",
+        "location_profile_id":"456",
+        "monitor_groups": [
+            "234",
+            "567"
+        ],
+        "user_group_ids": [
+            "123",
+            "456"
+        ],
+      "tag_ids": [
+            "123"
+        ]
+}

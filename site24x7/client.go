@@ -91,6 +91,9 @@ type Client interface {
 	HeartbeatMonitors() monitors.HeartbeatMonitors
 	ServerMonitors() monitors.ServerMonitors
 	DomainExpiryMonitors() monitors.DomainExpiryMonitors
+	WebTransactionBrowserMonitors() monitors.WebTransactionBrowserMonitors
+	FTPTransferMonitors() monitors.FTPTransferMonitors
+	ISPMonitors() monitors.ISPMonitors
 	RestApiMonitors() monitors.RestApiMonitors
 	RestApiTransactionMonitors() monitors.RestApiTransactionMonitors
 	AmazonMonitors() monitors.AmazonMonitors
@@ -205,6 +208,16 @@ func (c *client) HeartbeatMonitors() monitors.HeartbeatMonitors {
 	return monitors.NewHeartbeatMonitors(c.restClient)
 }
 
+// FTPTransferMonitors implements Client.
+func (c *client) FTPTransferMonitors() monitors.FTPTransferMonitors {
+	return monitors.NewFTPTransferMonitors(c.restClient)
+}
+
+// FTPTransferMonitors implements Client.
+func (c *client) ISPMonitors() monitors.ISPMonitors {
+	return monitors.NewISPMonitors(c.restClient)
+}
+
 // ServerMonitors implements Client.
 func (c *client) ServerMonitors() monitors.ServerMonitors {
 	return monitors.NewServerMonitors(c.restClient)
@@ -213,6 +226,11 @@ func (c *client) ServerMonitors() monitors.ServerMonitors {
 // DomainExpiryMonitors implements Client.
 func (c *client) DomainExpiryMonitors() monitors.DomainExpiryMonitors {
 	return monitors.NewDomainExpiryMonitors(c.restClient)
+}
+
+// WebTransactionBrowserMonitor implements Client.
+func (c *client) WebTransactionBrowserMonitors() monitors.WebTransactionBrowserMonitors {
+	return monitors.NewWebTransactionBrowserMonitors(c.restClient)
 }
 
 // RestApiMonitors implements Client.

@@ -57,7 +57,6 @@ provider "site24x7" {
 resource "site24x7_website_monitor" "website_monitor_example" {
   // (Required) Display name for the monitor
   display_name = "Example Monitor"
-
   // (Required) Website address to monitor.
   website = "https://www.example.com"
 
@@ -87,4 +86,3 @@ resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_basic" {
   # location_profile_name = "North America"
 
 }
-
