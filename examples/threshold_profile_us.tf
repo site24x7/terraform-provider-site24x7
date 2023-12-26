@@ -4,9 +4,9 @@ terraform {
 
   required_providers {
     site24x7 = {
-      source  = "site24x7/site24x7"
+      source = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      
+
     }
   }
 }
@@ -29,7 +29,7 @@ provider "site24x7" {
   # zaaid = "1234"
 
   // (Required) Specify the data center from which you have obtained your
-  // OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN).
+  // OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN/JP).
   data_center = "US"
 
   // The minimum time to wait in seconds before retrying failed Site24x7 API requests.
@@ -53,24 +53,24 @@ resource "site24x7_threshold_profile" "website_threshold_profile_us" {
   type = "URL"
   // (Optional) Threshold profile types - https://www.site24x7.com/help/api/#threshold_profile_types
   // 1 - Static Threshold,  2 - AI-based Threshold
-  profile_type = 1 
+  profile_type = 1
   // (Optional) Triggers alert when the monitor is down from configured number of locations. Default value is '3'
   down_location_threshold = 1
   // (Optional) Triggers alert when Website content is modified.
   website_content_modified = false
   // (Optional) Triggers alert when not receiving the website entire HTTP response within 30 seconds.
-  read_time_out {
+  read_time_out = {
     severity = 3
-    value = true
+    value    = true
   }
   // (Optional) Triggers alert when Website content changes by configured percentage.
   website_content_changes {
-    severity     = 2
-    value = 80
+    severity = 2
+    value    = 80
   }
   website_content_changes {
-    severity     = 3
-    value = 95
+    severity = 3
+    value    = 95
   }
   // (Optional) Response time threshold configuration
   primary_response_time_trouble_threshold = {
@@ -81,12 +81,12 @@ resource "site24x7_threshold_profile" "website_threshold_profile_us" {
     // 1 - Greater than (>), 2 - Less than (<), 3 - Greater than or equal to (>=), 4 - Less than or equal to (<=), 5 - Equal to (=), 6 - Not Equal to (≠)
     comparison_operator = 2
     // Attribute Threshold Value
-    value               = 1000
+    value = 1000
     // https://www.site24x7.com/help/api/#threshold_strategy
     // 1 - Poll Count, 2 - Poll Average, 3 - Time Range, 4 - Average Time
-    strategy            = 2
+    strategy = 2
     // Poll Check Value
-    polls_check         = 5
+    polls_check = 5
   }
 
   primary_response_time_critical_threshold = {
@@ -97,12 +97,12 @@ resource "site24x7_threshold_profile" "website_threshold_profile_us" {
     // 1 - Greater than (>), 2 - Less than (<), 3 - Greater than or equal to (>=), 4 - Less than or equal to (<=), 5 - Equal to (=), 6 - Not Equal to (≠)
     comparison_operator = 1
     // Attribute Threshold Value
-    value               = 2000
+    value = 2000
     // https://www.site24x7.com/help/api/#threshold_strategy
     // 1 - Poll Count, 2 - Poll Average, 3 - Time Range, 4 - Average Time
-    strategy            = 2
+    strategy = 2
     // Poll Check Value
-    polls_check         = 5
+    polls_check = 5
   }
 
   secondary_response_time_trouble_threshold = {
@@ -113,12 +113,12 @@ resource "site24x7_threshold_profile" "website_threshold_profile_us" {
     // 1 - Greater than (>), 2 - Less than (<), 3 - Greater than or equal to (>=), 4 - Less than or equal to (<=), 5 - Equal to (=), 6 - Not Equal to (≠)
     comparison_operator = 1
     // Attribute Threshold Value
-    value               = 3000
+    value = 3000
     // https://www.site24x7.com/help/api/#threshold_strategy
     // 1 - Poll Count, 2 - Poll Average, 3 - Time Range, 4 - Average Time
-    strategy            = 2
+    strategy = 2
     // Poll Check Value
-    polls_check         = 5
+    polls_check = 5
   }
 
   secondary_response_time_critical_threshold = {
@@ -129,12 +129,12 @@ resource "site24x7_threshold_profile" "website_threshold_profile_us" {
     // 1 - Greater than (>), 2 - Less than (<), 3 - Greater than or equal to (>=), 4 - Less than or equal to (<=), 5 - Equal to (=), 6 - Not Equal to (≠)
     comparison_operator = 1
     // Attribute Threshold Value
-    value               = 4000
+    value = 4000
     // https://www.site24x7.com/help/api/#threshold_strategy
     // 1 - Poll Count, 2 - Poll Average, 3 - Time Range, 4 - Average Time
-    strategy            = 2
+    strategy = 2
     // Poll Check Value
-    polls_check         = 5
+    polls_check = 5
   }
 
 }
@@ -147,13 +147,13 @@ resource "site24x7_threshold_profile" "ssl_certificate_threshold_profile_us" {
   type = "SSL_CERT"
   // (Optional) Triggers trouble alert before the SSL certificate expires within the configured number of days.
   ssl_cert_days_until_expiry_trouble_threshold = {
-    severity     = 2
-    value = 61
+    severity = 2
+    value    = 61
   }
   // (Optional) Triggers critical alert before the SSL certificate expires within the configured number of days.
   ssl_cert_days_until_expiry_critical_threshold = {
-    severity     = 3
-    value = 31
+    severity = 3
+    value    = 31
   }
   // (Optional) Triggers alert when the ssl certificate is modified.
   ssl_cert_fingerprint_modified = false

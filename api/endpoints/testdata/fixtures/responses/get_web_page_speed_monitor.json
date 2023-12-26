@@ -4,14 +4,14 @@
   "data": {
     "monitor_id": "123412341234123411",
     "request_param": "param=value",
-    "use_ipv6": true,
+    "ip_type": 2,
     "website": "http://www.example.com",
     "type": "HOMEPAGE",
-    "website_type":1,
-    "browser_type":1,
-    "browser_version":83,
-    "device_type":"1",
-    "wpa_resolution":"1024,768",
+    "website_type": 1,
+    "browser_type": 1,
+    "browser_version": 83,
+    "device_type": "1",
+    "wpa_resolution": "1024,768",
     "custom_headers": [
       {
         "name": "Accept-Encoding",
@@ -61,11 +61,11 @@
     "dependency_resource_id": "123412341234123419",
     "check_frequency": "1440",
     "display_name": "Display name for the monitor",
-    "tag_ids":[
+    "tag_ids": [
       "123456987654321012",
       "123456987654321013"
     ],
-    "third_party_services":[
+    "third_party_services": [
       "456987654321012",
       "456987654321013"
     ]

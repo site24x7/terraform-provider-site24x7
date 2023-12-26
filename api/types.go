@@ -85,6 +85,7 @@ type Steps struct {
 type StepDetails struct {
 	StepId      string `json:"step_id,omitempty"`
 	StepUrl     string `json:"step_url"`
+	StopOnErr   int    `json:"severity"`
 	DisplayName string `json:"display_name"`
 	// HTTP Configuration
 	Timeout                   string                 `json:"timeout"`
@@ -193,7 +194,7 @@ type ThresholdProfile struct {
 	Type                   string                   `json:"type"` // Denotes monitor type
 	ProfileName            string                   `json:"profile_name"`
 	ProfileType            int                      `json:"profile_type"` // 1 - Static Threshold or 2 - AI-based Threshold
-	DownLocationThreshold  int                      `json:"down_location_threshold,omitempty"`
+	DownLocationThreshold  int                      `json:"down_location_threshold"`
 	WebsiteContentModified bool                     `json:"website_content_modified,omitempty"`
 	WebsiteContentChanges  []map[string]interface{} `json:"website_content_changes,omitempty"`
 	ReadTimeOut            map[string]interface{}   `json:"read_time_out,omitempty"`

@@ -29,7 +29,7 @@ provider "site24x7" {
   # zaaid = "1234"
 
   // (Required) Specify the data center from which you have obtained your
-  // OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN).
+  // OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN/JP).
   data_center = "US"
 
   // The minimum time to wait in seconds before retrying failed Site24x7 API requests.
@@ -127,12 +127,6 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
   third_party_service_ids = [
     "4567"
   ]
-
-  // (Optional) Map of custom HTTP headers to send.
-  custom_headers = {
-    "Accept" = "application/json"
-  }
-
   // (Optional) Check for the keyword in the website response.
   matching_keyword = {
  	  severity= 2

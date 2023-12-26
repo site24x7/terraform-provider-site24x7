@@ -243,6 +243,12 @@ var RestApiTransactionMonitorSchema = map[string]*schema.Schema{
 								Required:    true,
 								Description: "Rest API Url to monitors",
 							},
+							"on_error": {
+								Type:        schema.TypeInt,
+								Optional:    true,
+								Default:     0,
+								Description: "Stop on Error severity for the step. '0' means Stop and Notify, '1' means Proceed , '2' means Notify and Proceed",
+							},
 							"timeout": {
 								Type:        schema.TypeString,
 								Optional:    true,
@@ -791,6 +797,7 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 			i = 0
 			StepsDetailsItem[i] = api.StepDetails{
 				StepUrl:                   j.(map[string]interface{})["step_url"].(string),
+				StopOnErr:                 j.(map[string]interface{})["on_error"].(int),
 				Timeout:                   j.(map[string]interface{})["timeout"].(string),
 				DisplayName:               v.(map[string]interface{})["display_name"].(string),
 				HTTPMethod:                j.(map[string]interface{})["http_method"].(string),
@@ -1014,6 +1021,7 @@ func updateRestApiTransactionMonitorResourceData(d *schema.ResourceData, monitor
 			i = 0
 			StepsDetailsItem[i] = api.StepDetails{
 				StepUrl:                   stepObject.StepUrl,
+				StopOnErr:                 stepObject.StopOnErr,
 				Timeout:                   stepObject.Timeout,
 				StepId:                    stepObject.StepId,
 				DisplayName:               step.DisplayName,
