@@ -48,7 +48,7 @@ provider "site24x7" {
   
   }
 
-// Site24x7 Domain Expiry monitor API doc - https://www.site24x7.com/help/api/#web-transaction(Browser)
+// Site24x7 Domain Expiry monitor API doc - https://www.site24x7.com/help/api/#web-transaction-(browser)
 resource "site24x7_web_transaction_browser_monitor" "web_transaction_browser_monitor_basic" {
 
     // (Optional)Display name for the monitor
@@ -212,7 +212,7 @@ resource "site24x7_web_transaction_browser_monitor" "web_transaction_browser_mon
 
 }
 
-// Site24x7 Domain Expiry monitor API doc - https://www.site24x7.com/help/api/#web-transaction(Browser)
+// Site24x7 Domain Expiry monitor API doc - https://www.site24x7.com/help/api/#web-transaction-(browser)
 resource "site24x7_web_transaction_browser_monitor" "web_transaction_browser_monitor_basic2" {
     //(Required)Base url for the monitor
       base_url= "https://www.demoqa.com/"

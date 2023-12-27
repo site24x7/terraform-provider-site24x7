@@ -18,11 +18,6 @@ var DomainExpiryMonitorSchema = map[string]*schema.Schema{
 		Required:    true,
 		Description: "Name for the monitor",
 	},
-	"type": {
-		Type:        schema.TypeString,
-		Optional:    true,
-		Description: "DOMAINEXPIRY",
-	},
 	"host_name": {
 		Type:        schema.TypeString,
 		Required:    true,
