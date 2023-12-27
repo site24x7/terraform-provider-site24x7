@@ -16,6 +16,11 @@ var ISPMonitorSchema = map[string]*schema.Schema{
 		Required:    true,
 		Description: "Name for the monitor",
 	},
+	"type": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "ISP",
+	},
 	"hostname": {
 		Type:        schema.TypeString,
 		Required:    true,

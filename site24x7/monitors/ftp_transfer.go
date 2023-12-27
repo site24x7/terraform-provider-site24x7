@@ -27,6 +27,11 @@ var FTPTransferMonitorSchema = map[string]*schema.Schema{
 		Default:     "FTP",
 		Description: "HTTPS,SMTPS,POPS,IMAPS,FTPS or CUSTOM",
 	},
+	"type": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "FTP",
+	},
 	"port": {
 		Type:        schema.TypeInt,
 		Optional:    true,
