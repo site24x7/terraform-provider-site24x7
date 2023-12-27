@@ -38,7 +38,8 @@
             "value": "nocache"
           }]
         },
-        "step_url": "www.test.tld"
+        "step_url": "www.test.tld",
+        "on_error":0
       }]
     },
     {
@@ -74,7 +75,8 @@
             "value": "nocache"
           }]
         },
-        "step_url": "www.test.tld"
+        "step_url": "www.test.tld",
+        "on_error":0
       }]
     }
     ],

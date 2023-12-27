@@ -4,9 +4,9 @@ terraform {
 
   required_providers {
     site24x7 = {
-      source  = "site24x7/site24x7"
+      source = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      
+
     }
   }
 }
@@ -14,39 +14,39 @@ terraform {
 // Authentication API doc - https://www.site24x7.com/help/api/#authentication
 provider "site24x7" {
   // (Security recommendation - It is always best practice to store your credentials in a Vault of your choice.)
-	// (Required) The client ID will be looked up in the SITE24X7_OAUTH2_CLIENT_ID
-	// environment variable if the attribute is empty or omitted.
-	oauth2_client_id = "<SITE24X7_OAUTH2_CLIENT_ID>"
+  // (Required) The client ID will be looked up in the SITE24X7_OAUTH2_CLIENT_ID
+  // environment variable if the attribute is empty or omitted.
+  oauth2_client_id = "<SITE24X7_OAUTH2_CLIENT_ID>"
 
   // (Security recommendation - It is always best practice to store your credentials in a Vault of your choice.)
-	// (Required) The client secret will be looked up in the SITE24X7_OAUTH2_CLIENT_SECRET
-	// environment variable if the attribute is empty or omitted.
-	oauth2_client_secret = "<SITE24X7_OAUTH2_CLIENT_SECRET>"
-    
+  // (Required) The client secret will be looked up in the SITE24X7_OAUTH2_CLIENT_SECRET
+  // environment variable if the attribute is empty or omitted.
+  oauth2_client_secret = "<SITE24X7_OAUTH2_CLIENT_SECRET>"
+
   // (Security recommendation - It is always best practice to store your credentials in a Vault of your choice.)
-	// (Required) The refresh token will be looked up in the SITE24X7_OAUTH2_REFRESH_TOKEN
-	// environment variable if the attribute is empty or omitted.
-	oauth2_refresh_token = "<SITE24X7_OAUTH2_REFRESH_TOKEN>"
-  
-	// (Required) Specify the data center from which you have obtained your
-	// OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN).
-	data_center = "US"
-	
-	// (Optional) ZAAID of the customer under a MSP or BU
-	zaaid = "1234"
-  
-	// (Optional) The minimum time to wait in seconds before retrying failed Site24x7 API requests.
-	retry_min_wait = 1
-  
-	// (Optional) The maximum time to wait in seconds before retrying failed Site24x7 API
-	// requests. This is the upper limit for the wait duration with exponential
-	// backoff.
-	retry_max_wait = 30
-  
-	// (Optional) Maximum number of Site24x7 API request retries to perform until giving up.
-	max_retries = 4
-  
-  }
+  // (Required) The refresh token will be looked up in the SITE24X7_OAUTH2_REFRESH_TOKEN
+  // environment variable if the attribute is empty or omitted.
+  oauth2_refresh_token = "<SITE24X7_OAUTH2_REFRESH_TOKEN>"
+
+  // (Required) Specify the data center from which you have obtained your
+  // OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN/JP).
+  data_center = "US"
+
+  // (Optional) ZAAID of the customer under a MSP or BU
+  zaaid = "1234"
+
+  // (Optional) The minimum time to wait in seconds before retrying failed Site24x7 API requests.
+  retry_min_wait = 1
+
+  // (Optional) The maximum time to wait in seconds before retrying failed Site24x7 API
+  // requests. This is the upper limit for the wait duration with exponential
+  // backoff.
+  retry_max_wait = 30
+
+  // (Optional) Maximum number of Site24x7 API request retries to perform until giving up.
+  max_retries = 4
+
+}
 
 // Web Page Speed(Browser) Monitor API doc: https://www.site24x7.com/help/api/#web-page-speed-(browser)
 resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_basic" {
@@ -92,8 +92,8 @@ resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_example" {
   // (Optional) Timeout for connecting to the website. Range 1 - 45. Default: 30
   timeout = 40
 
-  // (Optional) Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure. 
-  use_ipv6 = false
+  // (Optional) Monitoring is performed over IPv4 or IPv6 based on the value specified. 0 - use only IPv4, 1 - use only IPv6, 2 - use both IPv4 and IPv6. Default value is 2.
+  ip_type = 1
 
   // (Optional) Type of content the website page has. 1 - Static Website,	2 - Dynamic Website, 3 - Flash-Based Website. Default value is 1.
   website_type = 2
@@ -102,7 +102,7 @@ resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_example" {
   device_type = "1"
 
   // (Optional) Set a resolution based on your preferred device type.
-  wpa_resolution = "1024,768" 
+  wpa_resolution = "1024,768"
 
   // HTTP configuration
 
@@ -121,7 +121,7 @@ resource "site24x7_web_page_speed_monitor" "web_page_speed_monitor_example" {
 
   // (Optional) Map of custom HTTP headers to send.
   custom_headers = {
-    "Accept" = "application/json"
+    "Accept"          = "application/json"
     "Accept-Encoding" = "gzip"
   }
 

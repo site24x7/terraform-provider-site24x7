@@ -30,7 +30,7 @@ provider "site24x7" {
   # zaaid = "1234"
 
   // (Required) Specify the data center from which you have obtained your
-  // OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN).
+  // OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN/JP).
   data_center = "US"
 
   // The minimum time to wait in seconds before retrying failed Site24x7 API requests.

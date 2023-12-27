@@ -22,14 +22,14 @@ func TestWebPageSpeedMonitors(t *testing.T) {
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
 			Fn: func(t *testing.T, c rest.Client) {
 				monitor := &api.WebPageSpeedMonitor{
-					Website:       "http://www.example.com",
-					Type:          "HOMEPAGE",
-					BrowserType:   1,
-					BrowserVersion:83,
-					WebsiteType:   1,
-					DeviceType:    "1",
-					WPAResolution: "1024,768",
-					UseIPV6:       true,
+					Website:        "http://www.example.com",
+					Type:           "HOMEPAGE",
+					BrowserType:    1,
+					BrowserVersion: 83,
+					WebsiteType:    1,
+					DeviceType:     "1",
+					WPAResolution:  "1024,768",
+					IPType:         2,
 					CustomHeaders: []api.Header{
 						{
 							Name:  "Accept-Encoding",
@@ -107,16 +107,16 @@ func TestWebPageSpeedMonitors(t *testing.T) {
 				require.NoError(t, err)
 
 				expected := &api.WebPageSpeedMonitor{
-					MonitorID:     "123412341234123411",
-					Website:       "http://www.example.com",
-					Type:          "HOMEPAGE",
-					BrowserType:   1,
-					BrowserVersion:83,
-					WebsiteType:   1,
-					DeviceType:    "1",
-					WPAResolution: "1024,768",
-					UseIPV6:       true,
-					UpStatusCodes: "200",
+					MonitorID:      "123412341234123411",
+					Website:        "http://www.example.com",
+					Type:           "HOMEPAGE",
+					BrowserType:    1,
+					BrowserVersion: 83,
+					WebsiteType:    1,
+					DeviceType:     "1",
+					WPAResolution:  "1024,768",
+					IPType:         2,
+					UpStatusCodes:  "200",
 					CustomHeaders: []api.Header{
 						{
 							Name:  "Accept-Encoding",
@@ -188,14 +188,15 @@ func TestWebPageSpeedMonitors(t *testing.T) {
 
 				expected := []*api.WebPageSpeedMonitor{
 					{
-						MonitorID:     "12340000016033021",
-						Website:       "https://foo.bar/",
-						Type:          "HOMEPAGE",
-						BrowserType:   1,
-						BrowserVersion:83,
-						WebsiteType:   1,
-						DeviceType:    "1",
-						WPAResolution: "1024,768",
+						MonitorID:      "12340000016033021",
+						Website:        "https://foo.bar/",
+						Type:           "HOMEPAGE",
+						BrowserType:    1,
+						IPType:         2,
+						BrowserVersion: 83,
+						WebsiteType:    1,
+						DeviceType:     "1",
+						WPAResolution:  "1024,768",
 						CustomHeaders: []api.Header{
 							{
 								Name:  "Accept-Encoding",
@@ -231,14 +232,15 @@ func TestWebPageSpeedMonitors(t *testing.T) {
 						DisplayName:    "foo.bar",
 					},
 					{
-						MonitorID:     "12340000016108026",
-						Website:       "https://some.api.tld/api/v1/status",
-						Type:          "HOMEPAGE",
-						BrowserType:   1,
-						BrowserVersion:83,
-						WebsiteType:   1,
-						DeviceType:    "1",
-						WPAResolution: "1024,768",
+						MonitorID:      "12340000016108026",
+						Website:        "https://some.api.tld/api/v1/status",
+						Type:           "HOMEPAGE",
+						BrowserType:    1,
+						IPType:         2,
+						BrowserVersion: 83,
+						WebsiteType:    1,
+						DeviceType:     "1",
+						WPAResolution:  "1024,768",
 						UserGroupIDs: []string{
 							"12340000015652005",
 						},
