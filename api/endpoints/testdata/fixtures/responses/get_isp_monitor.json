@@ -2,14 +2,15 @@
     "code": 0,
     "message": "success",
     "data": {
-        "monitor_id": "9856454535645",
+        "monitor_id": "897654345678",
         "display_name": "ISP Monitor",
         "type": "ISP",
         "hostname":"www.example.com",
-        "use_ipv6":false,
-        "timeout":15,
+        "use_ipv6":true,
+        "timeout":30,
         "protocol":"1",
         "port":443,
+        "check_frequency":"5",
         "location_profile_id": "123412341234123412",
         "notification_profile_id": "123412341234123412",
         "threshold_profile_id": "123412341234123414",
@@ -24,16 +25,6 @@
         "tag_ids": [
             "123"
         ],
-        "dependency_resource_ids":["123","456"],
-        "third_party_services":[
-            "456987654321012",
-            "456987654321013"
-            ],
-        "action_ids": [
-            {
-                "action_id": "123412341234123418",
-                "alert_type": 20
-            }
-            ]
+        "dependency_resource_ids":["123","456"]
     }
     }

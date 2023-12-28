@@ -4,36 +4,15 @@
     "data": [
         {
             "monitor_id": "897654345678",
-        "display_name": "RBM-Terraform",
-        "type": "REALBROWSER",
-        "base_url": "https://www.example.com/",
-        "selenium_script" : "Script for the monitor",
-        "script_type":"txt",
-        "threshold_profile_id":"789",
-        "resolution":"1600,900",
-        "location_profile_id":"456",
-        "monitor_groups": [
-            "234",
-            "567"
-        ],
-        "user_group_ids": [
-            "123",
-            "456"
-        ],
-      "tag_ids": [
-            "123"
-        ]
-        },
-        {
-            "monitor_id": "987554574575",
             "display_name": "RBM-Terraform",
             "type": "REALBROWSER",
+            "check_frequency":"15",
             "base_url": "https://www.example.com/",
             "selenium_script" : "Script for the monitor",
             "script_type":"txt",
-            "threshold_profile_id":"789",
-            "resolution":"1600,900",
-            "location_profile_id":"456",
+            "location_profile_id": "123412341234123412",
+            "notification_profile_id": "123412341234123412",
+            "threshold_profile_id": "123412341234123414",
             "monitor_groups": [
                 "234",
                 "567"
@@ -42,7 +21,30 @@
                 "123",
                 "456"
             ],
-          "tag_ids": [
+            "tag_ids": [
+                "123"
+            ]
+        },
+        {
+            "monitor_id": "987554574575",
+            "display_name": "RBM-Terraform",
+            "type": "REALBROWSER",
+            "check_frequency":"15",
+            "base_url": "https://www.example.com/",
+            "selenium_script" : "Script for the monitor",
+            "script_type":"txt",
+            "location_profile_id": "123412341234123412",
+            "notification_profile_id": "123412341234123412",
+            "threshold_profile_id": "123412341234123414",
+            "monitor_groups": [
+                "234",
+                "567"
+            ],
+            "user_group_ids": [
+                "123",
+                "456"
+            ],
+            "tag_ids": [
                 "123"
             ]
         }

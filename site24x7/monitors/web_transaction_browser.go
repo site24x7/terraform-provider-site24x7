@@ -20,11 +20,6 @@ var WebTransactionBrowserMonitorSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Description: "Name for the monitor",
 	},
-	"type": {
-		Type:        schema.TypeString,
-		Optional:    true,
-		Description: "REALBROWSER",
-	},
 	"base_url": {
 		Type:        schema.TypeString,
 		Required:    true,

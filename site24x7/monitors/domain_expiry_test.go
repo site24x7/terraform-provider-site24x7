@@ -102,12 +102,12 @@ func TestDomainExpiryMonitorCreate(t *testing.T) {
 
 func TestDomainExpiryMonitorUpdate(t *testing.T) {
 	d := domainExpiryMonitorTestResourceData(t)
-	d.SetId("123")
+	d.SetId("897654345678")
 
 	c := fake.NewClient()
 
 	a := &api.DomainExpiryMonitor{
-		MonitorID:             "123",
+		MonitorID:             "897654345678",
 		DisplayName:           "foo",
 		Type:                  string(api.DOMAINEXPIRY),
 		LocationProfileID:     "456",
@@ -115,28 +115,6 @@ func TestDomainExpiryMonitorUpdate(t *testing.T) {
 		MonitorGroups:         []string{"234", "567"},
 		UserGroupIDs:          []string{"123", "456"},
 		TagIDs:                []string{"123"},
-		// ActionIDs: []api.ActionRef{
-		// 	{
-		// 		ActionID:  "123action",
-		// 		AlertType: 1,
-		// 	},
-		// 	{
-		// 		ActionID:  "234action",
-		// 		AlertType: 5,
-		// 	},
-		// },
-		// MatchingKeyword: map[string]interface{}{
-		// 	"severity": "2",
-		// 	"value":    "aaa",
-		// },
-		// UnmatchingKeyword: map[string]interface{}{
-		// 	"severity": "2",
-		// 	"value":    "bbb",
-		// },
-		// MatchRegex: map[string]interface{}{
-		// 	"severity": "0",
-		// 	"value":    "*.a.*",
-		// },
 	}
 
 	locationProfiles := []*api.LocationProfile{
@@ -210,15 +188,15 @@ func TestDomainExpiryMonitorUpdate(t *testing.T) {
 
 func TestDomainExpiryMonitorRead(t *testing.T) {
 	d := domainExpiryMonitorTestResourceData(t)
-	d.SetId("123")
+	d.SetId("897654345678")
 
 	c := fake.NewClient()
 
-	c.FakeDomainExpiryMonitors.On("Get", "123").Return(&api.DomainExpiryMonitor{}, nil).Once()
+	c.FakeDomainExpiryMonitors.On("Get", "897654345678").Return(&api.DomainExpiryMonitor{}, nil).Once()
 
 	require.NoError(t, domainExpiryMonitorRead(d, c))
 
-	c.FakeDomainExpiryMonitors.On("Get", "123").Return(nil, apierrors.NewStatusError(500, "error")).Once()
+	c.FakeDomainExpiryMonitors.On("Get", "897654345678").Return(nil, apierrors.NewStatusError(500, "error")).Once()
 
 	err := domainExpiryMonitorRead(d, c)
 
@@ -227,40 +205,40 @@ func TestDomainExpiryMonitorRead(t *testing.T) {
 
 func TestDomainExpiryMonitorDelete(t *testing.T) {
 	d := domainExpiryMonitorTestResourceData(t)
-	d.SetId("123")
+	d.SetId("897654345678")
 
 	c := fake.NewClient()
 
-	c.FakeDomainExpiryMonitors.On("Delete", "123").Return(nil).Once()
+	c.FakeDomainExpiryMonitors.On("Delete", "897654345678").Return(nil).Once()
 
 	require.NoError(t, domainExpiryMonitorDelete(d, c))
 
-	c.FakeDomainExpiryMonitors.On("Delete", "123").Return(apierrors.NewStatusError(404, "not found")).Once()
+	c.FakeDomainExpiryMonitors.On("Delete", "897654345678").Return(apierrors.NewStatusError(404, "not found")).Once()
 
 	require.NoError(t, domainExpiryMonitorDelete(d, c))
 }
 
 func TestDomainExpiryMonitorExists(t *testing.T) {
 	d := domainExpiryMonitorTestResourceData(t)
-	d.SetId("123")
+	d.SetId("897654345678")
 
 	c := fake.NewClient()
 
-	c.FakeDomainExpiryMonitors.On("Get", "123").Return(&api.DomainExpiryMonitor{}, nil).Once()
+	c.FakeDomainExpiryMonitors.On("Get", "897654345678").Return(&api.DomainExpiryMonitor{}, nil).Once()
 
 	exists, err := domainExpiryMonitorExists(d, c)
 
 	require.NoError(t, err)
 	assert.True(t, exists)
 
-	c.FakeDomainExpiryMonitors.On("Get", "123").Return(nil, apierrors.NewStatusError(404, "not found")).Once()
+	c.FakeDomainExpiryMonitors.On("Get", "897654345678").Return(nil, apierrors.NewStatusError(404, "not found")).Once()
 
 	exists, err = domainExpiryMonitorExists(d, c)
 
 	require.NoError(t, err)
 	assert.False(t, exists)
 
-	c.FakeDomainExpiryMonitors.On("Get", "123").Return(nil, apierrors.NewStatusError(500, "error")).Once()
+	c.FakeDomainExpiryMonitors.On("Get", "897654345678").Return(nil, apierrors.NewStatusError(500, "error")).Once()
 
 	exists, err = domainExpiryMonitorExists(d, c)
 
@@ -272,10 +250,6 @@ func domainExpiryMonitorTestResourceData(t *testing.T) *schema.ResourceData {
 	return schema.TestResourceDataRaw(t, DomainExpiryMonitorSchema, map[string]interface{}{
 		"display_name":            "Domain Expiry Monitor",
 		"host_name":               "www.example.com",
-		"timeout":                 0,
-		"expire_days":             30,
-		"on_call_schedule_id":     "234",
-		"ignore_registry_date":    false,
 		"location_profile_id":     "456",
 		"notification_profile_id": "789",
 		"monitor_groups": []interface{}{
