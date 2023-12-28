@@ -215,7 +215,7 @@ resource "site24x7_web_transaction_browser_monitor" "web_transaction_browser_mon
 // Site24x7 Domain Expiry monitor API doc - https://www.site24x7.com/help/api/#web-transaction-(browser)
 resource "site24x7_web_transaction_browser_monitor" "web_transaction_browser_monitor_basic2" {
     //(Required)Base url for the monitor
-      base_url= "https://www.demoqa.com/"
+      base_url= "https://www.example.com/"
 
 
     //(Required)Selenium script to add to the monitor

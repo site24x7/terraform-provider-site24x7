@@ -5,12 +5,12 @@
         {
             "monitor_id": "9856443688997645",
             "display_name": "FTP Monitor",
-            "hostname":"www.example.com",
-            "protocol":"1",
+            "host_name":"www.example.com",
+            "protocol":"FTP",
             "type": "FTP",
             "port":443,
-            "check_frequency":"15",
-            "timeout":15,
+            "check_frequency":"5",
+            "timeout":30,
             "check_upload":true,
             "check_download":true,
             "user_name":"sas",
@@ -21,39 +21,29 @@
                 "234",
                 "567"
             ],
-            "credential_proofile_id":"435456565656546",
+            "credential_profile_id":"435456565656546",
             "dependency_resource_ids":["123","456"],
             "threshold_profile_id": "123412341234123414",
             "tag_ids": [
                 "123"
             ],
-            "perform_automation":false,
-            "action_ids": [
-                {
-                    "action_id": "123412341234123418",
-                    "alert_type": 20
-                }
-                ],
+            "perform_automation":true,
             "user_group_ids": [
                     "123",
                     "456"
                 ],
             "on_call_schedule_id":"23524543545245",
-            "notification_profile_id": "123412341234123412",
-            "third_party_services":[
-                "456987654321012",
-                "456987654321013"
-                ]
+            "notification_profile_id": "123412341234123412"
         },
         {
-            "monitor_id": "876432456788754544",
-            "display_name": "FTP Monitor",
-            "hostname":"www.example.com",
-            "protocol":"1",
+            "monitor_id": "897654345678",
+            "display_name":   "FTP Transfer Monitor",
+            "host_name":"www.example.com",
+            "protocol":"FTP",
             "type": "FTP",
             "port":443,
-            "check_frequency":"15",
-            "timeout":15,
+            "check_frequency":"5",
+            "timeout":30,
             "check_upload":true,
             "check_download":true,
             "user_name":"sas",
@@ -64,29 +54,19 @@
                 "234",
                 "567"
             ],
-            "credential_proofile_id":"435456565656546",
+            "credential_profile_id":"435456565656546",
             "dependency_resource_ids":["123","456"],
             "threshold_profile_id": "123412341234123414",
             "tag_ids": [
                 "123"
             ],
-            "perform_automation":false,
-            "action_ids": [
-                {
-                    "action_id": "123412341234123418",
-                    "alert_type": 20
-                }
-                ],
+            "perform_automation":true,
             "user_group_ids": [
                     "123",
                     "456"
                 ],
             "on_call_schedule_id":"23524543545245",
-            "notification_profile_id": "123412341234123412",
-            "third_party_services":[
-                "456987654321012",
-                "456987654321013"
-                ]
+            "notification_profile_id": "123412341234123412"
         }
     ]
     }

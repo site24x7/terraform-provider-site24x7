@@ -22,6 +22,7 @@ func TestDomainExpiryMonitors(t *testing.T) {
 			Fn: func(t *testing.T, c rest.Client) {
 				domainExpiryMonitor := &api.DomainExpiryMonitor{
 					DisplayName:           "Domain Expiry Monitor",
+					Type:                  "DOMAINEXPIRY",
 					HostName:              "www.example.com",
 					DomainName:            "www.example.com",
 					Port:                  443,
@@ -141,16 +142,17 @@ func TestDomainExpiryMonitors(t *testing.T) {
 				domainExpiryMonitor := &api.DomainExpiryMonitor{
 					MonitorID:             "897654345678",
 					DisplayName:           "Domain Expiry Monitor",
+					Type:                  "DOMAINEXPIRY",
 					HostName:              "www.example.com",
 					DomainName:            "www.example.com",
 					Port:                  443,
 					UseIPV6:               true,
 					Timeout:               10,
 					ExpireDays:            30,
-					LocationProfileID:     "456",
-					NotificationProfileID: "789",
 					OnCallScheduleID:      "234",
 					IgnoreRegistryDate:    false,
+					LocationProfileID:     "456",
+					NotificationProfileID: "789",
 					MonitorGroups:         []string{"234", "567"},
 					UserGroupIDs:          []string{"123", "456"},
 					TagIDs:                []string{"123"},
@@ -168,7 +170,7 @@ func TestDomainExpiryMonitors(t *testing.T) {
 			ExpectedPath: "/monitors/897654345678",
 			StatusCode:   200,
 			Fn: func(t *testing.T, c rest.Client) {
-				require.NoError(t, NewDomainExpiryMonitors(c).Delete("123"))
+				require.NoError(t, NewDomainExpiryMonitors(c).Delete("897654345678"))
 			},
 		},
 	})

@@ -4,13 +4,14 @@
     "data": {
         "monitor_id": "897654345678",
         "display_name": "RBM-Terraform",
+        "check_frequency":"15",
         "type": "REALBROWSER",
         "base_url": "https://www.example.com/",
         "selenium_script" : "Script for the monitor",
         "script_type":"txt",
-        "threshold_profile_id":"789",
-        "resolution":"1600,900",
-        "location_profile_id":"456",
+        "location_profile_id": "123412341234123412",
+        "notification_profile_id": "123412341234123412",
+        "threshold_profile_id": "123412341234123414",
         "monitor_groups": [
             "234",
             "567"
@@ -19,7 +20,7 @@
             "123",
             "456"
         ],
-      "tag_ids": [
+        "tag_ids": [
             "123"
         ]
     }
