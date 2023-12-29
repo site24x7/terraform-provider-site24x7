@@ -30,4 +30,6 @@ const (
 	REALBROWSER  MonitorType = "REALBROWSER"
 	FTP          MonitorType = "FTP"
 	ISP          MonitorType = "ISP"
+	PORT         MonitorType = "PORT"
+	PING         MonitorType = "PING"
 )

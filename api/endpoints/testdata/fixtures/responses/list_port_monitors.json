@@ -1,0 +1,68 @@
+{
+    "code": 0,
+    "message": "success",
+    "data": [
+        {
+            "monitor_id": "897654345678",
+            "display_name": "Port Monitor",
+            "type": "PORT",
+            "host_name":"www.example.com",
+            "application_type":"FTP",
+            "port":80,
+            "use_ipv6":true,
+            "timeout":10,
+            "command": "new command",
+            "use_ssl":true,
+            "check_frequency":"5",
+            "invert_port_check":false,
+            "on_call_schedule_id":"23524543545245",
+            "location_profile_id": "123412341234123412",
+            "notification_profile_id": "123412341234123412",
+            "threshold_profile_id": "123412341234123414",
+            "monitor_groups": [
+                "234",
+                "567"
+            ],
+            "user_group_ids": [
+                "123",
+                "456"
+            ],
+            "tag_ids": [
+                "123"
+            ],
+            "dependency_resource_ids":["123","456"],
+            "perform_automation":true
+        },
+        {
+            "monitor_id": "654568778999889",
+            "display_name": "Port Monitor",
+            "type": "PORT",
+            "host_name":"www.example.com",
+            "application_type":"FTP",
+            "port":80,
+            "use_ipv6":true,
+            "timeout":10,
+            "command": "new command",
+            "use_ssl":true,
+            "check_frequency":"5",
+            "invert_port_check":false,
+            "on_call_schedule_id":"23524543545245",
+            "location_profile_id": "123412341234123412",
+            "notification_profile_id": "123412341234123412",
+            "threshold_profile_id": "123412341234123414",
+            "monitor_groups": [
+                "234",
+                "567"
+            ],
+            "user_group_ids": [
+                "123",
+                "456"
+            ],
+            "tag_ids": [
+                "123"
+            ],
+            "dependency_resource_ids":["123","456"],
+            "perform_automation":true
+        }
+    ]
+    }

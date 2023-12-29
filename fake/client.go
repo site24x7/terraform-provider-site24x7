@@ -26,6 +26,8 @@ type Client struct {
 	FakeDomainExpiryMonitors          *fake.DomainExpiryMonitors
 	FakeWebTransactionBrowserMonitors *fake.WebTransactionBrowserMonitors
 	FakeISPMonitors                   *fake.ISPMonitors
+	FakePortMonitors                  *fake.PortMonitors
+	FakePINGMonitors                  *fake.PINGMonitors
 	FakeFTPTransferMonitors           *fake.FTPTransferMonitors
 	FakeServerMonitors                *fake.ServerMonitors
 	FakeRestApiMonitors               *fake.RestApiMonitors
@@ -67,6 +69,8 @@ func NewClient() *Client {
 		FakeWebTransactionBrowserMonitors: &fake.WebTransactionBrowserMonitors{},
 		FakeISPMonitors:                   &fake.ISPMonitors{},
 		FakeFTPTransferMonitors:           &fake.FTPTransferMonitors{},
+		FakePortMonitors:                  &fake.PortMonitors{},
+		FakePINGMonitors:                  &fake.PINGMonitors{},
 		FakeDNSServerMonitors:             &fake.DNSServerMonitors{},
 		FakeWebPageSpeedMonitors:          &fake.WebPageSpeedMonitors{},
 		FakeRestApiMonitors:               &fake.RestApiMonitors{},
@@ -157,6 +161,16 @@ func (c *Client) ISPMonitors() monitors.ISPMonitors {
 // FTPTransferMonitors implements Client.
 func (c *Client) FTPTransferMonitors() monitors.FTPTransferMonitors {
 	return c.FakeFTPTransferMonitors
+}
+
+// FTPTransferMonitors implements Client.
+func (c *Client) PortMonitors() monitors.PortMonitors {
+	return c.FakePortMonitors
+}
+
+// FTPTransferMonitors implements Client.
+func (c *Client) PINGMonitors() monitors.PINGMonitors {
+	return c.FakePINGMonitors
 }
 
 // RestApiTransactionMonitors implements Client.
