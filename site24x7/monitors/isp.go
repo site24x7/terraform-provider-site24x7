@@ -311,6 +311,7 @@ func resourceDataToISPMonitor(d *schema.ResourceData, client site24x7.Client) (*
 		Timeout:               d.Get("timeout").(int),
 		Protocol:              d.Get("protocol").(string),
 		OnCallScheduleID:      d.Get("on_call_schedule_id").(string),
+		PerformAutomation:     d.Get("perform_automation").(bool),
 		LocationProfileID:     d.Get("location_profile_id").(string),
 		NotificationProfileID: d.Get("notification_profile_id").(string),
 		ThresholdProfileID:    d.Get("threshold_profile_id").(string),
@@ -368,6 +369,7 @@ func updateISPMonitorResourceData(d *schema.ResourceData, monitor *api.ISPMonito
 	d.Set("on_call_schedule_id", monitor.OnCallScheduleID)
 	d.Set("location_profile_id", monitor.LocationProfileID)
 	d.Set("notification_profile_id", monitor.NotificationProfileID)
+	d.Set("perform_automation", monitor.PerformAutomation)
 	d.Set("dependency_resource_ids", monitor.DependencyResourceIDs)
 	d.Set("threshold_profile_id", monitor.ThresholdProfileID)
 	d.Set("monitor_groups", monitor.MonitorGroups)

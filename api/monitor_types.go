@@ -613,7 +613,7 @@ type ISPMonitor struct {
 	MonitorID             string      `json:"monitor_id,omitempty"`
 	DisplayName           string      `json:"display_name"`
 	Hostname              string      `json:"hostname"`
-	UseIPV6               bool        `json:"use_ipv6,omitempty"`
+	UseIPV6               bool        `json:"use_ipv6"`
 	Type                  string      `json:"type"`
 	Timeout               int         `json:"timeout,omitempty"`
 	Protocol              string      `json:"protocol,omitempty"`
@@ -621,6 +621,7 @@ type ISPMonitor struct {
 	CheckFrequency        string      `json:"check_frequency"`
 	OnCallScheduleID      string      `json:"on_call_schedule_id,omitempty"`
 	LocationProfileID     string      `json:"location_profile_id"`
+	PerformAutomation     bool        `json:"perform_automation"`
 	NotificationProfileID string      `json:"notification_profile_id"`
 	ThresholdProfileID    string      `json:"threshold_profile_id"`
 	MonitorGroups         []string    `json:"monitor_groups,omitempty"`
@@ -738,7 +739,7 @@ type PortMonitor struct {
 	MonitorID             string            `json:"monitor_id,omitempty"`
 	DisplayName           string            `json:"display_name"`
 	HostName              string            `json:"host_name"`
-	UseIPV6               bool              `json:"use_ipv6,omitempty"`
+	UseIPV6               bool              `json:"use_ipv6"`
 	InvertPortCheck       bool              `json:"invert_port_check,omitempty"`
 	UseSSL                bool              `json:"use_ssl,omitempty"`
 	Type                  string            `json:"type"`
@@ -748,7 +749,7 @@ type PortMonitor struct {
 	MatchingKeyword       *ValueAndSeverity `json:"matching_keyword,omitempty"`
 	UnmatchingKeyword     *ValueAndSeverity `json:"unmatching_keyword,omitempty"`
 	Port                  int               `json:"port,omitempty"` // To Fix: API accepts int and returns string in response.
-	PerformAutomation     bool              `json:"perform_automation,omitempty"`
+	PerformAutomation     bool              `json:"perform_automation"`
 	CheckFrequency        string            `json:"check_frequency"`
 	OnCallScheduleID      string            `json:"on_call_schedule_id,omitempty"`
 	LocationProfileID     string            `json:"location_profile_id"`
@@ -804,14 +805,14 @@ type PINGMonitor struct {
 	MonitorID             string      `json:"monitor_id,omitempty"`
 	DisplayName           string      `json:"display_name"`
 	HostName              string      `json:"host_name"`
-	UseIPV6               bool        `json:"use_ipv6,omitempty"`
+	UseIPV6               bool        `json:"use_ipv6"`
 	Type                  string      `json:"type"`
 	Timeout               int         `json:"timeout,omitempty"`
 	CheckFrequency        string      `json:"check_frequency"`
 	OnCallScheduleID      string      `json:"on_call_schedule_id,omitempty"`
 	LocationProfileID     string      `json:"location_profile_id"`
 	NotificationProfileID string      `json:"notification_profile_id"`
-	PerformAutomation     bool        `json:"perform_automation,omitempty"`
+	PerformAutomation     bool        `json:"perform_automation"`
 	ThresholdProfileID    string      `json:"threshold_profile_id"`
 	MonitorGroups         []string    `json:"monitor_groups,omitempty"`
 	DependencyResourceIDs []string    `json:"dependency_resource_ids,omitempty"`
@@ -825,8 +826,8 @@ func (pingMonitor *PINGMonitor) SetLocationProfileID(locationProfileID string) {
 	pingMonitor.LocationProfileID = locationProfileID
 }
 
-func (portMonitor *PINGMonitor) GetLocationProfileID() string {
-	return portMonitor.LocationProfileID
+func (pingMonitor *PINGMonitor) GetLocationProfileID() string {
+	return pingMonitor.LocationProfileID
 }
 
 func (pingMonitor *PINGMonitor) SetNotificationProfileID(notificationProfileID string) {
