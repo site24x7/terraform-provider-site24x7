@@ -613,7 +613,7 @@ type ISPMonitor struct {
 	MonitorID             string      `json:"monitor_id,omitempty"`
 	DisplayName           string      `json:"display_name"`
 	Hostname              string      `json:"hostname"`
-	UseIPV6               bool        `json:"use_ipv6,omitempty"`
+	UseIPV6               bool        `json:"use_ipv6"`
 	Type                  string      `json:"type"`
 	Timeout               int         `json:"timeout,omitempty"`
 	Protocol              string      `json:"protocol,omitempty"`
@@ -621,6 +621,7 @@ type ISPMonitor struct {
 	CheckFrequency        string      `json:"check_frequency"`
 	OnCallScheduleID      string      `json:"on_call_schedule_id,omitempty"`
 	LocationProfileID     string      `json:"location_profile_id"`
+	PerformAutomation     bool        `json:"perform_automation"`
 	NotificationProfileID string      `json:"notification_profile_id"`
 	ThresholdProfileID    string      `json:"threshold_profile_id"`
 	MonitorGroups         []string    `json:"monitor_groups,omitempty"`
@@ -730,6 +731,131 @@ func (domainExpiryMonitor *DomainExpiryMonitor) GetTagIDs() []string {
 
 func (domainExpiryMonitor *DomainExpiryMonitor) String() string {
 	return ToString(domainExpiryMonitor)
+}
+
+// Denotes the Port monitor resource in Site24x7.
+type PortMonitor struct {
+	_                     struct{}          `type:"structure"` // Enforces key based initialization.
+	MonitorID             string            `json:"monitor_id,omitempty"`
+	DisplayName           string            `json:"display_name"`
+	HostName              string            `json:"host_name"`
+	UseIPV6               bool              `json:"use_ipv6"`
+	InvertPortCheck       bool              `json:"invert_port_check,omitempty"`
+	UseSSL                bool              `json:"use_ssl,omitempty"`
+	Type                  string            `json:"type"`
+	Timeout               int               `json:"timeout,omitempty"`
+	ApplicationType       string            `json:"application_type,omitempty"`
+	Command               string            `json:"command,omitempty"`
+	MatchingKeyword       *ValueAndSeverity `json:"matching_keyword,omitempty"`
+	UnmatchingKeyword     *ValueAndSeverity `json:"unmatching_keyword,omitempty"`
+	Port                  int               `json:"port,omitempty"` // To Fix: API accepts int and returns string in response.
+	PerformAutomation     bool              `json:"perform_automation"`
+	CheckFrequency        string            `json:"check_frequency"`
+	OnCallScheduleID      string            `json:"on_call_schedule_id,omitempty"`
+	LocationProfileID     string            `json:"location_profile_id"`
+	NotificationProfileID string            `json:"notification_profile_id"`
+	ThresholdProfileID    string            `json:"threshold_profile_id"`
+	MonitorGroups         []string          `json:"monitor_groups,omitempty"`
+	DependencyResourceIDs []string          `json:"dependency_resource_ids,omitempty"`
+	UserGroupIDs          []string          `json:"user_group_ids,omitempty"`
+	TagIDs                []string          `json:"tag_ids,omitempty"`
+	ThirdPartyServiceIDs  []string          `json:"third_party_services,omitempty"`
+	ActionIDs             []ActionRef       `json:"action_ids,omitempty"`
+}
+
+func (portMonitor *PortMonitor) SetLocationProfileID(locationProfileID string) {
+	portMonitor.LocationProfileID = locationProfileID
+}
+
+func (portMonitor *PortMonitor) GetLocationProfileID() string {
+	return portMonitor.LocationProfileID
+}
+
+func (portMonitor *PortMonitor) SetNotificationProfileID(notificationProfileID string) {
+	portMonitor.NotificationProfileID = notificationProfileID
+}
+
+func (portMonitor *PortMonitor) GetNotificationProfileID() string {
+	return portMonitor.NotificationProfileID
+}
+
+func (portMonitor *PortMonitor) SetUserGroupIDs(userGroupIDs []string) {
+	portMonitor.UserGroupIDs = userGroupIDs
+}
+
+func (portMonitor *PortMonitor) GetUserGroupIDs() []string {
+	return portMonitor.UserGroupIDs
+}
+
+func (portMonitor *PortMonitor) String() string {
+	return ToString(portMonitor)
+}
+
+func (portMonitor *PortMonitor) SetTagIDs(tagIDs []string) {
+	portMonitor.TagIDs = tagIDs
+}
+
+func (portMonitor *PortMonitor) GetTagIDs() []string {
+	return portMonitor.TagIDs
+}
+
+// Denotes the PING monitor resource in Site24x7.
+type PINGMonitor struct {
+	_                     struct{}    `type:"structure"` // Enforces key based initialization.
+	MonitorID             string      `json:"monitor_id,omitempty"`
+	DisplayName           string      `json:"display_name"`
+	HostName              string      `json:"host_name"`
+	UseIPV6               bool        `json:"use_ipv6"`
+	Type                  string      `json:"type"`
+	Timeout               int         `json:"timeout,omitempty"`
+	CheckFrequency        string      `json:"check_frequency"`
+	OnCallScheduleID      string      `json:"on_call_schedule_id,omitempty"`
+	LocationProfileID     string      `json:"location_profile_id"`
+	NotificationProfileID string      `json:"notification_profile_id"`
+	PerformAutomation     bool        `json:"perform_automation"`
+	ThresholdProfileID    string      `json:"threshold_profile_id"`
+	MonitorGroups         []string    `json:"monitor_groups,omitempty"`
+	DependencyResourceIDs []string    `json:"dependency_resource_ids,omitempty"`
+	UserGroupIDs          []string    `json:"user_group_ids,omitempty"`
+	TagIDs                []string    `json:"tag_ids,omitempty"`
+	ThirdPartyServiceIDs  []string    `json:"third_party_services,omitempty"`
+	ActionIDs             []ActionRef `json:"action_ids,omitempty"`
+}
+
+func (pingMonitor *PINGMonitor) SetLocationProfileID(locationProfileID string) {
+	pingMonitor.LocationProfileID = locationProfileID
+}
+
+func (pingMonitor *PINGMonitor) GetLocationProfileID() string {
+	return pingMonitor.LocationProfileID
+}
+
+func (pingMonitor *PINGMonitor) SetNotificationProfileID(notificationProfileID string) {
+	pingMonitor.NotificationProfileID = notificationProfileID
+}
+
+func (pingMonitor *PINGMonitor) GetNotificationProfileID() string {
+	return pingMonitor.NotificationProfileID
+}
+
+func (pingMonitor *PINGMonitor) SetUserGroupIDs(userGroupIDs []string) {
+	pingMonitor.UserGroupIDs = userGroupIDs
+}
+
+func (pingMonitor *PINGMonitor) GetUserGroupIDs() []string {
+	return pingMonitor.UserGroupIDs
+}
+
+func (pingMonitor *PINGMonitor) String() string {
+	return ToString(pingMonitor)
+}
+
+func (pingMonitor *PINGMonitor) SetTagIDs(tagIDs []string) {
+	pingMonitor.TagIDs = tagIDs
+}
+
+func (pingMonitor *PINGMonitor) GetTagIDs() []string {
+	return pingMonitor.TagIDs
 }
 
 // Denotes the server monitor resource in Site24x7.
