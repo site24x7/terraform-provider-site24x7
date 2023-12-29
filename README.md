@@ -53,6 +53,8 @@ A terraform provider for managing the following resources in Site24x7:
 - Web Transaction Browser Monitor - [site24x7_web_transaction_browser_monitor](examples/web_transaction_browser_monitor_us.tf)([Site24x7 web transaction browser monitor API doc](https://www.site24x7.com/help/api/#web-transaction-(browser)))
 - FTP Transfer Monitor - [site24x7_FTP_Transfer_monitor](examples/FTP_Transfer_monitor_us.tf)([Site24x7 ftp transfer monitor API doc](https://www.site24x7.com/help/api/#ftp-transfer))
 - ISP Monitor - [site24x7_ISP_monitor](examples/ISP_monitor_us.tf)([Site24x7 isp monitor API doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/resources/isp_monitor))
+- Port Monitor - [site24x7_port_monitor](examples/port_monitor_us.tf)([Site24x7 port monitor API doc](https://www.site24x7.com/help/api/#port-(custom-protocol)))
+- PING Monitor - [site24x7_ping_monitor](examples/ping_monitor_us.tf)([Site24x7 ping monitor API doc](https://www.site24x7.com/help/api/#PING))
 - Server Monitor - [site24x7_server_monitor](examples/server_monitor_us.tf) ([Terraform Server Monitor doc](https://registry.terraform.io/providers/site24x7/site24x7/latest/docs/resources/server_monitor))
 - Heartbeat Monitor - [site24x7_heartbeat_monitor](examples/heartbeat_monitor_us.tf) ([Site24x7 Heartbeat Monitor API doc](https://www.site24x7.com/help/api/#heartbeat))
 - URL IT Automation - [site24x7_url_action](examples/it_automation_us.tf) ([Site24x7 IT Automation API doc](https://www.site24x7.com/help/api/#it-automation))
