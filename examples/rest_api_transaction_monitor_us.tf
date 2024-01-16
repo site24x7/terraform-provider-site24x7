@@ -327,7 +327,7 @@ resource "site24x7_rest_api_transaction_monitor" "rest_api_transaction_monitor_m
   steps {
 
     // (Required) Display name for the step
-    display_name = "RestAPI Transaction Monitor"
+    display_name = "RestAPI Transaction Monitor -- Step1"
 
     // (Required)  API request details related to this step.
     step_details {
@@ -444,7 +444,7 @@ resource "site24x7_rest_api_transaction_monitor" "rest_api_transaction_monitor_m
   steps {
 
     // (Required) Display name for the step
-    display_name = "RestAPI Transaction Monitor"
+    display_name = "RestAPI Transaction Monitor -- Step2"
 
     // (Required)  API request details related to this step.
     step_details {
