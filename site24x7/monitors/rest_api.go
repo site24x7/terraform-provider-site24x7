@@ -229,15 +229,22 @@ var RestApiMonitorSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Description: "A Map of request header name and value.",
 	},
-	"graphql_query": {
-		Type:        schema.TypeString,
-		Optional:    true,
-		Description: "Provide the GraphQL query to get specific response from GraphQL based API service.",
-	},
-	"graphql_variables": {
-		Type:        schema.TypeString,
-		Optional:    true,
-		Description: "Provide the GraphQL variables to get specific response from GraphQL based API service.",
+	"graphql": {
+		Type:     schema.TypeMap,
+		Optional: true,
+		Elem: &schema.Resource{
+			Schema: map[string]*schema.Schema{
+				"query": {
+					Type:     schema.TypeString,
+					Required: true,
+				},
+				"variables": {
+					Type:     schema.TypeString,
+					Required: true,
+				},
+			},
+		},
+		Description: "Check for the keyword in the website response.",
 	},
 	"user_agent": {
 		Type:        schema.TypeString,
@@ -678,11 +685,8 @@ func resourceDataToRestApiMonitor(d *schema.ResourceData, client site24x7.Client
 		restApiMonitor.JSONSchema = jsonSchemaData
 	}
 
-	if graphqlQuery, ok := d.GetOk("graphql_query"); ok {
-		graphqlMap := make(map[string]interface{})
-		graphqlMap["query"] = graphqlQuery.(string)
-		graphqlMap["variables"] = d.Get("graphql_variables").(string)
-		restApiMonitor.GraphQL = graphqlMap
+	if graphql, ok := d.GetOk("graphql"); ok {
+		restApiMonitor.GraphQL = graphql.(map[string]interface{})
 	}
 
 	// Location Profile
@@ -753,8 +757,10 @@ func updateRestApiMonitorResourceData(d *schema.ResourceData, monitor *api.RestA
 	d.Set("third_party_service_ids", monitor.ThirdPartyServiceIDs)
 
 	if monitor.GraphQL != nil {
-		d.Set("graphql_query", monitor.GraphQL["query"].(string))
-		d.Set("graphql_variables", monitor.GraphQL["variables"].(string))
+		graphqlMap := make(map[string]interface{})
+		graphqlMap["query"] = monitor.GraphQL["query"].(string)
+		graphqlMap["variables"] = monitor.GraphQL["variables"].(string)
+		d.Set("graphql", graphqlMap)
 	}
 
 	if monitor.MatchingKeyword != nil {
