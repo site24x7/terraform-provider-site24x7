@@ -70,6 +70,12 @@ resource "site24x7_user" "user_basic" {
 
   // (Required) Role assigned to the user for accessing Site24x7. Role will be updated only after the user accepts the invitation. Refer https://www.site24x7.com/help/api/#site24x7_user_constants
   user_role = 10
+
+  // (Optional) Role assigned to the user for accessing StatusIQ. Role will be updated only after the user accepts the invitation. Refer https://www.site24x7.com/help/api/#statusiq_user_constants
+  statusiq_role = 21
+
+  // (Optional) Role assigned to the user for accessing CloudSpend. Role will be updated only after the user accepts the invitation. Refer https://www.site24x7.com/help/api/#cloudspend_user_constants
+  cloudspend_role = 11
   
   // (Required) Medium through which you’d wish to receive the down alerts. Default value is 1. '1' denotes 'Email', '2' denotes 'SMS', '3' denotes 'Voice Call'.
   down_notification_medium = [

@@ -31,9 +31,10 @@ func TestUsers(t *testing.T) {
 						"trouble":      []int{1},
 						"up":           []int{1},
 					},
-					NotificationMedium: []int{1},
-					SelectionType:      0,
-					UserRole:           1,
+					NotificationMedium:    []int{1},
+					SelectionType:         0,
+					UserRole:              1,
+					ConsentForNonEUAlerts: false,
 				}
 
 				_, err := NewUsers(c).Create(group)
@@ -124,8 +125,9 @@ func TestUsers(t *testing.T) {
 						"trouble":      []int{1},
 						"up":           []int{1},
 					},
-					UserRole:     1,
-					UserGroupIDs: []string{"87654643", "32434567890"},
+					UserRole:              1,
+					UserGroupIDs:          []string{"87654643", "32434567890"},
+					ConsentForNonEUAlerts: false,
 				}
 
 				_, err := NewUsers(c).Update(group)
