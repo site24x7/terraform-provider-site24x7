@@ -82,6 +82,16 @@ var UserSchema = map[string]*schema.Schema{
 		Required:    true,
 		Description: "Role assigned to the user for accessing Site24x7. Role will be updated only after the user accepts the invitation. Refer https://www.site24x7.com/help/api/#site24x7_user_constants",
 	},
+	"statusiq_role": {
+		Type:        schema.TypeInt,
+		Optional:    true,
+		Description: "Role assigned to the user for accessing StatusIQ.. Role will be updated only after the user accepts the invitation. Refer https://www.site24x7.com/help/api/#site24x7_user_constants",
+	},
+	"cloudspend_role": {
+		Type:        schema.TypeInt,
+		Optional:    true,
+		Description: "Role assigned to the user for accessing CloudSpend. Role will be updated only after the user accepts the invitation. Refer https://www.site24x7.com/help/api/#site24x7_user_constants",
+	},
 	"job_title": {
 		Type:        schema.TypeInt,
 		Optional:    true,
@@ -315,17 +325,19 @@ func resourceDataToUser(d *schema.ResourceData) *api.User {
 	}
 
 	user := &api.User{
-		ID:                        d.Id(),
-		DisplayName:               d.Get("display_name").(string),
-		Email:                     d.Get("email_address").(string),
-		UserRole:                  d.Get("user_role").(int),
-		JobTitle:                  d.Get("job_title").(int),
-		MobileSettings:            d.Get("mobile_settings").(map[string]interface{}),
-		SelectionType:             api.ResourceType(d.Get("selection_type").(int)),
-		NotificationMedium:        notificationMedium,
-		UserGroupIDs:              userGroupIDs,
-		MonitorGroups:             monitorGroupIDs,
-		Consent_for_non_eu_alerts: d.Get("consent_for_non_eu_alerts").(bool),
+		ID:                    d.Id(),
+		DisplayName:           d.Get("display_name").(string),
+		Email:                 d.Get("email_address").(string),
+		UserRole:              d.Get("user_role").(int),
+		StatusIQRole:          d.Get("statusiq_role").(int),
+		CloudSpendRole:        d.Get("cloudspend_role").(int),
+		JobTitle:              d.Get("job_title").(int),
+		MobileSettings:        d.Get("mobile_settings").(map[string]interface{}),
+		SelectionType:         api.ResourceType(d.Get("selection_type").(int)),
+		NotificationMedium:    notificationMedium,
+		UserGroupIDs:          userGroupIDs,
+		MonitorGroups:         monitorGroupIDs,
+		ConsentForNonEUAlerts: d.Get("consent_for_non_eu_alerts").(bool),
 	}
 
 	// Alert Settings
@@ -391,6 +403,8 @@ func updateUserResourceData(d *schema.ResourceData, user *api.User) {
 	d.Set("display_name", user.DisplayName)
 	d.Set("email_address", user.Email)
 	d.Set("user_role", user.UserRole)
+	d.Set("statusiq_role", user.StatusIQRole)
+	d.Set("cloudspend_role", user.CloudSpendRole)
 	d.Set("job_title", user.JobTitle)
 	d.Set("selection_type", user.SelectionType)
 	d.Set("notification_medium", user.NotificationMedium)
