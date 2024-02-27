@@ -25,7 +25,7 @@ resource "site24x7_webhook_integration" "webhook_integration" {
   // (Optional) HTTP Method to be used for accessing the website. PUT, PATCH and DELETE are not supported. Default value is 'G'.
   // https://www.site24x7.com/help/api/#http_methods
   method                          = "P"
-  // (Optional) Resource Type associated with this integration. Default value is '0'. Can take values 0|2|3. '0' denotes 'All Monitors', '2' denotes 'Monitors', '3' denotes 'Tags'
+  // (Optional) Resource Type associated with this integration. Default value is '0'. Can take values 0|1|2|3. '0' denotes 'All Monitors', '1' denotes 'Monitor Group', '2' denotes 'Monitors', '3' denotes 'Tags'
   selection_type = 0
   // (Optional) Setting this to 'true' will send alert notifications to this third-party integration when the monitor status changes to 'Trouble'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications. Default value is 'true'.
   trouble_alert = true
@@ -111,7 +111,7 @@ resource "site24x7_webhook_integration" "webhook_integration" {
 * `id` (String) The ID of this resource.
 * `timeout` (Number) The amount of time a connection waits to time out. Default value is 30. Range 1 - 45.
 * `method` (String) HTTP Method to be used for accessing the website. PUT, PATCH and DELETE are not supported. Default value is 'G'. Please refer [API documentation](https://www.site24x7.com/help/api/#http_methods).
-* `selection_type` (Number) Resource Type associated with this integration. Default value is '0'. Can take values 0|2|3. '0' denotes 'All Monitors', '2' denotes 'Monitors', '3' denotes 'Tags'. Please refer [API documentation](https://www.site24x7.com/help/api/#resource_type_constants).
+* `selection_type` (Number) Resource Type associated with this integration. Default value is '0'. Can take values 0|1|2|3. '0' denotes 'All Monitors', '1' denotes 'Monitor Group', '2' denotes 'Monitors', '3' denotes 'Tags'. Please refer [API documentation](https://www.site24x7.com/help/api/#resource_type_constants).
 * `trouble_alert` (Boolean) Setting this to 'true' will send alert notifications to this third-party integration when the monitor status changes to 'Trouble'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.  Default value is 'true'.
 * `critical_alert` (Boolean) Setting this to 'true' will send alert notifications to this third-party integration when the monitor status changes to 'Critical'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.
 * `down_alert` (Boolean) Setting this to 'true' will send alert notifications to this third-party integration when the monitor status changes to 'Down'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications.
