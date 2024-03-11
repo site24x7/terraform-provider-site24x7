@@ -68,7 +68,7 @@ resource "site24x7_telegram_integration" "telegram_integration" {
   channel_url = "https://web.telegram.org/z/#-86576685"
   // (Required) Name of the comapny for Authentication.
   token = "3468:zFiWfmzab-u-rom-TI8"
-  // (Optional) Resource Type associated with this integration. Default value is '0'. Can take values 0|2|3. '0' denotes 'All Monitors', '2' denotes 'Monitors', '3' denotes 'Tags'
+  // (Optional) Resource Type associated with this integration. Default value is '0'. Can take values 0|1|2|3. '0' denotes 'All Monitors', '1' denotes 'Monitor Group', '2' denotes 'Monitors', '3' denotes 'Tags'
   // (Required) Title of the incident.
   title          = "Website is Down"
   selection_type = 0

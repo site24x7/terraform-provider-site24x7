@@ -79,7 +79,7 @@ resource "site24x7_servicenow_integration" "servicenow_integration" {
   user_name                        = "username"
   // (Required) Password for authentication
   password                        = "password"
-  // (Optional) Resource Type associated with this integration. Default value is '0'. Can take values 0|2|3. '0' denotes 'All Monitors', '2' denotes 'Monitors', '3' denotes 'Tags'
+  // (Optional) Resource Type associated with this integration. Default value is '0'. Can take values 0|1|2|3. '0' denotes 'All Monitors', '1' denotes 'Monitor Group', '2' denotes 'Monitors', '3' denotes 'Tags'
   selection_type = 0
   // (Optional) Setting this to 'true' will send alert notifications to this third-party integration when the monitor status changes to 'Trouble'. One among trouble_alert|critical_alert|down_alert should be set to true for receiving notifications. Default value is 'true'.
   trouble_alert = true

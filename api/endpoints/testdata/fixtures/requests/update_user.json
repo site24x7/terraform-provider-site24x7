@@ -8,6 +8,7 @@
   "notify_medium":[1],
   "selection_type":0,
   "user_role":1,
+  "consent_for_non_eu_alerts":false,
   "alert_settings": {
     "email_format": 1,
     "critical": [
