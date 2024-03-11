@@ -759,7 +759,11 @@ func updateRestApiMonitorResourceData(d *schema.ResourceData, monitor *api.RestA
 	if monitor.GraphQL != nil {
 		graphqlMap := make(map[string]interface{})
 		graphqlMap["query"] = monitor.GraphQL["query"].(string)
-		graphqlMap["variables"] = monitor.GraphQL["variables"].(string)
+		if monitor.GraphQL["variables"] == nil {
+			graphqlMap["variables"] = ""
+		} else {
+			graphqlMap["variables"] = monitor.GraphQL["variables"].(string)
+		}
 		d.Set("graphql", graphqlMap)
 	}
 

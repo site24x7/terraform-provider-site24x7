@@ -111,9 +111,9 @@ var webPageSpeedMonitorSchema = map[string]*schema.Schema{
 		Description: "Monitoring is performed over IPv4 or IPv6 based on the value specified. 0 - use only IPv4, 1 - use only IPv6, 2 - use both IPv4 and IPv6.",
 	},
 	"website_type": {
-		Type:     schema.TypeInt,
-		Optional: true,
-		Default:  1,
+		Type:        schema.TypeInt,
+		Optional:    true,
+		Default:     1,
 		Description: "Type of content the website page has. 1 - Static Website,	2 - Dynamic Website, 3 - Flash-Based Website.",
 	},
 	"browser_type": {
@@ -177,6 +177,16 @@ var webPageSpeedMonitorSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Default:     "",
 		Description: "Provide a comma-separated list of HTTP status codes that indicate a successful response. You can specify individual status codes, as well as ranges separated with a colon.",
+	},
+	"element_check": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Verify the presence of specified keywords within a particular HTML element by providing element identifiers and by specifying the element locator.",
+	},
+	"jwt_id": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "Token ID of the Web Token to be associated with the monitor",
 	},
 	// Content Checks
 	"matching_keyword_value": {
@@ -497,6 +507,8 @@ func resourceDataToWebPageSpeedMonitor(d *schema.ResourceData, client site24x7.C
 		CredentialProfileID: d.Get("credential_profile_id").(string),
 		UserAgent:           d.Get("user_agent").(string),
 		UpStatusCodes:       d.Get("up_status_codes").(string),
+		ElementCheck:        d.Get("element_check").(string),
+		JwtID:               d.Get("jwt_id").(string),
 		// Content Check
 		MatchCase:             d.Get("match_case").(bool),
 		LocationProfileID:     d.Get("location_profile_id").(string),
@@ -594,6 +606,8 @@ func updateWebPageSpeedMonitorResourceData(d *schema.ResourceData, monitor *api.
 	d.Set("credential_profile_id", monitor.CredentialProfileID)
 	d.Set("user_agent", monitor.UserAgent)
 	d.Set("up_status_codes", monitor.UpStatusCodes)
+	d.Set("jwt_id", monitor.JwtID)
+	d.Set("element_check", monitor.ElementCheck)
 
 	// Content Check
 	if monitor.MatchingKeyword != nil {

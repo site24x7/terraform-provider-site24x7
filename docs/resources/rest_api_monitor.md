@@ -161,11 +161,13 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
 
   // ================ GRAPHQL ATTRIBUTES
   // (Optional) Provide content type for request params.
-  request_content_type = "G"
+  request_content_type = "G "
   // (Optional) Provide the GraphQL query to get specific response from GraphQL based API service. request_content_type = "G"
-  graphql_query = "query GetFlimForId($FilmId:ID!){\n        film(id:$FilmId){\n            id\n            title\n            director\n            producers\n        }\n}"
   // (Optional) Provide the GraphQL variables to get specific response from GraphQL based API service. request_content_type = "G"
-  graphql_variables = "{\n    \"FilmId\":\"ZmlsbXM6NQ==\"\n}"
+  graphql={
+    query = "query GetFlimForId($FilmId:ID!){\n        film(id:$FilmId){\n            id\n            title\n            director\n            producers\n        }\n}"
+    variables = "{\n    \"FilmId\":\"ZmlsbXM6NQ==\"\n}"
+  }
   // GRAPHQL ATTRIBUTES ================
 }
 
@@ -189,8 +191,7 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
 * `request_content_type` (String) Provide content type for request params when http_method is 'P'. 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML, 'F' denotes FORM and 'G' denotes GRAPHQL.
 * `request_body` (String) Provide the content to be passed in the request body while accessing the website.
 * `request_headers` (Map of String) A Map of request header name and value.
-* `graphql_query` (String) Provide the GraphQL query to get specific response from GraphQL based API service. request_content_type should be "G"
-* `graphql_variables` (String) Provide the GraphQL variables to get specific response from GraphQL based API service. request_content_type should be "G"
+* `graphql` (Map of String) Contains the query and variable for the Graphql option of type "G"
 * ~~`request_param` (String) Provide parameters to be passed while accessing the website.~~ (Deprecated: https://github.com/site24x7/terraform-provider-site24x7/pull/94/files#diff-48dba37a89bbad21af6c4d8b66fd20583aadfca584594b57793cdd14f4d6330fL262)
 * `ssl_protocol` (String) Specify the version of the SSL protocol. If you are not sure about the version, use Auto.
 * `use_alpn` (Boolean) Enable ALPN to send supported protocols as part of the TLS handshake.

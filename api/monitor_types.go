@@ -57,14 +57,18 @@ func (monitor *GenericMonitor) String() string {
 
 // Denotes the website monitor resource in Site24x7.
 type WebsiteMonitor struct {
-	_              struct{} `type:"structure"` // Enforces key based initialization.
-	MonitorID      string   `json:"monitor_id,omitempty"`
-	DisplayName    string   `json:"display_name"`
-	Type           string   `json:"type"`
-	Website        string   `json:"website"`
-	CheckFrequency string   `json:"check_frequency"`
-	Timeout        int      `json:"timeout"`
-	UseIPV6        bool     `json:"use_ipv6"`
+	_                         struct{} `type:"structure"` // Enforces key based initialization.
+	MonitorID                 string   `json:"monitor_id,omitempty"`
+	DisplayName               string   `json:"display_name"`
+	Type                      string   `json:"type"`
+	Website                   string   `json:"website"`
+	CheckFrequency            string   `json:"check_frequency"`
+	Timeout                   int      `json:"timeout"`
+	IPType                    int      `json:"ip_type"`
+	PrimaryProtocol           int      `json:"primary_protocol,omitempty"`
+	SecondaryProtocolSeverity int      `json:"secondary_protocol_severity,omitempty"`
+	HiddenMonAdded            int      `json:"hidden_mon_added,omitempty"`
+	UseIPV6                   bool     `json:"use_ipv6,omitempty"`
 	// HTTP Configuration
 	HTTPMethod                string   `json:"http_method"`
 	RequestContentType        string   `json:"request_content_type,omitempty"`
@@ -153,6 +157,8 @@ type WebPageSpeedMonitor struct {
 	BrowserVersion int      `json:"browser_version"`
 	DeviceType     string   `json:"device_type"`
 	WPAResolution  string   `json:"wpa_resolution"`
+	ElementCheck   string   `json:"element_check,omitempty"`
+	JwtID          string   `json:"jwt_id,omitempty"`
 	// HTTP Configuration
 	HTTPMethod          string   `json:"http_method"`
 	CustomHeaders       []Header `json:"custom_headers,omitempty"`
