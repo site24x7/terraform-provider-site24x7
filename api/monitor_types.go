@@ -57,14 +57,18 @@ func (monitor *GenericMonitor) String() string {
 
 // Denotes the website monitor resource in Site24x7.
 type WebsiteMonitor struct {
-	_              struct{} `type:"structure"` // Enforces key based initialization.
-	MonitorID      string   `json:"monitor_id,omitempty"`
-	DisplayName    string   `json:"display_name"`
-	Type           string   `json:"type"`
-	Website        string   `json:"website"`
-	CheckFrequency string   `json:"check_frequency"`
-	Timeout        int      `json:"timeout"`
-	UseIPV6        bool     `json:"use_ipv6"`
+	_                         struct{} `type:"structure"` // Enforces key based initialization.
+	MonitorID                 string   `json:"monitor_id,omitempty"`
+	DisplayName               string   `json:"display_name"`
+	Type                      string   `json:"type"`
+	Website                   string   `json:"website"`
+	CheckFrequency            string   `json:"check_frequency"`
+	Timeout                   int      `json:"timeout"`
+	IPType                    int      `json:"ip_type"`
+	PrimaryProtocol           int      `json:"primary_protocol,omitempty"`
+	SecondaryProtocolSeverity int      `json:"secondary_protocol_severity,omitempty"`
+	HiddenMonAdded            int      `json:"hidden_mon_added,omitempty"`
+	UseIPV6                   bool     `json:"use_ipv6,omitempty"`
 	// HTTP Configuration
 	HTTPMethod                string   `json:"http_method"`
 	RequestContentType        string   `json:"request_content_type,omitempty"`
@@ -153,6 +157,8 @@ type WebPageSpeedMonitor struct {
 	BrowserVersion int      `json:"browser_version"`
 	DeviceType     string   `json:"device_type"`
 	WPAResolution  string   `json:"wpa_resolution"`
+	ElementCheck   string   `json:"element_check,omitempty"`
+	JwtID          string   `json:"jwt_id,omitempty"`
 	// HTTP Configuration
 	HTTPMethod          string   `json:"http_method"`
 	CustomHeaders       []Header `json:"custom_headers,omitempty"`
@@ -797,6 +803,78 @@ func (portMonitor *PortMonitor) SetTagIDs(tagIDs []string) {
 
 func (portMonitor *PortMonitor) GetTagIDs() []string {
 	return portMonitor.TagIDs
+}
+
+// Denotes the Port monitor resource in Site24x7.
+type GrpcMonitor struct {
+	_                     struct{}               `type:"structure"` // Enforces key based initialization.
+	MonitorID             string                 `json:"monitor_id,omitempty"`
+	DisplayName           string                 `json:"display_name"`
+	HostName              string                 `json:"host_name"`
+	UseIPV6               bool                   `json:"use_ipv6"`
+	UseSSL                bool                   `json:"use_ssl,omitempty"`
+	Type                  string                 `json:"type"`
+	Timeout               int                    `json:"timeout,omitempty"`
+	Port                  int                    `json:"port,omitempty"` // To Fix: API accepts int and returns string in response.
+	ProtoFile             string                 `json:"proto_file,omitempty"`
+	Proto                 string                 `json:"proto,omitempty"`
+	Service               string                 `json:"service,omitempty"`
+	Method                string                 `json:"method,omitempty"`
+	Message               string                 `json:"message,omitempty"`
+	PerformAutomation     bool                   `json:"perform_automation"`
+	MatchJSON             map[string]interface{} `json:"match_json,omitempty"`
+	JSONSchema            map[string]interface{} `json:"json_schema,omitempty"`
+	JSONSchemaCheck       bool                   `json:"json_schema_check,omitempty"`
+	CustomHeaders         []Header               `json:"custom_headers,omitempty"`
+	CheckFrequency        string                 `json:"check_frequency"`
+	OnCallScheduleID      string                 `json:"on_call_schedule_id,omitempty"`
+	CredentialProfileID   string                 `json:"credential_profile_id,omitempty"`
+	CredentialBox         string                 `json:"credential_box,omitempty"`
+	LocationProfileID     string                 `json:"location_profile_id"`
+	NotificationProfileID string                 `json:"notification_profile_id"`
+	ThresholdProfileID    string                 `json:"threshold_profile_id"`
+	MonitorGroups         []string               `json:"monitor_groups,omitempty"`
+	DependencyResourceIDs []string               `json:"dependency_resource_ids,omitempty"`
+	UserGroupIDs          []string               `json:"user_group_ids,omitempty"`
+	TagIDs                []string               `json:"tag_ids,omitempty"`
+	ThirdPartyServiceIDs  []string               `json:"third_party_services,omitempty"`
+	ActionIDs             []ActionRef            `json:"action_ids,omitempty"`
+}
+
+func (grpcMonitor *GrpcMonitor) SetLocationProfileID(locationProfileID string) {
+	grpcMonitor.LocationProfileID = locationProfileID
+}
+
+func (grpcMonitor *GrpcMonitor) GetLocationProfileID() string {
+	return grpcMonitor.LocationProfileID
+}
+
+func (grpcMonitor *GrpcMonitor) SetNotificationProfileID(notificationProfileID string) {
+	grpcMonitor.NotificationProfileID = notificationProfileID
+}
+
+func (grpcMonitor *GrpcMonitor) GetNotificationProfileID() string {
+	return grpcMonitor.NotificationProfileID
+}
+
+func (grpcMonitor *GrpcMonitor) SetUserGroupIDs(userGroupIDs []string) {
+	grpcMonitor.UserGroupIDs = userGroupIDs
+}
+
+func (grpcMonitor *GrpcMonitor) GetUserGroupIDs() []string {
+	return grpcMonitor.UserGroupIDs
+}
+
+func (grpcMonitor *GrpcMonitor) String() string {
+	return ToString(grpcMonitor)
+}
+
+func (grpcMonitor *GrpcMonitor) SetTagIDs(tagIDs []string) {
+	grpcMonitor.TagIDs = tagIDs
+}
+
+func (grpcMonitor *GrpcMonitor) GetTagIDs() []string {
+	return grpcMonitor.TagIDs
 }
 
 // Denotes the PING monitor resource in Site24x7.
