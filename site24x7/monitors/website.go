@@ -2,6 +2,7 @@ package monitors
 
 import (
 	"fmt"
+	"log"
 	"sort"
 	"strconv"
 
@@ -99,6 +100,26 @@ var websiteMonitorSchema = map[string]*schema.Schema{
 		Type:        schema.TypeBool,
 		Optional:    true,
 		Description: "Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure.",
+	},
+	"ip_type": {
+		Type:        schema.TypeInt,
+		Required:    true,
+		Description: "Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure.",
+	},
+	"primary_protocol": {
+		Type:        schema.TypeInt,
+		Optional:    true,
+		Description: "Choose the primary internet protocol for the resources",
+	},
+	"secondary_protocol_severity": {
+		Type:        schema.TypeInt,
+		Optional:    true,
+		Description: "Configure the change for the secondary resource for which you want to get notified",
+	},
+	"hidden_mon_added": {
+		Type:        schema.TypeInt,
+		Optional:    true,
+		Description: "To Edit the existing secondary protocol resource",
 	},
 	// Content Checks
 	"matching_keyword_value": {
@@ -382,7 +403,7 @@ func websiteMonitorCreate(d *schema.ResourceData, meta interface{}) error {
 	if err != nil {
 		return err
 	}
-
+	log.Println("Websitemonitor --------------------------------------------", websiteMonitor)
 	d.SetId(websiteMonitor.MonitorID)
 
 	// return websiteMonitorRead(d, meta)
@@ -549,6 +570,22 @@ func resourceDataToWebsiteMonitor(d *schema.ResourceData, client site24x7.Client
 	websiteMonitor.FollowHTTPRedirection = d.Get("follow_http_redirection").(bool)
 	websiteMonitor.IgnoreCertError = d.Get("ignore_cert_err").(bool)
 
+	websiteMonitor.IPType = d.Get("ip_type").(int)
+	log.Println("IP_?TPYE---------------------------", websiteMonitor.IPType)
+	if websiteMonitor.IPType == 0 {
+		websiteMonitor.UseIPV6 = false
+	} else if websiteMonitor.IPType == 1 {
+		websiteMonitor.UseIPV6 = true
+	} else if websiteMonitor.IPType == 3 {
+
+		websiteMonitor.PrimaryProtocol = d.Get("primary_protocol").(int)
+		websiteMonitor.SecondaryProtocolSeverity = d.Get("secondary_protocol_severity").(int)
+
+	}
+	if d.Get("hidden_mon_added").(int) == 1 {
+		websiteMonitor.HiddenMonAdded = d.Get("hidden_mon_added").(int)
+	}
+
 	// ================================ Configuration Profiles ================================
 	var userGroupIDs []string
 	for _, id := range d.Get("user_group_ids").([]interface{}) {
@@ -654,6 +691,11 @@ func updateWebsiteMonitorResourceData(d *schema.ResourceData, monitor *api.Websi
 	d.Set("website", monitor.Website)
 	d.Set("check_frequency", monitor.CheckFrequency)
 	d.Set("timeout", monitor.Timeout)
+	d.Set("ip_type", monitor.IPType)
+	d.Set("primary_protocol", monitor.PrimaryProtocol)
+
+	d.Set("secondary_protocol_severity", monitor.SecondaryProtocolSeverity)
+	d.Set("hidden_mon_added", monitor.HiddenMonAdded)
 	d.Set("use_ipv6", monitor.UseIPV6)
 	// ================================ HTTP Configuration ================================
 	d.Set("http_method", monitor.HTTPMethod)
@@ -718,7 +760,6 @@ func updateWebsiteMonitorResourceData(d *schema.ResourceData, monitor *api.Websi
 	for _, action := range monitor.ActionIDs {
 		actions[fmt.Sprintf("%d", action.AlertType)] = action.ActionID
 	}
-
 	d.Set("actions", actions)
 
 }

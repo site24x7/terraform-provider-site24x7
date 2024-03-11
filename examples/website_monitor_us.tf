@@ -119,6 +119,18 @@ resource "site24x7_website_monitor" "website_monitor" {
   // (Optional) User Agent to be used while monitoring the website.
   user_agent = "some user agent string"
 
+  // (Optional) Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure.
+  use_ipv6                  = false
+
+  //(Optional)Ip type of the monitor
+  ip_type = 3
+
+  //Primary internet protocol for the resource
+  primary_protocol=_1
+
+  //secondary resource configuration
+  secondary_protocol_severity=2
+
   // (Optional) Timeout for connecting to website. Range 1 - 45. Default: 10
   timeout = 10
 
