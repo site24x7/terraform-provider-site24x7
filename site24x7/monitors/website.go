@@ -2,7 +2,6 @@ package monitors
 
 import (
 	"fmt"
-	"log"
 	"sort"
 	"strconv"
 
@@ -403,7 +402,7 @@ func websiteMonitorCreate(d *schema.ResourceData, meta interface{}) error {
 	if err != nil {
 		return err
 	}
-	log.Println("Websitemonitor --------------------------------------------", websiteMonitor)
+
 	d.SetId(websiteMonitor.MonitorID)
 
 	// return websiteMonitorRead(d, meta)
@@ -571,7 +570,7 @@ func resourceDataToWebsiteMonitor(d *schema.ResourceData, client site24x7.Client
 	websiteMonitor.IgnoreCertError = d.Get("ignore_cert_err").(bool)
 
 	websiteMonitor.IPType = d.Get("ip_type").(int)
-	log.Println("IP_?TPYE---------------------------", websiteMonitor.IPType)
+
 	if websiteMonitor.IPType == 0 {
 		websiteMonitor.UseIPV6 = false
 	} else if websiteMonitor.IPType == 1 {
