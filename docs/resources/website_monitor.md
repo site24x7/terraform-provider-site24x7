@@ -210,21 +210,20 @@ resource "site24x7_website_monitor" "website_monitor" {
 * `check_frequency` (String) Interval at which your website has to be monitored. Default value is 1 minute.
 * `timeout` (Number) Timeout for connecting to website. Default value is 10. Range 1 - 45.
 * `use_ipv6`[Deprecated] (Boolean) Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure.
-* `ip_type` (int) Monitoring is performed over the selected internet protocol 
+* `ip_type` (Number) Monitoring is performed over the selected internet protocol 
           0|Monitoring is performed over IPv4 from supported locations 
           1|Monitoring is performed over IPv6 from supported locations
           2|IPv4 or IPv6 option will help in flexibly switching to the protocol that is supported in a particular location if one protocol fails.
           3|IPv4 and IPv6 will create two connections for each protocol. 
-* `primary_protocol`|int|Choose the primary internet protocol for the resources. Select only if you're choosing the option, Both IPv4 and IPv6 monitoring.
+* `primary_protocol` (Number) Choose the primary internet protocol for the resources. Select only if you're choosing the option, Both IPv4 and IPv6 monitoring.
     Options :
         0|IPv4
         1|IPv6
-* `secondary_protocol_severity`|int|Configure the change for the secondary resource for which you'd  like to get notifications. Select only if you're choosing the option,Both IPv4 and IPv6           monitoring.​
+* `secondary_protocol_severity` (Number) Configure the change for the secondary resource for which you'd like to get notifications. Select only if you're choosing the option,Both IPv4 and IPv6 monitoring.​
     Options :
        2|Trouble
        3|Critical
-* `hidden_mon_added`|int|To Edit the existing secondary protocol resource.Select only if you are updating the option Both IPv6 and IPv4 monitoring or downgrading from Both IPv4 and IPv6 options to others but Not selected if you are choosing both IPv4 and IPv6 for the first time
-
+* `hidden_mon_added` (Number) To Edit the existing secondary protocol resource.Select only if you are updating the option Both IPv6 and IPv4 monitoring or downgrading from Both IPv4 and IPv6 options to others but Not selected if you are choosing both IPv4 and IPv6 for the first time
 * `matching_keyword_value` (String) Check for the keyword in the website response.
 * `matching_keyword_severity` (Number) Severity with which alert has to raised when the matching keyword is found in the website response.
 * `unmatching_keyword_value` (String) Check for the absence of the keyword in the website response.
