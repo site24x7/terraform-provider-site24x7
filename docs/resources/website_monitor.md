@@ -210,7 +210,7 @@ resource "site24x7_website_monitor" "website_monitor" {
 * `check_frequency` (String) Interval at which your website has to be monitored. Default value is 1 minute.
 * `timeout` (Number) Timeout for connecting to website. Default value is 10. Range 1 - 45.
 * `use_ipv6`[Deprecated] (Boolean) Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure.
-* `ip_type` (Number) Monitoring is performed over the selected internet protocol 
+* `ip_type` (Number) Monitoring is performed over the selected internet protocol. Default value is 0.
           0|Monitoring is performed over IPv4 from supported locations 
           1|Monitoring is performed over IPv6 from supported locations
           2|IPv4 or IPv6 option will help in flexibly switching to the protocol that is supported in a particular location if one protocol fails.

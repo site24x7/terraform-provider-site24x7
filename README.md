@@ -384,7 +384,7 @@ Contributions are what make the open source community such an amazing place to l
 
 ## License
 
-Copyright (c) 2023 Zoho Corporation Private Limited
+Copyright (c) 2024 Zoho Corporation Private Limited
 
 This project is licensed under the MIT License - see [LICENSE](https://github.com/site24x7/terraform-provider-site24x7/blob/main/LICENSE) file for details.
 
