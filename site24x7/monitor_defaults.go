@@ -237,15 +237,8 @@ func SetTags(client Client, d *schema.ResourceData, monitor api.Site24x7Monitor)
 			return nil, errors.New("Unable to find tag matching the List : \"" + strings.Join(tagNamesInConf, ", ") + "\" in Site24x7. Please configure a valid value for the argument \"tag_names\"")
 		}
 		monitor.SetTagIDs(tagIDs)
+
 		d.Set("tag_ids", tagIDs)
-	} else if len(monitor.GetTagIDs()) == 0 { // This will be true when tag_ids in the configuration file is empty during resource addition.
-		if len(tagsList) == 0 {
-			// Tags are not mandatory for successful monitor addition.
-			return tagIDs, nil
-		}
-		tag := tagsList[0]
-		monitor.SetTagIDs([]string{tag.TagID})
-		d.Set("tag_ids", []string{tag.TagID})
 	}
 	return tagIDs, nil
 }
