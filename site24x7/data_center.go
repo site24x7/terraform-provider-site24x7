@@ -37,6 +37,12 @@ var dataCenter = map[string]DataCenter{
 		site24x7APIBaseURL:   "https://www.site24x7.jp//api",
 		zohoAccountsTokenURL: "https://accounts.zoho.jp/oauth/v2/token",
 	},
+	"CA": {
+		displayName:          "Canada",
+		code:                 "CA",
+		site24x7APIBaseURL:   "https://www.site24x7.ca/api",
+		zohoAccountsTokenURL: "https://accounts.zohocloud.ca/oauth/v2/token",
+	},
 }
 
 type DataCenter struct {
