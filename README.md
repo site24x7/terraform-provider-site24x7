@@ -206,8 +206,9 @@ Note: Domain names in the OAuth credentials generation steps vary based on your 
 2. Europe (EU) - https://accounts.zoho.eu and https://api-console.zoho.eu
 3. China (CN) - https://accounts.zoho.com.cn and https://api-console.zoho.com.cn
 4. Japan (JP) - https://accounts.zoho.jp and https://api-console.zoho.jp
-4. India (IN) - https://accounts.zoho.in and https://api-console.zoho.in
+5. India (IN) - https://accounts.zoho.in and https://api-console.zoho.in
 5. Australia (AU) - https://accounts.zoho.com.au and https://api-console.zoho.com.au
+6. Canada (CA) - https://accounts.zohocloud.ca and https://api-console.zohocloud.ca
 
 
 ## Steps to import existing monitors and generate terraform resource configuration for the same
