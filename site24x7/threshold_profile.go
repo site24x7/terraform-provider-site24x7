@@ -131,7 +131,7 @@ var ThresholdProfileSchema = map[string]*schema.Schema{
 				"severity": {
 					Type:         schema.TypeInt,
 					Required:     true,
-					ValidateFunc: validation.IntInSlice([]int{2, 3}), // Trouble or Critical
+					ValidateFunc: validation.IntInSlice([]int{0, 2, 3}), // Trouble or Critical
 				},
 				"comparison_operator": {
 					Type:         schema.TypeInt,
