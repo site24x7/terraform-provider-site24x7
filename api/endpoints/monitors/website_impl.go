@@ -39,6 +39,7 @@ func (c *websitemonitors) Get(monitorID string) (*api.WebsiteMonitor, error) {
 
 func (c *websitemonitors) Create(monitor *api.WebsiteMonitor) (*api.WebsiteMonitor, error) {
 	newMonitor := &api.WebsiteMonitor{}
+	newMonitor.UseIPV6 = monitor.UseIPV6
 	err := c.client.
 		Post().
 		Resource("monitors").
@@ -51,6 +52,7 @@ func (c *websitemonitors) Create(monitor *api.WebsiteMonitor) (*api.WebsiteMonit
 
 func (c *websitemonitors) Update(monitor *api.WebsiteMonitor) (*api.WebsiteMonitor, error) {
 	updatedMonitor := &api.WebsiteMonitor{}
+	updatedMonitor.UseIPV6 = monitor.UseIPV6
 	err := c.client.
 		Put().
 		Resource("monitors").

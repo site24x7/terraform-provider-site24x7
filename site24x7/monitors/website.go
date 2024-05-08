@@ -96,11 +96,11 @@ var websiteMonitorSchema = map[string]*schema.Schema{
 		Default:     10,
 		Description: "Timeout for connecting to website. Default value is 10. Range 1 - 45.",
 	},
-	"use_ipv6": {
-		Type:        schema.TypeBool,
-		Optional:    true,
-		Description: "Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure.",
-	},
+	// "use_ipv6": {
+	// 	Type:        schema.TypeBool,
+	// 	Optional:    true,
+	// 	Description: "Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure.",
+	// },
 	"ip_type": {
 		Type:        schema.TypeInt,
 		Required:    true,
@@ -114,6 +114,7 @@ var websiteMonitorSchema = map[string]*schema.Schema{
 	"secondary_protocol_severity": {
 		Type:        schema.TypeInt,
 		Optional:    true,
+		Default:     2,
 		Description: "Configure the change for the secondary resource for which you want to get notified",
 	},
 	"hidden_mon_added": {
@@ -253,7 +254,6 @@ var websiteMonitorSchema = map[string]*schema.Schema{
 	"ignore_cert_err": {
 		Type:        schema.TypeBool,
 		Optional:    true,
-		Default:     true,
 		Description: "Enter true or false to Trust the Server SSL Certificate. Default value is true.",
 	},
 	"follow_http_redirection": {
@@ -398,12 +398,12 @@ func websiteMonitorCreate(d *schema.ResourceData, meta interface{}) error {
 	if err != nil {
 		return err
 	}
-
+	log.Println("Websitemonitor --------------------------------------------", websiteMonitor.UseIPV6)
 	websiteMonitor, err = client.WebsiteMonitors().Create(websiteMonitor)
 	if err != nil {
 		return err
 	}
-	log.Println("Websitemonitor --------------------------------------------", websiteMonitor)
+	log.Println("Websitemonitor --------------------------------------------", websiteMonitor.UseIPV6)
 	d.SetId(websiteMonitor.MonitorID)
 
 	// return websiteMonitorRead(d, meta)
@@ -425,17 +425,14 @@ func websiteMonitorRead(d *schema.ResourceData, meta interface{}) error {
 
 func websiteMonitorUpdate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(site24x7.Client)
-
 	websiteMonitor, err := resourceDataToWebsiteMonitor(d, client)
 	if err != nil {
 		return err
 	}
-
 	websiteMonitor, err = client.WebsiteMonitors().Update(websiteMonitor)
 	if err != nil {
 		return err
 	}
-
 	d.SetId(websiteMonitor.MonitorID)
 
 	// return websiteMonitorRead(d, meta)
@@ -569,21 +566,31 @@ func resourceDataToWebsiteMonitor(d *schema.ResourceData, client site24x7.Client
 	websiteMonitor.UseAlpn = d.Get("use_alpn").(bool)
 	websiteMonitor.FollowHTTPRedirection = d.Get("follow_http_redirection").(bool)
 	websiteMonitor.IgnoreCertError = d.Get("ignore_cert_err").(bool)
-
 	websiteMonitor.IPType = d.Get("ip_type").(int)
-	log.Println("IP_?TPYE---------------------------", websiteMonitor.IPType)
+
 	if websiteMonitor.IPType == 0 {
 		websiteMonitor.UseIPV6 = false
 	} else if websiteMonitor.IPType == 1 {
 		websiteMonitor.UseIPV6 = true
 	} else if websiteMonitor.IPType == 3 {
-
 		websiteMonitor.PrimaryProtocol = d.Get("primary_protocol").(int)
 		websiteMonitor.SecondaryProtocolSeverity = d.Get("secondary_protocol_severity").(int)
-
+		if websiteMonitor.PrimaryProtocol == 0 {
+			websiteMonitor.UseIPV6 = false
+		} else if websiteMonitor.PrimaryProtocol == 1 {
+			websiteMonitor.UseIPV6 = true
+		}
 	}
 	if d.Get("hidden_mon_added").(int) == 1 {
 		websiteMonitor.HiddenMonAdded = d.Get("hidden_mon_added").(int)
+	}
+
+	if websiteMonitor.IPType < 2 {
+		if !websiteMonitor.UseIPV6 {
+			websiteMonitor.IPType = 0
+		} else if websiteMonitor.UseIPV6 {
+			websiteMonitor.IPType = 1
+		}
 	}
 
 	// ================================ Configuration Profiles ================================
@@ -681,7 +688,6 @@ func resourceDataToWebsiteMonitor(d *schema.ResourceData, client site24x7.Client
 	if tagsErr != nil {
 		return nil, tagsErr
 	}
-
 	return websiteMonitor, nil
 }
 
@@ -692,8 +698,12 @@ func updateWebsiteMonitorResourceData(d *schema.ResourceData, monitor *api.Websi
 	d.Set("check_frequency", monitor.CheckFrequency)
 	d.Set("timeout", monitor.Timeout)
 	d.Set("ip_type", monitor.IPType)
+	// if monitor.PrimaryProtocol == 2 {
+	// 	d.Set("primary_protocol", 0)
+	// 	log.Printf("Inside set primary protocol**************")
+	// } else {
 	d.Set("primary_protocol", monitor.PrimaryProtocol)
-
+	//}
 	d.Set("secondary_protocol_severity", monitor.SecondaryProtocolSeverity)
 	d.Set("hidden_mon_added", monitor.HiddenMonAdded)
 	d.Set("use_ipv6", monitor.UseIPV6)
