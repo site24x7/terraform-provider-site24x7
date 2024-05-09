@@ -2,7 +2,6 @@ package monitors
 
 import (
 	"fmt"
-	"log"
 	"sort"
 	"strconv"
 
@@ -114,7 +113,6 @@ var websiteMonitorSchema = map[string]*schema.Schema{
 	"secondary_protocol_severity": {
 		Type:        schema.TypeInt,
 		Optional:    true,
-		Default:     2,
 		Description: "Configure the change for the secondary resource for which you want to get notified",
 	},
 	"hidden_mon_added": {
@@ -398,12 +396,10 @@ func websiteMonitorCreate(d *schema.ResourceData, meta interface{}) error {
 	if err != nil {
 		return err
 	}
-	log.Println("Websitemonitor --------------------------------------------", websiteMonitor.UseIPV6)
 	websiteMonitor, err = client.WebsiteMonitors().Create(websiteMonitor)
 	if err != nil {
 		return err
 	}
-	log.Println("Websitemonitor --------------------------------------------", websiteMonitor.UseIPV6)
 	d.SetId(websiteMonitor.MonitorID)
 
 	// return websiteMonitorRead(d, meta)
