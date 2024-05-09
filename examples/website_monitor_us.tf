@@ -29,7 +29,7 @@ provider "site24x7" {
 	oauth2_refresh_token = "<SITE24X7_OAUTH2_REFRESH_TOKEN>"
   
 	// (Required) Specify the data center from which you have obtained your
-	// OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN/JP).
+	// OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN/JP/CA).
 	data_center = "US"
 	
 	// (Optional) ZAAID of the customer under a MSP or BU
@@ -122,14 +122,24 @@ resource "site24x7_website_monitor" "website_monitor" {
   // (Optional) Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure.
   use_ipv6                  = false
 
-  //(Optional)Ip type of the monitor
+  // (Optional) Monitoring is performed over the selected internet protocol 
+  //        0|Monitoring is performed over IPv4 from supported locations 
+  //        1|Monitoring is performed over IPv6 from supported locations
+  //        2|IPv4 or IPv6 option will help in flexibly switching to the protocol that is supported in a particular location if one protocol fails.
+  //        3|IPv4 and IPv6 will create two connections for each protocol. 
   ip_type = 3
 
-  //Primary internet protocol for the resource
-  primary_protocol=_1
+  // (Optional) Choose the primary internet protocol for the resources. Select only if you're choosing the option, Both IPv4 and IPv6 monitoring.
+  //   Options :
+  //      0|IPv4
+  //      1|IPv6
+  primary_protocol =_1
 
-  //secondary resource configuration
-  secondary_protocol_severity=2
+  // (Optional) Configure the change for the secondary resource for which you'd like to get notifications. Select only if you're choosing the option,Both IPv4 and IPv6 monitoring.​
+  //  Options :
+  //     2|Trouble
+  //     3|Critical
+  secondary_protocol_severity = 2
 
   // (Optional) Timeout for connecting to website. Range 1 - 45. Default: 10
   timeout = 10
