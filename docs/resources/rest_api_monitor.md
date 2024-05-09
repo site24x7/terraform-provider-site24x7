@@ -161,9 +161,8 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
 
   // ================ GRAPHQL ATTRIBUTES
   // (Optional) Provide content type for request params.
-  request_content_type = "G "
-  // (Optional) Provide the GraphQL query to get specific response from GraphQL based API service. request_content_type = "G"
-  // (Optional) Provide the GraphQL variables to get specific response from GraphQL based API service. request_content_type = "G"
+  // request_content_type = "G"
+  // (Optional) Provide the GraphQL query to get specific response from GraphQL based API service. 
   graphql={
     query = "query GetFlimForId($FilmId:ID!){\n        film(id:$FilmId){\n            id\n            title\n            director\n            producers\n        }\n}"
     variables = "{\n    \"FilmId\":\"ZmlsbXM6NQ==\"\n}"

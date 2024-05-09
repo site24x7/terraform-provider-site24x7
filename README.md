@@ -127,7 +127,7 @@ provider "site24x7" {
   oauth2_refresh_token = "<SITE24X7_OAUTH2_REFRESH_TOKEN>"
 
   // (Required) Specify the data center from which you have obtained your
-  // OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN/JP).
+  // OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN/JP/CA).
   data_center = "US"
 
   // (Optional) The access token will be looked up in the SITE24X7_OAUTH2_ACCESS_TOKEN
@@ -206,8 +206,9 @@ Note: Domain names in the OAuth credentials generation steps vary based on your 
 2. Europe (EU) - https://accounts.zoho.eu and https://api-console.zoho.eu
 3. China (CN) - https://accounts.zoho.com.cn and https://api-console.zoho.com.cn
 4. Japan (JP) - https://accounts.zoho.jp and https://api-console.zoho.jp
-4. India (IN) - https://accounts.zoho.in and https://api-console.zoho.in
+5. India (IN) - https://accounts.zoho.in and https://api-console.zoho.in
 5. Australia (AU) - https://accounts.zoho.com.au and https://api-console.zoho.com.au
+6. Canada (CA) - https://accounts.zohocloud.ca and https://api-console.zohocloud.ca
 
 
 ## Steps to import existing monitors and generate terraform resource configuration for the same
@@ -384,7 +385,7 @@ Contributions are what make the open source community such an amazing place to l
 
 ## License
 
-Copyright (c) 2023 Zoho Corporation Private Limited
+Copyright (c) 2024 Zoho Corporation Private Limited
 
 This project is licensed under the MIT License - see [LICENSE](https://github.com/site24x7/terraform-provider-site24x7/blob/main/LICENSE) file for details.
 

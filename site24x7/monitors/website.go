@@ -102,8 +102,9 @@ var websiteMonitorSchema = map[string]*schema.Schema{
 	// },
 	"ip_type": {
 		Type:        schema.TypeInt,
-		Required:    true,
-		Description: "Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure.",
+		Optional:    true,
+		Default:     0,
+		Description: "Monitoring is performed over the selected internet protocol. 0 - Monitoring is performed over IPv4 from supported locations. 1 - Monitoring is performed over IPv6 from supported locations. 2 - IPv4 or IPv6 option will help in flexibly switching to the protocol that is supported in a particular location if one protocol fails. 3 - IPv4 and IPv6 will create two connections for each protocol. Default value is 0.",
 	},
 	"primary_protocol": {
 		Type:        schema.TypeInt,

@@ -29,7 +29,7 @@ provider "site24x7" {
   oauth2_refresh_token = "<SITE24X7_OAUTH2_REFRESH_TOKEN>"
 
   // (Required) Specify the data center from which you have obtained your
-  // OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN/JP).
+  // OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN/JP/CA).
   data_center = "US"
 
   // (Optional) ZAAID of the customer under a MSP or BU
