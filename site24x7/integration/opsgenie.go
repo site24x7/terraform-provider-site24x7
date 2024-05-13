@@ -88,7 +88,9 @@ func ResourceSite24x7OpsgenieIntegration() *schema.Resource {
 		Update: opsgenieIntegrationUpdate,
 		Delete: opsgenieIntegrationDelete,
 		Exists: opsgenieIntegrationExists,
-
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 		Schema: OpsgenieIntegrationSchema,
 	}
 }

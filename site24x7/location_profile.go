@@ -61,7 +61,9 @@ func ResourceSite24x7LocationProfile() *schema.Resource {
 		Update: locationProfileUpdate,
 		Delete: locationProfileDelete,
 		Exists: locationProfileExists,
-
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 		Schema: LocationProfileSchema,
 	}
 }

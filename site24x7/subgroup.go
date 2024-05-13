@@ -71,7 +71,9 @@ func ResourceSite24x7Subgroup() *schema.Resource {
 		Update: subgroupUpdate,
 		Delete: subgroupDelete,
 		Exists: subgroupExists,
-
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 		Schema: SubgroupSchema,
 	}
 }

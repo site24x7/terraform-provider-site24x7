@@ -98,7 +98,9 @@ func ResourceSite24x7URLAction() *schema.Resource {
 		Update: urlActionUpdate,
 		Delete: urlActionDelete,
 		Exists: urlActionExists,
-
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 		Schema: URLActionSchema,
 	}
 }

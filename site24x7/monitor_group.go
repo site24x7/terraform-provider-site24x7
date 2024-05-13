@@ -54,7 +54,9 @@ func ResourceSite24x7MonitorGroup() *schema.Resource {
 		Update: monitorGroupUpdate,
 		Delete: monitorGroupDelete,
 		Exists: monitorGroupExists,
-
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 		Schema: MonitorGroupSchema,
 	}
 }

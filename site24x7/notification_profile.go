@@ -190,7 +190,9 @@ func ResourceSite24x7NotificationProfile() *schema.Resource {
 		Update: notificationProfileUpdate,
 		Delete: notificationProfileDelete,
 		Exists: notificationProfileExists,
-
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 		Schema: NotificationProfileSchema,
 	}
 }
