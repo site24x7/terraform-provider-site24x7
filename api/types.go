@@ -56,7 +56,7 @@ type SearchConfig struct {
 	Priority int    `json:"priority,omitempty"`
 	Port     int    `json:"port,omitempty"`
 	Wt       int    `json:"wt,omitempty"`
-	Rcvd     int    `json:"rcvd,omitempty"`
+	Rcvd     string `json:"rcvd,omitempty"`
 	PNS      string `json:"pns,omitempty"`
 	Admin    string `json:"admin,omitempty"`
 	Serial   int    `json:"serial,omitempty"`

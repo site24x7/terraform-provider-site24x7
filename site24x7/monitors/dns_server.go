@@ -107,7 +107,7 @@ var dnsServerMonitorSchema = map[string]*schema.Schema{
 					Optional: true,
 				},
 				"rcvd": {
-					Type:     schema.TypeInt,
+					Type:     schema.TypeString,
 					Optional: true,
 				},
 				"pns": {
@@ -497,7 +497,7 @@ func resourceDataToDNSServerMonitor(d *schema.ResourceData, client site24x7.Clie
 			}
 		case "TXT":
 			searchConfigItems[k] = api.SearchConfig{
-				Rcvd: v.(map[string]interface{})["rcvd"].(int),
+				Rcvd: v.(map[string]interface{})["rcvd"].(string),
 				TTLO: v.(map[string]interface{})["ttlo"].(int),
 				TTL:  v.(map[string]interface{})["ttl"].(int),
 			}
