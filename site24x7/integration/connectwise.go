@@ -114,7 +114,6 @@ var ConnectwiseIntegrationSchema = map[string]*schema.Schema{
 	},
 }
 
-
 func ResourceSite24x7ConnectwiseIntegration() *schema.Resource {
 	return &schema.Resource{
 		Create: connectwiseIntegrationCreate,
@@ -122,7 +121,9 @@ func ResourceSite24x7ConnectwiseIntegration() *schema.Resource {
 		Update: connectwiseIntegrationUpdate,
 		Delete: connectwiseIntegrationDelete,
 		Exists: connectwiseIntegrationExists,
-
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 		Schema: ConnectwiseIntegrationSchema,
 	}
 }
@@ -226,7 +227,7 @@ func resourceDataToConnectwiseIntegration(d *schema.ResourceData) (*api.Connectw
 	connectwiseIntegration := &api.ConnectwiseIntegration{
 		ServiceID:            d.Id(),
 		Name:                 d.Get("name").(string),
-		URL:           		  d.Get("url").(string),
+		URL:                  d.Get("url").(string),
 		Company:              d.Get("company").(string),
 		PublicKey:            d.Get("public_key").(string),
 		PrivateKey:           d.Get("private_key").(string),
@@ -242,7 +243,7 @@ func resourceDataToConnectwiseIntegration(d *schema.ResourceData) (*api.Connectw
 		Monitors:             monitorsIDs,
 		Tags:                 tagIDs,
 		AlertTagIDs:          alertTagIDs,
-		UserGroups:			  userGroups,
+		UserGroups:           userGroups,
 	}
 
 	return connectwiseIntegration, nil

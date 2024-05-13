@@ -217,7 +217,9 @@ func ResourceSite24x7WebhookIntegration() *schema.Resource {
 		Update: webhookIntegrationUpdate,
 		Delete: webhookIntegrationDelete,
 		Exists: webhookIntegrationExists,
-
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 		Schema: WebhookIntegrationSchema,
 	}
 }

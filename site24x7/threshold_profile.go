@@ -351,7 +351,9 @@ func ResourceSite24x7ThresholdProfile() *schema.Resource {
 		Update: thresholdProfileUpdate,
 		Delete: thresholdProfileDelete,
 		Exists: thresholdProfileExists,
-
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 		Schema: ThresholdProfileSchema,
 	}
 }

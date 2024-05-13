@@ -114,7 +114,9 @@ func ResourceSite24x7ScheduleMaintenance() *schema.Resource {
 		Update: scheduleMaintenanceUpdate,
 		Delete: scheduleMaintenanceDelete,
 		Exists: scheduleMaintenanceExists,
-
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 		Schema: ScheduleMaintenanceSchema,
 	}
 }

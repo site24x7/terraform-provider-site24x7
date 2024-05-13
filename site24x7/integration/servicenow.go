@@ -107,7 +107,9 @@ func ResourceSite24x7ServiceNowIntegration() *schema.Resource {
 		Update: serviceNowIntegrationUpdate,
 		Delete: serviceNowIntegrationDelete,
 		Exists: serviceNowIntegrationExists,
-
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 		Schema: serviceNowIntegrationSchema,
 	}
 }

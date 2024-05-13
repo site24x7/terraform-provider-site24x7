@@ -83,7 +83,9 @@ func ResourceSite24x7SlackIntegration() *schema.Resource {
 		Update: slackIntegrationUpdate,
 		Delete: slackIntegrationDelete,
 		Exists: slackIntegrationExists,
-
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 		Schema: SlackIntegrationSchema,
 	}
 }

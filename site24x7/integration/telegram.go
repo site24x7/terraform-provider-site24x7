@@ -23,7 +23,7 @@ var TelegramIntegrationSchema = map[string]*schema.Schema{
 		Required:    true,
 		Description: "Hook URL to which the message will be posted.",
 	},
-	
+
 	"title": {
 		Type:        schema.TypeString,
 		Required:    true,
@@ -84,7 +84,9 @@ func ResourceSite24x7TelegramIntegration() *schema.Resource {
 		Update: telegramIntegrationUpdate,
 		Delete: telegramIntegrationDelete,
 		Exists: telegramIntegrationExists,
-
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 		Schema: TelegramIntegrationSchema,
 	}
 }

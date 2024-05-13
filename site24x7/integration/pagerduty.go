@@ -98,7 +98,9 @@ func ResourceSite24x7PagerDutyIntegration() *schema.Resource {
 		Update: pagerDutyIntegrationUpdate,
 		Delete: pagerDutyIntegrationDelete,
 		Exists: pagerDutyIntegrationExists,
-
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 		Schema: pagerDutyIntegrationSchema,
 	}
 }

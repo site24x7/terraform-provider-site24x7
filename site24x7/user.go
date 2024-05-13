@@ -228,7 +228,9 @@ func ResourceSite24x7User() *schema.Resource {
 		Update: userUpdate,
 		Delete: userDelete,
 		Exists: userExists,
-
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 		Schema: UserSchema,
 	}
 }

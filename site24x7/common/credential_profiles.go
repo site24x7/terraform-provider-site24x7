@@ -35,6 +35,9 @@ func ResourceSite24x7CredentialProfile() *schema.Resource {
 		Read:   resourceSite24x7CredentialProfileRead,
 		Update: resourceSite24x7CredentialProfileUpdate,
 		Delete: resourceSite24x7CredentialProfileDelete,
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 		Schema: credentialProfileSchema,
 	}
 }
