@@ -30,6 +30,10 @@ resource "site24x7_monitor_group" "monitor_group_us" {
   // (Optional) Boolean value indicating whether to suppress alert when the dependent monitor is down
   // Setting suppress_alert = true with an empty dependency_resource_id is meaningless.
   suppress_alert = true
+  // (Optional) List if tag IDs to be associated to the monitor.
+  tag_ids = [
+    "100000000024829007",
+  ]
 }
 
 ```
@@ -48,7 +52,7 @@ resource "site24x7_monitor_group" "monitor_group_us" {
 * `health_threshold_count` (Number) Number of monitors' health that decide the group status. ‘0’ implies that all the monitors are considered for determining the group status. Default value is 1.
 * `id` (String) The ID of this resource.
 * `suppress_alert` (Boolean) Boolean value indicating whether to suppress alert when the dependent monitor is down. Setting suppress_alert = true with an empty dependency_resource_id is meaningless.
-
+* `tag_ids` (List of String) List of tags IDs to be associated to the monitor group.
 
 Refer [API documentation](https://www.site24x7.com/help/api/#monitor-groups) for more information about attributes.
  

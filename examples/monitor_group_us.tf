@@ -64,4 +64,9 @@ resource "site24x7_monitor_group" "monitor_group_us" {
   // (Optional) Boolean value indicating whether to suppress alert when the dependent monitor is down
   // Setting suppress_alert = true with an empty dependency_resource_id is meaningless.
   suppress_alert = true
+
+  // (Optional) List if tag IDs to be associated to the monitor.
+  tag_ids = [
+    "100000000024829007",
+  ]
 }
