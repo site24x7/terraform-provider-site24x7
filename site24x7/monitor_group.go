@@ -45,6 +45,15 @@ var MonitorGroupSchema = map[string]*schema.Schema{
 		Default:     false,
 		Description: "Boolean value indicating whether to suppress alert when the dependent monitor is down. Setting suppress_alert = true with an empty dependency_resource_id is meaningless.",
 	},
+	"tag_ids": {
+		Type: schema.TypeSet,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Computed:    true,
+		Description: "List of tag IDs to be associated to the monitor group.",
+	},
 }
 
 func ResourceSite24x7MonitorGroup() *schema.Resource {
@@ -159,6 +168,13 @@ func resourceDataToMonitorGroupCreate(d *schema.ResourceData) *api.MonitorGroup 
 		}
 	}
 
+	var tagIDs []string
+	for _, id := range d.Get("tag_ids").(*schema.Set).List() {
+		if id != nil {
+			tagIDs = append(tagIDs, id.(string))
+		}
+	}
+
 	return &api.MonitorGroup{
 		GroupID:                d.Id(),
 		DisplayName:            d.Get("display_name").(string),
@@ -168,6 +184,7 @@ func resourceDataToMonitorGroupCreate(d *schema.ResourceData) *api.MonitorGroup 
 		DependencyResourceIDs:  dependencyResourceIDs,
 		SuppressAlert:          d.Get("suppress_alert").(bool),
 		DependencyResourceType: 2,
+		TagIDs:                 tagIDs,
 	}
 }
 
@@ -210,6 +227,13 @@ func resourceDataToMonitorGroupUpdate(d *schema.ResourceData, monitorGroup *api.
 		}
 	}
 
+	var tagIDs []string
+	for _, id := range d.Get("tag_ids").(*schema.Set).List() {
+		if id != nil {
+			tagIDs = append(tagIDs, id.(string))
+		}
+	}
+
 	return &api.MonitorGroup{
 		GroupID:     d.Id(),
 		DisplayName: d.Get("display_name").(string),
@@ -220,6 +244,7 @@ func resourceDataToMonitorGroupUpdate(d *schema.ResourceData, monitorGroup *api.
 		DependencyResourceIDs:  dependencyResourceIDs,
 		SuppressAlert:          suppressAlert,
 		DependencyResourceType: 2,
+		TagIDs:                 tagIDs,
 	}
 }
 
@@ -230,4 +255,5 @@ func updateMonitorGroupResourceData(d *schema.ResourceData, monitorGroup *api.Mo
 	d.Set("health_threshold_count", monitorGroup.HealthThresholdCount)
 	d.Set("dependency_resource_ids", monitorGroup.DependencyResourceIDs)
 	d.Set("suppress_alert", monitorGroup.SuppressAlert)
+	d.Set("tag_ids", monitorGroup.TagIDs)
 }

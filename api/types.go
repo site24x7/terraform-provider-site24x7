@@ -150,6 +150,7 @@ type MonitorGroup struct {
 	DependencyResourceIDs  []string `json:"dependency_resource_ids,omitempty"`
 	SuppressAlert          bool     `json:"suppress_alert"`
 	DependencyResourceType int      `json:"selection_type,omitempty"`
+	TagIDs                 []string `json:"tags,omitempty"`
 }
 
 func (monitorGroup *MonitorGroup) String() string {
