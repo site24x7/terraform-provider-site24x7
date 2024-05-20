@@ -923,6 +923,59 @@ func (serverMonitor *ServerMonitor) String() string {
 	return ToString(serverMonitor)
 }
 
+//Cron Monitor resource in Site24x7
+type CronMonitor struct {
+	_                     struct{} `type:"structure"` // Enforces key based initialization.
+	MonitorID             string   `json:"monitor_id,omitempty"`
+	DisplayName           string   `json:"display_name"`
+	CronExpression        string   `json:"cron_expression"`
+	CronTz                string   `json:"cron_tz"`
+	WaitTime              int   `json:"wait_time"`
+	Type                  string   `json:"type"`
+	ThresholdProfileID    string   `json:"threshold_profile_id"`
+	NotificationProfileID string   `json:"notification_profile_id"`
+	MonitorGroups         []string `json:"monitor_groups,omitempty"`
+	TagIDs                []string `json:"tag_ids,omitempty"`
+	ThirdPartyServiceIDs  []string `json:"third_party_services,omitempty"`
+	UserGroupIDs          []string `json:"user_group_ids,omitempty"`
+	OnCallScheduleID      string   `json:"on_call_schedule_id,omitempty"`
+}
+
+func (cronMonitor *CronMonitor) SetLocationProfileID(locationProfileID string) {
+}
+
+func (cronMonitor *CronMonitor) GetLocationProfileID() string {
+	return ""
+}
+
+func (cronMonitor *CronMonitor) SetNotificationProfileID(notificationProfileID string) {
+	cronMonitor.NotificationProfileID = notificationProfileID
+}
+
+func (cronMonitor *CronMonitor) GetNotificationProfileID() string {
+	return cronMonitor.NotificationProfileID
+}
+
+func (cronMonitor *CronMonitor) SetUserGroupIDs(userGroupIDs []string) {
+	cronMonitor.UserGroupIDs = userGroupIDs
+}
+
+func (cronMonitor *CronMonitor) GetUserGroupIDs() []string {
+	return cronMonitor.UserGroupIDs
+}
+
+func (cronMonitor *CronMonitor) SetTagIDs(tagIDs []string) {
+	cronMonitor.TagIDs = tagIDs
+}
+
+func (cronMonitor *CronMonitor) GetTagIDs() []string {
+	return cronMonitor.TagIDs
+}
+
+func (cronMonitor *CronMonitor) String() string {
+	return ToString(cronMonitor)
+}
+
 // Denotes the Heartbeat monitor resource in Site24x7.
 type HeartbeatMonitor struct {
 	_                     struct{} `type:"structure"` // Enforces key based initialization.

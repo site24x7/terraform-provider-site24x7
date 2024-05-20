@@ -85,6 +85,7 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_rest_api_monitor":                monitors.ResourceSite24x7RestApiMonitor(),
 			"site24x7_rest_api_transaction_monitor":    monitors.ResourceSite24x7RestApiTransactionMonitor(),
 			"site24x7_server_monitor":                  monitors.ResourceSite24x7ServerMonitor(),
+			"site24x7_cron_monitor":                    monitors.ResourceSite24x7CronMonitor(),
 			"site24x7_heartbeat_monitor":               monitors.ResourceSite24x7HeartbeatMonitor(),
 			"site24x7_dns_server_monitor":              monitors.ResourceSite24x7DNSServerMonitor(),
 			"site24x7_domain_expiry_monitor":           monitors.ResourceSite24x7DomainExpiryMonitor(),

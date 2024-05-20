@@ -326,6 +326,39 @@ var ThresholdProfileSchema = map[string]*schema.Schema{
 		},
 		Description: "Triggers critical alert before the SSL certificate expires within the configured number of days.",
 	},
+	// CRON monitor type attributes
+	"cron_no_run_alert": {
+		Type:     schema.TypeMap,
+		Optional: true,
+		Elem: &schema.Resource{
+			Schema: map[string]*schema.Schema{
+				"severity": {
+					Type:         schema.TypeInt,
+					Required:     true,
+					ValidateFunc: validation.IntInSlice([]int{2}), // Trouble
+				},
+				"value": {
+					Type:     schema.TypeBool,
+					Required: true,
+				},
+			},
+		},
+		Description: "Triggers Alert, if job does not start on schedule",
+	},
+	"cron_duration_alert": {
+		Type:     schema.TypeMap,
+		Optional: true,
+		Elem: &schema.Resource{
+			Schema: map[string]*schema.Schema{
+				"trouble": {
+					Type:     schema.TypeInt,
+					Required: true,
+				},
+			},
+		},
+		Description: "Generate Down Alert if not pinged for more than x mins.",
+	},
+
 	// HEARTBEAT monitor type attributes
 	"trouble_if_not_pinged_more_than": {
 		Type:        schema.TypeInt,
@@ -442,6 +475,8 @@ func resourceDataToThresholdProfile(d *schema.ResourceData) *api.ThresholdProfil
 		setSSLCertificateAttributes(d, thresholdProfileToReturn)
 	} else if monitorType == string(api.HEARTBEAT) {
 		setHeartBeatAttributes(d, thresholdProfileToReturn)
+	} else if monitorType == string(api.CRON) {
+		setCronAttributes(d, thresholdProfileToReturn)
 	} else {
 		setCommonAttributes(d, thresholdProfileToReturn)
 	}
@@ -461,6 +496,8 @@ func updateThresholdProfileResourceData(d *schema.ResourceData, thresholdProfile
 		setSSLCertificateResourceData(d, thresholdProfile)
 	} else if monitorType == string(api.HEARTBEAT) {
 		setHeartBeatResourceData(d, thresholdProfile)
+	} else if monitorType == string(api.CRON) {
+		setCronResourceData(d, thresholdProfile)
 	} else {
 		setCommonResourceData(d, thresholdProfile)
 	}
@@ -508,6 +545,28 @@ func setSSLCertificateResourceData(d *schema.ResourceData, thresholdProfile *api
 	if thresholdProfile.SSLCertificateFingerprintModified != nil {
 		d.Set("ssl_cert_fingerprint_modified", thresholdProfile.SSLCertificateFingerprintModified["value"].(bool))
 	}
+}
+
+func setCronAttributes(d *schema.ResourceData, thresholdProfile *api.ThresholdProfile) {
+
+	if cronNoRunAlert, ok := d.GetOk("cron_no_run_alert"); ok {
+		thresholdProfile.CronNoRunAlert = cronNoRunAlert.(map[string]interface{})
+	}
+
+	if cronDurationAlert, ok := d.GetOk("cron_duration_alert"); ok {
+		thresholdProfile.CronDurationAlert = cronDurationAlert.(map[string]interface{})
+	}
+}
+
+func setCronResourceData(d *schema.ResourceData, thresholdProfile *api.ThresholdProfile) {
+	cronNoRunAlertMap := make(map[string]interface{})
+	cronNoRunAlertMap["severity"] = int(thresholdProfile.CronNoRunAlert["severity"].(float64))
+	cronNoRunAlertMap["value"] = thresholdProfile.CronNoRunAlert["value"].(bool)
+	d.Set("cron_no_run_alert", cronNoRunAlertMap)
+
+	cronDurationAlertMap := make(map[string]interface{})
+	cronDurationAlertMap["trouble"] = int(thresholdProfile.CronDurationAlert["trouble"].(float64))
+	d.Set("cron_duration_alert", cronDurationAlertMap)
 }
 
 func setHeartBeatAttributes(d *schema.ResourceData, thresholdProfile *api.ThresholdProfile) {

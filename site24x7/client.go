@@ -88,6 +88,7 @@ type Client interface {
 	DNSServerMonitors() monitors.DNSServerMonitors
 	WebPageSpeedMonitors() monitors.WebPageSpeedMonitors
 	SSLMonitors() monitors.SSLMonitors
+	CronMonitors() monitors.CronMonitors
 	HeartbeatMonitors() monitors.HeartbeatMonitors
 	ServerMonitors() monitors.ServerMonitors
 	DomainExpiryMonitors() monitors.DomainExpiryMonitors
@@ -213,6 +214,11 @@ func (c *client) PINGMonitors() monitors.PINGMonitors {
 // PortMonitors implements Client.
 func (c *client) PortMonitors() monitors.PortMonitors {
 	return monitors.NewPortMonitors(c.restClient)
+}
+
+// CronMonitors implements Client.
+func (c *client) CronMonitors() monitors.CronMonitors {
+	return monitors.NewCronMonitors(c.restClient)
 }
 
 // HeartbeatMonitors implements Client.
