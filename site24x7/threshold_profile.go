@@ -356,7 +356,7 @@ var ThresholdProfileSchema = map[string]*schema.Schema{
 				},
 			},
 		},
-		Description: "Generate Down Alert if not pinged for more than x mins.",
+		Description: "Generate Trouble Alert if not pinged for more than x seconds.",
 	},
 
 	// HEARTBEAT monitor type attributes

@@ -56,13 +56,13 @@ var thresholdProfileDataSourceSchema = map[string]*schema.Schema{
 	"cron_no_run_alert": {
 		Type:        schema.TypeMap,
 		Computed:    true,
-		Description: "Triggers alert when the website content is modified.",
+		Description: "Triggers Alert, if job does not start on schedule",
 	},
 
 	"cron_duration_alert": {
 		Type:        schema.TypeMap,
 		Computed:    true,
-		Description: "Triggers alert when the website content is modified.",
+		Description: "Generate Trouble Alert if not pinged for more than x seconds.",
 	},
 }
 
