@@ -203,6 +203,11 @@ type ThresholdProfile struct {
 	// SSL_CERT attributes
 	SSLCertificateFingerprintModified map[string]interface{}   `json:"ssl_fingerprint_modified,omitempty"`
 	SSLCertificateDaysUntilExpiry     []map[string]interface{} `json:"days_until_expiry,omitempty"`
+
+	// CRON attributes
+	CronNoRunAlert    map[string]interface{} `json:"cron_no_run_alert,omitempty"`
+	CronDurationAlert map[string]interface{} `json:"cron_duration_alert,omitempty"`
+
 	// HEARTBEAT attributes
 	TroubleIfNotPingedMoreThan map[string]interface{} `json:"hb_availability1,omitempty"`
 	DownIfNotPingedMoreThan    map[string]interface{} `json:"hb_availability2,omitempty"`
@@ -254,6 +259,10 @@ func (thresholdProfile *ThresholdProfile) UnmarshalJSON(rawValue []byte) error {
 			thresholdProfile.ResponseTimeThreshold = v.(map[string]interface{})
 		} else if k == "read_time_out" {
 			thresholdProfile.ReadTimeOut = v.(map[string]interface{})
+		} else if k == "cron_no_run_alert" {
+			thresholdProfile.CronNoRunAlert = v.(map[string]interface{})
+		} else if k == "cron_duration_alert" {
+			thresholdProfile.CronDurationAlert = v.(map[string]interface{})
 		}
 	}
 	return nil

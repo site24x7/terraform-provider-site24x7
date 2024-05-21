@@ -52,6 +52,18 @@ var thresholdProfileDataSourceSchema = map[string]*schema.Schema{
 		Computed:    true,
 		Description: "Triggers alert when the website content is modified.",
 	},
+
+	"cron_no_run_alert": {
+		Type:        schema.TypeMap,
+		Computed:    true,
+		Description: "Triggers Alert, if job does not start on schedule",
+	},
+
+	"cron_duration_alert": {
+		Type:        schema.TypeMap,
+		Computed:    true,
+		Description: "Generate Trouble Alert if not pinged for more than x seconds.",
+	},
 }
 
 func DataSourceSite24x7ThresholdProfile() *schema.Resource {
@@ -88,6 +100,8 @@ func thresholdProfileDataSourceRead(d *schema.ResourceData, meta interface{}) er
 					thresholdProfile.ProfileType = profileInfo.ProfileType
 					thresholdProfile.DownLocationThreshold = profileInfo.DownLocationThreshold
 					thresholdProfile.WebsiteContentModified = profileInfo.WebsiteContentModified
+					thresholdProfile.CronNoRunAlert = profileInfo.CronDurationAlert
+					thresholdProfile.CronDurationAlert = profileInfo.CronDurationAlert
 					matchingThresholdProfileIDs = append(matchingThresholdProfileIDs, profileInfo.ProfileID)
 					matchingThresholdProfileIDsAndNames = append(matchingThresholdProfileIDsAndNames, profileInfo.ProfileID+"__"+profileInfo.ProfileName)
 				} else if thresholdProfile != nil && nameRegexPattern.MatchString(profileInfo.ProfileName) {
@@ -118,4 +132,7 @@ func updateThresholdProfileDataSourceResourceData(d *schema.ResourceData, thresh
 	d.Set("profile_type", thresholdProfile.ProfileType)
 	d.Set("down_location_threshold", thresholdProfile.DownLocationThreshold)
 	d.Set("website_content_modified", thresholdProfile.WebsiteContentModified)
+
+	d.Set("cron_no_run_alert", thresholdProfile.CronNoRunAlert)
+	d.Set("cron_duration_alert", thresholdProfile.CronDurationAlert)
 }

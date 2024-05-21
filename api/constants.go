@@ -24,6 +24,7 @@ const (
 	RESTAPISEQ   MonitorType = "RESTAPISEQ"
 	AMAZON       MonitorType = "AMAZON"
 	SERVER       MonitorType = "SERVER"
+	CRON         MonitorType = "CRON"
 	HEARTBEAT    MonitorType = "HEARTBEAT"
 	DNS          MonitorType = "DNS"
 	DOMAINEXPIRY MonitorType = "DOMAINEXPIRY"
