@@ -80,6 +80,7 @@ resource "aws_instance" "t2_micro_instance" {
     inline = [
       "sudo wget https://staticdownloads.site24x7.com/server/Site24x7InstallScript.sh",
       "sudo bash Site24x7InstallScript.sh -i -key=<key>", 
+      "sudo wget https://raw.githubusercontent.com/site24x7/plugins/master/check_updates/installer/Site24x7CheckUpdatesPluginInstaller.sh && sudo bash Site24x7CheckUpdatesPluginInstaller.sh",
     ]
   }
 }

@@ -87,7 +87,7 @@ resource "google_compute_instance" "default" {
   }
 
   # Install 
-  metadata_startup_script = "sudo apt-get update; sudo apt-get install -yq build-essential python3-pip rsync; wget https://staticdownloads.site24x7.com/server/Site24x7InstallScript.sh; bash Site24x7InstallScript.sh -i -key=${data.site24x7_device_key.s247devicekey.id} -automation=true"
+  metadata_startup_script = "sudo apt-get update; sudo apt-get install -yq build-essential python3-pip rsync; wget https://staticdownloads.site24x7.com/server/Site24x7InstallScript.sh; bash Site24x7InstallScript.sh -i -key=${data.site24x7_device_key.s247devicekey.id} -automation=true; wget https://raw.githubusercontent.com/site24x7/plugins/master/check_updates/installer/Site24x7CheckUpdatesPluginInstaller.sh && sudo bash Site24x7CheckUpdatesPluginInstaller.sh"
 
   network_interface {
     subnetwork = google_compute_subnetwork.default.id
