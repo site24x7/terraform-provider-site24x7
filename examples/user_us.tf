@@ -149,15 +149,15 @@ resource "site24x7_user" "user_example" {
 
   // (Optional) List of monitor groups to which the user has access to. 'monitor_groups' attribute is mandatory when the 'selection_type' is '1'.
   monitor_groups = [
-    "306947000021059031",
-    "306947000033224882"
+    "100000000021059031",
+    "100000000033224882"
   ]
 
   // (Optional) Groups to be associated for the user for receiving alerts.
   user_group_ids = [
-    "306947000000025005",
-    "306947000000025009",
-    "306947000000025007"
+    "100000000000025005",
+    "100000000000025009",
+    "100000000000025007"
   ]
 
 }

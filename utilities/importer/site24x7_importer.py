@@ -29,14 +29,14 @@ Site24x7TerraformResourceVsMonitorType = {
 
 
 # Import a website monitor
-# Monitor ID in Site24x7 = 306947000007878003
+# Monitor ID in Site24x7 = 100000000007878003
 
 # main.tf entry
 # resource "site24x7_website_monitor" "peru_monitor" {
 # }
 
 # Import command
-# terraform import site24x7_website_monitor.peru_monitor 306947000007878003
+# terraform import site24x7_website_monitor.peru_monitor 100000000007878003
 
 ResourceNameVsAttributesJSONInState = {}
 ResourceNameVsFullConfiguration = {}

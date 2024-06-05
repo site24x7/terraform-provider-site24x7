@@ -141,16 +141,25 @@ type ActionRef struct {
 
 // MonitorGroup organizes monitor resources into groups.
 type MonitorGroup struct {
-	_                      struct{} `type:"structure"` // Enforces key based initialization.
-	GroupID                string   `json:"group_id,omitempty"`
-	DisplayName            string   `json:"display_name"`
-	Description            string   `json:"description,omitempty"`
-	Monitors               []string `json:"monitors,omitempty"`
-	HealthThresholdCount   int      `json:"health_threshold_count"`
-	DependencyResourceIDs  []string `json:"dependency_resource_ids,omitempty"`
-	SuppressAlert          bool     `json:"suppress_alert"`
-	DependencyResourceType int      `json:"selection_type,omitempty"`
-	TagIDs                 []string `json:"tags,omitempty"`
+	_           struct{} `type:"structure"` // Enforces key based initialization.
+	GroupID     string   `json:"group_id,omitempty"`
+	DisplayName string   `json:"display_name"`
+	Description string   `json:"description,omitempty"`
+	// GroupType                int      `json:"group_type,omitempty"`
+	Monitors                 []string `json:"monitors,omitempty"`
+	HealthThresholdCount     int      `json:"health_threshold_count"`
+	DependencyResourceIDs    []string `json:"dependency_resource_ids,omitempty"`
+	SuppressAlert            bool     `json:"suppress_alert"`
+	DependencyResourceType   int      `json:"selection_type,omitempty"`
+	NotificationProfileID    string   `json:"notification_profile_id"`
+	HealthCheckProfileID     string   `json:"healthcheck_profile_id"`
+	TagIDs                   []string `json:"tags,omitempty"`
+	UserGroupIDs             []string `json:"user_group_ids,omitempty"`
+	ThirdPartyServiceIDs     []string `json:"third_party_services,omitempty"`
+	EnableIncidentManagement bool     `json:"enable_incident_management"`
+	HealingPeriod            int      `json:"healing_period"`
+	AlertFrequency           int      `json:"alert_frequency"`
+	AlertPeriodically        bool     `json:"alert_periodically"`
 }
 
 func (monitorGroup *MonitorGroup) String() string {

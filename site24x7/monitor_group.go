@@ -6,6 +6,32 @@ import (
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
 )
 
+// {
+// 	"display_name": "group11",
+// 	"description": "System Generated",
+// 	"health_threshold_count": 1,
+// 	"group_type": 1,
+// 	"check_frequency": 1,
+// 	"notification_profile_id": "100000000000029001",
+// 	"healthcheck_profile_id": "100000000037110001",
+// 	"monitors": [
+// 	  "100000000000880011",
+// 	  "100000000021370006",
+// 	  "100000000030676016"
+// 	],
+// 	"tags": []
+// 	"user_group_ids": [
+// 	  "100000000000025005",
+// 	  "100000000000025007"
+// 	"enable_incident_management": false,
+// 	"healing_period": 10,
+// 	"alert_frequency": 10,
+// 	"alert_periodically": true,
+
+// 	],
+
+// }
+
 var MonitorGroupSchema = map[string]*schema.Schema{
 	"display_name": {
 		Type:        schema.TypeString,
@@ -45,6 +71,27 @@ var MonitorGroupSchema = map[string]*schema.Schema{
 		Default:     false,
 		Description: "Boolean value indicating whether to suppress alert when the dependent monitor is down. Setting suppress_alert = true with an empty dependency_resource_id is meaningless.",
 	},
+	"healthcheck_profile_id": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Computed:    true,
+		Description: "Health check profile to be associated with the monitor group.",
+	},
+	"notification_profile_id": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Computed:    true,
+		Description: "Notification profile to be associated with the monitor group.",
+	},
+	"user_group_ids": {
+		Type: schema.TypeList,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Computed:    true,
+		Description: "List of user groups to be notified when the monitor group is down.",
+	},
 	"tag_ids": {
 		Type: schema.TypeSet,
 		Elem: &schema.Schema{
@@ -53,6 +100,36 @@ var MonitorGroupSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Computed:    true,
 		Description: "List of tag IDs to be associated to the monitor group.",
+	},
+	"third_party_service_ids": {
+		Type: schema.TypeList,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Description: "List of Third Party Service IDs to be associated to the monitor group.",
+	},
+	"enable_incident_management": {
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Default:     false,
+		Description: "Enable incident management. Default value is false.",
+	},
+	"healing_period": {
+		Type:        schema.TypeInt,
+		Optional:    true,
+		Description: "Healing period for the incident.",
+	},
+	"alert_frequency": {
+		Type:        schema.TypeInt,
+		Optional:    true,
+		Description: "Alert frequency for the incident.",
+	},
+	"alert_periodically": {
+		Type:        schema.TypeBool,
+		Optional:    true,
+		Default:     false,
+		Description: "Enable periodic alerting.",
 	},
 }
 
@@ -168,6 +245,13 @@ func resourceDataToMonitorGroupCreate(d *schema.ResourceData) *api.MonitorGroup 
 		}
 	}
 
+	var userGroupIDs []string
+	for _, id := range d.Get("user_group_ids").([]interface{}) {
+		if id != nil {
+			userGroupIDs = append(userGroupIDs, id.(string))
+		}
+	}
+
 	var tagIDs []string
 	for _, id := range d.Get("tag_ids").(*schema.Set).List() {
 		if id != nil {
@@ -175,7 +259,14 @@ func resourceDataToMonitorGroupCreate(d *schema.ResourceData) *api.MonitorGroup 
 		}
 	}
 
-	return &api.MonitorGroup{
+	var thirdPartyServiceIDs []string
+	for _, id := range d.Get("third_party_service_ids").([]interface{}) {
+		if id != nil {
+			thirdPartyServiceIDs = append(thirdPartyServiceIDs, id.(string))
+		}
+	}
+
+	monitorGroup := &api.MonitorGroup{
 		GroupID:                d.Id(),
 		DisplayName:            d.Get("display_name").(string),
 		Description:            d.Get("description").(string),
@@ -184,8 +275,20 @@ func resourceDataToMonitorGroupCreate(d *schema.ResourceData) *api.MonitorGroup 
 		DependencyResourceIDs:  dependencyResourceIDs,
 		SuppressAlert:          d.Get("suppress_alert").(bool),
 		DependencyResourceType: 2,
-		TagIDs:                 tagIDs,
 	}
+
+	monitorGroup.NotificationProfileID = d.Get("notification_profile_id").(string)
+	monitorGroup.HealthCheckProfileID = d.Get("healthcheck_profile_id").(string)
+	monitorGroup.UserGroupIDs = userGroupIDs
+	monitorGroup.TagIDs = tagIDs
+	monitorGroup.ThirdPartyServiceIDs = thirdPartyServiceIDs
+
+	monitorGroup.EnableIncidentManagement = d.Get("enable_incident_management").(bool)
+	monitorGroup.HealingPeriod = d.Get("healing_period").(int)
+	monitorGroup.AlertFrequency = d.Get("alert_frequency").(int)
+	monitorGroup.AlertPeriodically = d.Get("alert_periodically").(bool)
+
+	return monitorGroup
 }
 
 func resourceDataToMonitorGroupUpdate(d *schema.ResourceData, monitorGroup *api.MonitorGroup) *api.MonitorGroup {
@@ -227,6 +330,13 @@ func resourceDataToMonitorGroupUpdate(d *schema.ResourceData, monitorGroup *api.
 		}
 	}
 
+	var userGroupIDs []string
+	for _, id := range d.Get("user_group_ids").([]interface{}) {
+		if id != nil {
+			userGroupIDs = append(userGroupIDs, id.(string))
+		}
+	}
+
 	var tagIDs []string
 	for _, id := range d.Get("tag_ids").(*schema.Set).List() {
 		if id != nil {
@@ -234,7 +344,14 @@ func resourceDataToMonitorGroupUpdate(d *schema.ResourceData, monitorGroup *api.
 		}
 	}
 
-	return &api.MonitorGroup{
+	var thirdPartyServiceIDs []string
+	for _, id := range d.Get("third_party_service_ids").([]interface{}) {
+		if id != nil {
+			thirdPartyServiceIDs = append(thirdPartyServiceIDs, id.(string))
+		}
+	}
+
+	monitorGroupToReturn := &api.MonitorGroup{
 		GroupID:     d.Id(),
 		DisplayName: d.Get("display_name").(string),
 		Description: d.Get("description").(string),
@@ -246,6 +363,19 @@ func resourceDataToMonitorGroupUpdate(d *schema.ResourceData, monitorGroup *api.
 		DependencyResourceType: 2,
 		TagIDs:                 tagIDs,
 	}
+
+	monitorGroupToReturn.NotificationProfileID = d.Get("notification_profile_id").(string)
+	monitorGroupToReturn.HealthCheckProfileID = d.Get("healthcheck_profile_id").(string)
+	monitorGroupToReturn.UserGroupIDs = userGroupIDs
+	monitorGroupToReturn.TagIDs = tagIDs
+	monitorGroupToReturn.ThirdPartyServiceIDs = thirdPartyServiceIDs
+
+	monitorGroupToReturn.EnableIncidentManagement = d.Get("enable_incident_management").(bool)
+	monitorGroupToReturn.HealingPeriod = d.Get("healing_period").(int)
+	monitorGroupToReturn.AlertFrequency = d.Get("alert_frequency").(int)
+	monitorGroupToReturn.AlertPeriodically = d.Get("alert_periodically").(bool)
+
+	return monitorGroupToReturn
 }
 
 func updateMonitorGroupResourceData(d *schema.ResourceData, monitorGroup *api.MonitorGroup) {
@@ -256,4 +386,12 @@ func updateMonitorGroupResourceData(d *schema.ResourceData, monitorGroup *api.Mo
 	d.Set("dependency_resource_ids", monitorGroup.DependencyResourceIDs)
 	d.Set("suppress_alert", monitorGroup.SuppressAlert)
 	d.Set("tag_ids", monitorGroup.TagIDs)
+	d.Set("notification_profile_id", monitorGroup.NotificationProfileID)
+	d.Set("healthcheck_profile_id", monitorGroup.HealthCheckProfileID)
+	d.Set("user_group_ids", monitorGroup.UserGroupIDs)
+	d.Set("third_party_service_ids", monitorGroup.ThirdPartyServiceIDs)
+	d.Set("enable_incident_management", monitorGroup.EnableIncidentManagement)
+	d.Set("healing_period", monitorGroup.HealingPeriod)
+	d.Set("alert_frequency", monitorGroup.AlertFrequency)
+	d.Set("alert_periodically", monitorGroup.AlertPeriodically)
 }
