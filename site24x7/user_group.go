@@ -52,7 +52,9 @@ func ResourceSite24x7UserGroup() *schema.Resource {
 		Update: userGroupUpdate,
 		Delete: userGroupDelete,
 		Exists: userGroupExists,
-
+		Importer: &schema.ResourceImporter{
+			State: schema.ImportStatePassthrough,
+		},
 		Schema: UserGroupSchema,
 	}
 }
