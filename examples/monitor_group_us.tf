@@ -65,8 +65,37 @@ resource "site24x7_monitor_group" "monitor_group_us" {
   // Setting suppress_alert = true with an empty dependency_resource_id is meaningless.
   suppress_alert = true
 
-  // (Optional) List if tag IDs to be associated to the monitor.
-  tag_ids = [
-    "100000000024829007",
+  // (Optional) Health check profile to be associated with the monitor group.
+  healthcheck_profile_id = "100000000000029001"
+
+  // (Optional) Notification profile to be associated with the monitor group. 
+  notification_profile_id = "100000000000029001"
+
+  // (Optional) List of user groups to be notified when the monitor group is down.
+  user_group_ids = [
+    "100000000000025005",
+    "100000000000025007"
   ]
+
+  // (Optional) List if tag IDs to be associated to the monitor group.
+  tag_ids = [
+    "100000000048172001"
+  ]
+
+  // (Optional) List of Third Party Service IDs to be associated to the monitor group.
+  third_party_service_ids = [
+    "100000000048172001"
+  ]
+
+  // (Optional) Enable incident management. Default value is false.
+  enable_incident_management = true 
+
+  // (Optional) Healing period for the incident.
+  healing_period = 10
+
+  // (Optional) Alert frequency for the incident.
+  alert_frequency = 10 
+
+  // (Optional) Enable periodic alerting.
+  alert_periodically = true
 }

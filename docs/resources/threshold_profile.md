@@ -128,6 +128,26 @@ resource "site24x7_threshold_profile" "ssl_certificate_threshold_profile_us" {
 
 }
 
+
+// CRON Threshold Profile API doc](https://www.site24x7.com/help/api/#threshold-cron))
+resource "site24x7_threshold_profile" "cron_threshold" {
+  // (Required) Name of the profile
+  profile_name = "Cron Threshold - Terraform"
+  // (Required) Type of the profile - Denotes monitor type (eg) RESTAPI, SSL_CERT
+  type = "CRON"
+  // (Optional) Triggers Alert, if job does not start on schedule
+  cron_no_run_alert = {
+  	severity = 0
+  	value = true
+  }
+  // (Optional) Generate Trouble Alert if not pinged for more than x seconds
+  cron_duration_alert = {
+  	trouble = 30
+  }
+
+}
+
+
 // HEARTBEAT Threshold Profile API doc](https://www.site24x7.com/help/api/#threshold-heartbeat))
 resource "site24x7_threshold_profile" "heartbeat_threshold" {
   // (Required) Name of the profile
