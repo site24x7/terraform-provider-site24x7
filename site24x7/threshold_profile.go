@@ -565,8 +565,12 @@ func setCronResourceData(d *schema.ResourceData, thresholdProfile *api.Threshold
 	d.Set("cron_no_run_alert", cronNoRunAlertMap)
 
 	cronDurationAlertMap := make(map[string]interface{})
-	cronDurationAlertMap["trouble"] = int(thresholdProfile.CronDurationAlert["trouble"].(float64))
-	d.Set("cron_duration_alert", cronDurationAlertMap)
+	if thresholdProfile.CronDurationAlert["trouble"] == nil {
+		d.Set("cron_duration_alert", cronDurationAlertMap)
+	} else {
+		cronDurationAlertMap["trouble"] = int(thresholdProfile.CronDurationAlert["trouble"].(float64))
+		d.Set("cron_duration_alert", cronDurationAlertMap)
+	}
 }
 
 func setHeartBeatAttributes(d *schema.ResourceData, thresholdProfile *api.ThresholdProfile) {
