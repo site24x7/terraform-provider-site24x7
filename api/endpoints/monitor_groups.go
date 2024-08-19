@@ -48,7 +48,7 @@ func (c *monitorGroups) Create(group *api.MonitorGroup) (*api.MonitorGroup, erro
 	return newMonitorGroup, err
 }
 
-func (c monitorGroups) Update(group api.MonitorGroup) (*api.MonitorGroup, error) {
+func (c *monitorGroups) Update(group *api.MonitorGroup) (*api.MonitorGroup, error) {
 	updatedGroup := &api.MonitorGroup{}
 	err := c.client.
 		Put().
