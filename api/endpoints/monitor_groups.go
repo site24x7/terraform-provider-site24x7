@@ -1,7 +1,6 @@
 package endpoints
 
 import (
-	"github.com/jinzhu/copier"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	"github.com/site24x7/terraform-provider-site24x7/rest"
 )
@@ -49,20 +48,16 @@ func (c *monitorGroups) Create(group *api.MonitorGroup) (*api.MonitorGroup, erro
 	return newMonitorGroup, err
 }
 
-func (c *monitorGroups) Update(group *api.MonitorGroup) (*api.MonitorGroup, error) {
+func (c monitorGroups) Update(group api.MonitorGroup) (*api.MonitorGroup, error) {
 	updatedGroup := &api.MonitorGroup{}
-	monitorGroupData := &api.MonitorGroup{}
-	copier.Copy(monitorGroupData, group)
-	monitorGroupData.GroupID = ""
 	err := c.client.
 		Put().
 		Resource("monitor_groups").
 		ResourceID(group.GroupID).
 		AddHeader("Content-Type", "application/json;charset=UTF-8").
-		Body(monitorGroupData).
+		Body(group).
 		Do().
 		Parse(updatedGroup)
-
 	return updatedGroup, err
 }
 
