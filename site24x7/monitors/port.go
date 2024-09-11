@@ -417,7 +417,7 @@ func updatePortMonitorResourceData(d *schema.ResourceData, monitor *api.PortMoni
 	d.Set("use_ssl", monitor.UseSSL)
 	d.Set("invert_port_check", monitor.InvertPortCheck)
 	d.Set("application_type", monitor.ApplicationType)
-	d.Set("command", monitor.ApplicationType)
+	d.Set("command", monitor.Command)
 	d.Set("check_frequency", monitor.CheckFrequency)
 	d.Set("location_profile_id", monitor.LocationProfileID)
 	d.Set("dependency_resource_ids", monitor.DependencyResourceIDs)
