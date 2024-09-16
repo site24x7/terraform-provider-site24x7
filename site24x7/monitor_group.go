@@ -150,7 +150,7 @@ func ResourceSite24x7MonitorGroup() *schema.Resource {
 func monitorGroupCreate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(Client)
 
-	monitorGroup := resourceDataToMonitorGroupCreate(d)
+	monitorGroup := resourceDataToMonitorGroupCreate(d, client)
 
 	monitorGroup, err := client.MonitorGroups().Create(monitorGroup)
 	if err != nil {
@@ -186,7 +186,7 @@ func monitorGroupUpdate(d *schema.ResourceData, meta interface{}) error {
 		return err
 	}
 
-	monitorGroup = resourceDataToMonitorGroupUpdate(d, monitorGroup)
+	monitorGroup = resourceDataToMonitorGroupUpdate(d, monitorGroup, client)
 
 	monitorGroup, err = client.MonitorGroups().Update(monitorGroup)
 	if err != nil {
@@ -227,7 +227,7 @@ func monitorGroupExists(d *schema.ResourceData, meta interface{}) (bool, error) 
 	return true, nil
 }
 
-func resourceDataToMonitorGroupCreate(d *schema.ResourceData) *api.MonitorGroup {
+func resourceDataToMonitorGroupCreate(d *schema.ResourceData, client Client) *api.MonitorGroup {
 
 	var monitorIDs []string
 	// If monitors are set in the configuration file iterate them and append to monitorIDs
@@ -265,7 +265,38 @@ func resourceDataToMonitorGroupCreate(d *schema.ResourceData) *api.MonitorGroup 
 			thirdPartyServiceIDs = append(thirdPartyServiceIDs, id.(string))
 		}
 	}
+	var notificationProfileID string
+	notificationProfileID = d.Get("notification_profile_id").(string)
+	//Setting default notification profile
+	if notificationProfileID == "" {
+		notificationProfiles, err := client.NotificationProfiles().List()
+		if err != nil || len(notificationProfiles) == 0 {
+		} else {
+			notificationProfileID = notificationProfiles[0].ProfileID
+		}
+	}
 
+	var healthCheckProfileID string
+	healthCheckProfileID = d.Get("healthcheck_profile_id").(string)
+	//Setting default health check profile
+	if healthCheckProfileID == "" {
+		var monitorType = "HEALTHCHECK"
+		profiles, err := client.ThresholdProfiles().List()
+		if err != nil || len(profiles) == 0 {
+
+		}
+		var thresholdProf *api.ThresholdProfile
+		for _, p := range profiles {
+			if p.Type == string(monitorType) {
+				thresholdProf = p
+			}
+		}
+		// Below condition will be true when Threshold Profile is not present in Site24x7 for the given monitor type.
+		if thresholdProf == nil {
+		} else {
+			healthCheckProfileID = thresholdProf.ProfileID
+		}
+	}
 	monitorGroup := &api.MonitorGroup{
 		GroupID:                d.Id(),
 		DisplayName:            d.Get("display_name").(string),
@@ -277,8 +308,8 @@ func resourceDataToMonitorGroupCreate(d *schema.ResourceData) *api.MonitorGroup 
 		DependencyResourceType: 2,
 	}
 
-	monitorGroup.NotificationProfileID = d.Get("notification_profile_id").(string)
-	monitorGroup.HealthCheckProfileID = d.Get("healthcheck_profile_id").(string)
+	monitorGroup.NotificationProfileID = notificationProfileID
+	monitorGroup.HealthCheckProfileID = healthCheckProfileID
 	monitorGroup.UserGroupIDs = userGroupIDs
 	monitorGroup.TagIDs = tagIDs
 	monitorGroup.ThirdPartyServiceIDs = thirdPartyServiceIDs
@@ -291,7 +322,7 @@ func resourceDataToMonitorGroupCreate(d *schema.ResourceData) *api.MonitorGroup 
 	return monitorGroup
 }
 
-func resourceDataToMonitorGroupUpdate(d *schema.ResourceData, monitorGroup *api.MonitorGroup) *api.MonitorGroup {
+func resourceDataToMonitorGroupUpdate(d *schema.ResourceData, monitorGroup *api.MonitorGroup, client Client) *api.MonitorGroup {
 	// For all the three cases mentioned below we find the diff and append monitors to the monitorIDs list
 	// 	- Monitors set in configuration file but not present in Site24x7
 	// 	- Monitors not set in configuration file but present in Site24x7
@@ -351,6 +382,39 @@ func resourceDataToMonitorGroupUpdate(d *schema.ResourceData, monitorGroup *api.
 		}
 	}
 
+	var notificationProfileID string
+	notificationProfileID = d.Get("notification_profile_id").(string)
+	//Setting default notification profile
+	if notificationProfileID == "" {
+		notificationProfiles, err := client.NotificationProfiles().List()
+		if err != nil || len(notificationProfiles) == 0 {
+		} else {
+			notificationProfileID = notificationProfiles[0].ProfileID
+		}
+	}
+
+	var healthCheckProfileID string
+	healthCheckProfileID = d.Get("healthcheck_profile_id").(string)
+	//Setting default health check profile
+	if healthCheckProfileID == "" {
+		var monitorType = "HEALTHCHECK"
+		profiles, err := client.ThresholdProfiles().List()
+		if err != nil || len(profiles) == 0 {
+
+		}
+		var thresholdProf *api.ThresholdProfile
+		for _, p := range profiles {
+			if p.Type == string(monitorType) {
+				thresholdProf = p
+			}
+		}
+		// Below condition will be true when Threshold Profile is not present in Site24x7 for the given monitor type.
+		if thresholdProf == nil {
+		} else {
+			healthCheckProfileID = thresholdProf.ProfileID
+		}
+	}
+
 	monitorGroupToReturn := &api.MonitorGroup{
 		GroupID:     d.Id(),
 		DisplayName: d.Get("display_name").(string),
@@ -364,8 +428,8 @@ func resourceDataToMonitorGroupUpdate(d *schema.ResourceData, monitorGroup *api.
 		TagIDs:                 tagIDs,
 	}
 
-	monitorGroupToReturn.NotificationProfileID = d.Get("notification_profile_id").(string)
-	monitorGroupToReturn.HealthCheckProfileID = d.Get("healthcheck_profile_id").(string)
+	monitorGroupToReturn.NotificationProfileID = notificationProfileID
+	monitorGroupToReturn.HealthCheckProfileID = healthCheckProfileID
 	monitorGroupToReturn.UserGroupIDs = userGroupIDs
 	monitorGroupToReturn.TagIDs = tagIDs
 	monitorGroupToReturn.ThirdPartyServiceIDs = thirdPartyServiceIDs
