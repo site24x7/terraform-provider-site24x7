@@ -33,4 +33,5 @@ const (
 	ISP          MonitorType = "ISP"
 	PORT         MonitorType = "PORT"
 	PING         MonitorType = "PING"
+	SOAP         MonitorType = "SOAP"
 )

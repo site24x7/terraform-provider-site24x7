@@ -1,0 +1,39 @@
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+            "monitor_id": "897654345678",
+            "display_name":"SOAP Monitor",
+            "website":"www.example.com",
+            "request_param":"",
+            "type":"SOAP",
+            "use_ipv6":true,
+            "ssl_protocol":"",
+            "timeout":10,
+            "http_method":"",
+            "http_protocol":"",
+            "check_frequency":"5",
+          "request_content_type":"",
+          "response_type":"",
+          "soap_attributes_severity":0,
+          "threshold_profile_id":"123412341234123414",
+          "use_alpn":false,
+          "use_name_server":false,
+            "on_call_schedule_id":"23524543545245",
+            "location_profile_id": "123412341234123412",
+            "notification_profile_id": "123412341234123412",
+            "monitor_groups": [
+                "234",
+                "567"
+            ],
+            "dependency_resource_ids":["123","456"],
+            "tag_ids":[
+              "123"
+            ],
+            "user_group_ids": [
+                "123",
+                "456"
+            ],
+            "perform_automation":false
+    }
+    }

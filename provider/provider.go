@@ -94,6 +94,7 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_ftp_transfer_monitor":            monitors.ResourceSite24x7FTPTransferMonitor(),
 			"site24x7_port_monitor":                    monitors.ResourceSite24x7PortMonitor(),
 			"site24x7_ping_monitor":                    monitors.ResourceSite24x7PINGMonitor(),
+			"site24x7_soap_monitor":                    monitors.ResourceSite24x7SOAPMonitor(),
 			"site24x7_monitor_group":                   site24x7.ResourceSite24x7MonitorGroup(),
 			"site24x7_subgroup":                        site24x7.ResourceSite24x7Subgroup(),
 			"site24x7_url_action":                      site24x7.ResourceSite24x7URLAction(),

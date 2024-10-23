@@ -97,6 +97,7 @@ type Client interface {
 	ISPMonitors() monitors.ISPMonitors
 	PortMonitors() monitors.PortMonitors
 	PINGMonitors() monitors.PINGMonitors
+	SOAPMonitors() monitors.SOAPMonitors
 	RestApiMonitors() monitors.RestApiMonitors
 	RestApiTransactionMonitors() monitors.RestApiTransactionMonitors
 	AmazonMonitors() monitors.AmazonMonitors
@@ -209,6 +210,11 @@ func (c *client) SSLMonitors() monitors.SSLMonitors {
 // PINGMonitors implements Client.
 func (c *client) PINGMonitors() monitors.PINGMonitors {
 	return monitors.NewPINGMonitors(c.restClient)
+}
+
+// SOAPMonitors implements Client.
+func (c *client) SOAPMonitors() monitors.SOAPMonitors {
+	return monitors.NewSOAPMonitors(c.restClient)
 }
 
 // PortMonitors implements Client.

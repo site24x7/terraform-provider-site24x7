@@ -108,10 +108,11 @@ resource "site24x7_ping_monitor" "ping_monitor_example" {
 
 ### Required
 * `display_name` (String) Display Name for the monitor.
-* `host_name`(String)Registered domain name.
+* `website`(String)Registered domain name.
 ### Optional
 * `id` (String) The ID of this resource.
-* `type` PING
+* `type` DOMAINEXPIRY
+* `domain_name`(String)Who is server.
 * `timeout`(int) Timeout for connecting to the host.
 * `use_ipv6`(bool) Prefer IPV6
 * `perform_automation` (bool) Automating the scheduled maintenance
