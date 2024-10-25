@@ -48,10 +48,10 @@ provider "site24x7" {
   
   }
 
-// Site24x7 PING monitor API doc - https://www.site24x7.com/help/api/#PING
+// Site24x7 SOAP monitor API doc - https://www.site24x7.com/help/api/#SOAP
 resource "site24x7_soap_monitor" "soap_monitor_basic" {
     // (Required) Display name for the monitor
-    display_name = "Example ping Monitor"
+    display_name = "Example soap Monitor"
 
     // (Required) host name of the monitor
     website = "www.example.com"
@@ -60,62 +60,77 @@ resource "site24x7_soap_monitor" "soap_monitor_basic" {
 
 }
 
-// Site24x7 PING monitor API doc - https://www.site24x7.com/help/api/#PING
-resource "site24x7_ping_monitor" "ping_monitor_us" {
-     // (Required) Display name for the monitor
-    display_name = "Example ping Monitor"
+// Site24x7 SOAP monitor API doc - https://www.site24x7.com/help/api/#SOAP
+resource "site24x7_soap_monitor" "soap_monitor_us" {
+  // (Required) Display name for the monitor
+  display_name = "Example soap Monitor"
 
-    // (Required) host name of the monitor
-    website = "www.example.com"
+  // (Required) host name of the monitor
+  website = "www.example.com"
 
-//(Required)Request param for the monitor
-    request_param= "param=value"
+  //(Optional)Request param for the monitor
+  request_param= "param=value"
 
-// (Optional) Map of HTTP response headers to check.
-      response_headers_severity = 0 // Can take values 0 or 2. '0' denotes Down and '2' denotes Trouble.
-      response_headers = {
+  // (Optional) Map of HTTP response headers to check.
+  response_headers_severity = 0 // Can take values 0 or 2. '0' denotes Down and '2' denotes Trouble.
+
+  //(Optional)Check whether the HTTP response headers are present or verify header and corresponding values against predefined header and values. Trigger down or trouble alerts during failure.
+  response_headers = {
         "Content-Encoding" = "gzip"
         "Connection"       = "Keep-Alive"
       }
 
-  //Soap attribute severity to be set
-soap_attributes_severity=0
-soap_attributes={
+  //(Optional)Soap attribute severity to be set
+  soap_attributes_severity=0
+
+  //(Optional)(Optional)SOAP attribute name and value in a string array.
+  soap_attributes={
     "name" = "soap attribute name"
     "value" = "soap attribute value"
   }
 
-  //Check frequency of the monitor
-   check_frequency= "15"
+  //(Optional)Check frequency of the monitor
+  check_frequency= "15"
 
-   // (Optional) Id of the Location Profile to be associated to the monitor.
+  // (Optional) Id of the Location Profile to be associated to the monitor.
   location_profile_id= "456418000007860019"
 
   // (Optional) Credential Profile IDs to be associated to the monitor.
   credential_profile_id="456418000008650007"
 
-   timeout= 45
+  // (Optional) Timeout for connecting to website. Range 1 - 45.Default:10
+  timeout= 45
 
+ //(Optional)Response content type. Response Content Types
   response_type="A"
 
-  //Enable ALPN
+  //(Optional)Enable ALPN
   use_alpn = true
 
   // (Optional) Resolve the IP address using Domain Name Server. Default: true.
   use_name_server = false
 
-    // HTTP Configuration
-    // (Optional) Provide a comma-separated list of HTTP status codes that indicate a successful response.
-    // You can specify individual status codes, as well as ranges separated with a colon.
-   up_status_codes = "400:500"
-  
+  // HTTP Configuration
+  // (Optional) Provide a comma-separated list of HTTP status codes that indicate a successful response.
+  // You can specify individual status codes, as well as ranges separated with a colon.
+  up_status_codes = "400:500"
+
+  //(Optional)
+  //Specify the version of the SSL protocol. If you are not sure about the version, use Auto.
+  //Default value is Auto
   ssl_protocol="TLSv1.2"
   
+  //(Optional)
+  //Specify the version of the HTTP protocol.
   http_protocol="H2"
 
+  //(Optional)
+  //Select IPv6 for monitoring the websites hosted with IPv6 //address. If 
+  //you choose non IPv6 supported locations, monitoring will happen through
+  //IPv4.
   use_ipv6=true
 
- // (Optional) Name of the Location Profile that has to be associated with the monitor. 
+  // (Optional) Name of the Location Profile that has to be associated with the monitor. 
   // Either specify location_profile_id or location_profile_name.
   // If location_profile_id and location_profile_name are omitted,
   // the first profile returned by the /api/location_profiles endpoint
@@ -175,21 +190,18 @@ soap_attributes={
   ]
   
   // (Optional) List of Third Party Service IDs to be associated to the monitor.
-  third_party_service_ids = [
+  third_party_services = [
     "4567"
   ]
 
-    // (Optional) List of Threshold Profile IDs to be associated to the monitor.
-threshold_profile_id="456418000008650009"
+  // (Optional) List of Threshold Profile IDs to be associated to the monitor.
+  threshold_profile_id="456418000008650009"
 
- perform_automation=true
+  perform_automation=true
 
-
-  // (Optional) List of User Group IDs to be associated to the monitor.
- user_group_ids=["456418000000025007"]
 
    // (Optional) List of On call schedule ids IDs to be associated to the monitor.
- on_call_schedule_id="456418000001258016"
+  on_call_schedule_id="456418000001258016"
 
 
 }

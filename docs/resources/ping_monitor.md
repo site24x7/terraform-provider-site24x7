@@ -1,7 +1,7 @@
 ---
 layout: "site24x7"
-page_title: "Site24x7: site24x7_port_monitor"
-sidebar_current: "docs-site24x7-resource-port-monitor"
+page_title: "Site24x7: site24x7_ping_monitor"
+sidebar_current: "docs-site24x7-resource-ping-monitor"
 description: |-
   Create and manage a PING monitor in Site24x7.
 ---

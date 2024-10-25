@@ -62,7 +62,7 @@ resource "site24x7_web_transaction_browser_monitor" "web_transaction_browser_mon
 
     // (Required while creation)Script type of the selenium script added
        script_type="side"
-    // (Required for updation) Provide the Cookies for parameter forwarding in Map format.
+    // (Required) Provide the Cookies for parameter forwarding in Map format.
        cookies ={
           "Accept" = "application/json"
         }
@@ -170,48 +170,48 @@ resource "site24x7_web_transaction_browser_monitor" "web_transaction_browser_mon
     // the first profile returned by the /api/notification_profiles endpoint
     // (https://www.site24x7.com/help/api/#list-notification-profiles) will be
     // used.
-      notification_profile_name = "Terraform Profile"
+       notification_profile_name = "Terraform Profile"
 
     // (Optional) List of monitor group IDs to associate the monitor to.
-      monitor_groups = [
+       monitor_groups = [
         "123",
         "456"
       ]
 
-  // (Optional) List if user group IDs to be notified on down. 
-  // Either specify user_group_ids or user_group_names. If omitted, the
-  // first user group returned by the /api/user_groups endpoint
-  // (https://www.site24x7.com/help/api/#list-of-all-user-groups) will be used.
-    user_group_ids = [
-      "123",
-    ]
+    // (Optional) List if user group IDs to be notified on down. 
+    // Either specify user_group_ids or user_group_names. If omitted, the
+    // first user group returned by the /api/user_groups endpoint
+    // (https://www.site24x7.com/help/api/#list-of-all-user-groups) will be used.
+       user_group_ids = [
+        "123",
+      ]
 
-  // (Optional) List if user group names to be notified on down. 
-  // Either specify user_group_ids or user_group_names. If omitted, the
-  // first user group returned by the /api/user_groups endpoint
-  // (https://www.site24x7.com/help/api/#list-of-all-user-groups) will be used.
-    user_group_names = [
-      "Terraform",
-      "Network",
-      "Admin",
-    ]
+    // (Optional) List if user group names to be notified on down. 
+    // Either specify user_group_ids or user_group_names. If omitted, the
+    // first user group returned by the /api/user_groups endpoint
+    // (https://www.site24x7.com/help/api/#list-of-all-user-groups) will be used.
+       user_group_names = [
+        "Terraform",
+        "Network",
+        "Admin",
+      ]
 
-  // (Optional) List if tag IDs to be associated to the monitor.
-    tag_ids = [
-      "123",
-    ]
+    // (Optional) List if tag IDs to be associated to the monitor.
+       tag_ids = [
+        "123",
+      ]
 
-  // (Optional) List of tag names to be associated to the monitor. Tag name matching works for both exact and 
-  //  partial match. Either specify tag_ids or tag_names.
-    tag_names = [
-      "Terraform",
-      "Network",
-    ]
+    // (Optional) List of tag names to be associated to the monitor. Tag name matching works for both exact and 
+    //  partial match. Either specify tag_ids or tag_names.
+       tag_names = [
+        "Terraform",
+        "Network",
+      ]
 
-  // (Optional) List of Third Party Service IDs to be associated to the monitor.
-    third_party_service_ids = [
-      "4567"
-    ]
+    // (Optional) List of Third Party Service IDs to be associated to the monitor.
+       third_party_service_ids = [
+        "4567"
+      ]
 
 }
 
@@ -227,7 +227,7 @@ resource "site24x7_web_transaction_browser_monitor" "web_transaction_browser_mon
     //(Required while creation)Script type of the selenium script added
       script_type="side"
 
-    // (Required for updation) Provide the Cookies for parameter forwarding in Map format.
+    // (Required) Provide the Cookies for parameter forwarding in Map format.
        cookies ={
           "Accept" = "application/json"
         }

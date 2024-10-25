@@ -30,7 +30,10 @@ Use this resource to create, upda te and delete a Web-Transaction-Browser monito
 
     //(Required while creation)Recorded transaction script type.(txt , side)
     script_type="txt"
-
+    // (Required) Provide the Cookies for parameter forwarding in   Map format.
+    cookies ={
+          "Accept" = "application/json"
+        }
     //(Optional)Map of String
     proxy_details={webProxyUrl: "qwerty", webProxyUname: "sdcsdcsdc", webProxyPass: "sadasds"}
 
@@ -85,11 +88,12 @@ Use this resource to create, upda te and delete a Web-Transaction-Browser monito
       "456"
     ]
 
-  // (Optional) List of dependent resource IDs. Suppress alert when dependent monitor(s) is down.
-  dependency_resource_ids = [
-    "123",
-    "456"
-  ]
+    // (Optional) List of dependent resource IDs. Suppress alert when dependent monitor(s) is down.
+    dependency_resource_ids = [
+      "123",
+      "456"
+    ]
+    
     // (Optional) Location Profile to be associated with the monitor. If 
     // location_profile_id and location_profile_name are omitted,
     // the first profile returned by the /api/location_profiles endpoint
@@ -150,7 +154,7 @@ Use this resource to create, upda te and delete a Web-Transaction-Browser monito
 * `base_url`     (String) BaseURL of the transaction.
 * `selenium_script`(String)Recorded Trasanction script to create a monitor.(Required for creation)
 * `script_type`   (String)Recorded transaction script type.(txt , side)(Required for creation)
-* `cookies` (Map of String) Cookies for Advanced settings
+* `cookies` (Map of String) Cookies for Advanced settings(Required)
 ### Optional
 * `id` (String) The ID of this resource.
 * `display_name` (String) Display Name for the monitor.
@@ -160,7 +164,6 @@ Use this resource to create, upda te and delete a Web-Transaction-Browser monito
 * `browser_type` (Number) Type of the browser. 1 - Firefox, 2 - Chrome. Default value is 1.
 * `browser_version` (Number) Version of the browser. 83 - Firefox, 88 - Chrome. Default value is 83.
 * `proxy_details` (Map of String) Proxy checking in the web response
-
 * `page_load_time` (Number)Timeout for page load.
 * `async_dc_enabled` (Boolean) When asynchronous data collection is enabled, polling will be carried out from all the locations at the same time. If it is disabled, polling will be done consecutively from the selected locations.
 * `think_time`  (Number)Think time between each steps.

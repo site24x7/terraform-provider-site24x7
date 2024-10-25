@@ -18,8 +18,17 @@ Use this resource to create, update and delete a REST API monitor in Site24x7.
 resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
   // (Required) Display name for the monitor
   display_name = "REST API Monitor - terraform"
+
   // (Required) Website address to monitor.
   website = "https://dummy.restapiexample.com/"
+
+  // (Optional) Location Profile to be associated with the monitor. If 
+    // location_profile_id and location_profile_name are omitted,
+    // the first profile returned by the /api/location_profiles endpoint
+    // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
+    // used.
+    location_profile_id = "123"
+
   // (Optional) Name of the Location Profile that has to be associated with the monitor.
   // Either specify location_profile_id or location_profile_name.
   // If location_profile_id and location_profile_name are omitted,
@@ -27,6 +36,13 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
   // (https://www.site24x7.com/help/api/#list-of-all-location-profiles) will be
   // used.
   location_profile_name = "North America"
+
+  // (Optional) Notification profile to be associated with the monitor. If
+    // omitted, the first profile returned by the /api/notification_profiles
+    // endpoint (https://www.site24x7.com/help/api/#list-notification-profiles)
+    // will be used.
+    notification_profile_id = "123"
+    
   // (Optional) Name of the notification profile that has to be associated with the monitor.
   // Profile name matching works for both exact and partial match.
   // Either specify notification_profile_id or notification_profile_name.
@@ -35,6 +51,7 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
   // (https://www.site24x7.com/help/api/#list-notification-profiles) will be
   // used.
   notification_profile_name = "Terraform Profile"
+
 
   // (Optional) List of monitor group IDs to associate the monitor to.
   monitor_groups = [
@@ -134,30 +151,38 @@ resource "site24x7_rest_api_monitor" "rest_api_monitor_us" {
     "$..author",
     "$.store.*"
   ]
+
   // (Optional) Trigger an alert when the JSON path assertion fails during a test.
   // Alert type constant. Can be either 0 or 2. '0' denotes Down and '2' denotes Trouble. Default value is 2.
   match_json_path_severity = 0
   // (Optional) JSON schema to be validated against the JSON response.
   json_schema = "{\"test\":\"abcd\"}"
+
   // (Optional) Trigger an alert when the JSON schema assertion fails during a test.
   // Alert type constant. Can be either 0 or 2. '0' denotes Down and '2' denotes Trouble. Default value is 2.
   json_schema_severity = 2
+
   // (Optional) JSON Schema check allows you to annotate and validate all JSON endpoints for your web service.
   json_schema_check = true
+
   // JSON ASSERTION ATTRIBUTES ================
 
   // ================ HTTP POST with request body
   // (Optional) HTTP Method to be used for accessing the website.  Default value is 'G'. 'G' denotes GET, 'P' denotes POST, 'U' denotes PUT and 'D' denotes DELETE. HEAD is not supported.
   http_method = "P"
+
   // (Optional) Provide content type for request params when http_method is 'P'. 'J' denotes JSON, 'T' denotes TEXT, 'X' denotes XML and 'F' denotes FORM
   request_content_type = "J"
+
   // (Optional) Provide the content to be passed in the request body while accessing the website.
   request_body = "{\"user_name\":\"joe\"}"
+
   // (Optional) Map of custom HTTP headers to send.
   request_headers = {
     "Accept" = "application/json"
   }
-  // HTTP POST with request body ================
+  // HTTP POST with request body ================//
+
 
   // ================ GRAPHQL ATTRIBUTES
   // (Optional) Provide content type for request params.
