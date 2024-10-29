@@ -48,19 +48,19 @@ provider "site24x7" {
   }
 
 
-// Data source to fetch a user group
+// Data source to fetch a user
 data "site24x7_user" "s247user" {
-  // (Required) Regular expression denoting the name of the user group.
+  // (Required) Regular expression denoting the name of the user.
   name_regex = "vinoth"  
 }
 
-// Displays the User Group ID
+// Displays the User ID
 output "s247_user_id" {
-  description = "User group ID : "
+  description = "User ID : "
   value       = data.site24x7_user.s247user.id
 }
 
-// Displays the User Group ID
+// Displays the User ID
 output "s247_user_email" {
   description = "Email : "
   value       = data.site24x7_user.s247user.email
@@ -72,11 +72,13 @@ output "s247_user_displayname" {
   value       = data.site24x7_user.s247user.display_name
 }
 
-// Displays the User Role
+// Displays the matched userIDS
 output "s247_user_matchingUserIDs" {
   description = "Role : "
   value       = data.site24x7_user.s247user.matching_ids
 }
+
+// Displays the matched IDs and Names 
 
 output "s247_user_matchingUserIDsAndNames" {
   description = "Role : "
