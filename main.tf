@@ -1,6 +1,5 @@
 terraform {
   # Require Terraform version 0.15.x (recommended)
-  required_version = "~> 0.15.0"
 
   required_providers {
     site24x7 = {
