@@ -864,6 +864,79 @@ func (pingMonitor *PINGMonitor) GetTagIDs() []string {
 	return pingMonitor.TagIDs
 }
 
+// Denotes the SOAP monitor resource in Site24x7.
+type SOAPMonitor struct {
+	_                         struct{}           `type:"structure"` // Enforces key based initialization.
+	Type                      string             `json:"type"`
+	MonitorID                 string             `json:"monitor_id,omitempty"`
+	DisplayName               string             `json:"display_name"`
+	Website                   string             `json:"website"`
+	RequestParam              string             `json:"request_param"`
+	SOAPAttributesSeverity    int                `json:"soap_attributes_severity"`
+	SOAPAttributes            []Header           `json:"soap_attributes,omitempty"`
+	ResponseHeaders           HTTPResponseHeader `json:"response_headers_check,omitempty"`
+	Timeout                   int                `json:"timeout,omitempty"`
+	RequestContentType        string             `json:"request_content_type"`
+	HTTPMethod                string             `json:"http_method"`
+	UseNameServer             bool               `json:"use_name_server"`
+	HTTPProtocol              string             `json:"http_protocol"`
+	UseIPV6                   bool               `json:"use_ipv6"`
+	ResponseType              string             `json:"response_type"`
+	CheckFrequency            string             `json:"check_frequency"`
+	CredentialProfileID       string             `json:"credential_profile_id,omitempty"`
+	ClientCertificatePassword string             `json:"client_certificate_password,omitempty"`
+	UpStatusCodes             string             `json:"up_status_codes,omitempty"`
+	OnCallScheduleID          string             `json:"on_call_schedule_id,omitempty"`
+	LocationProfileID         string             `json:"location_profile_id"`
+	NotificationProfileID     string             `json:"notification_profile_id"`
+	PerformAutomation         bool               `json:"perform_automation"`
+	ThresholdProfileID        string             `json:"threshold_profile_id"`
+	SSLProtocol               string             `json:"ssl_protocol"`
+	UseAlpn                   bool               `json:"use_alpn"`
+	MonitorGroups             []string           `json:"monitor_groups,omitempty"`
+	DependencyResourceIDs     []string           `json:"dependency_resource_ids,omitempty"`
+	UserGroupIDs              []string           `json:"user_group_ids,omitempty"`
+	TagIDs                    []string           `json:"tag_ids,omitempty"`
+	ThirdPartyServiceIDs      []string           `json:"third_party_services,omitempty"`
+	ActionIDs                 []ActionRef        `json:"action_ids,omitempty"`
+}
+
+func (soapMonitor *SOAPMonitor) SetLocationProfileID(locationProfileID string) {
+	soapMonitor.LocationProfileID = locationProfileID
+}
+
+func (soapMonitor *SOAPMonitor) GetLocationProfileID() string {
+	return soapMonitor.LocationProfileID
+}
+
+func (soapMonitor *SOAPMonitor) SetNotificationProfileID(notificationProfileID string) {
+	soapMonitor.NotificationProfileID = notificationProfileID
+}
+
+func (soapMonitor *SOAPMonitor) GetNotificationProfileID() string {
+	return soapMonitor.NotificationProfileID
+}
+
+func (soapMonitor *SOAPMonitor) SetUserGroupIDs(userGroupIDs []string) {
+	soapMonitor.UserGroupIDs = userGroupIDs
+}
+
+func (soapMonitor *SOAPMonitor) GetUserGroupIDs() []string {
+	return soapMonitor.UserGroupIDs
+}
+
+func (soapMonitor *SOAPMonitor) String() string {
+	return ToString(soapMonitor)
+}
+
+func (soapMonitor *SOAPMonitor) SetTagIDs(tagIDs []string) {
+	soapMonitor.TagIDs = tagIDs
+}
+
+func (soapMonitor *SOAPMonitor) GetTagIDs() []string {
+	return soapMonitor.TagIDs
+}
+
 // Denotes the server monitor resource in Site24x7.
 type ServerMonitor struct {
 	_                     struct{} `type:"structure"` // Enforces key based initialization.
@@ -923,14 +996,14 @@ func (serverMonitor *ServerMonitor) String() string {
 	return ToString(serverMonitor)
 }
 
-//Cron Monitor resource in Site24x7
+// Cron Monitor resource in Site24x7
 type CronMonitor struct {
 	_                     struct{} `type:"structure"` // Enforces key based initialization.
 	MonitorID             string   `json:"monitor_id,omitempty"`
 	DisplayName           string   `json:"display_name"`
 	CronExpression        string   `json:"cron_expression"`
 	CronTz                string   `json:"cron_tz"`
-	WaitTime              int   `json:"wait_time"`
+	WaitTime              int      `json:"wait_time"`
 	Type                  string   `json:"type"`
 	ThresholdProfileID    string   `json:"threshold_profile_id"`
 	NotificationProfileID string   `json:"notification_profile_id"`

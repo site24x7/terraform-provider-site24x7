@@ -29,6 +29,7 @@ type Client struct {
 	FakeISPMonitors                   *fake.ISPMonitors
 	FakePortMonitors                  *fake.PortMonitors
 	FakePINGMonitors                  *fake.PINGMonitors
+	FakeSOAPMonitors                  *fake.SOAPMonitors
 	FakeFTPTransferMonitors           *fake.FTPTransferMonitors
 	FakeServerMonitors                *fake.ServerMonitors
 	FakeRestApiMonitors               *fake.RestApiMonitors
@@ -74,6 +75,7 @@ func NewClient() *Client {
 		FakePortMonitors:                  &fake.PortMonitors{},
 		FakePINGMonitors:                  &fake.PINGMonitors{},
 		FakeDNSServerMonitors:             &fake.DNSServerMonitors{},
+		FakeSOAPMonitors:                  &fake.SOAPMonitors{},
 		FakeWebPageSpeedMonitors:          &fake.WebPageSpeedMonitors{},
 		FakeRestApiMonitors:               &fake.RestApiMonitors{},
 		FakeRestApiTransactionMonitors:    &fake.RestApiTransactionMonitor{},
@@ -153,6 +155,11 @@ func (c *Client) RestApiMonitors() monitors.RestApiMonitors {
 // DomainExpiryMonitors implements Client.
 func (c *Client) DomainExpiryMonitors() monitors.DomainExpiryMonitors {
 	return c.FakeDomainExpiryMonitors
+}
+
+// SOAPMonitors implements Client.
+func (c *Client) SOAPMonitors() monitors.SOAPMonitors {
+	return c.FakeSOAPMonitors
 }
 
 // WebTransactionBrowserMonitors implements Client.

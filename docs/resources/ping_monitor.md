@@ -1,7 +1,7 @@
 ---
 layout: "site24x7"
-page_title: "Site24x7: site24x7_port_monitor"
-sidebar_current: "docs-site24x7-resource-port-monitor"
+page_title: "Site24x7: site24x7_ping_monitor"
+sidebar_current: "docs-site24x7-resource-ping-monitor"
 description: |-
   Create and manage a PING monitor in Site24x7.
 ---
@@ -111,8 +111,7 @@ resource "site24x7_ping_monitor" "ping_monitor_example" {
 * `host_name`(String)Registered domain name.
 ### Optional
 * `id` (String) The ID of this resource.
-* `type` DOMAINEXPIRY
-* `domain_name`(String)Who is server.
+* `type` PING
 * `timeout`(int) Timeout for connecting to the host.
 * `use_ipv6`(bool) Prefer IPV6
 * `perform_automation` (bool) Automating the scheduled maintenance
