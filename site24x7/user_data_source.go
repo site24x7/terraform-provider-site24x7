@@ -21,7 +21,7 @@ var userDataSourceSchema = map[string]*schema.Schema{
 		Description: "List of user IDs matching the name_regex.",
 	},
 	"matching_ids_and_names": {
-		Type:        schema.TypeList,
+		Type:        schema.TypeMap,
 		Computed:    true,
 		Elem:        &schema.Schema{Type: schema.TypeString},
 		Description: "List of user IDs and names matching the name_regex.",
@@ -66,7 +66,7 @@ func userDataSourceRead(d *schema.ResourceData, meta interface{}) error {
 
 	nameRegex := d.Get("name_regex").(string)
 	var matchingUserIDs []string
-	var matchingUserIDsAndNames []string
+	matchingUserIDsAndNames := make(map[string]string)
 	var user *api.User
 
 	if nameRegex != "" {
@@ -75,7 +75,7 @@ func userDataSourceRead(d *schema.ResourceData, meta interface{}) error {
 			if nameRegexPattern.MatchString(userInfo.DisplayName) {
 				user = userInfo
 				matchingUserIDs = append(matchingUserIDs, userInfo.ID)
-				matchingUserIDsAndNames = append(matchingUserIDsAndNames, userInfo.ID+"__"+userInfo.DisplayName)
+				matchingUserIDsAndNames[userInfo.ID] = userInfo.DisplayName
 			}
 		}
 	} else {
@@ -91,7 +91,7 @@ func userDataSourceRead(d *schema.ResourceData, meta interface{}) error {
 	return nil
 }
 
-func updateUserDataSourceResourceData(d *schema.ResourceData, user *api.User, matchingUserIDs []string, matchingUserIDsAndNames []string) {
+func updateUserDataSourceResourceData(d *schema.ResourceData, user *api.User, matchingUserIDs []string, matchingUserIDsAndNames map[string]string) {
 	d.SetId(user.ID) // Set the ID to the matched user's ID
 	d.Set("matching_ids", matchingUserIDs)
 	d.Set("matching_ids_and_names", matchingUserIDsAndNames)
