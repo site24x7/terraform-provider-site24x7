@@ -93,7 +93,7 @@ Use this resource to create, upda te and delete a Web-Transaction-Browser monito
       "123",
       "456"
     ]
-    
+
     // (Optional) Location Profile to be associated with the monitor. If 
     // location_profile_id and location_profile_name are omitted,
     // the first profile returned by the /api/location_profiles endpoint
@@ -152,8 +152,8 @@ Use this resource to create, upda te and delete a Web-Transaction-Browser monito
 
 ### Required
 * `base_url`     (String) BaseURL of the transaction.
-* `selenium_script`(String)Recorded Trasanction script to create a monitor.(Required for creation)
-* `script_type`   (String)Recorded transaction script type.(txt , side)(Required for creation)
+* `selenium_script`(String)Recorded Trasanction script to create a monitor.(Required for creation-Dont give this attribute for updation)
+* `script_type`   (String)Recorded transaction script type.(txt , side)(Required for creation-Dont give this attribute for updation)
 * `cookies` (Map of String) Cookies for Advanced settings(Required)
 ### Optional
 * `id` (String) The ID of this resource.

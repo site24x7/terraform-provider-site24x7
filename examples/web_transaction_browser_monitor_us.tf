@@ -70,7 +70,7 @@ resource "site24x7_web_transaction_browser_monitor" "web_transaction_browser_mon
     // (Optional)Display name for the monitor
        display_name="RBM-Terraform"
 
-    // (Optional) Toggle to enable asynchronous data collection or not
+    // (Optional) set to true to enable asynchronous data collection 
        async_dc_enabled = false
 
     // (Optional) Check interval for monitoring. Default: 1. See
