@@ -1,7 +1,7 @@
 ---
 layout: "site24x7"
 page_title: "Site24x7: site24x7_soap_monitor"
-sidebar_current: "docs-site24x7-resource-port-monitor"
+sidebar_current: "docs-site24x7-resource-soap-monitor"
 description: |-
   Create and manage a SOAP monitor in Site24x7.
 ---
