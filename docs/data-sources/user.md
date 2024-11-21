@@ -52,20 +52,20 @@ output "s247_user_matchingUserIDsAndNames" {
 }
 //
 
-// Iterating the user group data source
+// Iterating the user data source
 data "site24x7_user" "userlist" {
   for_each = toset(["e", "a"])
   name_regex = each.key
 }
 
 locals {
-  user_group_ids = toset([for prof in data.site24x7_user.userlist : prof.id])
-  user_group_names = toset([for prof in data.site24x7_user.userlist : prof.display_name])
+  user_ids = toset([for prof in data.site24x7_user.userlist : prof.id])
+  user__names = toset([for prof in data.site24x7_user.userlist : prof.display_name])
 }
 
 output "s247_user_ids" {
   description = "Matching user IDs : "
-  value       = local.user_group_ids
+  value       = local.user_ids
 }
 
 output "s247_user_names" {
