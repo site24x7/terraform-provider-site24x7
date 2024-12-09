@@ -70,7 +70,7 @@ type SearchConfig struct {
 	Kid      int    `json:"kid,omitempty"`
 	Key      string `json:"key,omitempty"`
 	Tag      string `json:"tag,omitempty"`
-	CertAuth string `json:"cert_auth,omitempty"`
+	CertAuth string `json:"certauth,omitempty"`
 	Halg     int    `json:"halg,omitempty"`
 	Hash     string `json:"hash,omitempty"`
 }
