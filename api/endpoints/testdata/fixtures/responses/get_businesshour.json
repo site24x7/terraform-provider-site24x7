@@ -1,0 +1,37 @@
+{
+    "code": 0,
+    "message": "success",
+    "data": {
+      "business_hours_id": "113770000041403039",
+      "display_name": "General Shift",
+      "time_config": [
+        {
+          "day": 2,
+          "end_time": "17:00",
+          "start_time": "09:00"
+        },
+        {
+          "day": 3,
+          "end_time": "17:00",
+          "start_time": "09:00"
+        },
+        {
+          "day": 4,
+          "end_time": "17:00",
+          "start_time": "09:00"
+        },
+        {
+          "day": 5,
+          "end_time": "17:00",
+          "start_time": "09:00"
+        },
+        {
+          "day": 6,
+          "end_time": "17:00",
+          "start_time": "09:00"
+        }
+      ],
+      "description": "General shift 5 days a week 9 AM to 5 PM"
+    }
+  }
+  
