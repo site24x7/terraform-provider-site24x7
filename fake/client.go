@@ -50,6 +50,7 @@ type Client struct {
 	FakeMSP                           *fake.MSP
 	FakeDNSServerMonitors             *fake.DNSServerMonitors
 	FakeCredentialProfile             *fake.CredentialProfile
+	FakeBusinesshour                  *fake.BusinessHour
 }
 
 // NewClient creates a new fake site24x7 API client.
@@ -94,6 +95,7 @@ func NewClient() *Client {
 		FakeScheduleMaintenance:           &fake.ScheduleMaintenance{},
 		FakeMSP:                           &fake.MSP{},
 		FakeCredentialProfile:             &fake.CredentialProfile{},
+		FakeBusinesshour:                  &fake.BusinessHour{},
 	}
 }
 
@@ -290,4 +292,9 @@ func (c *Client) MSP() endpoints.MSP {
 // RestApiMonitors implements Client.
 func (c *Client) credentialProfile() common.CredentialProfile {
 	return c.FakeCredentialProfile
+}
+
+// Business hour implements Client.
+func (c *Client) BusinessHour() common.BusinessHourService {
+	return c.FakeBusinesshour
 }
