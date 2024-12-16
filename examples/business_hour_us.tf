@@ -75,3 +75,8 @@ resource "site24x7_business_hour" "business_hour_basic" {
     }
   ]
 }
+
+output "business_hour_id" {
+  description = "The ID of the created Site24x7 business hour configuration."
+  value       = site24x7_business_hour.business_hour_basic.id
+}
