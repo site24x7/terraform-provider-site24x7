@@ -118,6 +118,7 @@ type Client interface {
 	AWSExternalID() aws.AWSExternalID
 	DeviceKey() common.DeviceKey
 	CredentialProfile() common.CredentialProfile
+	BusinessHour() common.BusinessHourService
 }
 
 type client struct {
@@ -365,4 +366,7 @@ func (c *client) DeviceKey() common.DeviceKey {
 // RestApiMonitors implements Client.
 func (c *client) CredentialProfile() common.CredentialProfile {
 	return common.NewCredentialProfile(c.restClient)
+}
+func (c *client) BusinessHour() common.BusinessHourService {
+	return common.NewBusinessHour(c.restClient)
 }
