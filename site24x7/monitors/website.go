@@ -618,6 +618,7 @@ func resourceDataToWebsiteMonitor(d *schema.ResourceData, client site24x7.Client
 			monitorGroups = append(monitorGroups, group.(string))
 		}
 	}
+	sort.Strings(monitorGroups)
 
 	dependencyIDs := d.Get("dependency_resource_ids").(*schema.Set).List()
 	dependencyResourceIDs := make([]string, 0, len(dependencyIDs))

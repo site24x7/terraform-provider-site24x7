@@ -1,6 +1,8 @@
 package monitors
 
 import (
+	"sort",
+	
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
@@ -182,6 +184,7 @@ func resourceDataToServerMonitor(d *schema.ResourceData, client site24x7.Client,
 			monitorGroups = append(monitorGroups, group.(string))
 		}
 	}
+	sort.Strings(monitorGroups)
 
 	var userGroupIDs []string
 	for _, id := range d.Get("user_group_ids").([]interface{}) {

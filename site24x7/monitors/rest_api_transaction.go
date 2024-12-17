@@ -609,6 +609,7 @@ func resourceDataToRestApiTransactionMonitor(d *schema.ResourceData, client site
 			monitorGroups = append(monitorGroups, group.(string))
 		}
 	}
+	sort.Strings(monitorGroups)
 
 	dependencyIDs := d.Get("dependency_resource_ids").(*schema.Set).List()
 	dependencyResourceIDs := make([]string, 0, len(dependencyIDs))
