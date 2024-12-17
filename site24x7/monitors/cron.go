@@ -1,8 +1,8 @@
 package monitors
 
 import (
-	"sort",
-	
+	"sort"
+
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
