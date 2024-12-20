@@ -29,7 +29,6 @@ func (b *BusinessHour) Get(businessHourID string) (*api.BusinessHour, error) {
 		Get().
 		Resource("business_hours").
 		ResourceID(businessHourID).
-		AddHeader("Accept", "application/json; version=2.0").
 		AddHeader("Accept", "application/json; version=2.0"). // Added Accept header
 		Do().
 		Parse(businessHour)
