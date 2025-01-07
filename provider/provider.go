@@ -113,6 +113,7 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_connectwise_integration":         integration.ResourceSite24x7ConnectwiseIntegration(),
 			"site24x7_telegram_integration":            integration.ResourceSite24x7TelegramIntegration(),
 			"site24x7_credential_profile":              common.ResourceSite24x7CredentialProfile(),
+			"site24x7_businesshour":                    common.ResourceSite24x7BusinessHour(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
 			"site24x7_monitor":              monitors.DataSourceSite24x7Monitor(),

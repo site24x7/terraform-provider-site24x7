@@ -500,3 +500,21 @@ type CredentialProfile struct {
 func (credentialProfile *CredentialProfile) String() string {
 	return ToString(credentialProfile)
 }
+
+type BusinessHour struct {
+	_           struct{}   `type:"structure"` // Enforces key based initialization.
+	ID          string     `json:"business_hours_id,omitempty"`
+	DisplayName string     `json:"display_name"`
+	Description string     `json:"description"`
+	TimeConfig  []TimeSlot `json:"time_config"`
+}
+type TimeSlot struct {
+	Day       int    `json:"day"`
+	StartTime string `json:"start_time"`
+	EndTime   string `json:"end_time"`
+}
+
+// String representation for debugging
+func (bh *BusinessHour) String() string {
+	return ToString(bh)
+}
