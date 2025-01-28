@@ -27,6 +27,7 @@ func TestServiceNowIntegrationCreate(t *testing.T) {
 		CriticalAlert: true,
 		DownAlert:     true,
 		AlertTagIDs:   []string{"123", "456"},
+		IsIncidentApi: 1,
 	}
 
 	c.FakeServiceNowIntegration.On("Create", a).Return(a, nil).Once()
@@ -59,6 +60,7 @@ func TestServiceNowIntegrationUpdate(t *testing.T) {
 		CriticalAlert: true,
 		DownAlert:     true,
 		AlertTagIDs:   []string{"123", "456"},
+		IsIncidentApi: 1,
 	}
 
 	c.FakeServiceNowIntegration.On("Update", a).Return(a, nil).Once()
@@ -134,16 +136,17 @@ func TestServiceNowIntegrationExists(t *testing.T) {
 
 func serviceNowIntegrationTestResourceData(t *testing.T) *schema.ResourceData {
 	return schema.TestResourceDataRaw(t, serviceNowIntegrationSchema, map[string]interface{}{
-		"name":           "foo",
-		"instance_url":   "https://www.example.com",
-		"user_name":      "username",
-		"password":       "",
-		"selection_type": 0,
-		"title":          "test-title",
-		"sender_name":    "Site24x7",
-		"trouble_alert":  true,
-		"critical_alert": true,
-		"down_alert":     true,
+		"name":            "foo",
+		"instance_url":    "https://www.example.com",
+		"user_name":       "username",
+		"password":        "",
+		"selection_type":  0,
+		"title":           "test-title",
+		"sender_name":     "Site24x7",
+		"trouble_alert":   true,
+		"critical_alert":  true,
+		"down_alert":      true,
+		"is_incident_Api": 1,
 		"alert_tags_id": []interface{}{
 			"123",
 			"456",

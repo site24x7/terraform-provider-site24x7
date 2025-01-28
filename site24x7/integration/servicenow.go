@@ -98,6 +98,12 @@ var serviceNowIntegrationSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Description: "Tag id’s to be associated with the integration.",
 	},
+	"is_incident_api": {
+		Type:        schema.TypeInt,
+		Optional:    true,
+		Default:     1, // Default to Incident
+		Description: "Specify whether to receive alerts as 'Incident' or 'Event'.",
+	},
 }
 
 func ResourceSite24x7ServiceNowIntegration() *schema.Resource {
@@ -223,6 +229,7 @@ func resourceDataToServiceNowIntegration(d *schema.ResourceData) (*api.ServiceNo
 		Monitors:             monitorsIDs,
 		Tags:                 tagIDs,
 		AlertTagIDs:          alertTagIDs,
+		IsIncidentApi:        d.Get("is_incident_api").(int),
 	}
 
 	return serviceNowIntegration, nil
@@ -244,4 +251,5 @@ func updateServiceNowIntegrationResourceData(d *schema.ResourceData, serviceNowI
 	d.Set("tags", serviceNowIntegration.Tags)
 	d.Set("monitors", serviceNowIntegration.Monitors)
 	d.Set("alert_tags_id", serviceNowIntegration.AlertTagIDs)
+	d.Set("is_incident_api", serviceNowIntegration.IsIncidentApi)
 }
