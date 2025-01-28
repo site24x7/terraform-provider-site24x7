@@ -32,6 +32,7 @@ func TestServiceNow(t *testing.T) {
 					SenderName:    "Site24x7",
 					Title:         "$MONITOR_NAME is $STATUS",
 					AlertTagIDs:   []string{"113770000023231001"},
+					IsIncidentApi: 1,
 				}
 
 				_, err := NewServiceNow(c).Create(serviceNowIntegration)
@@ -59,6 +60,7 @@ func TestServiceNow(t *testing.T) {
 					SenderName:    "Site24x7",
 					Title:         "$MONITOR_NAME is $STATUS",
 					AlertTagIDs:   []string{"113770000023231001"},
+					IsIncidentApi: 1,
 				}
 
 				assert.Equal(t, expected, servicenow_integration)
@@ -86,6 +88,7 @@ func TestServiceNow(t *testing.T) {
 					Monitors:      []string{"113770000023231032", "113770000023231043"},
 					Title:         "$MONITOR_NAME is $STATUS",
 					AlertTagIDs:   []string{"113770000023231001", "113770000023231002"},
+					IsIncidentApi: 1,
 				}
 
 				_, err := NewServiceNow(c).Update(servicenow_integration)

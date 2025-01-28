@@ -168,6 +168,7 @@ type ServiceNowIntegration struct {
 	Tags                 []string     `json:"tags,omitempty"`
 	Monitors             []string     `json:"monitors,omitempty"`
 	AlertTagIDs          []string     `json:"alert_tags_id,omitempty"`
+	IsIncidentApi        int          `json:"is_incident_api,omitempty"`
 }
 
 func (serviceNowIntegration *ServiceNowIntegration) String() string {
@@ -176,27 +177,27 @@ func (serviceNowIntegration *ServiceNowIntegration) String() string {
 
 // Denotes Connectwise integration resource in Site24x7.
 type ConnectwiseIntegration struct {
-	_             			struct{}     `type:"structure"` // Enforces key based initialization.
-	ServiceID     			string       `json:"service_id,omitempty"`
-	ServiceStatus 			int          `json:"service_status,omitempty"`
-	Name          			string       `json:"name"`
-	URL           			string       `json:"url"`
-	Company       			string       `json:"company"`
-	PublicKey     			string       `json:"public_key"`
-	PrivateKey    			string       `json:"private_key"`
-	CompanyId     			string       `json:"company_id"`
-	CloseStatus    			string       `json:"close_status"`
-	SendCustomParameters	bool         `json:"send_custom_parameters,omitempty"`
-	CustomParameters     	string       `json:"custom_parameters,omitempty"`
-	SelectionType 			ResourceType `json:"selection_type"`
-	TroubleAlert  			bool         `json:"trouble_alert"`
-	CriticalAlert 			bool         `json:"critical_alert"`
-	DownAlert     			bool         `json:"down_alert"`
-	ManualResolve        	bool       	 `json:"manual_resolve"`
-	Tags          			[]string     `json:"tags,omitempty"`
-	Monitors      			[]string     `json:"monitors,omitempty"`
-	AlertTagIDs   			[]string     `json:"alert_tags_id,omitempty"`
-	UserGroups   			[]string     `json:"user_groups,omitempty"`
+	_                    struct{}     `type:"structure"` // Enforces key based initialization.
+	ServiceID            string       `json:"service_id,omitempty"`
+	ServiceStatus        int          `json:"service_status,omitempty"`
+	Name                 string       `json:"name"`
+	URL                  string       `json:"url"`
+	Company              string       `json:"company"`
+	PublicKey            string       `json:"public_key"`
+	PrivateKey           string       `json:"private_key"`
+	CompanyId            string       `json:"company_id"`
+	CloseStatus          string       `json:"close_status"`
+	SendCustomParameters bool         `json:"send_custom_parameters,omitempty"`
+	CustomParameters     string       `json:"custom_parameters,omitempty"`
+	SelectionType        ResourceType `json:"selection_type"`
+	TroubleAlert         bool         `json:"trouble_alert"`
+	CriticalAlert        bool         `json:"critical_alert"`
+	DownAlert            bool         `json:"down_alert"`
+	ManualResolve        bool         `json:"manual_resolve"`
+	Tags                 []string     `json:"tags,omitempty"`
+	Monitors             []string     `json:"monitors,omitempty"`
+	AlertTagIDs          []string     `json:"alert_tags_id,omitempty"`
+	UserGroups           []string     `json:"user_groups,omitempty"`
 }
 
 func (connectwiseIntegration *ConnectwiseIntegration) String() string {
@@ -205,20 +206,20 @@ func (connectwiseIntegration *ConnectwiseIntegration) String() string {
 
 // Denotes Telegram integration resource in Site24x7.
 type TelegramIntegration struct {
-	_             			struct{}     `type:"structure"` // Enforces key based initialization.
-	ServiceID     			string       `json:"service_id,omitempty"`
-	ServiceStatus 			int          `json:"service_status,omitempty"`
-	Name          			string       `json:"name"`
-	URL           			string       `json:"channel_url"`
-	BotToken                string       `json:"token"`
-    Title                   string       `json:"title"`
-	SelectionType 			ResourceType `json:"selection_type"`
-	TroubleAlert  			bool         `json:"trouble_alert"`
-	CriticalAlert 			bool         `json:"critical_alert"`
-	DownAlert     			bool         `json:"down_alert"`
-	Tags          			[]string     `json:"tags,omitempty"`
-	Monitors      			[]string     `json:"monitors,omitempty"`
-	AlertTagIDs   			[]string     `json:"alert_tags_id,omitempty"`
+	_             struct{}     `type:"structure"` // Enforces key based initialization.
+	ServiceID     string       `json:"service_id,omitempty"`
+	ServiceStatus int          `json:"service_status,omitempty"`
+	Name          string       `json:"name"`
+	URL           string       `json:"channel_url"`
+	BotToken      string       `json:"token"`
+	Title         string       `json:"title"`
+	SelectionType ResourceType `json:"selection_type"`
+	TroubleAlert  bool         `json:"trouble_alert"`
+	CriticalAlert bool         `json:"critical_alert"`
+	DownAlert     bool         `json:"down_alert"`
+	Tags          []string     `json:"tags,omitempty"`
+	Monitors      []string     `json:"monitors,omitempty"`
+	AlertTagIDs   []string     `json:"alert_tags_id,omitempty"`
 }
 
 func (telegramIntegration *TelegramIntegration) String() string {

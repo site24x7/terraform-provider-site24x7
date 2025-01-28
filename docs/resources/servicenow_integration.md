@@ -46,6 +46,9 @@ resource "site24x7_servicenow_integration" "servicenow_integration" {
   tags                        = ["345"]
   // (Optional) List of tag IDs to be associated with the integration.
   alert_tags_id                   = ["123"]
+  // (Optional) Receive alert As - Alert format preference. Specify how you'd like to receive alerts:
+  // 1 for Incidents, 2 for Events.
+  is_incident_api               = 2
 }
 
 ```
