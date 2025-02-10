@@ -101,6 +101,7 @@ type Client interface {
 	RestApiMonitors() monitors.RestApiMonitors
 	RestApiTransactionMonitors() monitors.RestApiTransactionMonitors
 	AmazonMonitors() monitors.AmazonMonitors
+	GCPMonitors() monitors.GCPMonitors
 	NotificationProfiles() endpoints.NotificationProfiles
 	ThresholdProfiles() endpoints.ThresholdProfiles
 	Users() endpoints.Users
@@ -186,6 +187,11 @@ func (c *client) LocationTemplate() endpoints.LocationTemplate {
 // AmazonMonitors implements Client.
 func (c *client) AmazonMonitors() monitors.AmazonMonitors {
 	return monitors.NewAmazonMonitors(c.restClient)
+}
+
+// GCPMonitors implements Client.
+func (c *client) GCPMonitors() monitors.GCPMonitors {
+	return monitors.NewGCPMonitors(c.restClient)
 }
 
 // WebsiteMonitors implements Client.

@@ -34,4 +34,5 @@ const (
 	PORT         MonitorType = "PORT"
 	PING         MonitorType = "PING"
 	SOAP         MonitorType = "SOAP"
+	GCP          MonitorType = "GCP"
 )
