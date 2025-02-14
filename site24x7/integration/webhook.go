@@ -148,6 +148,17 @@ var WebhookIntegrationSchema = map[string]*schema.Schema{
 		Optional:    true,
 		Description: "Configuration to handle ticketing based integration.",
 	},
+	"response_format": {
+		Type:        schema.TypeString,
+		Default:     "J",
+		Optional:    true,
+		Description: "Expected response type for ticketing based integration: J(ason) or X(ml)",
+	},
+	"path_expression": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "JSON Path/XPath expression to obtain the ticket id of the request created.",
+	},
 	"update_url": {
 		Type:        schema.TypeString,
 		Optional:    true,
@@ -354,6 +365,8 @@ func resourceDataToWebhookIntegration(d *schema.ResourceData) (*api.WebhookInteg
 		Tags:                         tagIDs,
 		AlertTagIDs:                  alertTagIDs,
 		ManageTickets:                d.Get("manage_tickets").(bool),
+		ResponseFormat:               d.Get("response_format").(string),
+		PathExpression:               d.Get("path_expression").(string),
 		UpdateURL:                    d.Get("update_url").(string),
 		UpdateMethod:                 d.Get("update_method").(string),
 		UpdateSendIncidentParameters: d.Get("update_send_incident_parameters").(bool),
@@ -416,6 +429,8 @@ func updateWebhookIntegrationResourceData(d *schema.ResourceData, webhookIntegra
 	d.Set("alert_tags_id", webhookIntegration.AlertTagIDs)
 	// Manage tickets configuration
 	d.Set("manage_tickets", webhookIntegration.ManageTickets)
+	d.Set("response_format", webhookIntegration.ResponseFormat)
+	d.Set("path_expression", webhookIntegration.PathExpression)
 	// Update Ticket
 	d.Set("update_url", webhookIntegration.UpdateURL)
 	d.Set("update_method", webhookIntegration.UpdateMethod)
