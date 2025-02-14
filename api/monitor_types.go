@@ -1165,3 +1165,74 @@ func (DNSServerMonitor *DNSServerMonitor) GetTagIDs() []string {
 func (DNSServerMonitor *DNSServerMonitor) String() string {
 	return ToString(DNSServerMonitor)
 }
+
+type GCPMonitor struct {
+	_                    struct{} `type:"structure"` // Enforces key-based initialization.
+	MonitorID            string   `json:"monitor_id,omitempty"`
+	DisplayName          string   `json:"display_name"`
+	Type                 string   `json:"type"`
+	ProjectID            string   `json:"project_id"`
+	DiscoverServices     []int    `json:"gcp_discover_services,omitempty"`
+	CheckFrequency       string   `json:"check_frequency"`
+	StopRediscoverOption int      `json:"stop_rediscover_option"`
+	GCPSAContent         struct {
+		PrivateKey  string `json:"private_key"`
+		ClientEmail string `json:"client_email"`
+	} `json:"gcp_sa_content"`
+	UserGroupIDs          []string `json:"user_group_ids"`
+	TagIDs                []string `json:"tag_ids,omitempty"`
+	NotificationProfileID string   `json:"notification_profile_id"`
+	GCPTagsType           int      `json:"gcp_tags_type,omitempty"`
+	GCPTags               []struct {
+		Name  string `json:"name"`
+		Value string `json:"value"`
+	} `json:"gcp_tags,omitempty"`
+}
+
+func (gcpMonitor *GCPMonitor) SetTagIDs(tagIDs []string) {
+	gcpMonitor.TagIDs = tagIDs
+}
+
+func (gcpMonitor *GCPMonitor) GetTagIDs() []string {
+	return gcpMonitor.TagIDs
+}
+
+func (gcpMonitor *GCPMonitor) SetLocationProfileID(locationProfileID string) {
+}
+
+func (gcpMonitor *GCPMonitor) GetLocationProfileID() string {
+	return ""
+}
+func (gcpMonitor *GCPMonitor) SetNotificationProfileID(notificationProfileID string) {
+	gcpMonitor.NotificationProfileID = notificationProfileID
+}
+
+func (gcpMonitor *GCPMonitor) GetNotificationProfileID() string {
+	return gcpMonitor.NotificationProfileID
+}
+
+func (gcpMonitor *GCPMonitor) SetUserGroupIDs(userGroupIDs []string) {
+	gcpMonitor.UserGroupIDs = userGroupIDs
+}
+
+func (gcpMonitor *GCPMonitor) GetUserGroupIDs() []string {
+	return gcpMonitor.UserGroupIDs
+}
+
+func (gcpMonitor *GCPMonitor) SetGCPTags(gcpTags []struct {
+	Name  string `json:"name"`
+	Value string `json:"value"`
+}) {
+	gcpMonitor.GCPTags = gcpTags
+}
+
+func (gcpMonitor *GCPMonitor) GetGCPTags() []struct {
+	Name  string `json:"name"`
+	Value string `json:"value"`
+} {
+	return gcpMonitor.GCPTags
+}
+
+func (gcpMonitor *GCPMonitor) String() string {
+	return ToString(gcpMonitor)
+}
