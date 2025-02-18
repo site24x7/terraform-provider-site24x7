@@ -307,6 +307,8 @@ func resourceDataToDomainExpiryMonitor(d *schema.ResourceData, client site24x7.C
 			monitorGroups = append(monitorGroups, group.(string))
 		}
 	}
+	sort.Strings(monitorGroups)
+
 	var userGroupIDs []string
 	for _, id := range d.Get("user_group_ids").([]interface{}) {
 		if id != nil {
