@@ -1,9 +1,6 @@
 package monitors
 
 import (
-	"encoding/json"
-	"log"
-
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
@@ -125,15 +122,6 @@ func gcpMonitorCreate(d *schema.ResourceData, meta interface{}) error {
 	if err != nil {
 		return err
 	}
-
-	// Convert struct to JSON and print
-	monitorJSON, err := json.MarshalIndent(monitor, "", "  ")
-	if err != nil {
-		return err
-	}
-	log.Println("========== START OF GCP MONITOR JSON ==========")
-	log.Println(string(monitorJSON)) // Prints the JSON representation
-	log.Println("========== END OF GCP MONITOR JSON ==========")
 
 	gcpMonitor, err := client.GCPMonitors().Create(monitor)
 	if err != nil {
