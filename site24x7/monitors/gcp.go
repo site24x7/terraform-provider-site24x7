@@ -35,6 +35,12 @@ var GCPMonitorSchema = map[string]*schema.Schema{
 		Default:     "1",
 		Description: "Rediscovery polling interval for the GCP account.",
 	},
+	"gcp_registration_method": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Default:     "1",
+		Description: "Onboarding Method.",
+	},
 	"stop_rediscover_option": {
 		Type:        schema.TypeInt,
 		Required:    true,
@@ -254,6 +260,7 @@ func resourceDataToGCPMonitor(d *schema.ResourceData, client site24x7.Client) (*
 		Type:                  string(api.GCP),
 		CheckFrequency:        d.Get("gcp_discovery_frequency").(string),
 		StopRediscoverOption:  d.Get("stop_rediscover_option").(int),
+		GcpRegistrationMethod: d.Get("gcp_registration_method").(string),
 		DiscoverServices:      gcpServicesToDiscover,
 		ProjectID:             d.Get("project_id").(string),
 		NotificationProfileID: d.Get("notification_profile_id").(string),
@@ -300,6 +307,7 @@ func updateGCPMonitorResourceData(d *schema.ResourceData, gcpmonitor *api.GCPMon
 	d.Set("gcp_discovery_frequency", gcpmonitor.CheckFrequency)
 	d.Set("stop_rediscover_option", gcpmonitor.StopRediscoverOption)
 	d.Set("gcp_discover_services", gcpmonitor.DiscoverServices)
+	d.Set("gcp_registration_method", gcpmonitor.GcpRegistrationMethod)
 	d.Set("notification_profile_id", gcpmonitor.NotificationProfileID)
 	d.Set("user_group_ids", gcpmonitor.UserGroupIDs)
 	d.Set("tag_ids", gcpmonitor.TagIDs)

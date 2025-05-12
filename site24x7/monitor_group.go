@@ -118,18 +118,20 @@ var MonitorGroupSchema = map[string]*schema.Schema{
 	"healing_period": {
 		Type:        schema.TypeInt,
 		Optional:    true,
-		Description: "Healing period for the incident.",
+		Deprecated:  "This field is deprecated and will be removed in a future release.",
+		Description: "DEPRECATED: This field is no longer needed for alert configuration.",
 	},
 	"alert_frequency": {
 		Type:        schema.TypeInt,
 		Optional:    true,
-		Description: "Alert frequency for the incident.",
+		Deprecated:  "This field is deprecated and will be removed in a future release.",
+		Description: "DEPRECATED: Use alert settings in the notification profile instead.",
 	},
 	"alert_periodically": {
 		Type:        schema.TypeBool,
 		Optional:    true,
-		Default:     false,
-		Description: "Enable periodic alerting.",
+		Deprecated:  "This field is deprecated and will be removed in a future release.",
+		Description: "DEPRECATED: Use periodic alerting via notification profile.",
 	},
 }
 
@@ -172,7 +174,11 @@ func monitorGroupRead(d *schema.ResourceData, meta interface{}) error {
 	if err != nil {
 		return err
 	}
-
+	// Check if the monitorGroup is nil or has no useful data
+	if monitorGroup == nil || monitorGroup.GroupID == "" {
+		d.SetId("") // Mark resource as removed
+		return nil
+	}
 	updateMonitorGroupResourceData(d, monitorGroup)
 
 	return nil
@@ -203,12 +209,10 @@ func monitorGroupUpdate(d *schema.ResourceData, meta interface{}) error {
 
 func monitorGroupDelete(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(Client)
-
 	err := client.MonitorGroups().Delete(d.Id())
 	if apierrors.IsNotFound(err) {
 		return nil
 	}
-
 	return err
 }
 
@@ -315,9 +319,15 @@ func resourceDataToMonitorGroupCreate(d *schema.ResourceData, client Client) *ap
 	monitorGroup.ThirdPartyServiceIDs = thirdPartyServiceIDs
 
 	monitorGroup.EnableIncidentManagement = d.Get("enable_incident_management").(bool)
-	monitorGroup.HealingPeriod = d.Get("healing_period").(int)
-	monitorGroup.AlertFrequency = d.Get("alert_frequency").(int)
-	monitorGroup.AlertPeriodically = d.Get("alert_periodically").(bool)
+	if v, ok := d.GetOk("healing_period"); ok {
+		monitorGroup.HealingPeriod = v.(int)
+	}
+	if v, ok := d.GetOk("alert_frequency"); ok {
+		monitorGroup.AlertFrequency = v.(int)
+	}
+	if v, ok := d.GetOk("alert_periodically"); ok {
+		monitorGroup.AlertPeriodically = v.(bool)
+	}
 
 	return monitorGroup
 }
@@ -435,9 +445,15 @@ func resourceDataToMonitorGroupUpdate(d *schema.ResourceData, monitorGroup *api.
 	monitorGroupToReturn.ThirdPartyServiceIDs = thirdPartyServiceIDs
 
 	monitorGroupToReturn.EnableIncidentManagement = d.Get("enable_incident_management").(bool)
-	monitorGroupToReturn.HealingPeriod = d.Get("healing_period").(int)
-	monitorGroupToReturn.AlertFrequency = d.Get("alert_frequency").(int)
-	monitorGroupToReturn.AlertPeriodically = d.Get("alert_periodically").(bool)
+	if v, ok := d.GetOk("healing_period"); ok {
+		monitorGroup.HealingPeriod = v.(int)
+	}
+	if v, ok := d.GetOk("alert_frequency"); ok {
+		monitorGroup.AlertFrequency = v.(int)
+	}
+	if v, ok := d.GetOk("alert_periodically"); ok {
+		monitorGroup.AlertPeriodically = v.(bool)
+	}
 
 	return monitorGroupToReturn
 }

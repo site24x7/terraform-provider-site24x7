@@ -1,6 +1,8 @@
 package integration
 
 import (
+	"strings"
+
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
@@ -37,8 +39,13 @@ var serviceNowIntegrationSchema = map[string]*schema.Schema{
 		Type:        schema.TypeString,
 		Required:    true,
 		Description: "Password for authentication.",
+		Sensitive:   true, // Hides it from logs and plan output
 		DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
-			// Suppress diff - Password in API response is encrypted.
+			// Don't suppress if old is empty or masked (apply during create or real update)
+			if old == "" || old == "****" || strings.HasPrefix(old, "ENC(") {
+				return false
+			}
+			// Suppress otherwise
 			return true
 		},
 	},
@@ -241,7 +248,9 @@ func updateServiceNowIntegrationResourceData(d *schema.ResourceData, serviceNowI
 	d.Set("sender_name", serviceNowIntegration.SenderName)
 	d.Set("title", serviceNowIntegration.Title)
 	d.Set("user_name", serviceNowIntegration.UserName)
-	d.Set("password", serviceNowIntegration.Password)
+	if serviceNowIntegration.Password != "" && serviceNowIntegration.Password != "****" && !strings.HasPrefix(serviceNowIntegration.Password, "ENC(") {
+		d.Set("password", serviceNowIntegration.Password)
+	}
 	d.Set("selection_type", serviceNowIntegration.SelectionType)
 	d.Set("trouble_alert", serviceNowIntegration.TroubleAlert)
 	d.Set("critical_alert", serviceNowIntegration.CriticalAlert)
