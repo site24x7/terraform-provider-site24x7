@@ -1167,15 +1167,16 @@ func (DNSServerMonitor *DNSServerMonitor) String() string {
 }
 
 type GCPMonitor struct {
-	_                    struct{} `type:"structure"` // Enforces key-based initialization.
-	MonitorID            string   `json:"monitor_id,omitempty"`
-	DisplayName          string   `json:"display_name"`
-	Type                 string   `json:"type"`
-	ProjectID            string   `json:"project_id"`
-	DiscoverServices     []int    `json:"gcp_discover_services,omitempty"`
-	CheckFrequency       string   `json:"check_frequency"`
-	StopRediscoverOption int      `json:"stop_rediscover_option"`
-	GCPSAContent         struct {
+	_                     struct{} `type:"structure"` // Enforces key-based initialization.
+	MonitorID             string   `json:"monitor_id,omitempty"`
+	DisplayName           string   `json:"display_name"`
+	Type                  string   `json:"type"`
+	ProjectID             string   `json:"project_id"`
+	DiscoverServices      []int    `json:"gcp_discover_services,omitempty"`
+	CheckFrequency        string   `json:"check_frequency"`
+	GcpRegistrationMethod string   `json:"gcp_registration_method,omitempty"`
+	StopRediscoverOption  int      `json:"stop_rediscover_option"`
+	GCPSAContent          struct {
 		PrivateKey  string `json:"private_key"`
 		ClientEmail string `json:"client_email"`
 	} `json:"gcp_sa_content"`
