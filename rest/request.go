@@ -42,7 +42,7 @@ func NewRequest(client HTTPClient, config ClientConfig) *Request {
 		r.cookie = &http.Cookie{Name: "zaaid", Value: config.ZAAID}
 	}
 	r.AddHeader("Accept", "application/json; version=2.1")
-	r.AddHeader("User-Agent", "Site24x7TerraformProvider/1.0.0")
+	r.AddHeader("User-Agent", "S24x7TerraformProvider/1.0.0")
 	return r
 }
 
