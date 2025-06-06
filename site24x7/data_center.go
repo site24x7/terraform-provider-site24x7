@@ -28,7 +28,7 @@ var dataCenter = map[string]DataCenter{
 	"CN": {
 		displayName:          "China",
 		code:                 "CN",
-		site24x7APIBaseURL:   "https://www.site24x7.eu/api",
+		site24x7APIBaseURL:   "https://www.site24x7.cn/api",
 		zohoAccountsTokenURL: "https://accounts.zoho.com.cn/oauth/v2/token",
 	},
 	"JP": {
