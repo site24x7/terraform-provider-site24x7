@@ -129,7 +129,7 @@ type PagerDutyIntegration struct {
 	ServiceID            string       `json:"service_id,omitempty"`
 	ServiceStatus        int          `json:"service_status,omitempty"`
 	Name                 string       `json:"name"`
-	ServiceKey           string       `json:"service_key"`
+	ServiceKey           string       `json:"api_key"`
 	SelectionType        ResourceType `json:"selection_type"`
 	SenderName           string       `json:"sender_name"`
 	Title                string       `json:"title"`
