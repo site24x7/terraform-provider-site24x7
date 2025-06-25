@@ -409,7 +409,17 @@ func websiteMonitorCreate(d *schema.ResourceData, meta interface{}) error {
 	}
 	d.SetId(websiteMonitor.MonitorID)
 
-	// return websiteMonitorRead(d, meta)
+	desiredState := d.Get("state").(int)
+	if desiredState == 5 {
+		if err := client.WebsiteMonitors().Suspend(websiteMonitor.MonitorID); err != nil {
+			return err
+		}
+	} else if desiredState == 0 {
+		if err := client.WebsiteMonitors().Activate(websiteMonitor.MonitorID); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
@@ -438,7 +448,17 @@ func websiteMonitorUpdate(d *schema.ResourceData, meta interface{}) error {
 	}
 	d.SetId(websiteMonitor.MonitorID)
 
-	// return websiteMonitorRead(d, meta)
+	desiredState := d.Get("state").(int)
+	if desiredState == 5 {
+		if err := client.WebsiteMonitors().Suspend(websiteMonitor.MonitorID); err != nil {
+			return err
+		}
+	} else if desiredState == 0 {
+		if err := client.WebsiteMonitors().Activate(websiteMonitor.MonitorID); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
 
