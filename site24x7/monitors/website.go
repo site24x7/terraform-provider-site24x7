@@ -373,6 +373,12 @@ var websiteMonitorSchema = map[string]*schema.Schema{
 		Elem:        schema.TypeString,
 		Description: "Action to be performed on monitor IT Automation templates.",
 	},
+	"state": {
+		Type:        schema.TypeInt,
+		Optional:    true,
+		Default:     0,
+		Description: "Set the state of the monitor, 0 for enabled, 5 for suspended.",
+	},
 }
 
 func ResourceSite24x7WebsiteMonitor() *schema.Resource {
@@ -564,6 +570,7 @@ func resourceDataToWebsiteMonitor(d *schema.ResourceData, client site24x7.Client
 	websiteMonitor.FollowHTTPRedirection = d.Get("follow_http_redirection").(bool)
 	websiteMonitor.IgnoreCertError = d.Get("ignore_cert_err").(bool)
 	websiteMonitor.IPType = d.Get("ip_type").(int)
+	websiteMonitor.State = d.Get("state").(int)
 
 	if websiteMonitor.IPType == 0 {
 		websiteMonitor.UseIPV6 = false
@@ -731,6 +738,7 @@ func updateWebsiteMonitorResourceData(d *schema.ResourceData, monitor *api.Websi
 	d.Set("use_alpn", monitor.UseAlpn)
 	d.Set("follow_http_redirection", monitor.FollowHTTPRedirection)
 	d.Set("ignore_cert_err", monitor.IgnoreCertError)
+	d.Set("state", monitor.State)
 	// ================================ Content Checks ================================
 	if monitor.MatchingKeyword != nil {
 		d.Set("matching_keyword_value", monitor.MatchingKeyword.Value)
