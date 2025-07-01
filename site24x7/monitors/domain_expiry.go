@@ -436,6 +436,7 @@ func updateDomainExpiryMonitorResourceData(d *schema.ResourceData, monitor *api.
 		}else{
 			unmatchingKeywordMap["value"] = monitor.UnmatchingKeyword["value"]
 		}
+		
 		d.Set("unmatching_keyword", unmatchingKeywordMap)
 	}
 	
