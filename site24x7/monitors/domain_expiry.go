@@ -421,19 +421,34 @@ func updateDomainExpiryMonitorResourceData(d *schema.ResourceData, monitor *api.
 	if monitor.MatchingKeyword != nil {
 		matchingKeywordMap := make(map[string]interface{})
 		matchingKeywordMap["severity"] = int(monitor.MatchingKeyword["severity"].(float64))
-		matchingKeywordMap["value"] = monitor.MatchingKeyword["value"].(string)
+		if(monitor.MatchingKeyword["value"]!=nil){
+			matchingKeywordMap["value"] = monitor.MatchingKeyword["value"].(string)
+		}else{
+			matchingKeywordMap["value"] = monitor.MatchingKeyword["value"]
+		}
 		d.Set("matching_keyword", matchingKeywordMap)
 	}
 	if monitor.UnmatchingKeyword != nil {
 		unmatchingKeywordMap := make(map[string]interface{})
 		unmatchingKeywordMap["severity"] = int(monitor.UnmatchingKeyword["severity"].(float64))
-		unmatchingKeywordMap["value"] = monitor.UnmatchingKeyword["value"].(string)
+		if(monitor.UnmatchingKeyword["value"]!=nil){
+			unmatchingKeywordMap["value"] = monitor.UnmatchingKeyword["value"].(string)
+		}else{
+			unmatchingKeywordMap["value"] = monitor.UnmatchingKeyword["value"]
+		}
 		d.Set("unmatching_keyword", unmatchingKeywordMap)
 	}
+	
 	if monitor.MatchRegex != nil {
+		
 		matchRegexMap := make(map[string]interface{})
 		matchRegexMap["severity"] = int(monitor.MatchRegex["severity"].(float64))
-		matchRegexMap["value"] = monitor.MatchRegex["value"].(string)
+		if(monitor.UnmatchingKeyword["value"]!=nil){
+			matchRegexMap["value"] = monitor.MatchRegex["value"].(string)
+		}else{
+			matchRegexMap["value"] = monitor.MatchRegex["value"]
+		}
+
 		d.Set("match_regex", matchRegexMap)
 	}
 
