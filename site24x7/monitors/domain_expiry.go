@@ -444,7 +444,7 @@ func updateDomainExpiryMonitorResourceData(d *schema.ResourceData, monitor *api.
 		
 		matchRegexMap := make(map[string]interface{})
 		matchRegexMap["severity"] = int(monitor.MatchRegex["severity"].(float64))
-		if(monitor.UnmatchingKeyword["value"]!=nil){
+		if(monitor.MatchRegex["value"]!=nil){
 			matchRegexMap["value"] = monitor.MatchRegex["value"].(string)
 		}else{
 			matchRegexMap["value"] = monitor.MatchRegex["value"]
