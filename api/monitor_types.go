@@ -69,6 +69,7 @@ type WebsiteMonitor struct {
 	SecondaryProtocolSeverity int      `json:"secondary_protocol_severity,omitempty"`
 	HiddenMonAdded            int      `json:"hidden_mon_added,omitempty"`
 	UseIPV6                   bool     `json:"use_ipv6,omitempty"`
+	State                     int      `json:"state"`
 	// HTTP Configuration
 	HTTPMethod                string   `json:"http_method"`
 	RequestContentType        string   `json:"request_content_type,omitempty"`
