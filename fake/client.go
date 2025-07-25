@@ -19,6 +19,7 @@ type Client struct {
 	FakeSubgroups                     *fake.Subgroups
 	FakeTags                          *fake.Tags
 	FakeAmazonMonitors                *fake.AmazonMonitors
+	FakeAzureMonitors                 *fake.AzureMonitors
 	FakeWebsiteMonitors               *fake.WebsiteMonitors
 	FakeWebPageSpeedMonitors          *fake.WebPageSpeedMonitors
 	FakeSSLMonitors                   *fake.SSLMonitors
@@ -64,6 +65,7 @@ func NewClient() *Client {
 		FakeSubgroups:                     &fake.Subgroups{},
 		FakeTags:                          &fake.Tags{},
 		FakeAmazonMonitors:                &fake.AmazonMonitors{},
+		FakeAzureMonitors:                 &fake.AzureMonitors{},
 		FakeSSLMonitors:                   &fake.SSLMonitors{},
 		FakeCronMonitors:                  &fake.CronMonitors{},
 		FakeHeartbeatMonitors:             &fake.HeartbeatMonitors{},
