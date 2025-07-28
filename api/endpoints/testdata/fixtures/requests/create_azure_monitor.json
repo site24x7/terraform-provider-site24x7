@@ -1,0 +1,36 @@
+{
+  "display_name": "Test Azure Monitor",
+  "tenant_id": "fake-tenant-id",
+  "client_id": "fake-client-id",
+  "client_secret": "fake-client-secret",
+  "type": "AZURE",
+  "services": [
+    "Microsoft.Compute/virtualMachines",
+    "Microsoft.Storage/storageAccounts"
+  ],
+  "management_group_reg": 1,
+  "notification_profile_id": "123456000000057005",
+  "user_group_ids": [
+    "123456000000057000",
+    "123456000000057001"
+  ],
+  "threshold_profile_id": "123456000000057003",
+  "discovery_interval": "30",
+  "auto_add_subscription": 1,
+  "azure_exclude_tags": {
+    "type": 1,
+    "tags": {
+      "Environment": [
+        "Development"
+      ]
+    }
+  },
+  "azure_include_tags": {
+    "type": 1,
+    "tags": {
+      "Environment": [
+        "Production"
+      ]
+    }
+  }
+}
