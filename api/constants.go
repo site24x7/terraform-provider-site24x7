@@ -35,4 +35,5 @@ const (
 	PING         MonitorType = "PING"
 	SOAP         MonitorType = "SOAP"
 	GCP          MonitorType = "GCP"
+	AZURE        MonitorType = "AZURE"
 )

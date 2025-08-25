@@ -1,0 +1,70 @@
+{
+  "code": 0,
+  "message": "success",
+  "data": [
+    {
+      "monitor_id": "123447000020646101",
+      "type": "AZURE",
+      "display_name": "Azure Monitor Display Name 1",
+      "tenant_id": "fake-tenant-id-1",
+      "client_id": "fake-client-id-1",
+      "client_secret": "fake-client-secret-1",
+      "services": [
+        "Microsoft.Compute/virtualMachines",
+        "Microsoft.Network/networkInterfaces"
+      ],
+      "user_group_ids": [
+        "123412341234123415"
+      ],
+      "notification_profile_id": "123412341234123413",
+      "threshold_profile_id": "123456000000005001",
+      "discovery_interval": "30",
+      "auto_add_subscription": 1,
+      "azure_exclude_tags": {
+        "type": 1,
+        "tags": {
+          "Environment": ["dev"]
+        }
+      },
+      "azure_include_tags": {
+        "type": 1,
+        "tags": {
+          "Owner": ["IT"]
+        }
+      },
+      "status": "UP"
+    },
+    {
+      "monitor_id": "123447000020646102",
+      "type": "AZURE",
+      "display_name": "Azure Monitor Display Name 2",
+      "tenant_id": "fake-tenant-id-2",
+      "client_id": "fake-client-id-2",
+      "client_secret": "fake-client-secret-2",
+      "services": [
+        "Microsoft.Storage/storageAccounts",
+        "Microsoft.Sql/servers"
+      ],
+      "user_group_ids": [
+        "123412341234123416"
+      ],
+      "notification_profile_id": "123412341234123414",
+      "threshold_profile_id": "123456000000005002",
+      "discovery_interval": "60",
+      "auto_add_subscription": 0,
+      "azure_exclude_tags": {
+        "type": 1,
+        "tags": {
+          "Team": ["QA"]
+        }
+      },
+      "azure_include_tags": {
+        "type": 1,
+        "tags": {
+          "Application": ["Billing"]
+        }
+      },
+      "status": "DOWN"
+    }
+  ]
+}
