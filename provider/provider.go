@@ -13,6 +13,7 @@ import (
 	"github.com/site24x7/terraform-provider-site24x7/site24x7/common"
 	"github.com/site24x7/terraform-provider-site24x7/site24x7/integration"
 	"github.com/site24x7/terraform-provider-site24x7/site24x7/monitors"
+	"github.com/site24x7/terraform-provider-site24x7/site24x7/msp"
 )
 
 func Provider() terraform.ResourceProvider {
@@ -115,6 +116,7 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_telegram_integration":            integration.ResourceSite24x7TelegramIntegration(),
 			"site24x7_credential_profile":              common.ResourceSite24x7CredentialProfile(),
 			"site24x7_businesshour":                    common.ResourceSite24x7BusinessHour(),
+			"site24x7_customer":                        msp.ResourceSite24x7Customer(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
 			"site24x7_monitor":              monitors.DataSourceSite24x7Monitor(),
@@ -132,6 +134,7 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_aws_external_id":    aws.DataSourceSite24x7AWSExternalID(),
 			"site24x7_device_key":         common.DataSourceSite24x7DeviceKey(),
 			"site24x7_credential_profile": common.DataSourceSite24x7CredentialProfile(),
+			"site24x7_customer":           msp.DataSourceSite24x7Customer(),
 		},
 
 		ConfigureFunc: providerConfigure,

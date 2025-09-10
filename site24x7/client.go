@@ -9,6 +9,7 @@ import (
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/common"
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/integration"
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/monitors"
+	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/msp"
 	"github.com/site24x7/terraform-provider-site24x7/backoff"
 	"github.com/site24x7/terraform-provider-site24x7/oauth"
 	"github.com/site24x7/terraform-provider-site24x7/rest"
@@ -16,7 +17,7 @@ import (
 
 const (
 	// APIBaseURL is the base url of the Site24x7 API.
-	APIBaseURL = "https://www.site24x7.com/api"
+	APIBaseURL = "https://sitescan.localsite24x7.com/api"
 )
 
 // Config is the configuration for the Site24x7 API Client.
@@ -120,6 +121,7 @@ type Client interface {
 	DeviceKey() common.DeviceKey
 	CredentialProfile() common.CredentialProfile
 	BusinessHour() common.BusinessHourService
+	Customers() msp.Customers
 }
 
 type client struct {
@@ -375,4 +377,7 @@ func (c *client) CredentialProfile() common.CredentialProfile {
 }
 func (c *client) BusinessHour() common.BusinessHourService {
 	return common.NewBusinessHour(c.restClient)
+}
+func (c *client) Customers() msp.Customers {
+	return msp.NewCustomers(c.restClient)
 }

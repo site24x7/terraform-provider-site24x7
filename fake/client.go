@@ -51,6 +51,7 @@ type Client struct {
 	FakeDNSServerMonitors             *fake.DNSServerMonitors
 	FakeCredentialProfile             *fake.CredentialProfile
 	FakeBusinesshour                  *fake.BusinessHour
+	FakeCustomer                      *fake.Customer
 }
 
 // NewClient creates a new fake site24x7 API client.
@@ -96,6 +97,7 @@ func NewClient() *Client {
 		FakeMSP:                           &fake.MSP{},
 		FakeCredentialProfile:             &fake.CredentialProfile{},
 		FakeBusinesshour:                  &fake.BusinessHour{},
+		FakeCustomer:                      &fake.Customer{},
 	}
 }
 
