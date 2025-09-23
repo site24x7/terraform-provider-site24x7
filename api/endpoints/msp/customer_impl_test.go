@@ -27,7 +27,7 @@ func TestCustomers(t *testing.T) {
 					Digest:          "1_C_797c6d2644b53cb62763de6ba0980fb01a9a10188ae30dbd313ecfbe1c2417f28f469b5447f67a731fb1359731fcd21259416e5e4025f887b3b9656800f22130",
 					CustomerCompany: "w3schools",
 					DisplayName:     "phillips",
-					EmailAddress:    "selvalakshmi.m+aug18@zohotest.com",
+					EmailAddress:    "test@email.com",
 					PortalName:      "w3schools123",
 					Captcha:         "D6EF1P",
 				}
@@ -54,7 +54,7 @@ func TestCustomers(t *testing.T) {
 					Digest:          "1_C_797c6d2644b53cb62763de6ba0980fb01a9a10188ae30dbd313ecfbe1c2417f28f469b5447f67a731fb1359731fcd21259416e5e4025f887b3b9656800f22130",
 					CustomerCompany: "w3schools",
 					DisplayName:     "phillips",
-					EmailAddress:    "selvalakshmi.m+aug18@zohotest.com",
+					EmailAddress:    "test@email.com",
 					PortalName:      "w3schools123",
 				}
 
@@ -79,7 +79,7 @@ func TestCustomers(t *testing.T) {
 						CustomerGroups:  []string{"37152000000043029"},
 						DisplayName:     "phillips",
 						CustomerCompany: "w3schools",
-						EmailAddress:    "selvalakshmi.m+aug18@zohotest.com",
+						EmailAddress:    "test@email.com",
 						PortalName:      "w3schools123",
 					},
 				}
@@ -102,7 +102,7 @@ func TestCustomers(t *testing.T) {
 					CustomerGroups:  []string{"37152000000043029"},
 					DisplayName:     "phillips updated",
 					CustomerCompany: "w3schools updated",
-					EmailAddress:    "selvalakshmi.m+aug18@zohotest.com",
+					EmailAddress:    "test@email.com",
 					PortalName:      "w3schools123",
 				}
 

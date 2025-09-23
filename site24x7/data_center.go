@@ -4,8 +4,8 @@ var dataCenter = map[string]DataCenter{
 	"US": {
 		displayName:          "United States",
 		code:                 "US",
-		site24x7APIBaseURL:   "https://sitescan.localsite24x7.com/api",
-		zohoAccountsTokenURL: "https://accounts.localzoho.com/oauth/v2/token",
+		site24x7APIBaseURL:   "https://www.site24x7.com/api",
+		zohoAccountsTokenURL: "https://accounts.zoho.com/oauth/v2/token",
 	},
 	"EU": {
 		displayName:          "Europe",

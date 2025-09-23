@@ -46,7 +46,7 @@ resource "site24x7_customer" "customer_creation" {
   customer_company  = "w3schools"
   display_name      = "phillips"
   customer_website  = "https://www.w3schools.com"
-  email_address     = "selvalakshmi.m+aug18@zohotest.com"
+  email_address     = "test@email.com"
   portal_name       = "w3schools"
   captcha           = "D6EF1P"
 }

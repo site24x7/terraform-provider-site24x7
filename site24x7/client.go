@@ -17,7 +17,7 @@ import (
 
 const (
 	// APIBaseURL is the base url of the Site24x7 API.
-	APIBaseURL = "https://sitescan.localsite24x7.com/api"
+	APIBaseURL = "https://www.site24x7.com/api"
 )
 
 // Config is the configuration for the Site24x7 API Client.

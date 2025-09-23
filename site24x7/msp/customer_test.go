@@ -29,7 +29,7 @@ func TestCustomerCreate(t *testing.T) {
 		CustomerCompany: "w3schools",
 		DisplayName:     "phillips",
 		CustomerWebsite: "https://www.w3schools.com",
-		EmailAddress:    "selvalakshmi.m+aug18@zohotest.com",
+		EmailAddress:    "test@email.com",
 		PortalName:      "w3schools",
 		Captcha:         "D6EF1P",
 	}
@@ -65,7 +65,7 @@ func TestCustomerUpdate(t *testing.T) {
 		CustomerCompany: "w3schools",
 		DisplayName:     "phillips",
 		CustomerWebsite: "https://www.w3schools.com",
-		EmailAddress:    "selvalakshmi.m+aug18@zohotest.com",
+		EmailAddress:    "test@email.com",
 		PortalName:      "w3schools",
 		Captcha:         "D6EF1P",
 	}
@@ -140,7 +140,7 @@ func customerTestResourceData(t *testing.T) *schema.ResourceData {
 		"customer_company": "w3schools",
 		"display_name":     "phillips",
 		"customer_website": "https://www.w3schools.com",
-		"email_address":    "selvalakshmi.m+aug18@zohotest.com",
+		"email_address":    "test@email.com",
 		"portal_name":      "w3schools",
 		"captcha":          "D6EF1P",
 	})
