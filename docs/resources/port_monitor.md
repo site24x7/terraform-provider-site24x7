@@ -136,7 +136,10 @@ resource "site24x7_port_monitor" "port_monitor_example" {
 * `domain_name`(String)Who is server.
 * `port`(int)  Whois Server Port
 * `timeout`(int) Timeout for connecting to the host.
-* `use_ipv6`(bool) Prefer IPV6
+* `use_ipv6`[Deprecated] (Boolean) Monitoring is performed over IPv6 from supported locations. IPv6 locations do not fall back to IPv4 on failure.
+* `ip_type` (Number) Monitoring is performed over the selected internet protocol. Default value is 0. '0' -  Monitoring is performed over IPv4 from supported locations, '1' - Monitoring is performed over IPv6 from supported locations, '2' - IPv4 or IPv6 option will help in flexibly switching to the protocol that is supported in a particular location if one protocol fails, '3' - IPv4 and IPv6 will create two connections for each protocol. 
+* `primary_protocol` (Number) Choose the primary internet protocol for the resources. Select only if you're choosing the option, Both IPv4 and IPv6 monitoring. '0' - IPv4, '1' - IPv6.
+* `secondary_protocol_severity` (Number) Configure the change for the secondary resource for which you'd like to get notifications. Select only if you're choosing the option,Both IPv4 and IPv6 monitoring.​ '2' - Trouble. '3' - Critical.
 * `use_ssl` (bool) Prefer SSL
 * `perform_automation` (bool) Automating the scheduled maintenance
 * `invert_port_check` (bool) Invert the default behaviour of PORT check.

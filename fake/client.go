@@ -2,6 +2,7 @@ package fake
 
 import (
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints"
+	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/aws"
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/common"
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/fake"
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/integration"
@@ -19,6 +20,7 @@ type Client struct {
 	FakeSubgroups                     *fake.Subgroups
 	FakeTags                          *fake.Tags
 	FakeAmazonMonitors                *fake.AmazonMonitors
+	FakeAzureMonitors                 *fake.AzureMonitors
 	FakeWebsiteMonitors               *fake.WebsiteMonitors
 	FakeWebPageSpeedMonitors          *fake.WebPageSpeedMonitors
 	FakeSSLMonitors                   *fake.SSLMonitors
@@ -52,6 +54,7 @@ type Client struct {
 	FakeCredentialProfile             *fake.CredentialProfile
 	FakeBusinesshour                  *fake.BusinessHour
 	FakeCustomer                      *fake.Customer
+	FakeAWSExternalID                 *fake.AWSExternalID
 }
 
 // NewClient creates a new fake site24x7 API client.
@@ -65,6 +68,7 @@ func NewClient() *Client {
 		FakeSubgroups:                     &fake.Subgroups{},
 		FakeTags:                          &fake.Tags{},
 		FakeAmazonMonitors:                &fake.AmazonMonitors{},
+		FakeAzureMonitors:                 &fake.AzureMonitors{},
 		FakeSSLMonitors:                   &fake.SSLMonitors{},
 		FakeCronMonitors:                  &fake.CronMonitors{},
 		FakeHeartbeatMonitors:             &fake.HeartbeatMonitors{},
@@ -98,6 +102,7 @@ func NewClient() *Client {
 		FakeCredentialProfile:             &fake.CredentialProfile{},
 		FakeBusinesshour:                  &fake.BusinessHour{},
 		FakeCustomer:                      &fake.Customer{},
+		FakeAWSExternalID:                 &fake.AWSExternalID{},
 	}
 }
 
@@ -204,6 +209,16 @@ func (c *Client) ServerMonitors() monitors.ServerMonitors {
 // Monitors implements Client.
 func (c *Client) AmazonMonitors() monitors.AmazonMonitors {
 	return c.FakeAmazonMonitors
+}
+
+// AWSExternalID implements Client.
+func (c *Client) AWSExternalID() aws.AWSExternalID {
+	return c.AWSExternalID()
+}
+
+// Monitors implements Client.
+func (c *Client) AzureMonitors() monitors.AzureMonitors {
+	return c.FakeAzureMonitors
 }
 
 // MonitorGroups implements Client.

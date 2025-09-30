@@ -69,6 +69,7 @@ type WebsiteMonitor struct {
 	SecondaryProtocolSeverity int      `json:"secondary_protocol_severity,omitempty"`
 	HiddenMonAdded            int      `json:"hidden_mon_added,omitempty"`
 	UseIPV6                   bool     `json:"use_ipv6,omitempty"`
+	State                     int      `json:"state"`
 	// HTTP Configuration
 	HTTPMethod                string   `json:"http_method"`
 	RequestContentType        string   `json:"request_content_type,omitempty"`
@@ -1236,4 +1237,59 @@ func (gcpMonitor *GCPMonitor) GetGCPTags() []struct {
 
 func (gcpMonitor *GCPMonitor) String() string {
 	return ToString(gcpMonitor)
+}
+
+type AzureMonitor struct {
+	_                     struct{}           `type:"structure"` // Enforces key-based initialization.
+	MonitorID             string             `json:"monitor_id,omitempty"`
+	DisplayName           string             `json:"display_name"`
+	TenantID              string             `json:"tenant_id"`
+	ClientID              string             `json:"client_id"`
+	ClientSecret          string             `json:"client_secret"`
+	Type                  string             `json:"type"` // Always set to "AZURE"
+	Services              []string           `json:"services"`
+	ManagementGroupReg    int                `json:"management_group_reg"`
+	NotificationProfileID string             `json:"notification_profile_id"`
+	UserGroupIDs          []string           `json:"user_group_ids"`
+	ThresholdProfileID    string             `json:"threshold_profile_id"`
+	DiscoveryInterval     string             `json:"discovery_interval,omitempty"`
+	AutoAddSubscription   int                `json:"auto_add_subscription,omitempty"`
+	AzureExcludeTags      *AzureTagCondition `json:"azure_exclude_tags,omitempty"`
+	AzureIncludeTags      *AzureTagCondition `json:"azure_include_tags,omitempty"`
+	ThirdPartyServiceIDs  []string           `json:"third_party_services,omitempty"`
+}
+
+// JSON structure for include/exclude tags
+type AzureTagCondition struct {
+	Type int                 `json:"type"` // 1 for OR, 2 for AND
+	Tags map[string][]string `json:"tags"`
+}
+
+// Implement required interfaces
+
+func (azureMonitor *AzureMonitor) SetLocationProfileID(locationProfileID string) {
+}
+
+func (azureMonitor *AzureMonitor) GetLocationProfileID() string {
+	return ""
+}
+
+func (azureMonitor *AzureMonitor) SetNotificationProfileID(notificationProfileID string) {
+	azureMonitor.NotificationProfileID = notificationProfileID
+}
+
+func (azureMonitor *AzureMonitor) GetNotificationProfileID() string {
+	return azureMonitor.NotificationProfileID
+}
+
+func (azureMonitor *AzureMonitor) SetUserGroupIDs(userGroupIDs []string) {
+	azureMonitor.UserGroupIDs = userGroupIDs
+}
+
+func (azureMonitor *AzureMonitor) GetUserGroupIDs() []string {
+	return azureMonitor.UserGroupIDs
+}
+
+func (azureMonitor *AzureMonitor) String() string {
+	return ToString(azureMonitor)
 }
