@@ -53,6 +53,7 @@ type Client struct {
 	FakeDNSServerMonitors             *fake.DNSServerMonitors
 	FakeCredentialProfile             *fake.CredentialProfile
 	FakeBusinesshour                  *fake.BusinessHour
+	FakeCustomer                      *fake.Customer
 	FakeAWSExternalID                 *fake.AWSExternalID
 }
 
@@ -100,6 +101,7 @@ func NewClient() *Client {
 		FakeMSP:                           &fake.MSP{},
 		FakeCredentialProfile:             &fake.CredentialProfile{},
 		FakeBusinesshour:                  &fake.BusinessHour{},
+		FakeCustomer:                      &fake.Customer{},
 		FakeAWSExternalID:                 &fake.AWSExternalID{},
 	}
 }

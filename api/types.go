@@ -518,3 +518,28 @@ type TimeSlot struct {
 func (bh *BusinessHour) String() string {
 	return ToString(bh)
 }
+
+type Customer struct {
+	_               struct{} `type:"structure"` // Enforces key-based initialization.
+	UserID          string   `json:"user_id,omitempty"`
+	CountryCode     string   `json:"country_code,omitempty"`
+	Timezone        string   `json:"timezone,omitempty"`
+	LanguageCode    string   `json:"language_code,omitempty"`
+	Industry        string   `json:"industry,omitempty"`
+	RoleTitle       string   `json:"roletitle,omitempty"`
+	Invite          bool     `json:"invite,omitempty"`
+	CustomerGroups  []string `json:"customer_groups,omitempty"`
+	Digest          string   `json:"digest,omitempty"`
+	Zuids           []string `json:"zuids,omitempty"`
+	CustomerCompany string   `json:"customer_company,omitempty"`
+	DisplayName     string   `json:"display_name,omitempty"`
+	CustomerWebsite string   `json:"customer_website,omitempty"`
+	EmailAddress    string   `json:"email_address,omitempty"`
+	PortalName      string   `json:"portal_name,omitempty"`
+	Captcha         string   `json:"captcha,omitempty"`
+	Zaaid           string   `json:"zaaid,omitempty"`
+}
+
+func (c *Customer) String() string {
+	return ToString(c)
+}
