@@ -108,6 +108,7 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_tag":                             site24x7.ResourceSite24x7Tag(),
 			"site24x7_user":                            site24x7.ResourceSite24x7User(),
 			"site24x7_schedule_maintenance":            common.ResourceSite24x7ScheduleMaintenance(),
+			"site24x7_schedule_report":            		common.ResourceSite24x7ScheduleReport(),
 			"site24x7_opsgenie_integration":            integration.ResourceSite24x7OpsgenieIntegration(),
 			"site24x7_slack_integration":               integration.ResourceSite24x7SlackIntegration(),
 			"site24x7_webhook_integration":             integration.ResourceSite24x7WebhookIntegration(),
