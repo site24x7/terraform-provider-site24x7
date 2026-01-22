@@ -1,8 +1,6 @@
 package common
 
 import (
-	"fmt"
-
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	"github.com/site24x7/terraform-provider-site24x7/rest"
 )
@@ -13,6 +11,7 @@ type ScheduleReport interface {
 	Create(scheduleReport *api.ScheduleReport) (*api.ScheduleReport, error)
 	Update(scheduleReport *api.ScheduleReport) (*api.ScheduleReport, error)
 	Delete(reportID string) error
+	UpdateRaw(reportID string, payload interface{}) (*api.ScheduleReport, error)
 	List() ([]*api.ScheduleReport, error)
 }
 
@@ -20,56 +19,39 @@ type schedulereport struct {
 	client rest.Client
 }
 
-// NewScheduleReport creates a new ScheduleReport client instance.
 func NewScheduleReport(client rest.Client) ScheduleReport {
 	return &schedulereport{
 		client: client,
 	}
 }
 
-// Get fetches a single scheduled report by its report_id.
 func (c *schedulereport) Get(reportID string) (*api.ScheduleReport, error) {
-	sr := &api.ScheduleReport{}
+	scheduleReport := &api.ScheduleReport{}
 	err := c.client.
 		Get().
 		Resource("scheduled_reports").
 		ResourceID(reportID).
 		Do().
-		Parse(sr)
+		Parse(scheduleReport)
 
-	return sr, err
+	return scheduleReport, err
 }
 
-// Create schedules a new report.
 func (c *schedulereport) Create(scheduleReport *api.ScheduleReport) (*api.ScheduleReport, error) {
-	newSR := &api.ScheduleReport{}
+	newScheduleReport := &api.ScheduleReport{}
 	err := c.client.
 		Post().
 		Resource("scheduled_reports").
 		AddHeader("Content-Type", "application/json;charset=UTF-8").
 		Body(scheduleReport).
 		Do().
-		Parse(newSR)
+		Parse(newScheduleReport)
 
-	if err != nil {
-		return nil, err
-	}
-
-	// Defensive check — ensure report_id is returned
-	if newSR.ReportID == "" {
-		return nil, fmt.Errorf("no report_id returned in create response")
-	}
-
-	return newSR, nil
+	return newScheduleReport, err
 }
 
-// Update modifies an existing scheduled report.
 func (c *schedulereport) Update(scheduleReport *api.ScheduleReport) (*api.ScheduleReport, error) {
-	if scheduleReport.ReportID == "" {
-		return nil, fmt.Errorf("cannot update scheduled report: missing ReportID")
-	}
-
-	updatedSR := &api.ScheduleReport{}
+	updatedScheduleReport := &api.ScheduleReport{}
 	err := c.client.
 		Put().
 		Resource("scheduled_reports").
@@ -77,21 +59,26 @@ func (c *schedulereport) Update(scheduleReport *api.ScheduleReport) (*api.Schedu
 		AddHeader("Content-Type", "application/json;charset=UTF-8").
 		Body(scheduleReport).
 		Do().
-		Parse(updatedSR)
+		Parse(updatedScheduleReport)
 
-	if err != nil {
-		return nil, err
-	}
-
-	return updatedSR, nil
+	return updatedScheduleReport, err
 }
 
-// Delete removes a scheduled report by report_id.
-func (c *schedulereport) Delete(reportID string) error {
-	if reportID == "" {
-		return fmt.Errorf("cannot delete scheduled report: missing reportID")
-	}
+func (c *schedulereport) UpdateRaw(reportID string, payload interface{}) (*api.ScheduleReport, error) {
+	updated := &api.ScheduleReport{}
+	err := c.client.
+		Put().
+		Resource("scheduled_reports").
+		ResourceID(reportID).
+		AddHeader("Content-Type", "application/json;charset=UTF-8").
+		Body(payload).
+		Do().
+		Parse(updated)
 
+	return updated, err
+}
+
+func (c *schedulereport) Delete(reportID string) error {
 	return c.client.
 		Delete().
 		Resource("scheduled_reports").
@@ -100,14 +87,13 @@ func (c *schedulereport) Delete(reportID string) error {
 		Err()
 }
 
-// List retrieves all scheduled reports.
 func (c *schedulereport) List() ([]*api.ScheduleReport, error) {
-	list := []*api.ScheduleReport{}
+	scheduleReportList := []*api.ScheduleReport{}
 	err := c.client.
 		Get().
 		Resource("scheduled_reports").
 		Do().
-		Parse(&list)
+		Parse(&scheduleReportList)
 
-	return list, err
+	return scheduleReportList, err
 }

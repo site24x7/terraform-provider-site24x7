@@ -1,9 +1,6 @@
 package common
 
 import (
-	"encoding/json"
-    "log"
-
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/site24x7/terraform-provider-site24x7/api"
 	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
@@ -65,15 +62,18 @@ func ResourceSite24x7ScheduleReport() *schema.Resource {
 		Update: scheduleReportUpdate,
 		Delete: scheduleReportDelete,
 		Exists: scheduleReportExists,
+
 		Importer: &schema.ResourceImporter{
 			State: schema.ImportStatePassthrough,
 		},
+
 		Schema: ScheduleReportSchema,
 	}
 }
 
 func scheduleReportCreate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(site24x7.Client)
+
 	sr := resourceDataToScheduleReport(d)
 
 	created, err := client.ScheduleReport().Create(sr)
@@ -81,22 +81,15 @@ func scheduleReportCreate(d *schema.ResourceData, meta interface{}) error {
 		return err
 	}
 
-	// Use ReportID returned by API (report_id)
-	if created == nil || created.ReportID == "" {
-		return nil // defensive: let subsequent read/error surface; or return an error if you prefer
-	}
-
 	d.SetId(created.ReportID)
-
-	// Refresh state to populate computed/read-only fields
-	return scheduleReportRead(d, meta)
+	return nil
 }
 
 func scheduleReportRead(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(site24x7.Client)
+
 	sr, err := client.ScheduleReport().Get(d.Id())
 	if apierrors.IsNotFound(err) {
-		// resource not found -> remove from state
 		d.SetId("")
 		return nil
 	}
@@ -108,37 +101,48 @@ func scheduleReportRead(d *schema.ResourceData, meta interface{}) error {
 	return nil
 }
 
-func scheduleReportUpdate(d *schema.ResourceData, meta interface{}) error {
-    client := meta.(site24x7.Client)
-
-    // Build update payload
-    sr := resourceDataToScheduleReport(d)
-    sr.ReportID = d.Id()
-
-    // 🔍 DEBUG: print UPDATE payload
-    payloadBytes, err := json.Marshal(sr)
-    if err != nil {
-        return err
-    }
-
-    log.Printf("[DEBUG] Site24x7 Schedule Report UPDATE payload: %s", string(payloadBytes))
-
-    // Call API
-    updated, err := client.ScheduleReport().Update(sr)
-    if err != nil {
-        return err
-    }
-
-    if updated != nil && updated.ReportID != "" {
-        d.SetId(updated.ReportID)
-    }
-
-    return scheduleReportRead(d, meta)
+type scheduleReportUpdatePayload struct {
+	DisplayName     string   `json:"display_name"`
+	ReportType      int      `json:"report_type"`
+	SelectionType   int      `json:"selection_type"`
+	ReportFormat    int      `json:"report_format"`
+	ReportFrequency int      `json:"report_frequency"`
+	ScheduledTime   int      `json:"scheduled_time"`
+	UserGroups      []string `json:"user_groups"`
+	ScheduledDay    int      `json:"scheduled_day"`
 }
 
+func scheduleReportUpdate(d *schema.ResourceData, meta interface{}) error {
+	client := meta.(site24x7.Client)
+
+		var userGroups []string
+	for _, e := range d.Get("user_groups").([]interface{}) {
+		userGroups = append(userGroups, e.(string))
+	}
+	// ✅ Shadow payload (NO report_id)
+	payload := scheduleReportUpdatePayload{
+		DisplayName:     d.Get("display_name").(string),
+		ReportType:      d.Get("report_type").(int),
+		SelectionType:   d.Get("selection_type").(int),
+		ReportFormat:    d.Get("report_format").(int),
+		ReportFrequency: d.Get("report_frequency").(int),
+		ScheduledTime:   d.Get("scheduled_time").(int),
+		UserGroups:      userGroups,
+		ScheduledDay:    d.Get("scheduled_day").(int),
+	}
+
+	updated, err := client.ScheduleReport().UpdateRaw(d.Id(), payload)
+	if err != nil {
+		return err
+	}
+
+	d.SetId(updated.ReportID)
+	return nil
+}
 
 func scheduleReportDelete(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(site24x7.Client)
+
 	err := client.ScheduleReport().Delete(d.Id())
 	if apierrors.IsNotFound(err) {
 		return nil
@@ -148,6 +152,7 @@ func scheduleReportDelete(d *schema.ResourceData, meta interface{}) error {
 
 func scheduleReportExists(d *schema.ResourceData, meta interface{}) (bool, error) {
 	client := meta.(site24x7.Client)
+
 	_, err := client.ScheduleReport().Get(d.Id())
 	if apierrors.IsNotFound(err) {
 		return false, nil
@@ -160,12 +165,13 @@ func scheduleReportExists(d *schema.ResourceData, meta interface{}) (bool, error
 
 func resourceDataToScheduleReport(d *schema.ResourceData) *api.ScheduleReport {
 	var userGroups []string
+
 	for _, e := range d.Get("user_groups").([]interface{}) {
 		userGroups = append(userGroups, e.(string))
 	}
 
 	return &api.ScheduleReport{
-		// Map Terraform state ID to API ReportID
+		ReportID:         d.Id(), // ✅ CRITICAL FIX
 		DisplayName:     d.Get("display_name").(string),
 		ReportType:      d.Get("report_type").(int),
 		SelectionType:   d.Get("selection_type").(int),
@@ -173,7 +179,7 @@ func resourceDataToScheduleReport(d *schema.ResourceData) *api.ScheduleReport {
 		ReportFrequency: d.Get("report_frequency").(int),
 		ScheduledTime:   d.Get("scheduled_time").(int),
 		UserGroups:      userGroups,
-		ScheduledDay:	 d.Get("scheduled_day").(int),
+		ScheduledDay:    d.Get("scheduled_day").(int),
 	}
 }
 
