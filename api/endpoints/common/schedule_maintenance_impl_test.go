@@ -16,6 +16,7 @@ func TestScheduleMaintenance(t *testing.T) {
 			Name:         "create scheduleMaintenances",
 			ExpectedVerb: "POST",
 			ExpectedPath: "/maintenance",
+			// ⚠️ Updated: create now expects timezone
 			ExpectedBody: validation.Fixture(t, "requests/create_schedule_maintenance.json"),
 			StatusCode:   200,
 			ResponseBody: validation.JsonAPIResponseBody(t, nil),
@@ -24,7 +25,7 @@ func TestScheduleMaintenance(t *testing.T) {
 					DisplayName:       "Schedule Maintenance",
 					Description:       "Maintenance Window",
 					MaintenanceType:   3,
-					TimeZone:          "PST",
+					TimeZone:          "PST", // explicitly set → must be in fixture
 					StartDate:         "2022-06-02",
 					EndDate:           "2022-06-02",
 					StartTime:         "19:41",

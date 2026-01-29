@@ -202,7 +202,11 @@ func resourceDataToSlackIntegration(d *schema.ResourceData) (*api.SlackIntegrati
 
 func updateSlackIntegrationResourceData(d *schema.ResourceData, slackIntegration *api.SlackIntegration) {
 	d.Set("name", slackIntegration.Name)
-	d.Set("url", slackIntegration.URL)
+	
+	if slackIntegration.URL != "" {
+		d.Set("url", slackIntegration.URL)
+	}
+	
 	d.Set("sender_name", slackIntegration.SenderName)
 	d.Set("title", slackIntegration.Title)
 	d.Set("selection_type", slackIntegration.SelectionType)

@@ -1,0 +1,8 @@
+{
+  "report_id": "123",
+  "display_name": "Updated Report",
+  "report_type": "MONITOR",
+  "frequency": "WEEKLY",
+  "format": "PDF",
+  "email_ids": ["admin@site24x7.com"]
+}

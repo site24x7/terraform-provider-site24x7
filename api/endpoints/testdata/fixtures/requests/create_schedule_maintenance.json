@@ -5,8 +5,9 @@
   "end_date": "2022-06-02",
   "start_time": "19:41",
   "end_time": "20:44",
-  "selection_type":0,
-  "maintenance_type":3,
-  "monitors":["123", "456"],
-  "perform_monitoring":true
+  "selection_type": 0,
+  "maintenance_type": 3,
+  "monitors": ["123", "456"],
+  "perform_monitoring": true,
+  "timezone": "PST"
 }

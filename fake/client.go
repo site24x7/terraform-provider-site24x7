@@ -49,6 +49,7 @@ type Client struct {
 	FakeTelegramIntegration           *fake.TelegramIntegration
 	FakeThirdPartyIntegrations        *fake.ThirdPartyIntegrations
 	FakeScheduleMaintenance           *fake.ScheduleMaintenance
+	FakeScheduleReport				  *fake.ScheduleReport
 	FakeMSP                           *fake.MSP
 	FakeDNSServerMonitors             *fake.DNSServerMonitors
 	FakeCredentialProfile             *fake.CredentialProfile
@@ -98,6 +99,7 @@ func NewClient() *Client {
 		FakeTelegramIntegration:           &fake.TelegramIntegration{},
 		FakeThirdPartyIntegrations:        &fake.ThirdPartyIntegrations{},
 		FakeScheduleMaintenance:           &fake.ScheduleMaintenance{},
+		FakeScheduleReport:                &fake.ScheduleReport{},
 		FakeMSP:                           &fake.MSP{},
 		FakeCredentialProfile:             &fake.CredentialProfile{},
 		FakeBusinesshour:                  &fake.BusinessHour{},
@@ -301,6 +303,9 @@ func (c *Client) ScheduleMaintenance() common.ScheduleMaintenance {
 	return c.FakeScheduleMaintenance
 }
 
+func (c *Client) ScheduleReport() common.ScheduleReport {
+	return c.FakeScheduleReport
+}
 // MSP implements Client.
 func (c *Client) MSP() endpoints.MSP {
 	return c.FakeMSP

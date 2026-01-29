@@ -313,27 +313,27 @@ func (locationProfile *LocationProfile) String() string {
 
 // Schedule a maintenance window to collaborate effectively within the IT team. It prevents redundant alerts from being triggered.
 type ScheduleMaintenance struct {
-	_                 struct{}     `type:"structure"` // Enforces key based initialization.
-	MaintenanceID     string       `json:"maintenance_id,omitempty"`
-	DisplayName       string       `json:"display_name"`
-	Description       string       `json:"description"`
-	MaintenanceType   int          `json:"maintenance_type"`
-	StartTime         string       `json:"start_time"`
-	TimeZone          string       `json:"timezone"`
-	EndTime           string       `json:"end_time"`
-	StartDate         string       `json:"start_date"`
-	EndDate           string       `json:"end_date"`
-	PerformMonitoring bool         `json:"perform_monitoring"`
-	StartDay            int   		`json:"start_day,omitempty"`
-	EndDay			  int   		`json:"end_day,omitempty"`
-	Duration            interface{}  `json:"duration,omitempty"`
-	WeekDays            []int 		`json:"week_days,omitempty"`
-	ExecuteEvery        int   		`json:"execute_every,omitempty"`
-	MaintenanceStartOn  string 		`json:"maintenance_start_on,omitempty"`
-	SelectionType       ResourceType `json:"selection_type"`
-	Monitors            []string     `json:"monitors,omitempty"`
-	MonitorGroups       []string     `json:"monitor_groups,omitempty"`
-	Tags              []string     `json:"tags,omitempty"`
+	_                  struct{}     `type:"structure"` // Enforces key based initialization.
+	MaintenanceID      string       `json:"maintenance_id,omitempty"`
+	DisplayName        string       `json:"display_name"`
+	Description        string       `json:"description"`
+	MaintenanceType    int          `json:"maintenance_type"`
+	StartTime          string       `json:"start_time"`
+	TimeZone           string       `json:"timezone,omitempty"`
+	EndTime            string       `json:"end_time"`
+	StartDate          string       `json:"start_date"`
+	EndDate            string       `json:"end_date"`
+	PerformMonitoring  bool         `json:"perform_monitoring"`
+	StartDay           int          `json:"start_day,omitempty"`
+	EndDay             int          `json:"end_day,omitempty"`
+	Duration           interface{}  `json:"duration,omitempty"`
+	WeekDays           []int        `json:"week_days,omitempty"`
+	ExecuteEvery       int          `json:"execute_every,omitempty"`
+	MaintenanceStartOn string       `json:"maintenance_start_on,omitempty"`
+	SelectionType      ResourceType `json:"selection_type"`
+	Monitors           []string     `json:"monitors,omitempty"`
+	MonitorGroups      []string     `json:"monitor_groups,omitempty"`
+	Tags               []string     `json:"tags,omitempty"`
 }
 
 func (scheduleMaintenance *ScheduleMaintenance) String() string {
@@ -341,17 +341,18 @@ func (scheduleMaintenance *ScheduleMaintenance) String() string {
 }
 
 type ScheduleReport struct {
-	_ 				struct{} `type:"structure"` // Enforces key-based initialization.
-	ReportID      	string   `json:"report_id,omitempty"` // Unique ID for the scheduled report
-	DisplayName     string   `json:"display_name"`          // Name of the report
-	ReportType      int      `json:"report_type"`           // 17 = Summary Report
-	SelectionType   int      `json:"selection_type"`        // 0=All, 2=Monitors, 3=Tags, 4=Monitor Type
-	ReportFormat    int      `json:"report_format"`         // Format constant (PDF, CSV)
-	ReportFrequency int      `json:"report_frequency"`      // 1 = Daily
-	ScheduledTime   int      `json:"scheduled_time"`        // Hour at which report is generated (0–23)
-	UserGroups      []string `json:"user_groups"`           // Recipients of the scheduled report
-	ScheduledDay	int		 `json:"scheduled_day"`
+	_               struct{} `type:"structure"`           // Enforces key-based initialization.
+	ReportID        string   `json:"report_id,omitempty"` // Unique ID for the scheduled report
+	DisplayName     string   `json:"display_name"`        // Name of the report
+	ReportType      int      `json:"report_type"`         // 17 = Summary Report
+	SelectionType   int      `json:"selection_type"`      // 0=All, 2=Monitors, 3=Tags, 4=Monitor Type
+	ReportFormat    int      `json:"report_format"`       // Format constant (PDF, CSV)
+	ReportFrequency int      `json:"report_frequency"`    // 1 = Daily
+	ScheduledTime   int      `json:"scheduled_time"`      // Hour at which report is generated (0–23)
+	UserGroups      []string `json:"user_groups"`         // Recipients of the scheduled report
+	ScheduledDay    int      `json:"scheduled_day"`
 }
+
 func (scheduleReport *ScheduleReport) String() string {
 	return ToString(scheduleReport)
 }
