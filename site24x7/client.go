@@ -85,6 +85,7 @@ type Client interface {
 	Subgroups() endpoints.Subgroups
 	Tags() endpoints.Tags
 	ScheduleMaintenance() common.ScheduleMaintenance
+	ScheduleReport() common.ScheduleReport
 	WebsiteMonitors() monitors.WebsiteMonitors
 	DNSServerMonitors() monitors.DNSServerMonitors
 	WebPageSpeedMonitors() monitors.WebPageSpeedMonitors
@@ -180,6 +181,10 @@ func (c *client) LocationProfiles() endpoints.LocationProfiles {
 // ScheduleMaintenance implements Client.
 func (c *client) ScheduleMaintenance() common.ScheduleMaintenance {
 	return common.NewScheduleMaintenance(c.restClient)
+}
+
+func (c *client) ScheduleReport() common.ScheduleReport {
+	return common.NewScheduleReport(c.restClient)
 }
 
 // LocationTemplate implements Client.

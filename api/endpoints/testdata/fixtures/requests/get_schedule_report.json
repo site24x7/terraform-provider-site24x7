@@ -1,0 +1,10 @@
+{
+  "data": {
+    "report_id": "123",
+    "display_name": "Daily Report",
+    "report_type": "MONITOR",
+    "frequency": "DAILY",
+    "format": "PDF",
+    "email_ids": ["test@site24x7.com"]
+  }
+}
