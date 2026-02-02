@@ -7,6 +7,7 @@ import (
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/fake"
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/integration"
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/monitors"
+	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/msp"
 )
 
 // Client is an implementation of site24x7.Client that stubs out all endpoints
@@ -56,6 +57,8 @@ type Client struct {
 	FakeBusinesshour                  *fake.BusinessHour
 	FakeCustomer                      *fake.Customer
 	FakeAWSExternalID                 *fake.AWSExternalID
+	FakeGCPMonitors                   *fake.GCPMonitors
+	FakeDeviceKey                     *fake.DeviceKey
 }
 
 // NewClient creates a new fake site24x7 API client.
@@ -105,6 +108,8 @@ func NewClient() *Client {
 		FakeBusinesshour:                  &fake.BusinessHour{},
 		FakeCustomer:                      &fake.Customer{},
 		FakeAWSExternalID:                 &fake.AWSExternalID{},
+		FakeGCPMonitors:                   &fake.GCPMonitors{},
+		FakeDeviceKey:                     &fake.DeviceKey{},
 	}
 }
 
@@ -174,7 +179,7 @@ func (c *Client) SOAPMonitors() monitors.SOAPMonitors {
 }
 
 // WebTransactionBrowserMonitors implements Client.
-func (c *Client) WebTransactionBrowserMonitor() monitors.WebTransactionBrowserMonitors {
+func (c *Client) WebTransactionBrowserMonitors() monitors.WebTransactionBrowserMonitors {
 	return c.FakeWebTransactionBrowserMonitors
 }
 
@@ -311,12 +316,27 @@ func (c *Client) MSP() endpoints.MSP {
 	return c.FakeMSP
 }
 
-// RestApiMonitors implements Client.
-func (c *Client) credentialProfile() common.CredentialProfile {
+// CredentialProfile implements Client.
+func (c *Client) CredentialProfile() common.CredentialProfile {
 	return c.FakeCredentialProfile
 }
 
 // Business hour implements Client.
 func (c *Client) BusinessHour() common.BusinessHourService {
 	return c.FakeBusinesshour
+}
+
+// Customers implements implements Client.
+func (c *Client) Customers() msp.Customers {
+	return c.FakeCustomer
+}
+
+// DeviceKey implements Client.
+func (c *Client) DeviceKey() common.DeviceKey {
+	return c.FakeDeviceKey
+}
+
+// GCPMonitors implements Client.
+func (c *Client) GCPMonitors() monitors.GCPMonitors {
+	return c.FakeGCPMonitors
 }
