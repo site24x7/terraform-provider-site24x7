@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-var _ monitors.WebsiteMonitors = &WebsiteMonitors{}
+var _ monitors.DNSServerMonitors = &DNSServerMonitors{}
 
 type DNSServerMonitors struct {
 	mock.Mock

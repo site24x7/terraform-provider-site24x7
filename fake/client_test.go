@@ -5,10 +5,14 @@ import (
 	"testing"
 
 	"github.com/site24x7/terraform-provider-site24x7/api"
+	"github.com/site24x7/terraform-provider-site24x7/site24x7"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 )
+
+// make sure whole interface is implemented
+var _ site24x7.Client = &Client{}
 
 func TestClientMonitorsCreate(t *testing.T) {
 	c := NewClient()
