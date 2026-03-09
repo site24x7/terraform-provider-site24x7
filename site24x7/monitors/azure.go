@@ -1,6 +1,7 @@
 package monitors
 
 import (
+	"encoding/json"
 	"log"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
@@ -74,43 +75,41 @@ var AzureMonitorSchema = map[string]*schema.Schema{
 		Description: "Automatically add newly-added subscriptions (1 for Yes, 0 for No).",
 	},
 	"azure_exclude_tags": {
-		Type:        schema.TypeMap,
+		Type:        schema.TypeList,
 		Optional:    true,
+		MaxItems:    1,
 		Description: "Tags to exclude Azure resources from discovery.",
 		Elem: &schema.Resource{
 			Schema: map[string]*schema.Schema{
 				"type": {
-					Type:     schema.TypeInt,
-					Required: true,
+					Type:        schema.TypeInt,
+					Required:    true,
+					Description: "Condition logic: 1 for OR, 2 for AND.",
 				},
 				"tags": {
-					Type:     schema.TypeMap,
-					Required: true,
-					Elem: &schema.Schema{
-						Type: schema.TypeList,
-						Elem: &schema.Schema{Type: schema.TypeString},
-					},
+					Type:        schema.TypeString,
+					Required:    true,
+					Description: "JSON-encoded map of tag keys to value lists, e.g. {\"demo\":[\"test1\",\"test2\"]}.",
 				},
 			},
 		},
 	},
 	"azure_include_tags": {
-		Type:        schema.TypeMap,
+		Type:        schema.TypeList,
 		Optional:    true,
+		MaxItems:    1,
 		Description: "Tags to include Azure resources in discovery.",
 		Elem: &schema.Resource{
 			Schema: map[string]*schema.Schema{
 				"type": {
-					Type:     schema.TypeInt,
-					Required: true,
+					Type:        schema.TypeInt,
+					Required:    true,
+					Description: "Condition logic: 1 for OR, 2 for AND.",
 				},
 				"tags": {
-					Type:     schema.TypeMap,
-					Required: true,
-					Elem: &schema.Schema{
-						Type: schema.TypeList,
-						Elem: &schema.Schema{Type: schema.TypeString},
-					},
+					Type:        schema.TypeString,
+					Required:    true,
+					Description: "JSON-encoded map of tag keys to value lists, e.g. {\"env\":[\"prod\"]}.",
 				},
 			},
 		},
@@ -186,70 +185,47 @@ func azureMonitorExists(d *schema.ResourceData, meta interface{}) (bool, error) 
 	return err == nil, err
 }
 
-func expandAzureTagCondition(input map[string]interface{}) *api.AzureTagCondition {
-	if input == nil {
+func expandAzureTagCondition(input []interface{}) *api.AzureTagCondition {
+	if len(input) == 0 || input[0] == nil {
 		return nil
 	}
 
-	// Guard against missing or nil values
-	typeVal, typeOk := input["type"]
-	tagsVal, tagsOk := input["tags"]
-
-	if !typeOk || !tagsOk {
-		return nil // or handle the error appropriately
-	}
-
-	// Ensure type is an int
-	typeInt, ok := typeVal.(int)
-	if !ok {
-		// Log error or handle the unexpected type
-		return nil // or return an error if necessary
-	}
+	raw := input[0].(map[string]interface{})
 
 	tagCondition := &api.AzureTagCondition{
-		Type: typeInt,
+		Type: raw["type"].(int),
 		Tags: make(map[string][]string),
 	}
 
-	// Check if 'tags' is of the correct type
-	rawTags, ok := tagsVal.(map[string]interface{})
-	if !ok {
-		// Handle the unexpected type
-		return tagCondition // or handle accordingly
-	}
-
-	for k, v := range rawTags {
-		interfaceList, ok := v.([]interface{})
-		if !ok {
-			continue // or handle the invalid type
+	tagsJSON := raw["tags"].(string)
+	if tagsJSON != "" {
+		var tagsMap map[string][]string
+		if err := json.Unmarshal([]byte(tagsJSON), &tagsMap); err != nil {
+			log.Printf("[ERROR] Failed to unmarshal azure tags: %s", err)
+			return tagCondition
 		}
-		strList := make([]string, len(interfaceList))
-		for i, val := range interfaceList {
-			strList[i] = val.(string)
-		}
-		tagCondition.Tags[k] = strList
+		tagCondition.Tags = tagsMap
 	}
 
 	return tagCondition
 }
 
-func flattenAzureTagCondition(condition *api.AzureTagCondition) map[string]interface{} {
+func flattenAzureTagCondition(condition *api.AzureTagCondition) []interface{} {
 	if condition == nil {
 		return nil
 	}
 
-	tags := make(map[string]interface{})
-	for k, v := range condition.Tags {
-		strList := make([]interface{}, len(v))
-		for i, s := range v {
-			strList[i] = s
-		}
-		tags[k] = strList
+	tagsJSON, err := json.Marshal(condition.Tags)
+	if err != nil {
+		log.Printf("[ERROR] Failed to marshal azure tags: %s", err)
+		return nil
 	}
 
-	return map[string]interface{}{
-		"type": condition.Type,
-		"tags": tags,
+	return []interface{}{
+		map[string]interface{}{
+			"type": condition.Type,
+			"tags": string(tagsJSON),
+		},
 	}
 }
 
@@ -282,8 +258,8 @@ func resourceDataToAzureMonitor(d *schema.ResourceData, client site24x7.Client) 
 		ThresholdProfileID:    d.Get("threshold_profile_id").(string),
 		DiscoveryInterval:     d.Get("discovery_interval").(string),
 		AutoAddSubscription:   d.Get("auto_add_subscription").(int),
-		AzureExcludeTags:      expandAzureTagCondition(d.Get("azure_exclude_tags").(map[string]interface{})),
-		AzureIncludeTags:      expandAzureTagCondition(d.Get("azure_include_tags").(map[string]interface{})),
+		AzureExcludeTags:      expandAzureTagCondition(d.Get("azure_exclude_tags").([]interface{})),
+		AzureIncludeTags:      expandAzureTagCondition(d.Get("azure_include_tags").([]interface{})),
 	}
 	return monitor, nil
 }
