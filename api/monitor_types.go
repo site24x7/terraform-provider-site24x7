@@ -1,5 +1,10 @@
 package api
 
+import (
+	"encoding/json"
+	"fmt"
+)
+
 type Site24x7Monitor interface {
 	SetLocationProfileID(notificationProfileID string)
 	GetLocationProfileID() string
@@ -1263,6 +1268,35 @@ type AzureMonitor struct {
 type AzureTagCondition struct {
 	Type int                 `json:"type"` // 1 for OR, 2 for AND
 	Tags map[string][]string `json:"tags"`
+}
+
+// UnmarshalJSON implements custom JSON unmarshalling for AzureTagCondition.
+// The Site24x7 API returns azure_exclude_tags and azure_include_tags as JSON-encoded
+// strings (e.g., "{\"type\":1,\"tags\":{...}}") rather than JSON objects. This method
+// handles both the string-wrapped format from the API and direct JSON objects.
+func (a *AzureTagCondition) UnmarshalJSON(data []byte) error {
+	// Alias type to avoid infinite recursion when calling json.Unmarshal
+	type Alias AzureTagCondition
+
+	// First, try unmarshalling directly as an object
+	var direct Alias
+	if err := json.Unmarshal(data, &direct); err == nil {
+		*a = AzureTagCondition(direct)
+		return nil
+	}
+
+	// If that fails, try treating data as a JSON string containing JSON
+	var s string
+	if err := json.Unmarshal(data, &s); err != nil {
+		return fmt.Errorf("azure_tag_condition: cannot unmarshal %s", string(data))
+	}
+
+	var fromString Alias
+	if err := json.Unmarshal([]byte(s), &fromString); err != nil {
+		return err
+	}
+	*a = AzureTagCondition(fromString)
+	return nil
 }
 
 // Implement required interfaces
