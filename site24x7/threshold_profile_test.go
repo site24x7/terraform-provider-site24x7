@@ -133,3 +133,153 @@ func thresholdProfileTestResourceData(t *testing.T) *schema.ResourceData {
 		"website_content_modified": true,
 	})
 }
+
+func TestServerThresholdProfileCreate(t *testing.T) {
+	d := serverThresholdProfileTestResourceData(t)
+
+	c := fake.NewClient()
+
+	a := &api.ThresholdProfile{
+		ProfileName: "server_threshold_profile",
+		Type:        "SERVER",
+		ProfileType: 1,
+		CpuThreshold: []map[string]interface{}{
+			{
+				"severity":            "2",
+				"comparison_operator": "1",
+				"value":               "80",
+				"strategy":            "1",
+				"polls_check":         "5",
+			},
+		},
+		MemoryThreshold: []map[string]interface{}{
+			{
+				"severity":            "2",
+				"comparison_operator": "1",
+				"value":               "90",
+				"strategy":            "1",
+				"polls_check":         "5",
+			},
+		},
+		ServerResourceDownAlert: map[string]interface{}{
+			"severity": "2",
+			"value":    "true",
+		},
+	}
+
+	c.FakeThresholdProfiles.On("Create", a).Return(a, nil).Once()
+
+	require.NoError(t, thresholdProfileCreate(d, c))
+
+	c.FakeThresholdProfiles.On("Create", a).Return(a, apierrors.NewStatusError(500, "error")).Once()
+
+	err := thresholdProfileCreate(d, c)
+
+	assert.Equal(t, apierrors.NewStatusError(500, "error"), err)
+}
+
+func TestServerThresholdProfileUpdate(t *testing.T) {
+	d := serverThresholdProfileTestResourceData(t)
+	d.SetId("456")
+
+	c := fake.NewClient()
+
+	a := &api.ThresholdProfile{
+		ProfileID:   "456",
+		ProfileName: "server_threshold_profile",
+		Type:        "SERVER",
+		ProfileType: 1,
+		CpuThreshold: []map[string]interface{}{
+			{
+				"severity":            "2",
+				"comparison_operator": "1",
+				"value":               "80",
+				"strategy":            "1",
+				"polls_check":         "5",
+			},
+		},
+		MemoryThreshold: []map[string]interface{}{
+			{
+				"severity":            "2",
+				"comparison_operator": "1",
+				"value":               "90",
+				"strategy":            "1",
+				"polls_check":         "5",
+			},
+		},
+		ServerResourceDownAlert: map[string]interface{}{
+			"severity": "2",
+			"value":    "true",
+		},
+	}
+
+	c.FakeThresholdProfiles.On("Update", a).Return(a, nil).Once()
+
+	require.NoError(t, thresholdProfileUpdate(d, c))
+
+	c.FakeThresholdProfiles.On("Update", a).Return(a, apierrors.NewStatusError(500, "error")).Once()
+
+	err := thresholdProfileUpdate(d, c)
+
+	assert.Equal(t, apierrors.NewStatusError(500, "error"), err)
+}
+
+func TestServerThresholdProfileRead(t *testing.T) {
+	d := serverThresholdProfileTestResourceData(t)
+	d.SetId("456")
+
+	c := fake.NewClient()
+
+	serverProfile := &api.ThresholdProfile{
+		ProfileID:   "456",
+		ProfileName: "server_threshold_profile",
+		Type:        "SERVER",
+		ProfileType: 1,
+		CpuThreshold: []map[string]interface{}{
+			{
+				"severity":            float64(2),
+				"comparison_operator": float64(1),
+				"value":               float64(80),
+				"strategy":            float64(1),
+				"polls_check":         float64(5),
+			},
+		},
+		ServerResourceDownAlert: map[string]interface{}{
+			"severity": float64(2),
+			"value":    true,
+		},
+	}
+
+	c.FakeThresholdProfiles.On("Get", "456").Return(serverProfile, nil).Once()
+
+	require.NoError(t, thresholdProfileRead(d, c))
+
+	assert.Equal(t, "server_threshold_profile", d.Get("profile_name"))
+	assert.Equal(t, "SERVER", d.Get("type"))
+}
+
+func serverThresholdProfileTestResourceData(t *testing.T) *schema.ResourceData {
+	return schema.TestResourceDataRaw(t, ThresholdProfileSchema, map[string]interface{}{
+		"profile_name": "server_threshold_profile",
+		"type":         "SERVER",
+		"profile_type": 1,
+		"server_resource_down_alert": map[string]interface{}{
+			"severity": "2",
+			"value":    "true",
+		},
+		"cpu_trouble_threshold": map[string]interface{}{
+			"severity":            "2",
+			"comparison_operator": "1",
+			"value":               "80",
+			"strategy":            "1",
+			"polls_check":         "5",
+		},
+		"memory_trouble_threshold": map[string]interface{}{
+			"severity":            "2",
+			"comparison_operator": "1",
+			"value":               "90",
+			"strategy":            "1",
+			"polls_check":         "5",
+		},
+	})
+}
