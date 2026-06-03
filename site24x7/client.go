@@ -124,6 +124,7 @@ type Client interface {
 	CredentialProfile() common.CredentialProfile
 	BusinessHour() common.BusinessHourService
 	Customers() msp.Customers
+	OAuth2Provider() common.OAuth2Provider
 }
 
 type client struct {
@@ -391,4 +392,9 @@ func (c *client) BusinessHour() common.BusinessHourService {
 }
 func (c *client) Customers() msp.Customers {
 	return msp.NewCustomers(c.restClient)
+}
+
+// OAuth2Provider implements Client.
+func (c *client) OAuth2Provider() common.OAuth2Provider {
+	return common.NewOAuth2Provider(c.restClient)
 }

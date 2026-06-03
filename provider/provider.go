@@ -108,7 +108,7 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_tag":                             site24x7.ResourceSite24x7Tag(),
 			"site24x7_user":                            site24x7.ResourceSite24x7User(),
 			"site24x7_schedule_maintenance":            common.ResourceSite24x7ScheduleMaintenance(),
-			"site24x7_schedule_report":            		common.ResourceSite24x7ScheduleReport(),
+			"site24x7_schedule_report":                 common.ResourceSite24x7ScheduleReport(),
 			"site24x7_opsgenie_integration":            integration.ResourceSite24x7OpsgenieIntegration(),
 			"site24x7_slack_integration":               integration.ResourceSite24x7SlackIntegration(),
 			"site24x7_webhook_integration":             integration.ResourceSite24x7WebhookIntegration(),
@@ -119,6 +119,7 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_credential_profile":              common.ResourceSite24x7CredentialProfile(),
 			"site24x7_businesshour":                    common.ResourceSite24x7BusinessHour(),
 			"site24x7_customer":                        msp.ResourceSite24x7Customer(),
+			"site24x7_oauth2_provider":                 common.ResourceSite24x7OAuth2Provider(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
 			"site24x7_monitor":              monitors.DataSourceSite24x7Monitor(),
@@ -137,6 +138,7 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_device_key":         common.DataSourceSite24x7DeviceKey(),
 			"site24x7_credential_profile": common.DataSourceSite24x7CredentialProfile(),
 			"site24x7_customer":           msp.DataSourceSite24x7Customer(),
+			"site24x7_oauth2_provider":    common.DataSourceSite24x7OAuth2Provider(),
 		},
 
 		ConfigureFunc: providerConfigure,

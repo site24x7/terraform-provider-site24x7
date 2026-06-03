@@ -221,10 +221,64 @@ type ThresholdProfile struct {
 	TroubleIfNotPingedMoreThan map[string]interface{} `json:"hb_availability1,omitempty"`
 	DownIfNotPingedMoreThan    map[string]interface{} `json:"hb_availability2,omitempty"`
 	TroubleIfPingedWithin      map[string]interface{} `json:"hb_availability3,omitempty"`
+
+	// SERVER attributes - standard thresholds (flat arrays)
+	CpuThreshold                  []map[string]interface{} `json:"cpu_threshold,omitempty"`
+	MemoryThreshold               []map[string]interface{} `json:"memory_threshold,omitempty"`
+	DiskUsageThreshold            []map[string]interface{} `json:"disk_usage_threshold,omitempty"`
+	DiskPartitionThreshold        []map[string]interface{} `json:"disk_partition_threshold,omitempty"`
+	ProcessCpuThreshold           []map[string]interface{} `json:"process_cpu_threshold,omitempty"`
+	ProcessMemoryThreshold        []map[string]interface{} `json:"process_memory_threshold,omitempty"`
+	ProcessDiskUsageThreshold     []map[string]interface{} `json:"process_disk_usage_threshold,omitempty"`
+	ProcessHandleCountThreshold   []map[string]interface{} `json:"process_handle_count_threshold,omitempty"`
+	NetworkErrorPacketThreshold   []map[string]interface{} `json:"network_error_packet_threshold,omitempty"`
+	IpAddressChange               []map[string]interface{} `json:"ip_address_change,omitempty"`
+	ProcessInstanceCountThreshold []map[string]interface{} `json:"process_instance_count_threshold,omitempty"`
+	// Windows specific
+	RunningProcess     []map[string]interface{} `json:"running_process,omitempty"`
+	TotalService       []map[string]interface{} `json:"total_service,omitempty"`
+	ProcessQueueLength []map[string]interface{} `json:"process_queue_length,omitempty"`
+	// Linux specific
+	SystemLoad1Min  []map[string]interface{} `json:"system_load_1min,omitempty"`
+	SystemLoad5Min  []map[string]interface{} `json:"system_load_5min,omitempty"`
+	SystemLoad15Min []map[string]interface{} `json:"system_load_15min,omitempty"`
+	ProcessRunning  []map[string]interface{} `json:"process_running,omitempty"`
+	TotalProcess    []map[string]interface{} `json:"total_process,omitempty"`
+	BlockedProcess  []map[string]interface{} `json:"blocked_process,omitempty"`
+	// SERVER alert objects (map with severity + value)
+	ProcessDownAlert        map[string]interface{} `json:"process_down_alert,omitempty"`
+	ServerResourceDownAlert map[string]interface{} `json:"server_resource_down_alert,omitempty"`
+	DcAlert                 map[string]interface{} `json:"dc_alert,omitempty"`
+	DiskStatusThreshold     map[string]interface{} `json:"disk_status_threshold,omitempty"`
+	ServiceStatusThreshold  map[string]interface{} `json:"service_status_threshold,omitempty"`
+	NwStatusThreshold       map[string]interface{} `json:"nw_status_threshold,omitempty"`
+	// Special format
+	DiskUsedSize map[string]interface{} `json:"disk_used_size,omitempty"`
+	DiskFreeSize map[string]interface{} `json:"disk_free_size,omitempty"`
+	ServerUptime map[string]interface{} `json:"server_uptime,omitempty"`
 }
 
 func (thresholdProfile *ThresholdProfile) String() string {
 	return ToString(thresholdProfile)
+}
+
+// toMapSlice converts an interface{} (expected to be []interface{} of map[string]interface{})
+// to []map[string]interface{}. Used for parsing SERVER threshold arrays from JSON.
+func toMapSlice(v interface{}) []map[string]interface{} {
+	switch val := v.(type) {
+	case []interface{}:
+		result := make([]map[string]interface{}, 0, len(val))
+		for _, item := range val {
+			if m, ok := item.(map[string]interface{}); ok {
+				result = append(result, m)
+			}
+		}
+		return result
+	case map[string]interface{}:
+		// Handle case where API returns a single object instead of array
+		return []map[string]interface{}{val}
+	}
+	return nil
 }
 
 func (thresholdProfile *ThresholdProfile) UnmarshalJSON(rawValue []byte) error {
@@ -272,6 +326,76 @@ func (thresholdProfile *ThresholdProfile) UnmarshalJSON(rawValue []byte) error {
 			thresholdProfile.CronNoRunAlert = v.(map[string]interface{})
 		} else if k == "cron_duration_alert" {
 			thresholdProfile.CronDurationAlert = v.(map[string]interface{})
+		} else if k == "hb_availability1" {
+			thresholdProfile.TroubleIfNotPingedMoreThan = v.(map[string]interface{})
+		} else if k == "hb_availability2" {
+			thresholdProfile.DownIfNotPingedMoreThan = v.(map[string]interface{})
+		} else if k == "hb_availability3" {
+			thresholdProfile.TroubleIfPingedWithin = v.(map[string]interface{})
+		} else if k == "cpu_threshold" {
+			thresholdProfile.CpuThreshold = toMapSlice(v)
+		} else if k == "memory_threshold" {
+			thresholdProfile.MemoryThreshold = toMapSlice(v)
+		} else if k == "disk_usage_threshold" {
+			thresholdProfile.DiskUsageThreshold = toMapSlice(v)
+		} else if k == "process_down_alert" {
+			thresholdProfile.ProcessDownAlert = v.(map[string]interface{})
+		} else if k == "server_resource_down_alert" {
+			switch val := v.(type) {
+			case map[string]interface{}:
+				thresholdProfile.ServerResourceDownAlert = val
+			case bool:
+				// Legacy format compatibility
+				thresholdProfile.ServerResourceDownAlert = map[string]interface{}{"severity": float64(2), "value": val}
+			}
+		} else if k == "dc_alert" {
+			thresholdProfile.DcAlert = v.(map[string]interface{})
+		} else if k == "disk_status_threshold" {
+			thresholdProfile.DiskStatusThreshold = v.(map[string]interface{})
+		} else if k == "service_status_threshold" {
+			thresholdProfile.ServiceStatusThreshold = v.(map[string]interface{})
+		} else if k == "nw_status_threshold" {
+			thresholdProfile.NwStatusThreshold = v.(map[string]interface{})
+		} else if k == "disk_partition_threshold" {
+			thresholdProfile.DiskPartitionThreshold = toMapSlice(v)
+		} else if k == "process_cpu_threshold" {
+			thresholdProfile.ProcessCpuThreshold = toMapSlice(v)
+		} else if k == "process_memory_threshold" {
+			thresholdProfile.ProcessMemoryThreshold = toMapSlice(v)
+		} else if k == "process_disk_usage_threshold" {
+			thresholdProfile.ProcessDiskUsageThreshold = toMapSlice(v)
+		} else if k == "process_handle_count_threshold" {
+			thresholdProfile.ProcessHandleCountThreshold = toMapSlice(v)
+		} else if k == "network_error_packet_threshold" {
+			thresholdProfile.NetworkErrorPacketThreshold = toMapSlice(v)
+		} else if k == "ip_address_change" {
+			thresholdProfile.IpAddressChange = toMapSlice(v)
+		} else if k == "process_instance_count_threshold" {
+			thresholdProfile.ProcessInstanceCountThreshold = toMapSlice(v)
+		} else if k == "running_process" {
+			thresholdProfile.RunningProcess = toMapSlice(v)
+		} else if k == "total_service" {
+			thresholdProfile.TotalService = toMapSlice(v)
+		} else if k == "process_queue_length" {
+			thresholdProfile.ProcessQueueLength = toMapSlice(v)
+		} else if k == "system_load_1min" {
+			thresholdProfile.SystemLoad1Min = toMapSlice(v)
+		} else if k == "system_load_5min" {
+			thresholdProfile.SystemLoad5Min = toMapSlice(v)
+		} else if k == "system_load_15min" {
+			thresholdProfile.SystemLoad15Min = toMapSlice(v)
+		} else if k == "process_running" {
+			thresholdProfile.ProcessRunning = toMapSlice(v)
+		} else if k == "total_process" {
+			thresholdProfile.TotalProcess = toMapSlice(v)
+		} else if k == "blocked_process" {
+			thresholdProfile.BlockedProcess = toMapSlice(v)
+		} else if k == "disk_used_size" {
+			thresholdProfile.DiskUsedSize = v.(map[string]interface{})
+		} else if k == "disk_free_size" {
+			thresholdProfile.DiskFreeSize = v.(map[string]interface{})
+		} else if k == "server_uptime" {
+			thresholdProfile.ServerUptime = v.(map[string]interface{})
 		}
 	}
 	return nil
