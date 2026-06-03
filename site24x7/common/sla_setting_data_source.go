@@ -87,7 +87,7 @@ var slaSettingDataSourceSchema = map[string]*schema.Schema{
 					Computed: true,
 				},
 				"weightage": {
-					Type:     schema.TypeInt,
+					Type:     schema.TypeFloat,
 					Computed: true,
 				},
 			},
@@ -111,7 +111,7 @@ var slaSettingDataSourceSchema = map[string]*schema.Schema{
 					Computed: true,
 				},
 				"weightage": {
-					Type:     schema.TypeInt,
+					Type:     schema.TypeFloat,
 					Computed: true,
 				},
 			},

@@ -96,7 +96,7 @@ var slaSettingSchema = map[string]*schema.Schema{
 					Description: "SLA target condition constant.",
 				},
 				"weightage": {
-					Type:        schema.TypeInt,
+					Type:        schema.TypeFloat,
 					Required:    true,
 					Description: "Weightage in percentage.",
 				},
@@ -126,7 +126,7 @@ var slaSettingSchema = map[string]*schema.Schema{
 					Description: "SLA target condition constant.",
 				},
 				"weightage": {
-					Type:        schema.TypeInt,
+					Type:        schema.TypeFloat,
 					Required:    true,
 					Description: "Weightage in percentage.",
 				},
@@ -263,7 +263,7 @@ func resourceDataToSLASetting(d *schema.ResourceData) *api.SLASetting {
 			sla.SLOAvailability = &api.SLOAvailability{
 				Availability: a["availability"].(float64),
 				Condition:    a["condition"].(int),
-				Weightage:    a["weightage"].(int),
+				Weightage:    a["weightage"].(float64),
 			}
 		}
 	}
@@ -277,7 +277,7 @@ func resourceDataToSLASetting(d *schema.ResourceData) *api.SLASetting {
 				ResponseTime:  r["responsetime"].(float64),
 				TimeAvailable: r["time_available"].(float64),
 				Condition:     r["condition"].(int),
-				Weightage:     r["weightage"].(int),
+				Weightage:     r["weightage"].(float64),
 			}
 		}
 	}

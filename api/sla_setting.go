@@ -14,7 +14,7 @@ type SLATarget struct {
 type SLOAvailability struct {
 	Availability float64 `json:"availability"`
 	Condition    int     `json:"condition"`
-	Weightage    int     `json:"weightage"`
+	Weightage    float64 `json:"weightage"`
 }
 
 // SLOResponseTime represents the SLA target for monitor response time.
@@ -22,7 +22,7 @@ type SLOResponseTime struct {
 	ResponseTime  float64 `json:"responsetime"`
 	TimeAvailable float64 `json:"time_available"`
 	Condition     int     `json:"condition"`
-	Weightage     int     `json:"weightage"`
+	Weightage     float64 `json:"weightage"`
 }
 
 // SLASetting represents an SLA report configuration in Site24x7.
