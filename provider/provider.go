@@ -120,6 +120,8 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_businesshour":                    common.ResourceSite24x7BusinessHour(),
 			"site24x7_customer":                        msp.ResourceSite24x7Customer(),
 			"site24x7_oauth2_provider":                 common.ResourceSite24x7OAuth2Provider(),
+			"site24x7_milestone_marker":                common.ResourceSite24x7MilestoneMarker(),
+			"site24x7_sla_setting":                     common.ResourceSite24x7SLASetting(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
 			"site24x7_monitor":              monitors.DataSourceSite24x7Monitor(),
@@ -139,6 +141,7 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_credential_profile": common.DataSourceSite24x7CredentialProfile(),
 			"site24x7_customer":           msp.DataSourceSite24x7Customer(),
 			"site24x7_oauth2_provider":    common.DataSourceSite24x7OAuth2Provider(),
+			"site24x7_sla_setting":        common.DataSourceSite24x7SLASetting(),
 		},
 
 		ConfigureFunc: providerConfigure,
