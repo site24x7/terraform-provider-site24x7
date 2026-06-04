@@ -127,6 +127,7 @@ type Client interface {
 	OAuth2Provider() common.OAuth2Provider
 	MilestoneMarker() common.MilestoneMarker
 	SLASetting() common.SLASetting
+	AttributeAlertGroup() common.AttributeAlertGroup
 }
 
 type client struct {
@@ -409,4 +410,9 @@ func (c *client) MilestoneMarker() common.MilestoneMarker {
 // SLASetting implements Client.
 func (c *client) SLASetting() common.SLASetting {
 	return common.NewSLASetting(c.restClient)
+}
+
+// AttributeAlertGroup implements Client.
+func (c *client) AttributeAlertGroup() common.AttributeAlertGroup {
+	return common.NewAttributeAlertGroup(c.restClient)
 }
