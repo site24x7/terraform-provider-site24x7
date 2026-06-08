@@ -13,6 +13,7 @@ var milestoneMarkerSchema = map[string]*schema.Schema{
 	"monitor_id": {
 		Type:        schema.TypeString,
 		Optional:    true,
+		ForceNew:    true,
 		Default:     "-1",
 		Description: "Monitor ID, Group ID, or -1 for a global milestone marker. When omitted, a global milestone marker is created that applies to all monitors.",
 	},
