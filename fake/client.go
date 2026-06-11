@@ -326,7 +326,7 @@ func (c *Client) BusinessHour() common.BusinessHourService {
 	return c.FakeBusinesshour
 }
 
-// Customers implements implements Client.
+// Customers implements Client.
 func (c *Client) Customers() msp.Customers {
 	return c.FakeCustomer
 }
