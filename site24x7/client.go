@@ -125,6 +125,9 @@ type Client interface {
 	BusinessHour() common.BusinessHourService
 	Customers() msp.Customers
 	OAuth2Provider() common.OAuth2Provider
+	MilestoneMarker() common.MilestoneMarker
+	SLASetting() common.SLASetting
+	AttributeAlertGroup() common.AttributeAlertGroup
 }
 
 type client struct {
@@ -397,4 +400,19 @@ func (c *client) Customers() msp.Customers {
 // OAuth2Provider implements Client.
 func (c *client) OAuth2Provider() common.OAuth2Provider {
 	return common.NewOAuth2Provider(c.restClient)
+}
+
+// MilestoneMarker implements Client.
+func (c *client) MilestoneMarker() common.MilestoneMarker {
+	return common.NewMilestoneMarker(c.restClient)
+}
+
+// SLASetting implements Client.
+func (c *client) SLASetting() common.SLASetting {
+	return common.NewSLASetting(c.restClient)
+}
+
+// AttributeAlertGroup implements Client.
+func (c *client) AttributeAlertGroup() common.AttributeAlertGroup {
+	return common.NewAttributeAlertGroup(c.restClient)
 }
