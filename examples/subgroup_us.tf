@@ -4,9 +4,9 @@ terraform {
 
   required_providers {
     site24x7 = {
-      source  = "site24x7/site24x7"
+      source = "site24x7/site24x7"
       # Update the latest version from https://registry.terraform.io/providers/site24x7/site24x7/latest 
-      
+
     }
   }
 }
@@ -14,39 +14,39 @@ terraform {
 // Authentication API doc - https://www.site24x7.com/help/api/#authentication
 provider "site24x7" {
   // (Security recommendation - It is always best practice to store your credentials in a Vault of your choice.)
-	// (Required) The client ID will be looked up in the SITE24X7_OAUTH2_CLIENT_ID
-	// environment variable if the attribute is empty or omitted.
-	oauth2_client_id = "<SITE24X7_OAUTH2_CLIENT_ID>"
+  // (Required) The client ID will be looked up in the SITE24X7_OAUTH2_CLIENT_ID
+  // environment variable if the attribute is empty or omitted.
+  oauth2_client_id = "<SITE24X7_OAUTH2_CLIENT_ID>"
 
   // (Security recommendation - It is always best practice to store your credentials in a Vault of your choice.)
-	// (Required) The client secret will be looked up in the SITE24X7_OAUTH2_CLIENT_SECRET
-	// environment variable if the attribute is empty or omitted.
-	oauth2_client_secret = "<SITE24X7_OAUTH2_CLIENT_SECRET>"
-    
+  // (Required) The client secret will be looked up in the SITE24X7_OAUTH2_CLIENT_SECRET
+  // environment variable if the attribute is empty or omitted.
+  oauth2_client_secret = "<SITE24X7_OAUTH2_CLIENT_SECRET>"
+
   // (Security recommendation - It is always best practice to store your credentials in a Vault of your choice.)
-	// (Required) The refresh token will be looked up in the SITE24X7_OAUTH2_REFRESH_TOKEN
-	// environment variable if the attribute is empty or omitted.
-	oauth2_refresh_token = "<SITE24X7_OAUTH2_REFRESH_TOKEN>"
-  
-	// (Required) Specify the data center from which you have obtained your
-	// OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN/JP/CA).
-	data_center = "US"
-	
-	// (Optional) ZAAID of the customer under a MSP or BU
-	zaaid = "1234"
-  
-	// (Optional) The minimum time to wait in seconds before retrying failed Site24x7 API requests.
-	retry_min_wait = 1
-  
-	// (Optional) The maximum time to wait in seconds before retrying failed Site24x7 API
-	// requests. This is the upper limit for the wait duration with exponential
-	// backoff.
-	retry_max_wait = 30
-  
-	// (Optional) Maximum number of Site24x7 API request retries to perform until giving up.
-	max_retries = 4
-  
-  }
+  // (Required) The refresh token will be looked up in the SITE24X7_OAUTH2_REFRESH_TOKEN
+  // environment variable if the attribute is empty or omitted.
+  oauth2_refresh_token = "<SITE24X7_OAUTH2_REFRESH_TOKEN>"
+
+  // (Required) Specify the data center from which you have obtained your
+  // OAuth client credentials and refresh token. It can be (US/EU/IN/AU/CN/JP/CA).
+  data_center = "US"
+
+  // (Optional) ZAAID of the customer under a MSP or BU
+  zaaid = "1234"
+
+  // (Optional) The minimum time to wait in seconds before retrying failed Site24x7 API requests.
+  retry_min_wait = 1
+
+  // (Optional) The maximum time to wait in seconds before retrying failed Site24x7 API
+  // requests. This is the upper limit for the wait duration with exponential
+  // backoff.
+  retry_max_wait = 30
+
+  // (Optional) Maximum number of Site24x7 API request retries to perform until giving up.
+  max_retries = 4
+
+}
 
 // Subgroup API doc: https://www.site24x7.com/help/api/#subgroups
 resource "site24x7_subgroup" "subgroup_default" {
@@ -76,4 +76,22 @@ resource "site24x7_subgroup" "subgroup_zoho" {
   ]
   // (Optional) Number of monitors' health that decide the group status. ‘0’ implies that all the monitors are considered for determining the group status. Default value is 1.
   health_threshold_count = 1
+  // (Optional) Threshold profile to be associated with the Subgroup.
+  healthcheck_profile_id = "123456000000025005"
+  // (Optional) Notification profile to be associated with the Subgroup.
+  notification_profile_id = "123456000000029001"
+  // (Optional) The user groups to be notified during an outage. Mandatory, if on_call_schedule_id is not chosen.
+  user_group_ids = [
+    "123456000000025009",
+  ]
+  // (Optional) On-Call Schedule to be associated with the Subgroup. Mandatory, if user_group_ids is not chosen.
+  on_call_schedule_id = "123456000000025007"
+  // (Optional) List of Third Party Service IDs to be associated to the Subgroup.
+  third_party_service_ids = [
+    "123456000000025011",
+  ]
+  // (Optional) List of tag IDs to be associated to the Subgroup.
+  tag_ids = [
+    "123456000000025013",
+  ]
 }

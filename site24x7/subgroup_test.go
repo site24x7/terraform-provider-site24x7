@@ -27,6 +27,12 @@ func TestSubgroupCreate(t *testing.T) {
 			"726000000002460",
 			"726000000002464",
 		},
+		HealthCheckProfileID:  "789",
+		NotificationProfileID: "890",
+		UserGroupIDs:          []string{"111", "222"},
+		OnCallScheduleID:      "333",
+		ThirdPartyServiceIDs:  []string{"444"},
+		TagIDs:                []string{"555"},
 	}
 
 	c.FakeSubgroups.On("Create", a).Return(a, nil).Once()
@@ -58,6 +64,12 @@ func TestSubgroupUpdate(t *testing.T) {
 			"726000000002460",
 			"726000000002464",
 		},
+		HealthCheckProfileID:  "789",
+		NotificationProfileID: "890",
+		UserGroupIDs:          []string{"111", "222"},
+		OnCallScheduleID:      "333",
+		ThirdPartyServiceIDs:  []string{"444"},
+		TagIDs:                []string{"555"},
 	}
 
 	c.FakeSubgroups.On("Update", a).Return(a, nil).Once()
@@ -142,6 +154,19 @@ func subgroupTestResourceData(t *testing.T) *schema.ResourceData {
 		"monitors": []interface{}{
 			"726000000002460",
 			"726000000002464",
+		},
+		"healthcheck_profile_id":  "789",
+		"notification_profile_id": "890",
+		"user_group_ids": []interface{}{
+			"111",
+			"222",
+		},
+		"on_call_schedule_id": "333",
+		"third_party_service_ids": []interface{}{
+			"444",
+		},
+		"tag_ids": []interface{}{
+			"555",
 		},
 	})
 }
