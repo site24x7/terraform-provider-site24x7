@@ -27,9 +27,16 @@ func TestSubgroups(t *testing.T) {
 						"726000000002460",
 						"726000000002464",
 					},
-					TopGroupID:    "123",
-					ParentGroupID: "456",
-					Type:          2,
+					TopGroupID:            "123",
+					ParentGroupID:         "456",
+					Type:                  2,
+					HealthThresholdCount:  1,
+					HealthCheckProfileID:  "726000000002462",
+					NotificationProfileID: "726000000002466",
+					UserGroupIDs:          []string{"726000000002463"},
+					OnCallScheduleID:      "726000000002461",
+					ThirdPartyServiceIDs:  []string{"726000000002763"},
+					TagIDs:                []string{"726000000002465"},
 				}
 
 				_, err := NewSubgroups(c).Create(group)
@@ -54,9 +61,17 @@ func TestSubgroups(t *testing.T) {
 						"726000000002460",
 						"726000000002464",
 					},
-					TopGroupID:    "123",
-					ParentGroupID: "456",
-					Type:          2,
+					TopGroupID:            "123",
+					ParentGroupID:         "456",
+					Type:                  2,
+					HealthThresholdCount:  1,
+					HealthCheckProfileID:  "726000000002462",
+					NotificationProfileID: "726000000002466",
+					UserGroupIDs:          []string{"726000000002463"},
+					OnCallScheduleID:      "726000000002461",
+					ThirdPartyServiceIDs:  []string{"726000000002763"},
+					TagIDs:                []string{"726000000002465"},
+					CheckFrequency:        5,
 				}
 
 				assert.Equal(t, expected, group)

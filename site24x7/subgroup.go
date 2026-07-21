@@ -62,6 +62,54 @@ var SubgroupSchema = map[string]*schema.Schema{
 		Default:     1,
 		Description: "Denotes the type of monitors that can be associated. ‘1’ implies that all type of monitors can be associated with this subgroup. Default value is 1. '2' - Web, '3' - Port/Ping, '4' - Server, '5' - Database, '6' - Synthetic Transaction, '7' - Web API, '8' - APM Insight,'9' - Network Devices, '10' - RUM, '11' - AppLogs Monitor",
 	},
+	"healthcheck_profile_id": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Computed:    true,
+		Description: "Threshold profile to be associated with the Subgroup.",
+	},
+	"notification_profile_id": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Computed:    true,
+		Description: "Notification profile to be associated with the Subgroup.",
+	},
+	"user_group_ids": {
+		Type: schema.TypeList,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Computed:    true,
+		Description: "The user groups to be notified during an outage. Mandatory, if on_call_schedule_id is not chosen.",
+	},
+	"on_call_schedule_id": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Description: "On-Call Schedule of your choice. Mandatory, if user_group_ids is not chosen.",
+	},
+	"third_party_service_ids": {
+		Type: schema.TypeList,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Description: "List of Third Party Service IDs to be associated to the Subgroup.",
+	},
+	"tag_ids": {
+		Type: schema.TypeSet,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Computed:    true,
+		Description: "List of tag IDs to be associated to the Subgroup.",
+	},
+	"check_frequency": {
+		Type:        schema.TypeInt,
+		Computed:    true,
+		Description: "Health Check polling interval.",
+	},
 }
 
 func ResourceSite24x7Subgroup() *schema.Resource {
@@ -81,7 +129,7 @@ func ResourceSite24x7Subgroup() *schema.Resource {
 func subgroupCreate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(Client)
 
-	subgroup := resourceDataToSubgroup(d)
+	subgroup := resourceDataToSubgroup(d, client)
 
 	subgroup, err := client.Subgroups().Create(subgroup)
 	if err != nil {
@@ -112,7 +160,7 @@ func subgroupRead(d *schema.ResourceData, meta interface{}) error {
 func subgroupUpdate(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(Client)
 
-	subgrp := resourceDataToSubgroup(d)
+	subgrp := resourceDataToSubgroup(d, client)
 
 	subgroup, err := client.Subgroups().Update(subgrp)
 	if err != nil {
@@ -153,23 +201,79 @@ func subgroupExists(d *schema.ResourceData, meta interface{}) (bool, error) {
 	return true, nil
 }
 
-func resourceDataToSubgroup(d *schema.ResourceData) *api.Subgroup {
+func resourceDataToSubgroup(d *schema.ResourceData, client Client) *api.Subgroup {
 
 	monitors := d.Get("monitors").(*schema.Set).List()
 	monitorIDs := make([]string, 0, len(monitors))
 	for _, monitorID := range monitors {
-		monitorIDs = append(monitorIDs, monitorID.(string))
+		if monitorID != nil {
+			monitorIDs = append(monitorIDs, monitorID.(string))
+		}
+	}
+
+	var userGroupIDs []string
+	for _, id := range d.Get("user_group_ids").([]interface{}) {
+		if id != nil {
+			userGroupIDs = append(userGroupIDs, id.(string))
+		}
+	}
+
+	var tagIDs []string
+	for _, id := range d.Get("tag_ids").(*schema.Set).List() {
+		if id != nil {
+			tagIDs = append(tagIDs, id.(string))
+		}
+	}
+
+	var thirdPartyServiceIDs []string
+	for _, id := range d.Get("third_party_service_ids").([]interface{}) {
+		if id != nil {
+			thirdPartyServiceIDs = append(thirdPartyServiceIDs, id.(string))
+		}
+	}
+
+	// Setting default notification profile
+	notificationProfileID := d.Get("notification_profile_id").(string)
+	if notificationProfileID == "" {
+		notificationProfiles, err := client.NotificationProfiles().List()
+		if err == nil && len(notificationProfiles) > 0 {
+			notificationProfileID = notificationProfiles[0].ProfileID
+		}
+	}
+
+	// Setting default health check profile
+	healthCheckProfileID := d.Get("healthcheck_profile_id").(string)
+	if healthCheckProfileID == "" {
+		monitorType := "HEALTHCHECK"
+		profiles, err := client.ThresholdProfiles().List()
+		if err == nil {
+			var thresholdProf *api.ThresholdProfile
+			for _, p := range profiles {
+				if p.Type == monitorType {
+					thresholdProf = p
+				}
+			}
+			if thresholdProf != nil {
+				healthCheckProfileID = thresholdProf.ProfileID
+			}
+		}
 	}
 
 	return &api.Subgroup{
-		ID:                   d.Id(),
-		DisplayName:          d.Get("display_name").(string),
-		Description:          d.Get("description").(string),
-		TopGroupID:           d.Get("top_group_id").(string),
-		ParentGroupID:        d.Get("parent_group_id").(string),
-		Type:                 d.Get("group_type").(int),
-		Monitors:             monitorIDs,
-		HealthThresholdCount: d.Get("health_threshold_count").(int),
+		ID:                    d.Id(),
+		DisplayName:           d.Get("display_name").(string),
+		Description:           d.Get("description").(string),
+		TopGroupID:            d.Get("top_group_id").(string),
+		ParentGroupID:         d.Get("parent_group_id").(string),
+		Type:                  d.Get("group_type").(int),
+		Monitors:              monitorIDs,
+		HealthThresholdCount:  d.Get("health_threshold_count").(int),
+		HealthCheckProfileID:  healthCheckProfileID,
+		NotificationProfileID: notificationProfileID,
+		UserGroupIDs:          userGroupIDs,
+		OnCallScheduleID:      d.Get("on_call_schedule_id").(string),
+		ThirdPartyServiceIDs:  thirdPartyServiceIDs,
+		TagIDs:                tagIDs,
 	}
 }
 
@@ -181,4 +285,11 @@ func updateSubgroupResourceData(d *schema.ResourceData, subgroup *api.Subgroup) 
 	d.Set("top_group_id", subgroup.TopGroupID)
 	d.Set("parent_group_id", subgroup.ParentGroupID)
 	d.Set("group_type", subgroup.Type)
+	d.Set("healthcheck_profile_id", subgroup.HealthCheckProfileID)
+	d.Set("notification_profile_id", subgroup.NotificationProfileID)
+	d.Set("user_group_ids", subgroup.UserGroupIDs)
+	d.Set("on_call_schedule_id", subgroup.OnCallScheduleID)
+	d.Set("third_party_service_ids", subgroup.ThirdPartyServiceIDs)
+	d.Set("tag_ids", subgroup.TagIDs)
+	d.Set("check_frequency", subgroup.CheckFrequency)
 }

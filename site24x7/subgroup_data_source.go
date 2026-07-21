@@ -59,6 +59,57 @@ var subgroupDataSourceSchema = map[string]*schema.Schema{
 		Computed:    true,
 		Description: "List of monitors associated to the group.",
 	},
+	"healthcheck_profile_id": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Computed:    true,
+		Description: "Threshold profile associated with the Subgroup.",
+	},
+	"notification_profile_id": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Computed:    true,
+		Description: "Notification profile associated with the Subgroup.",
+	},
+	"user_group_ids": {
+		Type: schema.TypeList,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Computed:    true,
+		Description: "The user groups to be notified during an outage.",
+	},
+	"on_call_schedule_id": {
+		Type:        schema.TypeString,
+		Optional:    true,
+		Computed:    true,
+		Description: "On-Call Schedule associated with the Subgroup.",
+	},
+	"third_party_service_ids": {
+		Type: schema.TypeList,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Computed:    true,
+		Description: "List of Third Party Service IDs associated to the Subgroup.",
+	},
+	"tag_ids": {
+		Type: schema.TypeSet,
+		Elem: &schema.Schema{
+			Type: schema.TypeString,
+		},
+		Optional:    true,
+		Computed:    true,
+		Description: "List of tag IDs associated to the Subgroup.",
+	},
+	"check_frequency": {
+		Type:        schema.TypeInt,
+		Optional:    true,
+		Computed:    true,
+		Description: "Health Check polling interval.",
+	},
 }
 
 func DataSourceSite24x7Subgroup() *schema.Resource {
@@ -95,6 +146,13 @@ func subgroupDataSourceRead(d *schema.ResourceData, meta interface{}) error {
 					subgroup.ParentGroupID = groupInfo.ParentGroupID
 					subgroup.TopGroupID = groupInfo.TopGroupID
 					subgroup.Type = groupInfo.Type
+					subgroup.HealthCheckProfileID = groupInfo.HealthCheckProfileID
+					subgroup.NotificationProfileID = groupInfo.NotificationProfileID
+					subgroup.UserGroupIDs = groupInfo.UserGroupIDs
+					subgroup.OnCallScheduleID = groupInfo.OnCallScheduleID
+					subgroup.ThirdPartyServiceIDs = groupInfo.ThirdPartyServiceIDs
+					subgroup.TagIDs = groupInfo.TagIDs
+					subgroup.CheckFrequency = groupInfo.CheckFrequency
 					break
 				}
 			}
@@ -121,5 +179,11 @@ func updateSubgroupDataSourceResourceData(d *schema.ResourceData, subgroup *api.
 	d.Set("top_group_id", subgroup.TopGroupID)
 	d.Set("group_type", subgroup.Type)
 	d.Set("health_threshold_count", subgroup.HealthThresholdCount)
-	d.Set("monitors", subgroup.Monitors)
+	d.Set("healthcheck_profile_id", subgroup.HealthCheckProfileID)
+	d.Set("notification_profile_id", subgroup.NotificationProfileID)
+	d.Set("user_group_ids", subgroup.UserGroupIDs)
+	d.Set("on_call_schedule_id", subgroup.OnCallScheduleID)
+	d.Set("third_party_service_ids", subgroup.ThirdPartyServiceIDs)
+	d.Set("tag_ids", subgroup.TagIDs)
+	d.Set("check_frequency", subgroup.CheckFrequency)
 }

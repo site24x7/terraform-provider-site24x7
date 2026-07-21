@@ -11,6 +11,20 @@
     "monitors": [
       "726000000002460",
       "726000000002464"
-    ]
+    ],
+    "health_threshold_count": 1,
+    "healthcheck_profile_id": "726000000002462",
+    "notification_profile_id": "726000000002466",
+    "user_group_ids": [
+      "726000000002463"
+    ],
+    "on_call_schedule_id": "726000000002461",
+    "third_party_services": [
+      "726000000002763"
+    ],
+    "tags": [
+      "726000000002465"
+    ],
+    "check_frequency": 5
   }
 }

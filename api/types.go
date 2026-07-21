@@ -2,7 +2,6 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
 	"reflect"
 	"strconv"
 )
@@ -168,15 +167,22 @@ func (monitorGroup *MonitorGroup) String() string {
 
 // Subgroups help you revisualize the high level architecture of your monitor group in a business view inside the web client. Create nested subgroups under your monitor group. Its a handy concept for easy administration.
 type Subgroup struct {
-	_                    struct{} `type:"structure"` // Enforces key based initialization.
-	ID                   string   `json:"group_id,omitempty"`
-	DisplayName          string   `json:"display_name"`
-	TopGroupID           string   `json:"top_group_id"`
-	ParentGroupID        string   `json:"parent_group_id"`
-	Description          string   `json:"description,omitempty"`
-	Type                 int      `json:"group_type"`
-	Monitors             []string `json:"monitors,omitempty"`
-	HealthThresholdCount int      `json:"health_threshold_count,omitempty"`
+	_                     struct{} `type:"structure"` // Enforces key based initialization.
+	ID                    string   `json:"group_id,omitempty"`
+	DisplayName           string   `json:"display_name"`
+	TopGroupID            string   `json:"top_group_id"`
+	ParentGroupID         string   `json:"parent_group_id"`
+	Description           string   `json:"description,omitempty"`
+	Type                  int      `json:"group_type"`
+	Monitors              []string `json:"monitors,omitempty"`
+	HealthThresholdCount  int      `json:"health_threshold_count,omitempty"`
+	HealthCheckProfileID  string   `json:"healthcheck_profile_id,omitempty"`
+	NotificationProfileID string   `json:"notification_profile_id,omitempty"`
+	UserGroupIDs          []string `json:"user_group_ids,omitempty"`
+	OnCallScheduleID      string   `json:"on_call_schedule_id,omitempty"`
+	ThirdPartyServiceIDs  []string `json:"third_party_services,omitempty"`
+	TagIDs                []string `json:"tags,omitempty"`
+	CheckFrequency        int      `json:"check_frequency,omitempty"`
 }
 
 func (subgroup *Subgroup) String() string {
@@ -281,6 +287,26 @@ func toMapSlice(v interface{}) []map[string]interface{} {
 	return nil
 }
 
+// toObjectMap converts an interface{} to map[string]interface{}.
+// The Site24x7 API sometimes returns an array instead of an object for
+// certain threshold fields (e.g. disk_free_size, disk_used_size, server_uptime).
+// This tolerantly handles both shapes so a single unexpected payload can never
+// panic the provider via an unchecked type assertion. When an array is received
+// the first object element is preserved; otherwise nil is returned.
+func toObjectMap(v interface{}) map[string]interface{} {
+	switch val := v.(type) {
+	case map[string]interface{}:
+		return val
+	case []interface{}:
+		for _, item := range val {
+			if m, ok := item.(map[string]interface{}); ok {
+				return m
+			}
+		}
+	}
+	return nil
+}
+
 func (thresholdProfile *ThresholdProfile) UnmarshalJSON(rawValue []byte) error {
 	var f interface{}
 	if err := json.Unmarshal(rawValue, &f); err != nil {
@@ -289,7 +315,10 @@ func (thresholdProfile *ThresholdProfile) UnmarshalJSON(rawValue []byte) error {
 	if f == nil {
 		return nil
 	}
-	m := f.(map[string]interface{})
+	m, ok := f.(map[string]interface{})
+	if !ok {
+		return nil
+	}
 	for k, v := range m {
 		if k == "profile_id" {
 			thresholdProfile.ProfileID, _ = v.(string)
@@ -298,9 +327,13 @@ func (thresholdProfile *ThresholdProfile) UnmarshalJSON(rawValue []byte) error {
 		} else if k == "profile_name" {
 			thresholdProfile.ProfileName, _ = v.(string)
 		} else if k == "profile_type" {
-			thresholdProfile.ProfileType = int(v.(float64))
+			if fv, ok := v.(float64); ok {
+				thresholdProfile.ProfileType = int(fv)
+			}
 		} else if k == "down_location_threshold" {
-			thresholdProfile.DownLocationThreshold = int(v.(float64))
+			if fv, ok := v.(float64); ok {
+				thresholdProfile.DownLocationThreshold = int(fv)
+			}
 		} else if k == "website_content_modified" {
 			typeOfContentModified := reflect.TypeOf(v).Kind()
 			if typeOfContentModified == reflect.Map {
@@ -314,24 +347,25 @@ func (thresholdProfile *ThresholdProfile) UnmarshalJSON(rawValue []byte) error {
 			switch val := v.(type) {
 			case []interface{}:
 				for _, x := range val {
-					fmt.Println("this is b", x.(map[string]interface{}))
-					thresholdProfile.WebsiteContentChanges = append(thresholdProfile.WebsiteContentChanges, x.(map[string]interface{}))
+					if mx, ok := x.(map[string]interface{}); ok {
+						thresholdProfile.WebsiteContentChanges = append(thresholdProfile.WebsiteContentChanges, mx)
+					}
 				}
 			}
 		} else if k == "response_time_threshold" {
-			thresholdProfile.ResponseTimeThreshold = v.(map[string]interface{})
+			thresholdProfile.ResponseTimeThreshold, _ = v.(map[string]interface{})
 		} else if k == "read_time_out" {
-			thresholdProfile.ReadTimeOut = v.(map[string]interface{})
+			thresholdProfile.ReadTimeOut, _ = v.(map[string]interface{})
 		} else if k == "cron_no_run_alert" {
-			thresholdProfile.CronNoRunAlert = v.(map[string]interface{})
+			thresholdProfile.CronNoRunAlert, _ = v.(map[string]interface{})
 		} else if k == "cron_duration_alert" {
-			thresholdProfile.CronDurationAlert = v.(map[string]interface{})
+			thresholdProfile.CronDurationAlert, _ = v.(map[string]interface{})
 		} else if k == "hb_availability1" {
-			thresholdProfile.TroubleIfNotPingedMoreThan = v.(map[string]interface{})
+			thresholdProfile.TroubleIfNotPingedMoreThan, _ = v.(map[string]interface{})
 		} else if k == "hb_availability2" {
-			thresholdProfile.DownIfNotPingedMoreThan = v.(map[string]interface{})
+			thresholdProfile.DownIfNotPingedMoreThan, _ = v.(map[string]interface{})
 		} else if k == "hb_availability3" {
-			thresholdProfile.TroubleIfPingedWithin = v.(map[string]interface{})
+			thresholdProfile.TroubleIfPingedWithin, _ = v.(map[string]interface{})
 		} else if k == "cpu_threshold" {
 			thresholdProfile.CpuThreshold = toMapSlice(v)
 		} else if k == "memory_threshold" {
@@ -339,7 +373,7 @@ func (thresholdProfile *ThresholdProfile) UnmarshalJSON(rawValue []byte) error {
 		} else if k == "disk_usage_threshold" {
 			thresholdProfile.DiskUsageThreshold = toMapSlice(v)
 		} else if k == "process_down_alert" {
-			thresholdProfile.ProcessDownAlert = v.(map[string]interface{})
+			thresholdProfile.ProcessDownAlert, _ = v.(map[string]interface{})
 		} else if k == "server_resource_down_alert" {
 			switch val := v.(type) {
 			case map[string]interface{}:
@@ -349,13 +383,13 @@ func (thresholdProfile *ThresholdProfile) UnmarshalJSON(rawValue []byte) error {
 				thresholdProfile.ServerResourceDownAlert = map[string]interface{}{"severity": float64(2), "value": val}
 			}
 		} else if k == "dc_alert" {
-			thresholdProfile.DcAlert = v.(map[string]interface{})
+			thresholdProfile.DcAlert, _ = v.(map[string]interface{})
 		} else if k == "disk_status_threshold" {
-			thresholdProfile.DiskStatusThreshold = v.(map[string]interface{})
+			thresholdProfile.DiskStatusThreshold, _ = v.(map[string]interface{})
 		} else if k == "service_status_threshold" {
-			thresholdProfile.ServiceStatusThreshold = v.(map[string]interface{})
+			thresholdProfile.ServiceStatusThreshold, _ = v.(map[string]interface{})
 		} else if k == "nw_status_threshold" {
-			thresholdProfile.NwStatusThreshold = v.(map[string]interface{})
+			thresholdProfile.NwStatusThreshold, _ = v.(map[string]interface{})
 		} else if k == "disk_partition_threshold" {
 			thresholdProfile.DiskPartitionThreshold = toMapSlice(v)
 		} else if k == "process_cpu_threshold" {
@@ -391,11 +425,11 @@ func (thresholdProfile *ThresholdProfile) UnmarshalJSON(rawValue []byte) error {
 		} else if k == "blocked_process" {
 			thresholdProfile.BlockedProcess = toMapSlice(v)
 		} else if k == "disk_used_size" {
-			thresholdProfile.DiskUsedSize = v.(map[string]interface{})
+			thresholdProfile.DiskUsedSize = toObjectMap(v)
 		} else if k == "disk_free_size" {
-			thresholdProfile.DiskFreeSize = v.(map[string]interface{})
+			thresholdProfile.DiskFreeSize = toObjectMap(v)
 		} else if k == "server_uptime" {
-			thresholdProfile.ServerUptime = v.(map[string]interface{})
+			thresholdProfile.ServerUptime = toObjectMap(v)
 		}
 	}
 	return nil
