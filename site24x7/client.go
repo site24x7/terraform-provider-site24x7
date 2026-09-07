@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints"
+	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/apm"
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/aws"
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/common"
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/integration"
@@ -128,6 +129,9 @@ type Client interface {
 	MilestoneMarker() common.MilestoneMarker
 	SLASetting() common.SLASetting
 	AttributeAlertGroup() common.AttributeAlertGroup
+	APMApplications() apm.APMApplications
+	APMInstances() apm.APMInstances
+	APMAgentConfigProfiles() apm.APMAgentConfigProfiles
 }
 
 type client struct {
@@ -415,4 +419,19 @@ func (c *client) SLASetting() common.SLASetting {
 // AttributeAlertGroup implements Client.
 func (c *client) AttributeAlertGroup() common.AttributeAlertGroup {
 	return common.NewAttributeAlertGroup(c.restClient)
+}
+
+// APMApplications implements Client.
+func (c *client) APMApplications() apm.APMApplications {
+	return apm.NewAPMApplications(c.restClient)
+}
+
+// APMInstances implements Client.
+func (c *client) APMInstances() apm.APMInstances {
+	return apm.NewAPMInstances(c.restClient)
+}
+
+// APMAgentConfigProfiles implements Client.
+func (c *client) APMAgentConfigProfiles() apm.APMAgentConfigProfiles {
+	return apm.NewAPMAgentConfigProfiles(c.restClient)
 }

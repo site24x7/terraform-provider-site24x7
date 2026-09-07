@@ -73,7 +73,7 @@ type WebsiteMonitor struct {
 	PrimaryProtocol           int      `json:"primary_protocol,omitempty"`
 	SecondaryProtocolSeverity int      `json:"secondary_protocol_severity,omitempty"`
 	HiddenMonAdded            int      `json:"hidden_mon_added,omitempty"`
-	UseIPV6                   bool     `json:"use_ipv6,omitempty"`
+	UseIPV6                   bool     `json:"use_ipv6"`
 	State                     int      `json:"state"`
 	// HTTP Configuration
 	HTTPMethod                string   `json:"http_method"`
@@ -86,7 +86,7 @@ type WebsiteMonitor struct {
 	AuthPass                  string   `json:"auth_pass,omitempty"`
 	CredentialProfileID       string   `json:"credential_profile_id,omitempty"`
 	ClientCertificatePassword string   `json:"client_certificate_password,omitempty"`
-	UseNameServer             bool     `json:"use_name_server,omitempty"`
+	UseNameServer             bool     `json:"use_name_server"`
 	ForcedIPs                 string   `json:"forced_ips,omitempty"`
 	UpStatusCodes             string   `json:"up_status_codes,omitempty"`
 	FollowHTTPRedirection     bool     `json:"follow_redirect"`
