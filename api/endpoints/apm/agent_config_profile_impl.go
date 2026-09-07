@@ -2,8 +2,10 @@ package apm
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/site24x7/terraform-provider-site24x7/api"
+	apierrors "github.com/site24x7/terraform-provider-site24x7/api/errors"
 	"github.com/site24x7/terraform-provider-site24x7/rest"
 )
 

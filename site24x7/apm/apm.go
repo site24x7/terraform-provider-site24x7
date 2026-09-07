@@ -179,6 +179,130 @@ func sortedInstanceIDs(instanceIDs []string) []string {
 	return sorted
 }
 
+// agentConfigProfileComputedSchema is the set of agent configuration profile
+// attributes shared by the profile data sources, and mirrors the writable
+// schema in apm_agent_config_profile.go attribute for attribute.
+func agentConfigProfileComputedSchema() map[string]*schema.Schema {
+	return map[string]*schema.Schema{
+		"profile_id": {
+			Type:        schema.TypeString,
+			Computed:    true,
+			Description: "ID of the configuration profile.",
+		},
+		"profile_name": {
+			Type:        schema.TypeString,
+			Computed:    true,
+			Description: "Display name of the configuration profile.",
+		},
+		"agent_type": {
+			Type:        schema.TypeString,
+			Computed:    true,
+			Description: "Type of APM Insight agent the profile configures, for example JAVA, DOTNET, PHP, RUBY, NODEJS or PYTHON.",
+		},
+		"is_default": {
+			Type:        schema.TypeBool,
+			Computed:    true,
+			Description: "True when this profile is the default configuration for its agent type.",
+		},
+		"transaction_trace_enabled": {
+			Type:        schema.TypeBool,
+			Computed:    true,
+			Description: "Whether transaction traces are collected. Maps to transaction.trace.enabled.",
+		},
+		"transaction_trace_threshold": {
+			Type:        schema.TypeInt,
+			Computed:    true,
+			Description: "Tracing threshold in seconds. Maps to transaction.trace.threshold.",
+		},
+		"transaction_trace_sql_parametrize": {
+			Type:        schema.TypeBool,
+			Computed:    true,
+			Description: "Whether SQL queries in traces are obfuscated. Maps to transaction.trace.sql.parametrize.",
+		},
+		"transaction_trace_sql_stacktrace_threshold": {
+			Type:        schema.TypeInt,
+			Computed:    true,
+			Description: "Slow SQL query threshold in seconds. Maps to transaction.trace.sql.stacktrace.threshold.",
+		},
+		"transaction_tracking_request_interval": {
+			Type:        schema.TypeInt,
+			Computed:    true,
+			Description: "Web transaction sampling factor. Maps to transaction.tracking.request.interval.",
+		},
+		"sql_capture_enabled": {
+			Type:        schema.TypeBool,
+			Computed:    true,
+			Description: "Whether SQL queries are captured. Maps to sql.capture.enabled.",
+		},
+		"autoupgrade_enabled": {
+			Type:        schema.TypeBool,
+			Computed:    true,
+			Description: "Whether agents using this profile upgrade themselves automatically. Maps to autoupgrade.enabled.",
+		},
+		"show_instance_port_number": {
+			Type:        schema.TypeBool,
+			Computed:    true,
+			Description: "Whether instance names include the port number. Maps to show.instance.port.number.",
+		},
+		"apdex_threshold": {
+			Type:        schema.TypeFloat,
+			Computed:    true,
+			Description: "Apdex threshold in seconds. Maps to apdex.threshold.",
+		},
+		"cloud_instance_cleanup_threshold": {
+			Type:        schema.TypeInt,
+			Computed:    true,
+			Description: "Number of inactive days after which auto-suspended cloud instances are deleted. Maps to cloud.instance.cleanup.threshold.",
+		},
+		"last_modified_time": {
+			Type:        schema.TypeString,
+			Computed:    true,
+			Description: "When the profile was last updated, in milliseconds since the epoch. Maps to last.modified.time.",
+		},
+	}
+}
+
+// flattenAgentConfigProfile turns a profile into the attribute map used both
+// for a single profile's state and for one element of the profile list.
+//
+// The API nests the agent settings under agent_config with dotted keys; they
+// are flattened here to top-level attributes named after the wire key with the
+// dots replaced by underscores.
+func flattenAgentConfigProfile(profile *api.APMAgentConfigProfile) map[string]interface{} {
+	config := profile.AgentConfig
+
+	return map[string]interface{}{
+		"profile_id":                                 profile.ProfileID,
+		"profile_name":                               profile.ProfileName,
+		"agent_type":                                 profile.AgentType,
+		"is_default":                                 profile.IsDefault,
+		"transaction_trace_enabled":                  config.TransactionTraceEnabled,
+		"transaction_trace_threshold":                config.TransactionTraceThreshold,
+		"transaction_trace_sql_parametrize":          config.ParametrizeSQLQuery,
+		"transaction_trace_sql_stacktrace_threshold": config.SQLStackTraceThreshold,
+		"transaction_tracking_request_interval":      config.RequestTrackingInterval,
+		"sql_capture_enabled":                        config.SQLCaptureEnabled,
+		"autoupgrade_enabled":                        config.AutoUpgradeEnabled,
+		"show_instance_port_number":                  config.ShowInstancePortNumber,
+		"apdex_threshold":                            config.ApdexThreshold,
+		"cloud_instance_cleanup_threshold":           config.CloudInstanceCleanupThreshold,
+		"last_modified_time":                         string(config.LastModifiedTime),
+	}
+}
+
+// setAgentConfigProfileData writes the shared profile attributes into state.
+//
+// profile_id is skipped because the resource carries the profile ID in the
+// Terraform ID rather than as an attribute; the data sources set it themselves.
+func setAgentConfigProfileData(d *schema.ResourceData, profile *api.APMAgentConfigProfile) {
+	for name, value := range flattenAgentConfigProfile(profile) {
+		if name == "profile_id" {
+			continue
+		}
+		d.Set(name, value)
+	}
+}
+
 // setApplicationData writes the shared application attributes into state.
 func setApplicationData(d *schema.ResourceData, application *api.APMApplication) {
 	info := application.ApplicationInfo

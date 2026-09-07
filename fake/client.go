@@ -63,6 +63,10 @@ type Client struct {
 	FakeAPMApplications               *fake.APMApplications
 	FakeAPMInstances                  *fake.APMInstances
 	FakeAPMAgentConfigProfiles        *fake.APMAgentConfigProfiles
+	FakeAttributeAlertGroup           *fake.AttributeAlertGroup
+	FakeOAuth2Provider                *fake.OAuth2Provider
+	FakeMilestoneMarker               *fake.MilestoneMarker
+	FakeSLASetting                    *fake.SLASetting
 }
 
 // NewClient creates a new fake site24x7 API client.
@@ -117,6 +121,10 @@ func NewClient() *Client {
 		FakeAPMApplications:               &fake.APMApplications{},
 		FakeAPMInstances:                  &fake.APMInstances{},
 		FakeAPMAgentConfigProfiles:        &fake.APMAgentConfigProfiles{},
+		FakeAttributeAlertGroup:           &fake.AttributeAlertGroup{},
+		FakeOAuth2Provider:                &fake.OAuth2Provider{},
+		FakeMilestoneMarker:               &fake.MilestoneMarker{},
+		FakeSLASetting:                    &fake.SLASetting{},
 	}
 }
 
@@ -361,4 +369,24 @@ func (c *Client) APMInstances() apm.APMInstances {
 // APMAgentConfigProfiles implements Client.
 func (c *Client) APMAgentConfigProfiles() apm.APMAgentConfigProfiles {
 	return c.FakeAPMAgentConfigProfiles
+}
+
+// AttributeAlertGroup implements Client.
+func (c *Client) AttributeAlertGroup() common.AttributeAlertGroup {
+	return c.FakeAttributeAlertGroup
+}
+
+// OAuth2Provider implements Client.
+func (c *Client) OAuth2Provider() common.OAuth2Provider {
+	return c.FakeOAuth2Provider
+}
+
+// MilestoneMarker implements Client.
+func (c *Client) MilestoneMarker() common.MilestoneMarker {
+	return c.FakeMilestoneMarker
+}
+
+// SLASetting implements Client.
+func (c *Client) SLASetting() common.SLASetting {
+	return c.FakeSLASetting
 }
