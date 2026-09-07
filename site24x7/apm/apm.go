@@ -21,6 +21,21 @@ var timeWindowSchema = &schema.Schema{
 	Description: "Time window used when querying the APM Insight API, for example \"H\" for the last hour. Only affects the request path; the attributes read by this provider are the same for every window.",
 }
 
+// timeWindowOrDefault mirrors the fallback the endpoint client applies to an
+// empty window.
+//
+// It matters on import: an imported resource has no time_window in state, so
+// without recording the window actually queried, state keeps "" while the
+// schema default is "H" and the first plan after the import proposes a change
+// that does nothing.
+func timeWindowOrDefault(timeWindow string) string {
+	if timeWindow == "" {
+		return apmendpoint.DefaultTimeWindow
+	}
+
+	return timeWindow
+}
+
 // instanceElem is the nested shape used for the instances of an application.
 func instanceElem() *schema.Resource {
 	return &schema.Resource{

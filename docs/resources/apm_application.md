@@ -62,7 +62,7 @@ Existing applications can be imported by application ID:
 terraform import site24x7_apm_application.checkout 101071000000034001
 ```
 
-`delete_on_destroy` is not stored in Site24x7, so an imported resource starts with the safe default of `false`.
+`delete_on_destroy` is not stored in Site24x7, so an imported resource starts with the safe default of `false`. `time_window` is recorded on read, so the first plan after an import reports no changes.
 
 ## Argument Reference
 

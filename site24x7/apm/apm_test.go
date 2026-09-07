@@ -3,8 +3,12 @@ package apm
 import (
 	"testing"
 
+	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 	"github.com/site24x7/terraform-provider-site24x7/api"
+	apmendpoint "github.com/site24x7/terraform-provider-site24x7/api/endpoints/apm"
+	"github.com/site24x7/terraform-provider-site24x7/fake"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 // The API returns hosts and instances as JSON objects. Go randomises map
@@ -75,6 +79,61 @@ func TestSortedInstanceIDsDoesNotMutateInput(t *testing.T) {
 
 	assert.Equal(t, []string{"100", "200", "300"}, sortedInstanceIDs(original))
 	assert.Equal(t, []string{"300", "100", "200"}, original)
+}
+
+func TestTimeWindowOrDefault(t *testing.T) {
+	assert.Equal(t, apmendpoint.DefaultTimeWindow, timeWindowOrDefault(""))
+	assert.Equal(t, "D", timeWindowOrDefault("D"))
+}
+
+// An imported application starts with no time_window in state. Read has to
+// record the window it queried, or the first plan after the import proposes
+// "" -> "H" and the adoption never reaches a clean plan.
+func TestAPMApplicationReadRecordsTimeWindowAfterImport(t *testing.T) {
+	c := fake.NewClient()
+
+	// TestResourceDataRaw builds from a config map, so it applies the schema
+	// default. Clearing the attribute is what models an imported resource,
+	// whose state carries nothing but the ID.
+	d := schema.TestResourceDataRaw(t, apmApplicationResourceSchema(), map[string]interface{}{})
+	d.SetId("101071000000034001")
+	d.Set("time_window", "")
+	require.Equal(t, "", d.Get("time_window"), "an imported resource starts with no time_window")
+
+	application := &api.APMApplication{
+		ApplicationInfo:        api.APMApplicationInfo{ApplicationID: "101071000000034001", ApplicationName: "checkout-api"},
+		AvailabilityHealthInfo: api.APMAvailabilityHealthInfo{ManagedState: true},
+	}
+
+	// The endpoint client falls back to the default window for an empty one.
+	c.FakeAPMApplications.On("Get", "101071000000034001", "").Return(application, nil).Once()
+
+	require.NoError(t, resourceSite24x7APMApplicationRead(d, c))
+
+	assert.Equal(t, apmendpoint.DefaultTimeWindow, d.Get("time_window"))
+	assert.Equal(t, "checkout-api", d.Get("application_name"))
+	assert.Equal(t, true, d.Get("managed"))
+}
+
+// An explicitly configured window is preserved rather than overwritten with the
+// default.
+func TestAPMApplicationReadPreservesExplicitTimeWindow(t *testing.T) {
+	c := fake.NewClient()
+
+	d := schema.TestResourceDataRaw(t, apmApplicationResourceSchema(), map[string]interface{}{
+		"time_window": "D",
+	})
+	d.SetId("101071000000034001")
+
+	application := &api.APMApplication{
+		ApplicationInfo: api.APMApplicationInfo{ApplicationID: "101071000000034001"},
+	}
+
+	c.FakeAPMApplications.On("Get", "101071000000034001", "D").Return(application, nil).Once()
+
+	require.NoError(t, resourceSite24x7APMApplicationRead(d, c))
+
+	assert.Equal(t, "D", d.Get("time_window"))
 }
 
 func TestAPMApplicationMatches(t *testing.T) {

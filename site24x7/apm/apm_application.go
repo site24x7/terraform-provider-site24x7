@@ -88,7 +88,9 @@ func resourceSite24x7APMApplicationCreate(d *schema.ResourceData, meta interface
 func resourceSite24x7APMApplicationRead(d *schema.ResourceData, meta interface{}) error {
 	client := meta.(site24x7.Client)
 
-	application, err := client.APMApplications().Get(d.Id(), d.Get("time_window").(string))
+	timeWindow := d.Get("time_window").(string)
+
+	application, err := client.APMApplications().Get(d.Id(), timeWindow)
 	if err != nil {
 		// The application was deleted outside Terraform. Drop it from state so
 		// that the next plan proposes adopting it again rather than failing.
@@ -102,6 +104,9 @@ func resourceSite24x7APMApplicationRead(d *schema.ResourceData, meta interface{}
 
 	d.Set("application_id", application.ApplicationInfo.ApplicationID)
 	d.Set("managed", application.AvailabilityHealthInfo.ManagedState)
+	// Recorded so that an imported resource, which starts with no time_window in
+	// state, does not leave "" behind for the next plan to correct.
+	d.Set("time_window", timeWindowOrDefault(timeWindow))
 	setApplicationData(d, application)
 
 	return nil
