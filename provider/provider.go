@@ -9,6 +9,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/site24x7/terraform-provider-site24x7/backoff"
 	"github.com/site24x7/terraform-provider-site24x7/site24x7"
+	"github.com/site24x7/terraform-provider-site24x7/site24x7/apm"
 	"github.com/site24x7/terraform-provider-site24x7/site24x7/aws"
 	"github.com/site24x7/terraform-provider-site24x7/site24x7/common"
 	"github.com/site24x7/terraform-provider-site24x7/site24x7/integration"
@@ -123,6 +124,8 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_milestone_marker":                common.ResourceSite24x7MilestoneMarker(),
 			"site24x7_sla_setting":                     common.ResourceSite24x7SLASetting(),
 			"site24x7_attribute_alert_group":           common.ResourceSite24x7AttributeAlertGroup(),
+			"site24x7_apm_application":                 apm.ResourceSite24x7APMApplication(),
+			"site24x7_apm_agent_config_profile":        apm.ResourceSite24x7APMAgentConfigProfile(),
 		},
 		DataSourcesMap: map[string]*schema.Resource{
 			"site24x7_monitor":              monitors.DataSourceSite24x7Monitor(),
@@ -144,6 +147,13 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_oauth2_provider":       common.DataSourceSite24x7OAuth2Provider(),
 			"site24x7_sla_setting":           common.DataSourceSite24x7SLASetting(),
 			"site24x7_attribute_alert_group": common.DataSourceSite24x7AttributeAlertGroup(),
+			"site24x7_apm_application":       apm.DataSourceSite24x7APMApplication(),
+			"site24x7_apm_applications":      apm.DataSourceSite24x7APMApplications(),
+			"site24x7_apm_instance":          apm.DataSourceSite24x7APMInstance(),
+			"site24x7_apm_instances":         apm.DataSourceSite24x7APMInstances(),
+
+			"site24x7_apm_agent_config_profile":  apm.DataSourceSite24x7APMAgentConfigProfile(),
+			"site24x7_apm_agent_config_profiles": apm.DataSourceSite24x7APMAgentConfigProfiles(),
 		},
 
 		ConfigureFunc: providerConfigure,

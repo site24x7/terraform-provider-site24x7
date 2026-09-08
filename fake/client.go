@@ -2,6 +2,7 @@ package fake
 
 import (
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints"
+	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/apm"
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/aws"
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/common"
 	"github.com/site24x7/terraform-provider-site24x7/api/endpoints/fake"
@@ -59,6 +60,13 @@ type Client struct {
 	FakeAWSExternalID                 *fake.AWSExternalID
 	FakeGCPMonitors                   *fake.GCPMonitors
 	FakeDeviceKey                     *fake.DeviceKey
+	FakeAPMApplications               *fake.APMApplications
+	FakeAPMInstances                  *fake.APMInstances
+	FakeAPMAgentConfigProfiles        *fake.APMAgentConfigProfiles
+	FakeAttributeAlertGroup           *fake.AttributeAlertGroup
+	FakeOAuth2Provider                *fake.OAuth2Provider
+	FakeMilestoneMarker               *fake.MilestoneMarker
+	FakeSLASetting                    *fake.SLASetting
 }
 
 // NewClient creates a new fake site24x7 API client.
@@ -110,6 +118,13 @@ func NewClient() *Client {
 		FakeAWSExternalID:                 &fake.AWSExternalID{},
 		FakeGCPMonitors:                   &fake.GCPMonitors{},
 		FakeDeviceKey:                     &fake.DeviceKey{},
+		FakeAPMApplications:               &fake.APMApplications{},
+		FakeAPMInstances:                  &fake.APMInstances{},
+		FakeAPMAgentConfigProfiles:        &fake.APMAgentConfigProfiles{},
+		FakeAttributeAlertGroup:           &fake.AttributeAlertGroup{},
+		FakeOAuth2Provider:                &fake.OAuth2Provider{},
+		FakeMilestoneMarker:               &fake.MilestoneMarker{},
+		FakeSLASetting:                    &fake.SLASetting{},
 	}
 }
 
@@ -339,4 +354,39 @@ func (c *Client) DeviceKey() common.DeviceKey {
 // GCPMonitors implements Client.
 func (c *Client) GCPMonitors() monitors.GCPMonitors {
 	return c.FakeGCPMonitors
+}
+
+// APMApplications implements Client.
+func (c *Client) APMApplications() apm.APMApplications {
+	return c.FakeAPMApplications
+}
+
+// APMInstances implements Client.
+func (c *Client) APMInstances() apm.APMInstances {
+	return c.FakeAPMInstances
+}
+
+// APMAgentConfigProfiles implements Client.
+func (c *Client) APMAgentConfigProfiles() apm.APMAgentConfigProfiles {
+	return c.FakeAPMAgentConfigProfiles
+}
+
+// AttributeAlertGroup implements Client.
+func (c *Client) AttributeAlertGroup() common.AttributeAlertGroup {
+	return c.FakeAttributeAlertGroup
+}
+
+// OAuth2Provider implements Client.
+func (c *Client) OAuth2Provider() common.OAuth2Provider {
+	return c.FakeOAuth2Provider
+}
+
+// MilestoneMarker implements Client.
+func (c *Client) MilestoneMarker() common.MilestoneMarker {
+	return c.FakeMilestoneMarker
+}
+
+// SLASetting implements Client.
+func (c *Client) SLASetting() common.SLASetting {
+	return c.FakeSLASetting
 }

@@ -1,0 +1,336 @@
+package apm
+
+import (
+	"sort"
+
+	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/site24x7/terraform-provider-site24x7/api"
+	apmendpoint "github.com/site24x7/terraform-provider-site24x7/api/endpoints/apm"
+)
+
+// timeWindowSchema is shared by every APM data source and resource.
+//
+// The APM Insight endpoints require a time window in the request path, but
+// this provider only reads identity and configuration attributes, which do not
+// vary by window. It is exposed so that callers who need a specific window can
+// set one, and defaults to the cheapest.
+var timeWindowSchema = &schema.Schema{
+	Type:        schema.TypeString,
+	Optional:    true,
+	Default:     apmendpoint.DefaultTimeWindow,
+	Description: "Time window used when querying the APM Insight API, for example \"H\" for the last hour. Only affects the request path; the attributes read by this provider are the same for every window.",
+}
+
+// timeWindowOrDefault mirrors the fallback the endpoint client applies to an
+// empty window.
+//
+// It matters on import: an imported resource has no time_window in state, so
+// without recording the window actually queried, state keeps "" while the
+// schema default is "H" and the first plan after the import proposes a change
+// that does nothing.
+func timeWindowOrDefault(timeWindow string) string {
+	if timeWindow == "" {
+		return apmendpoint.DefaultTimeWindow
+	}
+
+	return timeWindow
+}
+
+// instanceElem is the nested shape used for the instances of an application.
+func instanceElem() *schema.Resource {
+	return &schema.Resource{
+		Schema: map[string]*schema.Schema{
+			"instance_id": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "Unique ID of the agent instance.",
+			},
+			"instance_name": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "Name of the agent instance, usually host:port.",
+			},
+			"host": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "Host address the instance reports from.",
+			},
+			"port": {
+				Type:        schema.TypeInt,
+				Computed:    true,
+				Description: "Port number of the instance.",
+			},
+			"ins_type": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "Type of APM Insight agent, for example JAVA, PHP, RUBY, DOTNET or NODEJS.",
+			},
+			"agent_version": {
+				Type:        schema.TypeString,
+				Computed:    true,
+				Description: "Version of the APM Insight agent deployed at this instance.",
+			},
+		},
+	}
+}
+
+// applicationComputedSchema is the set of attributes shared by the application
+// data source and the application resource.
+//
+// Performance metrics returned by the API - response times, apdex, throughput,
+// error counts, cpu time - are intentionally absent. They are recomputed on
+// every request, so storing them would report drift on every refresh that no
+// apply could resolve.
+func applicationComputedSchema() map[string]*schema.Schema {
+	return map[string]*schema.Schema{
+		"application_name": {
+			Type:        schema.TypeString,
+			Computed:    true,
+			Description: "Name of the APM Insight application.",
+		},
+		"instance_ids": {
+			Type:        schema.TypeList,
+			Computed:    true,
+			Elem:        &schema.Schema{Type: schema.TypeString},
+			Description: "IDs of all instances reporting into this application, sorted.",
+		},
+		"instance_count": {
+			Type:        schema.TypeInt,
+			Computed:    true,
+			Description: "Number of instances reporting into this application.",
+		},
+		"host_count": {
+			Type:        schema.TypeInt,
+			Computed:    true,
+			Description: "Number of hosts running this application.",
+		},
+		"hosts": {
+			Type:        schema.TypeList,
+			Computed:    true,
+			Elem:        &schema.Schema{Type: schema.TypeString},
+			Description: "Host addresses running this application, sorted.",
+		},
+		"instances": {
+			Type:        schema.TypeList,
+			Computed:    true,
+			Elem:        instanceElem(),
+			Description: "Instances reporting into this application, sorted by instance ID.",
+		},
+		"rum_app_id": {
+			Type:        schema.TypeString,
+			Computed:    true,
+			Description: "ID of the linked Real User Monitoring application, empty when none is linked.",
+		},
+		"rum_app_key": {
+			Type:        schema.TypeString,
+			Computed:    true,
+			Description: "Key of the linked Real User Monitoring application. This key is embedded in browser-side JavaScript and is not a secret.",
+		},
+		"rum_app_name": {
+			Type:        schema.TypeString,
+			Computed:    true,
+			Description: "Name of the linked Real User Monitoring application.",
+		},
+		"availability": {
+			Type:        schema.TypeString,
+			Computed:    true,
+			Description: "Current availability status, for example AVAILABLE or NOTAVAILABLE.",
+		},
+		"under_maintenance": {
+			Type:        schema.TypeBool,
+			Computed:    true,
+			Description: "True when the application is currently under maintenance.",
+		},
+	}
+}
+
+// flattenHosts returns the host addresses in a stable order. The API returns
+// them as a JSON object, and Go map iteration order is randomised, so sorting
+// is what keeps repeated reads from producing a spurious diff.
+func flattenHosts(hosts map[string][]string) []string {
+	flattened := make([]string, 0, len(hosts))
+	for host := range hosts {
+		flattened = append(flattened, host)
+	}
+
+	sort.Strings(flattened)
+	return flattened
+}
+
+// flattenInstances returns the instances sorted by instance ID, for the same
+// reason as flattenHosts.
+func flattenInstances(instances map[string]api.APMInstanceInfo) []interface{} {
+	instanceIDs := make([]string, 0, len(instances))
+	for instanceID := range instances {
+		instanceIDs = append(instanceIDs, instanceID)
+	}
+	sort.Strings(instanceIDs)
+
+	flattened := make([]interface{}, 0, len(instances))
+	for _, instanceID := range instanceIDs {
+		flattened = append(flattened, flattenInstanceInfo(instances[instanceID]))
+	}
+
+	return flattened
+}
+
+func flattenInstanceInfo(info api.APMInstanceInfo) map[string]interface{} {
+	return map[string]interface{}{
+		"instance_id":   info.InstanceID,
+		"instance_name": info.InstanceName,
+		"host":          info.Host,
+		"port":          info.Port,
+		"ins_type":      info.InstanceType,
+		"agent_version": string(info.AgentVersion),
+	}
+}
+
+// sortedInstanceIDs copies and sorts the instance ID list so that the ordering
+// the API happens to return does not leak into state.
+func sortedInstanceIDs(instanceIDs []string) []string {
+	sorted := make([]string, len(instanceIDs))
+	copy(sorted, instanceIDs)
+	sort.Strings(sorted)
+	return sorted
+}
+
+// agentConfigProfileComputedSchema is the set of agent configuration profile
+// attributes shared by the profile data sources, and mirrors the writable
+// schema in apm_agent_config_profile.go attribute for attribute.
+func agentConfigProfileComputedSchema() map[string]*schema.Schema {
+	return map[string]*schema.Schema{
+		"profile_id": {
+			Type:        schema.TypeString,
+			Computed:    true,
+			Description: "ID of the configuration profile.",
+		},
+		"profile_name": {
+			Type:        schema.TypeString,
+			Computed:    true,
+			Description: "Display name of the configuration profile.",
+		},
+		"agent_type": {
+			Type:        schema.TypeString,
+			Computed:    true,
+			Description: "Type of APM Insight agent the profile configures, for example JAVA, DOTNET, PHP, RUBY, NODEJS or PYTHON.",
+		},
+		"is_default": {
+			Type:        schema.TypeBool,
+			Computed:    true,
+			Description: "True when this profile is the default configuration for its agent type.",
+		},
+		"transaction_trace_enabled": {
+			Type:        schema.TypeBool,
+			Computed:    true,
+			Description: "Whether transaction traces are collected. Maps to transaction.trace.enabled.",
+		},
+		"transaction_trace_threshold": {
+			Type:        schema.TypeInt,
+			Computed:    true,
+			Description: "Tracing threshold in seconds. Maps to transaction.trace.threshold.",
+		},
+		"transaction_trace_sql_parametrize": {
+			Type:        schema.TypeBool,
+			Computed:    true,
+			Description: "Whether SQL queries in traces are obfuscated. Maps to transaction.trace.sql.parametrize.",
+		},
+		"transaction_trace_sql_stacktrace_threshold": {
+			Type:        schema.TypeInt,
+			Computed:    true,
+			Description: "Slow SQL query threshold in seconds. Maps to transaction.trace.sql.stacktrace.threshold.",
+		},
+		"transaction_tracking_request_interval": {
+			Type:        schema.TypeInt,
+			Computed:    true,
+			Description: "Web transaction sampling factor. Maps to transaction.tracking.request.interval.",
+		},
+		"sql_capture_enabled": {
+			Type:        schema.TypeBool,
+			Computed:    true,
+			Description: "Whether SQL queries are captured. Maps to sql.capture.enabled.",
+		},
+		"autoupgrade_enabled": {
+			Type:        schema.TypeBool,
+			Computed:    true,
+			Description: "Whether agents using this profile upgrade themselves automatically. Maps to autoupgrade.enabled.",
+		},
+		"show_instance_port_number": {
+			Type:        schema.TypeBool,
+			Computed:    true,
+			Description: "Whether instance names include the port number. Maps to show.instance.port.number.",
+		},
+		"apdex_threshold": {
+			Type:        schema.TypeFloat,
+			Computed:    true,
+			Description: "Apdex threshold in seconds. Maps to apdex.threshold.",
+		},
+		"cloud_instance_cleanup_threshold": {
+			Type:        schema.TypeInt,
+			Computed:    true,
+			Description: "Number of inactive days after which auto-suspended cloud instances are deleted. Maps to cloud.instance.cleanup.threshold.",
+		},
+		"last_modified_time": {
+			Type:        schema.TypeString,
+			Computed:    true,
+			Description: "When the profile was last updated, in milliseconds since the epoch. Maps to last.modified.time.",
+		},
+	}
+}
+
+// flattenAgentConfigProfile turns a profile into the attribute map used both
+// for a single profile's state and for one element of the profile list.
+//
+// The API nests the agent settings under agent_config with dotted keys; they
+// are flattened here to top-level attributes named after the wire key with the
+// dots replaced by underscores.
+func flattenAgentConfigProfile(profile *api.APMAgentConfigProfile) map[string]interface{} {
+	config := profile.AgentConfig
+
+	return map[string]interface{}{
+		"profile_id":                                 profile.ProfileID,
+		"profile_name":                               profile.ProfileName,
+		"agent_type":                                 profile.AgentType,
+		"is_default":                                 profile.IsDefault,
+		"transaction_trace_enabled":                  config.TransactionTraceEnabled,
+		"transaction_trace_threshold":                config.TransactionTraceThreshold,
+		"transaction_trace_sql_parametrize":          config.ParametrizeSQLQuery,
+		"transaction_trace_sql_stacktrace_threshold": config.SQLStackTraceThreshold,
+		"transaction_tracking_request_interval":      config.RequestTrackingInterval,
+		"sql_capture_enabled":                        config.SQLCaptureEnabled,
+		"autoupgrade_enabled":                        config.AutoUpgradeEnabled,
+		"show_instance_port_number":                  config.ShowInstancePortNumber,
+		"apdex_threshold":                            config.ApdexThreshold,
+		"cloud_instance_cleanup_threshold":           config.CloudInstanceCleanupThreshold,
+		"last_modified_time":                         string(config.LastModifiedTime),
+	}
+}
+
+// setAgentConfigProfileData writes the shared profile attributes into state.
+//
+// profile_id is skipped because the resource carries the profile ID in the
+// Terraform ID rather than as an attribute; the data sources set it themselves.
+func setAgentConfigProfileData(d *schema.ResourceData, profile *api.APMAgentConfigProfile) {
+	for name, value := range flattenAgentConfigProfile(profile) {
+		if name == "profile_id" {
+			continue
+		}
+		d.Set(name, value)
+	}
+}
+
+// setApplicationData writes the shared application attributes into state.
+func setApplicationData(d *schema.ResourceData, application *api.APMApplication) {
+	info := application.ApplicationInfo
+
+	d.Set("application_name", info.ApplicationName)
+	d.Set("instance_ids", sortedInstanceIDs(info.InstanceIDs))
+	d.Set("instance_count", info.InstanceCount)
+	d.Set("host_count", info.HostCount)
+	d.Set("hosts", flattenHosts(info.Hosts))
+	d.Set("instances", flattenInstances(info.Instances))
+	d.Set("rum_app_id", info.RUMInfo.RUMAppID)
+	d.Set("rum_app_key", info.RUMInfo.RUMAppKey)
+	d.Set("rum_app_name", info.RUMInfo.RUMAppName)
+	d.Set("availability", application.AvailabilityHealthInfo.Availability)
+	d.Set("under_maintenance", application.AvailabilityHealthInfo.UnderMaintenance)
+}
