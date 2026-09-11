@@ -32,9 +32,12 @@ var dataCenter = map[string]DataCenter{
 		zohoAccountsTokenURL: "https://accounts.zoho.com.cn/oauth/v2/token",
 	},
 	"JP": {
-		displayName:          "Japan",
-		code:                 "JP",
-		site24x7APIBaseURL:   "https://www.site24x7.jp//api",
+		displayName: "Japan",
+		code:        "JP",
+		// Japan is the one data center whose API is not served from a www host:
+		// www.site24x7.jp is the Japanese marketing site, and the API root is
+		// app.site24x7.jp. See https://www.site24x7.com/help/api/
+		site24x7APIBaseURL:   "https://app.site24x7.jp/api",
 		zohoAccountsTokenURL: "https://accounts.zoho.jp/oauth/v2/token",
 	},
 	"CA": {
