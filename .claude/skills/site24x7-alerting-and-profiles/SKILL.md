@@ -203,7 +203,7 @@ production — the provider will forward the call either way.
 | `site24x7_sla_setting` | yes | `site24x7_sla_setting` |
 | `site24x7_customer` | yes | `site24x7_customer`, `site24x7_msp` |
 | `site24x7_businesshour` | yes | none |
-| `site24x7_schedule_maintenance` | yes | none |
+| `site24x7_schedule_maintenance` | yes | `site24x7_schedule_maintenances` — list, filterable by `monitor_id`, `monitor_group_id`, `tag_id`, `maintenance_type`, `maintenance_status`, `name_regex` |
 | `site24x7_schedule_report` | yes | none |
 | all 7 `site24x7_*_integration` | yes | none |
 | `site24x7_milestone_marker` | **no** | none |
@@ -216,8 +216,12 @@ Three data sources have no resource behind them and exist purely to read account
 
 Resources with **no** data source cannot be discovered by name from Terraform. To adopt or
 reference one you need its ID from the Site24x7 UI or a direct API call — that applies to
-business hours, scheduled maintenance, scheduled reports, every integration, milestone markers
-and subgroups.
+business hours, scheduled reports, every integration, milestone markers and subgroups.
+
+`site24x7_schedule_maintenances` filters in the provider, because `GET /maintenance` takes no
+query parameters. Its `monitor_id` filter matches only maintenances that list the monitor
+directly (`selection_type = 2`). A maintenance that covers the monitor through a monitor group
+or tag is not returned, so query those with `monitor_group_id` and `tag_id` as well.
 
 ## Worked example — a complete alerting path
 

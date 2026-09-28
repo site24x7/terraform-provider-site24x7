@@ -492,6 +492,22 @@ type ScheduleMaintenance struct {
 	Monitors           []string     `json:"monitors,omitempty"`
 	MonitorGroups      []string     `json:"monitor_groups,omitempty"`
 	Tags               []string     `json:"tags,omitempty"`
+	// The fields below are returned by the API but not managed by the
+	// site24x7_schedule_maintenance resource. They are all omitempty so that
+	// requests built by the resource are unchanged; the
+	// site24x7_schedule_maintenances data source reads them.
+	MaintenanceStatus        string `json:"maintenance_status,omitempty"`
+	MonthlyStartDate         int    `json:"monthly_start_date,omitempty"`
+	StartWeek                int    `json:"start_week,omitempty"`
+	StartAfter               int    `json:"start_after,omitempty"`
+	MaintenanceEndType       int    `json:"maintenance_end_type,omitempty"`
+	MaintenanceEndAfterTimes int    `json:"maintenance_end_after_times,omitempty"`
+	MaintenanceEndOn         string `json:"maintenance_end_on,omitempty"`
+	// Pointer so an absent value can be told apart from false: the API
+	// defaults it to true for monitor group maintenances.
+	SubgroupMonitors     *bool  `json:"subgroup_monitors,omitempty"`
+	MaintenanceStartTime string `json:"maintenance_start_time,omitempty"`
+	ZUID                 string `json:"zuid,omitempty"`
 }
 
 func (scheduleMaintenance *ScheduleMaintenance) String() string {

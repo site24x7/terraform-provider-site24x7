@@ -107,9 +107,10 @@ forever: `site24x7_location_profile`, `site24x7_notification_profile`,
 `site24x7_oauth2_provider`, `site24x7_sla_setting`, `site24x7_it_automation` (the data
 source for the `site24x7_url_action` resource — the names differ) and `site24x7_customer`.
 
-**Seven resource families have no data source at all**, so nothing in Terraform can discover
-them by name: subgroups, business hours, scheduled maintenance, scheduled reports, all seven
-integrations, and milestone markers. Their IDs have to come from the Site24x7 UI or a direct
+**These resource families have no data source at all**, so nothing in Terraform can discover
+them by name: subgroups, business hours, scheduled reports, all seven integrations, and
+milestone markers. (Scheduled maintenances can be inventoried with the
+`site24x7_schedule_maintenances` data source.) Their IDs have to come from the Site24x7 UI or a direct
 API call. The full resource-to-data-source map is in the `site24x7-alerting-and-profiles`
 skill; don't promise the customer name-based discovery for anything on that list.
 
