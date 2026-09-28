@@ -17,9 +17,9 @@ func TestFTPTransferMonitorCreate(t *testing.T) {
 	c := fake.NewClient()
 
 	a := &api.FTPTransferMonitor{
-		DisplayName:           "FTP Transfer Monitor",
+		DisplayName:           "FTP Monitor",
 		HostName:              "www.example.com",
-		Protocol:              "FTP",
+		Protocol:              "HTTPS",
 		Type:                  "FTP",
 		Port:                  443,
 		CheckFrequency:        "5",
@@ -28,10 +28,10 @@ func TestFTPTransferMonitorCreate(t *testing.T) {
 		CheckDownload:         true,
 		Username:              "sas",
 		Password:              "sas",
-		Destination:           "/Home/sas/",
+		Destination:           "/home/sas",
 		PerformAutomation:     true,
-		CredentialProfileID:   "2345536536",
-		OnCallScheduleID:      "8687567555",
+		CredentialProfileID:   "234354543523",
+		OnCallScheduleID:      "232432423",
 		LocationProfileID:     "456",
 		NotificationProfileID: "789",
 		ThresholdProfileID:    "012",
@@ -39,6 +39,7 @@ func TestFTPTransferMonitorCreate(t *testing.T) {
 		DependencyResourceIDs: []string{"234", "567"},
 		UserGroupIDs:          []string{"123", "456"},
 		TagIDs:                []string{"123"},
+		ActionIDs:             []api.ActionRef{},
 	}
 
 	locationProfiles := []*api.LocationProfile{
@@ -101,7 +102,7 @@ func TestFTPTransferMonitorCreate(t *testing.T) {
 
 	c.FakeFTPTransferMonitors.On("Create", a).Return(a, nil).Once()
 
-	require.NoError(t, sslMonitorCreate(d, c))
+	require.NoError(t, ftpTransferMonitorCreate(d, c))
 
 	c.FakeFTPTransferMonitors.On("Create", a).Return(a, apierrors.NewStatusError(500, "error")).Once()
 
@@ -117,9 +118,10 @@ func TestFTPTransferMonitorUpdate(t *testing.T) {
 	c := fake.NewClient()
 
 	a := &api.FTPTransferMonitor{
-		DisplayName:           "FTP Transfer Monitor",
+		MonitorID:             "123",
+		DisplayName:           "FTP Monitor",
 		HostName:              "www.example.com",
-		Protocol:              "FTP",
+		Protocol:              "HTTPS",
 		Type:                  "FTP",
 		Port:                  443,
 		CheckFrequency:        "5",
@@ -128,10 +130,10 @@ func TestFTPTransferMonitorUpdate(t *testing.T) {
 		CheckDownload:         true,
 		Username:              "sas",
 		Password:              "sas",
-		Destination:           "/Home/sas/",
+		Destination:           "/home/sas",
 		PerformAutomation:     true,
-		CredentialProfileID:   "2345536536",
-		OnCallScheduleID:      "8687567555",
+		CredentialProfileID:   "234354543523",
+		OnCallScheduleID:      "232432423",
 		LocationProfileID:     "456",
 		NotificationProfileID: "789",
 		ThresholdProfileID:    "012",
@@ -139,6 +141,7 @@ func TestFTPTransferMonitorUpdate(t *testing.T) {
 		DependencyResourceIDs: []string{"234", "567"},
 		UserGroupIDs:          []string{"123", "456"},
 		TagIDs:                []string{"123"},
+		ActionIDs:             []api.ActionRef{},
 	}
 
 	locationProfiles := []*api.LocationProfile{
@@ -201,11 +204,11 @@ func TestFTPTransferMonitorUpdate(t *testing.T) {
 
 	c.FakeFTPTransferMonitors.On("Update", a).Return(a, nil).Once()
 
-	require.NoError(t, sslMonitorUpdate(d, c))
+	require.NoError(t, ftpTransferMonitorUpdate(d, c))
 
 	c.FakeFTPTransferMonitors.On("Update", a).Return(a, apierrors.NewStatusError(500, "error")).Once()
 
-	err := sslMonitorUpdate(d, c)
+	err := ftpTransferMonitorUpdate(d, c)
 
 	assert.Equal(t, apierrors.NewStatusError(500, "error"), err)
 }
@@ -281,7 +284,7 @@ func ftpTransferTestResourceData(t *testing.T) *schema.ResourceData {
 		"check_frequency":         "5",
 		"check_upload":            true,
 		"check_download":          true,
-		"username":                "sas",
+		"user_name":              "sas",
 		"password":                "sas",
 		"destination":             "/home/sas",
 		"perform_automation":      true,
@@ -301,6 +304,9 @@ func ftpTransferTestResourceData(t *testing.T) *schema.ResourceData {
 		"user_group_ids": []interface{}{
 			"123",
 			"456",
+		},
+		"tag_ids": []interface{}{
+			"123",
 		},
 	})
 }

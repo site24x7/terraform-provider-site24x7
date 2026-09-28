@@ -34,6 +34,7 @@ var credentialProfileDataSourcceSchema = map[string]*schema.Schema{
 		Type:        schema.TypeString,
 		Optional:    true,
 		Description: "Password for the Credential Profile.",
+		Sensitive:   true, // Hides it from logs and plan output
 	},
 }
 

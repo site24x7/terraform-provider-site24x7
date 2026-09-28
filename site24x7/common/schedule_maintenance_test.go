@@ -139,7 +139,7 @@ func scheduleMaintenanceTestResourceData(t *testing.T) *schema.ResourceData {
 		"description":      "Maintenance Window",
 		"start_date":       "2022-06-02",
 		"end_date":         "2022-06-02",
-		"timezone":         "PST",
+		"time_zone":        "PST",
 		"start_time":       "19:41",
 		"end_time":         "20:44",
 		"selection_type":   2,

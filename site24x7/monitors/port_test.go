@@ -17,10 +17,14 @@ func TestPortMonitorCreate(t *testing.T) {
 	c := fake.NewClient()
 
 	a := &api.PortMonitor{
-		DisplayName:           "Port Monitor",
-		HostName:              "www.example.com",
+		DisplayName: "Port Monitor",
+		Type:        string(api.PORT),
+		HostName:    "www.example.com",
+		// port and check_frequency are not in the test's ResourceData; 80 and "5"
+		// are the schema defaults.
+		Port:                  80,
+		CheckFrequency:        "5",
 		Timeout:               10,
-		UseIPV6:               true,
 		UseSSL:                true,
 		InvertPortCheck:       true,
 		ApplicationType:       "FTP",
@@ -28,9 +32,12 @@ func TestPortMonitorCreate(t *testing.T) {
 		PerformAutomation:     false,
 		LocationProfileID:     "456",
 		NotificationProfileID: "789",
+		ThresholdProfileID:    "012",
 		MonitorGroups:         []string{"234", "567"},
 		UserGroupIDs:          []string{"123", "456"},
 		TagIDs:                []string{"123"},
+		DependencyResourceIDs: []string{},
+		ActionIDs:             []api.ActionRef{},
 	}
 
 	locationProfiles := []*api.LocationProfile{
@@ -96,7 +103,7 @@ func TestPortMonitorCreate(t *testing.T) {
 
 	require.NoError(t, portMonitorCreate(d, c))
 
-	c.FakePortMonitors.On("Create	", a).Return(a, apierrors.NewStatusError(500, "error")).Once()
+	c.FakePortMonitors.On("Create", a).Return(a, apierrors.NewStatusError(500, "error")).Once()
 
 	err := portMonitorCreate(d, c)
 
@@ -111,13 +118,24 @@ func TestPortMonitorUpdate(t *testing.T) {
 
 	a := &api.PortMonitor{
 		MonitorID:             "123",
-		DisplayName:           "foo",
+		DisplayName:           "Port Monitor",
 		Type:                  string(api.PORT),
+		HostName:              "www.example.com",
+		Port:                  80,
+		CheckFrequency:        "5",
+		Timeout:               10,
+		UseSSL:                true,
+		InvertPortCheck:       true,
+		ApplicationType:       "FTP",
+		OnCallScheduleID:      "234",
 		LocationProfileID:     "456",
 		NotificationProfileID: "789",
+		ThresholdProfileID:    "012",
 		MonitorGroups:         []string{"234", "567"},
 		UserGroupIDs:          []string{"123", "456"},
 		TagIDs:                []string{"123"},
+		DependencyResourceIDs: []string{},
+		ActionIDs:             []api.ActionRef{},
 		// ActionIDs: []api.ActionRef{
 		// 	{
 		// 		ActionID:  "123action",
@@ -273,14 +291,18 @@ func TestPortMonitorExists(t *testing.T) {
 
 func portMonitorTestResourceData(t *testing.T) *schema.ResourceData {
 	return schema.TestResourceDataRaw(t, PortMonitorSchema, map[string]interface{}{
+		// expire_days and ignore_registry_date are domain-expiry keys that
+		// PortMonitorSchema does not declare, so they were silently dropped.
 		"display_name":            "Port Monitor",
 		"host_name":               "www.example.com",
-		"timeout":                 0,
-		"expire_days":             30,
+		"timeout":                 10,
+		"use_ssl":                 true,
+		"invert_port_check":       true,
+		"application_type":        "FTP",
 		"on_call_schedule_id":     "234",
-		"ignore_registry_date":    false,
 		"location_profile_id":     "456",
 		"notification_profile_id": "789",
+		"threshold_profile_id":    "012",
 		"monitor_groups": []interface{}{
 			"234",
 			"567",

@@ -32,6 +32,7 @@ func TestISPMonitorCreate(t *testing.T) {
 		DependencyResourceIDs: []string{"234", "567"},
 		UserGroupIDs:          []string{"123", "456"},
 		TagIDs:                []string{"123"},
+		ActionIDs:             []api.ActionRef{},
 	}
 
 	locationProfiles := []*api.LocationProfile{
@@ -94,7 +95,7 @@ func TestISPMonitorCreate(t *testing.T) {
 
 	c.FakeISPMonitors.On("Create", a).Return(a, nil).Once()
 
-	require.NoError(t, sslMonitorCreate(d, c))
+	require.NoError(t, ispMonitorCreate(d, c))
 
 	c.FakeISPMonitors.On("Create", a).Return(a, apierrors.NewStatusError(500, "error")).Once()
 
@@ -110,6 +111,7 @@ func TestISPMonitorUpdate(t *testing.T) {
 	c := fake.NewClient()
 
 	a := &api.ISPMonitor{
+		MonitorID:             "123",
 		DisplayName:           "ISP Monitor",
 		Hostname:              "www.example.com",
 		UseIPV6:               true,
@@ -125,6 +127,7 @@ func TestISPMonitorUpdate(t *testing.T) {
 		DependencyResourceIDs: []string{"234", "567"},
 		UserGroupIDs:          []string{"123", "456"},
 		TagIDs:                []string{"123"},
+		ActionIDs:             []api.ActionRef{},
 	}
 
 	locationProfiles := []*api.LocationProfile{
@@ -187,11 +190,11 @@ func TestISPMonitorUpdate(t *testing.T) {
 
 	c.FakeISPMonitors.On("Update", a).Return(a, nil).Once()
 
-	require.NoError(t, sslMonitorUpdate(d, c))
+	require.NoError(t, ispMonitorUpdate(d, c))
 
 	c.FakeISPMonitors.On("Update", a).Return(a, apierrors.NewStatusError(500, "error")).Once()
 
-	err := sslMonitorUpdate(d, c)
+	err := ispMonitorUpdate(d, c)
 
 	assert.Equal(t, apierrors.NewStatusError(500, "error"), err)
 }
@@ -258,16 +261,18 @@ func TestISPMonitorExists(t *testing.T) {
 
 func ispTestResourceData(t *testing.T) *schema.ResourceData {
 	return schema.TestResourceDataRaw(t, ISPMonitorSchema, map[string]interface{}{
+		// These were SSL monitor keys (domain_name, expire_days,
+		// http_protocol_version, ignore_domain_mismatch, ignore_trust), copied
+		// from ssl_test.go along with the sslMonitorCreate calls. ISPMonitorSchema
+		// declares none of them, so every one of those values was dropped.
 		"display_name":            "ISP Monitor",
 		"type":                    "ISP",
-		"domain_name":             "www.example.com",
+		"hostname":                "www.example.com",
+		"use_ipv6":                true,
 		"timeout":                 30,
-		"protocol":                "HTTPS",
+		"protocol":                "1",
 		"port":                    443,
-		"expire_days":             30,
-		"http_protocol_version":   "H1.1",
-		"ignore_domain_mismatch":  false,
-		"ignore_trust":            false,
+		"check_frequency":         "5",
 		"location_profile_id":     "456",
 		"notification_profile_id": "789",
 		"threshold_profile_id":    "012",
@@ -282,6 +287,9 @@ func ispTestResourceData(t *testing.T) *schema.ResourceData {
 		"user_group_ids": []interface{}{
 			"123",
 			"456",
+		},
+		"tag_ids": []interface{}{
+			"123",
 		},
 	})
 }

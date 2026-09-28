@@ -1,7 +1,8 @@
 {
-    "code": 0,
-    "message": "success",
-    "data": {
+  "code": 0,
+  "message": "success",
+  "data": [
+    {
       "business_hours_id": "113770000041403039",
       "display_name": "General Shift",
       "time_config": [
@@ -33,5 +34,5 @@
       ],
       "description": "General shift 5 days a week 9 AM to 5 PM"
     }
-  }
-  
+  ]
+}

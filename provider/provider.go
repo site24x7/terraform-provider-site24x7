@@ -147,6 +147,7 @@ func Provider() terraform.ResourceProvider {
 			"site24x7_oauth2_provider":       common.DataSourceSite24x7OAuth2Provider(),
 			"site24x7_sla_setting":           common.DataSourceSite24x7SLASetting(),
 			"site24x7_attribute_alert_group": common.DataSourceSite24x7AttributeAlertGroup(),
+			"site24x7_schedule_maintenances": common.DataSourceSite24x7ScheduleMaintenances(),
 			"site24x7_apm_application":       apm.DataSourceSite24x7APMApplication(),
 			"site24x7_apm_applications":      apm.DataSourceSite24x7APMApplications(),
 			"site24x7_apm_instance":          apm.DataSourceSite24x7APMInstance(),

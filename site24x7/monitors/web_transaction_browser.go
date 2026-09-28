@@ -159,8 +159,11 @@ var WebTransactionBrowserMonitorSchema = map[string]*schema.Schema{
 		Description: "Check for the proxy in the website response.",
 	},
 	"auth_details": {
-		Type:     schema.TypeMap,
-		Optional: true,
+		Type:      schema.TypeMap,
+		Optional:  true,
+		Sensitive: true, // Hides it from logs and plan output. Marked on the map itself:
+		// the SDK does not honour Sensitive on the nested "password" below, because a
+		// TypeMap's Elem schema is not applied to its values.
 		Elem: &schema.Resource{
 			Schema: map[string]*schema.Schema{
 				"username": {

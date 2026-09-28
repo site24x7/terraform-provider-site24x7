@@ -29,52 +29,63 @@ func TestRestApiTransactionMonitorCreate(t *testing.T) {
 		TagIDs:                []string{"123"},
 		Steps: []api.Steps{
 			{
-				DisplayName: "Step2",
-				StepsDetails: []api.StepDetails{
-					{
-						StepUrl:                   "www.test.tld",
-						Timeout:                   "0",
-						HTTPMethod:                "G",
-						DisplayName:               "Step2",
-						HTTPProtocol:              "H1.1",
-						SSLProtocol:               "Auto",
-						UseAlpn:                   false,
-						RequestBody:               "req_param",
-						RequestContentType:        "JSON",
-						ResponseContentType:       "T",
-						OAuth2Provider:            "provider",
-						ClientCertificatePassword: "",
-						JwtID:                     "111",
-						AuthMethod:                "B",
-						AuthUser:                  "username",
-						AuthPass:                  "",
-						RequestHeaders: []api.Header{
-							{
-								Name:  "Accept",
-								Value: "application/json",
-							},
-							{
-								Name:  "Cache-Control",
-								Value: "nocache",
-							},
-						},
-						UseNameServer:     true,
-						MatchCase:         true,
-						JSONSchemaCheck:   false,
-						UserAgent:         "firefox",
-						MatchingKeyword:   map[string]interface{}{},
-						UnmatchingKeyword: map[string]interface{}{},
-						MatchRegex:        map[string]interface{}{},
-					},
-				},
-			},
-			{
 				DisplayName: "Step1",
 				StepsDetails: []api.StepDetails{
 					{
 						StepUrl:                   "www.test.tld",
-						Timeout:                   "0",
+						Timeout:                   "10",
+						HTTPMethod:                "G",
 						DisplayName:               "Step1",
+						HTTPProtocol:              "H1.1",
+						SSLProtocol:               "Auto",
+						UseAlpn:                   false,
+						RequestBody:               "req_param",
+						RequestContentType:        "JSON",
+						ResponseContentType:       "T",
+						OAuth2Provider:            "provider",
+						ClientCertificatePassword: "",
+						JwtID:                     "111",
+						AuthMethod:                "B",
+						AuthUser:                  "username",
+						AuthPass:                  "",
+						RequestHeaders: []api.Header{
+							{
+								Name:  "Accept",
+								Value: "application/json",
+							},
+							{
+								Name:  "Cache-Control",
+								Value: "nocache",
+							},
+						},
+						UseNameServer:     true,
+						MatchCase:         true,
+						JSONSchemaCheck:   false,
+						UserAgent:         "firefox",
+						MatchingKeyword:   map[string]interface{}{},
+						UnmatchingKeyword: map[string]interface{}{},
+						MatchRegex:        map[string]interface{}{},
+						GraphQL: map[string]interface{}{
+							"query":     "",
+							"variables": "",
+						},
+						JSONSchema: map[string]interface{}{
+							"severity":     2,
+							"schema_value": "",
+						},
+						ResponseHeaders:     api.HTTPResponseHeader{Severity: 0, Value: []api.Header{}},
+						ResponseVariable:    api.HTTPResponseVariable{ResponseType: "", Variables: []api.Header{}},
+						DynamicHeaderParams: api.HTTPDynamicHeaderParams{Variables: []api.Header{}},
+					},
+				},
+			},
+			{
+				DisplayName: "Step2",
+				StepsDetails: []api.StepDetails{
+					{
+						StepUrl:                   "www.test.tld",
+						Timeout:                   "10",
+						DisplayName:               "Step2",
 						HTTPMethod:                "G",
 						HTTPProtocol:              "H1.1",
 						SSLProtocol:               "Auto",
@@ -105,6 +116,17 @@ func TestRestApiTransactionMonitorCreate(t *testing.T) {
 						MatchingKeyword:   map[string]interface{}{},
 						UnmatchingKeyword: map[string]interface{}{},
 						MatchRegex:        map[string]interface{}{},
+						GraphQL: map[string]interface{}{
+							"query":     "",
+							"variables": "",
+						},
+						JSONSchema: map[string]interface{}{
+							"severity":     2,
+							"schema_value": "",
+						},
+						ResponseHeaders:     api.HTTPResponseHeader{Severity: 0, Value: []api.Header{}},
+						ResponseVariable:    api.HTTPResponseVariable{ResponseType: "", Variables: []api.Header{}},
+						DynamicHeaderParams: api.HTTPDynamicHeaderParams{Variables: []api.Header{}},
 					},
 				},
 			},
@@ -194,13 +216,13 @@ func TestRestApiTransactionMonitorUpdate(t *testing.T) {
 		CheckFrequency: "5",
 		Steps: []api.Steps{
 			{
-				DisplayName: "Step2",
+				DisplayName: "Step1",
 				MonitorID:   "123",
 				StepsDetails: []api.StepDetails{
 					{
 						StepUrl:                   "www.test.tld",
-						DisplayName:               "Step2",
-						Timeout:                   "0",
+						DisplayName:               "Step1",
+						Timeout:                   "10",
 						HTTPMethod:                "G",
 						HTTPProtocol:              "H1.1",
 						SSLProtocol:               "Auto",
@@ -221,6 +243,17 @@ func TestRestApiTransactionMonitorUpdate(t *testing.T) {
 						MatchingKeyword:           map[string]interface{}{},
 						UnmatchingKeyword:         map[string]interface{}{},
 						MatchRegex:                map[string]interface{}{},
+						GraphQL: map[string]interface{}{
+							"query":     "",
+							"variables": "",
+						},
+						JSONSchema: map[string]interface{}{
+							"severity":     2,
+							"schema_value": "",
+						},
+						ResponseHeaders:     api.HTTPResponseHeader{Severity: 0, Value: []api.Header{}},
+						ResponseVariable:    api.HTTPResponseVariable{ResponseType: "", Variables: []api.Header{}},
+						DynamicHeaderParams: api.HTTPDynamicHeaderParams{Variables: []api.Header{}},
 						RequestHeaders: []api.Header{
 							{
 								Name:  "Accept",
@@ -235,13 +268,13 @@ func TestRestApiTransactionMonitorUpdate(t *testing.T) {
 				},
 			},
 			{
-				DisplayName: "Step1",
+				DisplayName: "Step2",
 				MonitorID:   "123",
 				StepsDetails: []api.StepDetails{
 					{
 						StepUrl:                   "www.test.tld",
-						DisplayName:               "Step1",
-						Timeout:                   "0",
+						DisplayName:               "Step2",
+						Timeout:                   "10",
 						HTTPMethod:                "G",
 						HTTPProtocol:              "H1.1",
 						SSLProtocol:               "Auto",
@@ -262,6 +295,17 @@ func TestRestApiTransactionMonitorUpdate(t *testing.T) {
 						MatchingKeyword:           map[string]interface{}{},
 						UnmatchingKeyword:         map[string]interface{}{},
 						MatchRegex:                map[string]interface{}{},
+						GraphQL: map[string]interface{}{
+							"query":     "",
+							"variables": "",
+						},
+						JSONSchema: map[string]interface{}{
+							"severity":     2,
+							"schema_value": "",
+						},
+						ResponseHeaders:     api.HTTPResponseHeader{Severity: 0, Value: []api.Header{}},
+						ResponseVariable:    api.HTTPResponseVariable{ResponseType: "", Variables: []api.Header{}},
+						DynamicHeaderParams: api.HTTPDynamicHeaderParams{Variables: []api.Header{}},
 						RequestHeaders: []api.Header{
 							{
 								Name:  "Accept",
@@ -382,11 +426,17 @@ func TestRestApiTransactionMonitorRead(t *testing.T) {
 
 	c := fake.NewClient()
 
-	c.FakeRestApiTransactionMonitors.On("Get", "123").Return(&api.RestApiMonitor{}, nil).Once()
+	// The read path fetches the monitor and its steps through two separate API
+	// calls, so both have to be stubbed.
+	steps := &[]api.Steps{}
+
+	c.FakeRestApiTransactionMonitors.On("Get", "123").Return(&api.RestApiTransactionMonitor{}, nil).Once()
+	c.FakeRestApiTransactionMonitors.On("GetSteps", "123").Return(steps, nil).Once()
 
 	require.NoError(t, restApiTransactionMonitorRead(d, c))
 
 	c.FakeRestApiTransactionMonitors.On("Get", "123").Return(nil, apierrors.NewStatusError(500, "error")).Once()
+	c.FakeRestApiTransactionMonitors.On("GetSteps", "123").Return(steps, nil).Once()
 
 	err := restApiTransactionMonitorRead(d, c)
 
@@ -414,7 +464,7 @@ func TestRestApiTransactionMonitorExists(t *testing.T) {
 
 	c := fake.NewClient()
 
-	c.FakeRestApiTransactionMonitors.On("Get", "123").Return(&api.RestApiMonitor{}, nil).Once()
+	c.FakeRestApiTransactionMonitors.On("Get", "123").Return(&api.RestApiTransactionMonitor{}, nil).Once()
 
 	exists, err := restApiTransactionMonitorExists(d, c)
 
@@ -455,6 +505,9 @@ func restApiTransactionMonitorTestResourceData(t *testing.T) *schema.ResourceDat
 		"user_group_ids": []interface{}{
 			"123",
 			"456",
+		},
+		"tag_ids": []interface{}{
+			"123",
 		},
 		"steps": []interface{}{
 			map[string]interface{}{

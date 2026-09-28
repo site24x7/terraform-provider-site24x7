@@ -18,9 +18,9 @@ func TestCredentialProfileCreate(t *testing.T) {
 
 	a := &api.CredentialProfile{
 		CredentialType: 3,
-		CredentialName: "Creditial profile",
-		UserName:       "postman",
-		Password:       "test",
+		CredentialName: "Credential profile",
+		UserName:       "UserName",
+		Password:       "password",
 	}
 
 	c.FakeCredentialProfile.On("Create", a).Return(a, nil).Once()
@@ -43,52 +43,65 @@ func TestCredentialProfileUpdate(t *testing.T) {
 	a := &api.CredentialProfile{
 		ID:             "123",
 		CredentialType: 3,
-		CredentialName: "Creditial profile",
-		UserName:       "postman",
-		Password:       "test",
+		CredentialName: "Credential profile",
+		UserName:       "UserName",
+		Password:       "password",
 	}
 
-	c.FakeRestApiMonitors.On("Update", a).Return(a, nil).Once()
+	c.FakeCredentialProfile.On("Update", a).Return(a, nil).Once()
 
 	require.NoError(t, resourceSite24x7CredentialProfileUpdate(d, c))
 
-	c.FakeRestApiMonitors.On("Update", a).Return(a, apierrors.NewStatusError(500, "error")).Once()
+	c.FakeCredentialProfile.On("Update", a).Return(a, apierrors.NewStatusError(500, "error")).Once()
 
 	err := resourceSite24x7CredentialProfileUpdate(d, c)
 
 	assert.Equal(t, apierrors.NewStatusError(500, "error"), err)
 }
 
-func TestRestApiMonitorRead(t *testing.T) {
+// Named for the resource it actually exercises; it was TestRestApiMonitorRead,
+// copied from the REST API monitor tests along with the wrong mock and type.
+func TestCredentialProfileRead(t *testing.T) {
 	d := credentialProfileTestResourceData(t)
 	d.SetId("123")
 
 	c := fake.NewClient()
 
-	c.FakeRestApiMonitors.On("Get", "123").Return(&api.RestApiMonitor{}, nil).Once()
+	c.FakeCredentialProfile.On("Get", "123").Return(&api.CredentialProfile{ID: "123"}, nil).Once()
 
 	require.NoError(t, resourceSite24x7CredentialProfileRead(d, c))
 
-	c.FakeRestApiMonitors.On("Get", "123").Return(nil, apierrors.NewStatusError(500, "error")).Once()
+	c.FakeCredentialProfile.On("Get", "123").Return(nil, apierrors.NewStatusError(500, "error")).Once()
 
 	err := resourceSite24x7CredentialProfileRead(d, c)
 
 	assert.Equal(t, apierrors.NewStatusError(500, "error"), err)
 }
 
-func TestRestApiMonitorDelete(t *testing.T) {
+func TestCredentialProfileDelete(t *testing.T) {
 	d := credentialProfileTestResourceData(t)
 	d.SetId("123")
 
 	c := fake.NewClient()
 
-	c.FakeRestApiMonitors.On("Delete", "123").Return(nil).Once()
+	c.FakeCredentialProfile.On("Delete", "123").Return(nil).Once()
 
 	require.NoError(t, resourceSite24x7CredentialProfileDelete(d, c))
 
-	c.FakeRestApiMonitors.On("Delete", "123").Return(apierrors.NewStatusError(404, "not found")).Once()
+	// A successful delete clears the resource ID, so it has to be restored
+	// before exercising the already-deleted case.
+	d.SetId("123")
 
-	require.NoError(t, resourceSite24x7CredentialProfileDelete(d, c))
+	c.FakeCredentialProfile.On("Delete", "123").Return(apierrors.NewStatusError(404, "not found")).Once()
+
+	// This asserts current behaviour, not desired behaviour:
+	// resourceSite24x7CredentialProfileDelete returns every error from the API,
+	// so destroying a profile that was already removed outside Terraform fails.
+	// site24x7_tag, site24x7_monitor_group and the APM resources all treat a 404
+	// on delete as success instead. Worth aligning in the resource - a change
+	// outside the scope of this test-only pass.
+	assert.Equal(t, apierrors.NewStatusError(404, "not found"),
+		resourceSite24x7CredentialProfileDelete(d, c))
 }
 
 func credentialProfileTestResourceData(t *testing.T) *schema.ResourceData {

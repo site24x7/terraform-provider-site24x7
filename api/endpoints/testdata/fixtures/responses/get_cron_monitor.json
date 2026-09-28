@@ -1,0 +1,27 @@
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "monitor_id": "897654345678",
+    "display_name": "foo",
+    "cron_expression": "* * * * *",
+    "cron_tz": "IST",
+    "wait_time": 30,
+    "type": "CRON",
+    "threshold_profile_id": "012",
+    "notification_profile_id": "789",
+    "monitor_groups": [
+      "234",
+      "567"
+    ],
+    "third_party_services": [
+      "123",
+      "456"
+    ],
+    "user_group_ids": [
+      "123",
+      "456"
+    ],
+    "on_call_schedule_id": "1244"
+  }
+}

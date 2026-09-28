@@ -1,0 +1,31 @@
+{
+  "display_name": "General Shift",
+  "description": "5-day workweek from 9 AM to 5 PM",
+  "time_config": [
+    {
+      "day": 2,
+      "start_time": "09:00",
+      "end_time": "17:00"
+    },
+    {
+      "day": 3,
+      "start_time": "09:00",
+      "end_time": "17:00"
+    },
+    {
+      "day": 4,
+      "start_time": "09:00",
+      "end_time": "17:00"
+    },
+    {
+      "day": 5,
+      "start_time": "09:00",
+      "end_time": "17:00"
+    },
+    {
+      "day": 6,
+      "start_time": "09:00",
+      "end_time": "17:00"
+    }
+  ]
+}

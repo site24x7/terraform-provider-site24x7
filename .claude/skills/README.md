@@ -1,15 +1,17 @@
 # Site24x7 Terraform provider — Claude Code skills
 
-Three skills ship with this repository. Each one encodes provider behaviour that is easy to get
+Five skills ship with this repository. Each one encodes provider behaviour that is easy to get
 wrong from the documentation alone: name resolution that is substring-based, defaults that pick
 element `[0]`, resources that cannot be imported, deletes that do nothing, and credentials that
 never come back from the API.
 
-| Skill | Covers |
-|---|---|
-| [`site24x7-monitor-authoring`](site24x7-monitor-authoring/SKILL.md) | Writing and reviewing monitors, and APM Insight |
-| [`site24x7-alerting-and-profiles`](site24x7-alerting-and-profiles/SKILL.md) | The 25 resources that are not monitors — profiles, groups, users, integrations, schedules, SLAs, credentials, MSP customers |
-| [`site24x7-import-existing`](site24x7-import-existing/SKILL.md) | Bringing an existing (ClickOps) account under Terraform management |
+| Skill | Audience | Covers |
+|---|---|---|
+| [`site24x7-monitor-authoring`](site24x7-monitor-authoring/SKILL.md) | Provider users | Writing and reviewing monitors, and APM Insight |
+| [`site24x7-alerting-and-profiles`](site24x7-alerting-and-profiles/SKILL.md) | Provider users | The 25 resources that are not monitors — profiles, groups, users, integrations, schedules, SLAs, credentials, MSP customers |
+| [`site24x7-import-existing`](site24x7-import-existing/SKILL.md) | Provider users | Bringing an existing (ClickOps) account under Terraform management |
+| [`site24x7-drift-troubleshooting`](site24x7-drift-troubleshooting/SKILL.md) | Users and provider developers | Plans that never settle — secrets, list ordering, server defaults, profile flips, recreate loops — with a workaround for users and the Go fix for the provider |
+| [`site24x7-add-resource`](site24x7-add-resource/SKILL.md) | Provider developers | Adding a resource or data source to this codebase end to end: API type, endpoint, fake, tests, schema, Importer, registration, docs, example |
 
 ## Which one do I want?
 
@@ -32,11 +34,16 @@ never come back from the API.
 | Adopt a whole hand-built account into Terraform | `site24x7-import-existing` |
 | Drive `terraform plan` to "No changes" after an import | `site24x7-import-existing` |
 | Decide between `import` blocks, `terraform import`, and `site24x7_importer.py` | `site24x7-import-existing` |
+| Stop `terraform plan` showing the same change after every apply | `site24x7-drift-troubleshooting` |
+| Find out why a rotated password never reaches the monitor | `site24x7-drift-troubleshooting` |
+| Stop a list of IDs re-ordering on every plan | `site24x7-drift-troubleshooting` |
+| Add a new `site24x7_*` resource, monitor type or data source to the provider | `site24x7-add-resource` |
+| Add import support or 404 handling to an existing resource | `site24x7-add-resource` |
 
 ## How to invoke them
 
 **Automatically.** Just describe the task. Each skill's `description` field decides whether it
-loads, and all three are written to trigger on the way people actually phrase things ("how do I
+loads, and all five are written to trigger on the way people actually phrase things ("how do I
 get my existing monitors into Terraform", "set up Slack alerts") without anyone saying "skill".
 
 **Explicitly**, by name, with a free-text argument:
@@ -45,10 +52,12 @@ get my existing monitors into Terraform", "set up Slack alerts") without anyone 
 /site24x7-import-existing all SERVER monitors
 /site24x7-monitor-authoring the 12 prod API endpoints, alert the payments on-call
 /site24x7-alerting-and-profiles PagerDuty for the payments team
+/site24x7-drift-troubleshooting user_group_ids on site24x7_ssl_monitor.api keeps re-ordering
+/site24x7-add-resource data source for business hours
 ```
 
 The argument is optional but worth giving — it is what lets the skill skip straight to its fast
-path instead of asking. All three are `user-invocable`.
+path instead of asking. All five are `user-invocable`.
 
 ## What each will do
 
@@ -88,7 +97,30 @@ It has a fast path for a single named monitor, so asking it to adopt one SSL mon
 trigger a full account sweep. It will not run `apply` during an adoption unless the plan has
 been read line by line — an apply against a half-written config overwrites live monitors.
 
-## Prerequisites for all three
+### `site24x7-drift-troubleshooting`
+
+1. Reproduces the diff and captures the evidence — plan JSON, state, and the API request and
+   response from `TF_LOG=DEBUG`.
+2. Classifies it by shape (secret, rotation that never applies, list order, server default,
+   profile flip, recreate loop, two owners, hidden nested change) against offender tables
+   derived from the source.
+3. Gives the user a workaround for today, with its trade-off stated, and names the provider
+   file and attribute to fix.
+4. Proves the fix with two consecutive clean plans.
+
+It will not reach for `ignore_changes` first, and will not re-apply in a loop — a secret-blanking
+diff breaks the monitor's authentication on apply.
+
+### `site24x7-add-resource`
+
+A 13-step checklist through every layer a resource touches, in compile order, with the repo's
+reference implementations for each pattern. It encodes the conventions the codebase has
+converged on (Importer always, 404-tolerant Read and Delete, secrets never read back from the
+API, unordered IDs as sets) and names the existing resources that break each one, so they are
+not copied. It finishes with an end-to-end test against a real account and a reminder to update
+the other skills' counts.
+
+## Prerequisites for the user-facing skills
 
 - **Credentials in the environment**, never in a `.tf` file:
   `SITE24X7_OAUTH2_CLIENT_ID`, `SITE24X7_OAUTH2_CLIENT_SECRET`, `SITE24X7_OAUTH2_REFRESH_TOKEN`.
@@ -133,8 +165,9 @@ Copied that way they are a snapshot: re-copy after pulling changes to this repo.
 
 Each `SKILL.md` has YAML frontmatter with `name` (**must equal its directory name**),
 `description` (what drives automatic loading — keep the trigger phrases in it),
-`user-invocable`, `argument-hint` and `allowed-tools` (all three are granted `Read`, `Write`,
-`Edit`, `Glob`, `Grep`, `Bash`, so they can write `.tf` files and run `terraform`).
+`user-invocable`, `argument-hint` and `allowed-tools` (all five are granted `Read`, `Write`,
+`Edit`, `Glob`, `Grep`, `Bash`, so they can write `.tf` files and run `terraform`; the drift and
+add-resource skills also get `PowerShell`, since their audit commands are written for it).
 
 The skills state facts about the provider that change when the provider changes: how many
 resources are importable, which resources expose `location_profile_name`, the monitor type
@@ -155,10 +188,15 @@ Get-ChildItem -Recurse .claude/skills -Filter SKILL.md | ForEach-Object {
 }
 ```
 
-Two known false positives: `site24x7_user_constants` (an anchor in a Site24x7 docs URL) and
-`site24x7_importer` (the Python script's filename).
+Known false positives: `site24x7_user_constants` (an anchor in a Site24x7 docs URL),
+`site24x7_importer` (the Python script's filename), and `site24x7_widget` /
+`site24x7_smtp_monitor` (placeholder names in `site24x7-add-resource`'s examples).
 
 When adding a resource to the provider, the places to update are the resource/data-source map
 and the destroy-semantics list in `site24x7-alerting-and-profiles`, the importable count and
 dependency order in `site24x7-import-existing`, and — if it is a monitor — the resource table in
-`site24x7-monitor-authoring`.
+`site24x7-monitor-authoring`. `site24x7-add-resource` Step 13 walks through this.
+
+`site24x7-drift-troubleshooting` carries offender tables (secret handling, list vs set, Read
+without 404 handling) taken from the source. Its "Re-auditing" section has the commands that
+regenerate them; re-run them after fixing any listed resource.

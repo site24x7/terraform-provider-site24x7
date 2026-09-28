@@ -99,6 +99,7 @@ var WebhookIntegrationSchema = map[string]*schema.Schema{
 		Type:        schema.TypeString,
 		Optional:    true,
 		Description: "Password for authentication.",
+		Sensitive:   true, // Hides it from logs and plan output
 		DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
 			// Suppress diff - Password in API response is encrypted.
 			return true

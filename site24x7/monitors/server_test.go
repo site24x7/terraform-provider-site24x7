@@ -195,5 +195,8 @@ func serverTestResourceData(t *testing.T) *schema.ResourceData {
 			"123",
 			"456",
 		},
+		"tag_ids": []interface{}{
+			"123",
+		},
 	})
 }

@@ -17,19 +17,26 @@ func TestRestApiMonitorCreate(t *testing.T) {
 	c := fake.NewClient()
 
 	a := &api.RestApiMonitor{
-		DisplayName:               "foo",
-		Type:                      string(api.RESTAPI),
-		Website:                   "www.test.tld",
-		CheckFrequency:            "5",
-		Timeout:                   10,
-		HTTPMethod:                "G",
-		HTTPProtocol:              "H1.1",
-		SSLProtocol:               "Auto",
-		UseAlpn:                   false,
-		UseIPV6:                   false,
-		RequestBody:               "req_param",
-		RequestContentType:        "JSON",
-		ResponseContentType:       "T",
+		DisplayName:         "foo",
+		Type:                string(api.RESTAPI),
+		Website:             "www.test.tld",
+		CheckFrequency:      "5",
+		Timeout:             10,
+		HTTPMethod:          "G",
+		HTTPProtocol:        "H1.1",
+		SSLProtocol:         "Auto",
+		UseAlpn:             false,
+		UseIPV6:             false,
+		RequestBody:         "req_param",
+		RequestContentType:  "JSON",
+		ResponseContentType: "T",
+		// Built by the resource from json_schema / json_schema_severity;
+		// severity is an int, and JSONSchema is interface{}-typed, so the
+		// dynamic types have to match exactly.
+		JSONSchema: map[string]interface{}{
+			"severity":     2,
+			"schema_value": "{}",
+		},
 		OAuth2Provider:            "provider",
 		ClientCertificatePassword: "",
 		JwtID:                     "111",
@@ -159,19 +166,26 @@ func TestRestApiMonitorUpdate(t *testing.T) {
 	c := fake.NewClient()
 
 	a := &api.RestApiMonitor{
-		MonitorID:                 "123",
-		DisplayName:               "foo",
-		Type:                      string(api.RESTAPI),
-		Website:                   "www.test.tld",
-		CheckFrequency:            "5",
-		Timeout:                   10,
-		HTTPMethod:                "G",
-		HTTPProtocol:              "H1.1",
-		SSLProtocol:               "Auto",
-		UseAlpn:                   false,
-		UseIPV6:                   false,
-		RequestContentType:        "JSON",
-		ResponseContentType:       "T",
+		MonitorID:           "123",
+		DisplayName:         "foo",
+		Type:                string(api.RESTAPI),
+		Website:             "www.test.tld",
+		CheckFrequency:      "5",
+		Timeout:             10,
+		HTTPMethod:          "G",
+		HTTPProtocol:        "H1.1",
+		SSLProtocol:         "Auto",
+		UseAlpn:             false,
+		UseIPV6:             false,
+		RequestContentType:  "JSON",
+		ResponseContentType: "T",
+		// Built by the resource from json_schema / json_schema_severity;
+		// severity is an int, and JSONSchema is interface{}-typed, so the
+		// dynamic types have to match exactly.
+		JSONSchema: map[string]interface{}{
+			"severity":     2,
+			"schema_value": "{}",
+		},
 		RequestBody:               "req_param",
 		OAuth2Provider:            "provider",
 		ClientCertificatePassword: "",
@@ -393,6 +407,9 @@ func restApiMonitorTestResourceData(t *testing.T) *schema.ResourceData {
 		"user_group_ids": []interface{}{
 			"123",
 			"456",
+		},
+		"tag_ids": []interface{}{
+			"123",
 		},
 		"use_name_server":   true,
 		"json_schema_check": false,

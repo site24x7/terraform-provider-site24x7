@@ -6,5 +6,11 @@
     "726000000002464"
   ],
   "health_threshold_count": 10,
-  "suppress_alert": false
+  "suppress_alert": false,
+  "notification_profile_id": "",
+  "healthcheck_profile_id": "",
+  "enable_incident_management": false,
+  "healing_period": 0,
+  "alert_frequency": 0,
+  "alert_periodically": false
 }

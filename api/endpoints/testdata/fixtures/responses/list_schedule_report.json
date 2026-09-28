@@ -1,0 +1,32 @@
+{
+  "code": 0,
+  "message": "success",
+  "data": [
+    {
+      "report_id": "123",
+      "display_name": "Daily Report",
+      "report_type": 17,
+      "selection_type": 2,
+      "report_format": 1,
+      "report_frequency": 1,
+      "scheduled_time": 10,
+      "user_groups": [
+        "100"
+      ],
+      "scheduled_day": 0
+    },
+    {
+      "report_id": "456",
+      "display_name": "Weekly Report",
+      "report_type": 17,
+      "selection_type": 2,
+      "report_format": 2,
+      "report_frequency": 2,
+      "scheduled_time": 11,
+      "user_groups": [
+        "200"
+      ],
+      "scheduled_day": 0
+    }
+  ]
+}

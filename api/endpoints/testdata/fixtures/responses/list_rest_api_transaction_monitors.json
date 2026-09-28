@@ -18,7 +18,7 @@
           "request_content_type": "JSON",
           "response_type": "T",
           "request_param": "req_param",
-          "timeout": 10,
+          "timeout": "10",
           "use_name_server": true,
           "json_schema_check": false,
           "auth_user": "username",
@@ -40,7 +40,7 @@
             }]
           },
           "step_url": "www.test.tld",
-          "on_error": 0
+          "severity": 0
         }]
       },
         {
@@ -55,7 +55,7 @@
             "request_content_type": "JSON",
             "response_type": "T",
             "request_param": "req_param",
-            "timeout": 10,
+            "timeout": "10",
             "use_name_server": true,
             "json_schema_check": false,
             "auth_user": "username",
@@ -77,7 +77,7 @@
               }]
             },
             "step_url": "www.test.tld",
-            "on_error":0
+            "severity": 0
           }]
         }
       ],
@@ -110,7 +110,7 @@
           "request_content_type": "JSON",
           "response_type": "T",
           "request_param": "req_param",
-          "timeout": 10,
+          "timeout": "10",
           "use_name_server": true,
           "json_schema_check": false,
           "auth_user": "username",
@@ -132,7 +132,7 @@
             }]
           },
           "step_url": "www.test.tld",
-          "on_error": 0
+          "severity": 0
         }]
       },
         {
@@ -147,7 +147,7 @@
             "request_content_type": "JSON",
             "response_type": "T",
             "request_param": "req_param",
-            "timeout": 10,
+            "timeout": "10",
             "use_name_server": true,
             "json_schema_check": false,
             "auth_user": "username",
@@ -169,7 +169,7 @@
               }]
             },
             "step_url": "www.test.tld",
-            "on_error": 0
+            "severity": 0
           }]
         }
       ],

@@ -2,7 +2,7 @@
   "name": "Site24x7-PagerDuty Integration",
   "service_id": "123",
   "sender_name":"Site24x7",
-  "service_key": "service_key",
+  "api_key": "service_key",
   "trouble_alert": true,
   "critical_alert": false,
   "down_alert": false,

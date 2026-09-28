@@ -1,0 +1,22 @@
+{
+  "business_hours_id": "12345",
+  "display_name": "Updated Shift",
+  "description": "Updated shift timings",
+  "time_config": [
+    {
+      "day": 2,
+      "start_time": "08:00",
+      "end_time": "16:00"
+    },
+    {
+      "day": 3,
+      "start_time": "08:00",
+      "end_time": "16:00"
+    },
+    {
+      "day": 4,
+      "start_time": "08:00",
+      "end_time": "16:00"
+    }
+  ]
+}

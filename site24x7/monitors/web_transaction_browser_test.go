@@ -98,7 +98,7 @@ func TestWebTransactionBrowserMonitorCreate(t *testing.T) {
 
 	require.NoError(t, webTransactionBrowserMonitorCreate(d, c))
 
-	c.FakeWebTransactionBrowserMonitors.On("Create	", a).Return(a, apierrors.NewStatusError(500, "error")).Once()
+	c.FakeWebTransactionBrowserMonitors.On("Create", a).Return(a, apierrors.NewStatusError(500, "error")).Once()
 
 	err := webTransactionBrowserMonitorCreate(d, c)
 

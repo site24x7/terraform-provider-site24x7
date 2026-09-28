@@ -66,6 +66,7 @@ var FTPTransferMonitorSchema = map[string]*schema.Schema{
 		Type:        schema.TypeString,
 		Optional:    true,
 		Description: "password to access the file",
+		Sensitive:   true, // Hides it from logs and plan output
 	},
 	"destination": {
 		Type:        schema.TypeString,

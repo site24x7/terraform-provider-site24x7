@@ -6,6 +6,7 @@
     "service_status ": 0,
     "name": "Site24x7-ServiceNow Integration",
     "instance_url": "https://www.example.com",
+    "is_incident_api": 1,
     "username":"username",
     "password":"password",
     "sender_name":"Site24x7",

@@ -16,12 +16,25 @@ func TestMonitorGroupCreate(t *testing.T) {
 
 	c := fake.NewClient()
 
+	// With notification_profile_id and healthcheck_profile_id unset, the
+	// resource resolves defaults: the first notification profile, and the
+	// threshold profile whose type is HEALTHCHECK. Both lookups have to be
+	// stubbed, and they run on every create.
+	c.FakeNotificationProfiles.On("List").Return([]*api.NotificationProfile{
+		{ProfileID: "789", ProfileName: "Default Notification Profile"},
+	}, nil)
+	c.FakeThresholdProfiles.On("List").Return([]*api.ThresholdProfile{
+		{ProfileID: "012", Type: "HEALTHCHECK", ProfileName: "Default Health Check Profile"},
+	}, nil)
+
 	a := &api.MonitorGroup{
 		DisplayName:            "foobar",
 		Description:            "baz",
 		DependencyResourceIDs:  []string{"234", "567"},
 		DependencyResourceType: 2,
-		HealthThresholdCount:1,
+		HealthThresholdCount:   1,
+		NotificationProfileID:  "789",
+		HealthCheckProfileID:   "012",
 	}
 
 	c.FakeMonitorGroups.On("Create", a).Return(a, nil).Once()
@@ -64,7 +77,10 @@ func TestMonitorGroupRead(t *testing.T) {
 
 	c := fake.NewClient()
 
-	c.FakeMonitorGroups.On("Get", "123").Return(&api.MonitorGroup{}, nil).Once()
+	// The group has to come back with its ID: monitorGroupRead treats an empty
+	// GroupID as "deleted outside Terraform" and clears the resource ID, which
+	// would send the second read below to Get("") instead of Get("123").
+	c.FakeMonitorGroups.On("Get", "123").Return(&api.MonitorGroup{GroupID: "123"}, nil).Once()
 
 	require.NoError(t, monitorGroupRead(d, c))
 

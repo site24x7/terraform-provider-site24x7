@@ -46,9 +46,12 @@ func TestBusinessHour(t *testing.T) {
 				group, err := NewBusinessHour(c).Get("12345")
 				require.NoError(t, err)
 
+				// Mirrors responses/get_business_hour.json, which is a capture of a
+				// real API response - including the business_hours_id it returns.
 				expected := &api.BusinessHour{
+					ID:          "113770000041403039",
 					DisplayName: "General Shift",
-					Description: "5-day workweek from 9 AM to 5 PM",
+					Description: "General shift 5 days a week 9 AM to 5 PM",
 					TimeConfig: []api.TimeSlot{
 						{Day: 2, StartTime: "09:00", EndTime: "17:00"},
 						{Day: 3, StartTime: "09:00", EndTime: "17:00"},
@@ -73,9 +76,9 @@ func TestBusinessHour(t *testing.T) {
 
 				expected := []*api.BusinessHour{
 					{
-						ID:          "12345",
+						ID:          "113770000041403039",
 						DisplayName: "General Shift",
-						Description: "5-day workweek from 9 AM to 5 PM",
+						Description: "General shift 5 days a week 9 AM to 5 PM",
 						TimeConfig: []api.TimeSlot{
 							{Day: 2, StartTime: "09:00", EndTime: "17:00"},
 							{Day: 3, StartTime: "09:00", EndTime: "17:00"},
@@ -115,7 +118,10 @@ func TestBusinessHour(t *testing.T) {
 		{
 			Name:         "delete business hour",
 			ExpectedVerb: "DELETE",
-			ExpectedPath: "/businesshours/12345",
+			// The other four cases in this test all use /business_hours, and so
+			// does the client; the missing underscore here was a typo that no
+			// run could catch while the fixtures were missing.
+			ExpectedPath: "/business_hours/12345",
 			StatusCode:   200,
 			Fn: func(t *testing.T, c rest.Client) {
 				require.NoError(t, NewBusinessHour(c).Delete("12345"))

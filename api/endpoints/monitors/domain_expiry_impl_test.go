@@ -55,11 +55,14 @@ func TestDomainExpiryMonitors(t *testing.T) {
 				require.NoError(t, err)
 
 				expected := &api.DomainExpiryMonitor{
-					MonitorID:             "897654345678",
-					DisplayName:           "Domain Expiry Monitor",
-					HostName:              "www.example.com",
-					DomainName:            "www.example.com",
-					Port:                  443,
+					MonitorID:   "897654345678",
+					DisplayName: "Domain Expiry Monitor",
+					HostName:    "www.example.com",
+					DomainName:  "www.example.com",
+					// Port is interface{}. Decoding JSON puts a float64 in it, and
+					// an int literal here would never compare equal - while %#v
+					// prints both as 443, making the failure unreadable.
+					Port:                  float64(443),
 					UseIPV6:               true,
 					Timeout:               10,
 					ExpireDays:            30,
@@ -93,7 +96,7 @@ func TestDomainExpiryMonitors(t *testing.T) {
 						DisplayName:           "Domain Expiry Monitor",
 						HostName:              "www.example.com",
 						DomainName:            "www.example.com",
-						Port:                  443,
+						Port:                  float64(443),
 						UseIPV6:               true,
 						Timeout:               10,
 						ExpireDays:            30,
@@ -112,7 +115,7 @@ func TestDomainExpiryMonitors(t *testing.T) {
 						DisplayName:           "Domain Expiry Monitor",
 						HostName:              "www.example.com",
 						DomainName:            "www.example.com",
-						Port:                  443,
+						Port:                  float64(443),
 						UseIPV6:               true,
 						Timeout:               10,
 						ExpireDays:            30,

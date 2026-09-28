@@ -242,6 +242,9 @@ func heartbeatTestResourceData(t *testing.T) *schema.ResourceData {
 			"123",
 			"456",
 		},
+		"tag_ids": []interface{}{
+			"123",
+		},
 		"third_party_service_ids": []interface{}{
 			"123",
 			"456",

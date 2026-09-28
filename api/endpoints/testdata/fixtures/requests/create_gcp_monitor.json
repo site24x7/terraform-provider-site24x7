@@ -1,0 +1,18 @@
+{
+  "display_name": "GCP Monitor Display Name",
+  "type": "GCP",
+  "project_id": "project-id",
+  "gcp_discover_services": [
+    1
+  ],
+  "check_frequency": "5",
+  "stop_rediscover_option": 1,
+  "gcp_sa_content": {
+    "private_key": "private-key",
+    "client_email": "client-email"
+  },
+  "user_group_ids": [
+    "123412341234123415"
+  ],
+  "notification_profile_id": "123412341234123413"
+}

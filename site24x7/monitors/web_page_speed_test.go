@@ -347,6 +347,9 @@ func webPageSpeedMonitorTestResourceData(t *testing.T) *schema.ResourceData {
 			"123",
 			"456",
 		},
+		"tag_ids": []interface{}{
+			"123",
+		},
 		"actions": map[string]interface{}{
 			"1": "123action",
 			"5": "234action",

@@ -3,6 +3,7 @@
   "service_id": "123",
   "sender_name":"Site24x7",
   "instance_url": "https://www.example.com",
+  "is_incident_api": 1,
   "trouble_alert": true,
   "critical_alert": false,
   "down_alert": false,

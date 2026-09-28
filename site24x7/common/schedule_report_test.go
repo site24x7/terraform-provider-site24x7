@@ -35,10 +35,14 @@ func TestScheduleReportCreate(t *testing.T) {
 	require.NoError(t, scheduleReportCreate(d, c))
 	assert.Equal(t, "sr-123", d.Id())
 
+	// A fresh ResourceData: the successful create above set d.Id() to "sr-123",
+	// which the next request would carry as ReportID.
+	failing := scheduleReportTestResourceData(t)
+
 	c.FakeScheduleReport.On("Create", a).
 		Return(nil, apierrors.NewStatusError(500, "error")).Once()
 
-	err := scheduleReportCreate(d, c)
+	err := scheduleReportCreate(failing, c)
 	assert.Equal(t, apierrors.NewStatusError(500, "error"), err)
 }
 

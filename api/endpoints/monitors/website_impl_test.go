@@ -241,6 +241,9 @@ func TestMonitors(t *testing.T) {
 						MonitorID: "12340000016108026",
 						Website:   "https://some.api.tld/api/v1/status",
 						Type:      "URL",
+						// The fixture reports this monitor as state 5; the first
+						// one in the list is state 0.
+						State: 5,
 						UserGroupIDs: []string{
 							"12340000015652005",
 						},

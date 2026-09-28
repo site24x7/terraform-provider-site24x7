@@ -119,31 +119,44 @@ neither.
 
 ## Credentials that never come back
 
-Nine credential-shaped attributes exist across eleven resources, and the API does not return
-them. Generated or refreshed config shows them empty; applying that empty value overwrites the
-live credential. Source them from variables backed by a vault before the first apply.
+Seven credential-shaped attributes appear on fourteen resources, 19 attribute/resource pairs
+in all, and the API does not return them in usable form. Generated or refreshed config shows
+them empty, masked or encrypted, and applying that value overwrites the live credential.
+Source them from variables backed by a vault before the first apply.
 
-Only six of those attribute/resource pairs are marked `Sensitive` in the schema. **Every other
-one is printed in cleartext** in plan output, `terraform show` and CI logs:
+**15 of the 19 pairs are marked `Sensitive`.** The remaining four are all `auth_pass` on HTTP
+monitors, and they are **printed in cleartext** in plan output, `terraform show` and CI logs:
 
 | Attribute | On | `Sensitive` |
 |---|---|---|
-| `access_token` | `site24x7_oauth2_provider` | yes |
+| `auth_pass` | `site24x7_website_monitor`, `site24x7_rest_api_monitor`, `site24x7_web_page_speed_monitor`, `site24x7_rest_api_transaction_monitor` (inside each `steps` → `step_details` block) | **no** |
 | `auth_pass` | `site24x7_oauth2_provider` | yes |
-| `client_secret` | `site24x7_oauth2_provider` | yes |
-| `client_secret` | `site24x7_azure_monitor` | yes |
-| `password` | `site24x7_servicenow_integration` | yes |
-| `private_key` | `site24x7_gcp_monitor` | yes |
-| `auth_pass` | `site24x7_website_monitor`, `site24x7_rest_api_monitor`, `site24x7_rest_api_transaction_monitor`, `site24x7_web_page_speed_monitor` | **no** |
-| `client_certificate_password` | `site24x7_website_monitor`, `site24x7_rest_api_monitor`, `site24x7_rest_api_transaction_monitor` | **no** |
-| `password` | `site24x7_credential_profile`, `site24x7_ftp_transfer_monitor`, `site24x7_web_transaction_browser_monitor`, `site24x7_webhook_integration` | **no** |
-| `private_key` | `site24x7_connectwise_integration` | **no** |
-| `token` | `site24x7_telegram_integration` | **no** |
+| `client_certificate_password` | `site24x7_website_monitor`, `site24x7_rest_api_monitor`, `site24x7_rest_api_transaction_monitor` (inside `steps`) | yes |
+| `password` | `site24x7_credential_profile`, `site24x7_ftp_transfer_monitor`, `site24x7_servicenow_integration`, `site24x7_webhook_integration` | yes |
+| `password` (in the `auth_details` map) | `site24x7_web_transaction_browser_monitor` | yes, via the map. The SDK ignores `Sensitive` on a map's nested schema, so the whole `auth_details` map is marked instead |
+| `client_secret` | `site24x7_oauth2_provider`, `site24x7_azure_monitor` | yes |
+| `private_key` | `site24x7_gcp_monitor`, `site24x7_connectwise_integration` | yes |
+| `token` | `site24x7_telegram_integration` | yes |
+| `access_token` | `site24x7_oauth2_provider` (computed, server-issued) | yes |
+
+The `site24x7_credential_profile` **data source** also marks its `password` output `Sensitive`.
+
+`Sensitive` only hides the value from CLI output. **It is still stored in plaintext in the
+state file**, so the state backend needs encryption and access control whatever this table
+says.
+
+`site24x7_soap_monitor` has no `client_certificate_password` attribute. The schema entry is
+commented out, so a SOAP monitor that needs a client certificate password can't be fully
+managed from Terraform.
 
 `site24x7_credential_profile` is the one to reach for rather than repeating a password across
 monitors: five monitor resources accept `credential_profile_id` (`website`, `rest_api`,
-`soap`, `web_page_speed`, `ftp_transfer`). Note its own `password` is required and unmarked, so
-the profile itself still needs vault-sourced input.
+`soap`, `web_page_speed`, `ftp_transfer`). Its own `password` is required. It's `Sensitive`,
+so it no longer prints, but it still needs vault-sourced input.
+
+Whether each secret also causes a perpetual diff, or never applies after rotation, depends on
+how the resource reads it back. The `site24x7-drift-troubleshooting` skill has that table
+(Classes A and B).
 
 ## What `terraform destroy` actually does
 
@@ -190,7 +203,7 @@ production — the provider will forward the call either way.
 | `site24x7_sla_setting` | yes | `site24x7_sla_setting` |
 | `site24x7_customer` | yes | `site24x7_customer`, `site24x7_msp` |
 | `site24x7_businesshour` | yes | none |
-| `site24x7_schedule_maintenance` | yes | none |
+| `site24x7_schedule_maintenance` | yes | `site24x7_schedule_maintenances` — list, filterable by `monitor_id`, `monitor_group_id`, `tag_id`, `maintenance_type`, `maintenance_status`, `name_regex` |
 | `site24x7_schedule_report` | yes | none |
 | all 7 `site24x7_*_integration` | yes | none |
 | `site24x7_milestone_marker` | **no** | none |
@@ -203,8 +216,12 @@ Three data sources have no resource behind them and exist purely to read account
 
 Resources with **no** data source cannot be discovered by name from Terraform. To adopt or
 reference one you need its ID from the Site24x7 UI or a direct API call — that applies to
-business hours, scheduled maintenance, scheduled reports, every integration, milestone markers
-and subgroups.
+business hours, scheduled reports, every integration, milestone markers and subgroups.
+
+`site24x7_schedule_maintenances` filters in the provider, because `GET /maintenance` takes no
+query parameters. Its `monitor_id` filter matches only maintenances that list the monitor
+directly (`selection_type = 2`). A maintenance that covers the monitor through a monitor group
+or tag is not returned, so query those with `monitor_group_id` and `tag_id` as well.
 
 ## Worked example — a complete alerting path
 
@@ -285,9 +302,9 @@ routes alerts somewhere unintended.
       created, silent, alerts nothing.
 - [ ] An integration with `monitors` or `tags` populated but `selection_type` left at `0` —
       every monitor in the account routes to it.
-- [ ] Any of the four unmarked credential attributes (`auth_pass`,
-      `client_certificate_password`, `password`, `private_key`, `token`) written as a literal —
-      they appear in plan output and CI logs in cleartext.
+- [ ] Any credential written as a literal. `Sensitive` ones still land in state in plaintext,
+      and `auth_pass` on the website, REST API, web page speed and REST API transaction
+      monitors is not `Sensitive`, so it also appears in plan output and CI logs in cleartext.
 - [ ] A destroy plan containing `site24x7_customer` — it deletes nothing; say so.
 - [ ] `delete_on_destroy = true` on `site24x7_apm_application`.
 - [ ] `site24x7_milestone_marker` with no `monitor_id`, when a specific monitor was meant — it

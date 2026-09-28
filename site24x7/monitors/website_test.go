@@ -343,6 +343,9 @@ func websiteMonitorTestResourceData(t *testing.T) *schema.ResourceData {
 			"123",
 			"456",
 		},
+		"tag_ids": []interface{}{
+			"123",
+		},
 		"use_name_server": true,
 		"actions": map[string]interface{}{
 			"1": "123action",

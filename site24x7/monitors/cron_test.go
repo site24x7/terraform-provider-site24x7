@@ -252,6 +252,11 @@ func cronTestResourceData(t *testing.T) *schema.ResourceData {
 			"123",
 			"456",
 		},
+		// The tests expect TagIDs ["123"] on the request; without this key the
+		// resource built one with no tags at all.
+		"tag_ids": []interface{}{
+			"123",
+		},
 		"on_call_schedule_id": "1244",
 	})
 }

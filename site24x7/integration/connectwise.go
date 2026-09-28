@@ -32,6 +32,7 @@ var ConnectwiseIntegrationSchema = map[string]*schema.Schema{
 		Type:        schema.TypeString,
 		Required:    true,
 		Description: "Private Key for Authentication.",
+		Sensitive:   true, // Hides it from logs and plan output
 	},
 	"company_id": {
 		Type:        schema.TypeString,

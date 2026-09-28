@@ -16,9 +16,14 @@ func TestDomainExpiryMonitorCreate(t *testing.T) {
 
 	c := fake.NewClient()
 
+	// Type, DomainName and Port are not in the test's ResourceData: the resource
+	// sets Type itself, and the schema defaults supply "whios.iana.org" and 443.
 	a := &api.DomainExpiryMonitor{
 		DisplayName:           "Domain Expiry Monitor",
+		Type:                  string(api.DOMAINEXPIRY),
 		HostName:              "www.example.com",
+		DomainName:            "whios.iana.org",
+		Port:                  443,
 		Timeout:               10,
 		ExpireDays:            30,
 		OnCallScheduleID:      "234",
@@ -28,6 +33,7 @@ func TestDomainExpiryMonitorCreate(t *testing.T) {
 		MonitorGroups:         []string{"234", "567"},
 		UserGroupIDs:          []string{"123", "456"},
 		TagIDs:                []string{"123"},
+		ActionIDs:             []api.ActionRef{},
 	}
 
 	locationProfiles := []*api.LocationProfile{
@@ -93,7 +99,7 @@ func TestDomainExpiryMonitorCreate(t *testing.T) {
 
 	require.NoError(t, domainExpiryMonitorCreate(d, c))
 
-	c.FakeDomainExpiryMonitors.On("Create	", a).Return(a, apierrors.NewStatusError(500, "error")).Once()
+	c.FakeDomainExpiryMonitors.On("Create", a).Return(a, apierrors.NewStatusError(500, "error")).Once()
 
 	err := domainExpiryMonitorCreate(d, c)
 
@@ -108,13 +114,20 @@ func TestDomainExpiryMonitorUpdate(t *testing.T) {
 
 	a := &api.DomainExpiryMonitor{
 		MonitorID:             "897654345678",
-		DisplayName:           "foo",
+		DisplayName:           "Domain Expiry Monitor",
 		Type:                  string(api.DOMAINEXPIRY),
+		HostName:              "www.example.com",
+		DomainName:            "whios.iana.org",
+		Port:                  443,
+		Timeout:               10,
+		ExpireDays:            30,
+		OnCallScheduleID:      "234",
 		LocationProfileID:     "456",
 		NotificationProfileID: "789",
 		MonitorGroups:         []string{"234", "567"},
 		UserGroupIDs:          []string{"123", "456"},
 		TagIDs:                []string{"123"},
+		ActionIDs:             []api.ActionRef{},
 	}
 
 	locationProfiles := []*api.LocationProfile{
@@ -263,6 +276,7 @@ func domainExpiryMonitorTestResourceData(t *testing.T) *schema.ResourceData {
 		"tag_ids": []interface{}{
 			"123",
 		},
+		"on_call_schedule_id": "234",
 	},
 	)
 }

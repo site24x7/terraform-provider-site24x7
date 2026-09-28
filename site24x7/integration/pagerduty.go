@@ -17,6 +17,7 @@ var pagerDutyIntegrationSchema = map[string]*schema.Schema{
 		Type:        schema.TypeString,
 		Required:    true,
 		Description: "Unique integration key provided by PagerDuty to facilitate incident creation in PagerDuty.",
+		Sensitive:   true, // Hides it from logs and plan output
 	},
 	"sender_name": {
 		Type:        schema.TypeString,

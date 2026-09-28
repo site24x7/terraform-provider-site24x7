@@ -22,6 +22,7 @@ var TelegramIntegrationSchema = map[string]*schema.Schema{
 		Type:        schema.TypeString,
 		Required:    true,
 		Description: "Hook URL to which the message will be posted.",
+		Sensitive:   true, // Hides it from logs and plan output
 	},
 
 	"title": {

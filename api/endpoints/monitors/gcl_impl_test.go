@@ -55,6 +55,8 @@ func TestGCPMonitors(t *testing.T) {
 				require.NoError(t, err)
 
 				expected := &api.GCPMonitor{
+					// The API returns the monitor ID it was asked for.
+					MonitorID:            "113770000041271035",
 					DisplayName:          "GCP Monitor Display Name",
 					Type:                 "GCP",
 					ProjectID:            "project-id",
