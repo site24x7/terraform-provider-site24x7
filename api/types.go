@@ -478,10 +478,12 @@ type ScheduleMaintenance struct {
 	MaintenanceType    int          `json:"maintenance_type"`
 	StartTime          string       `json:"start_time"`
 	TimeZone           string       `json:"timezone,omitempty"`
-	EndTime            string       `json:"end_time"`
-	StartDate          string       `json:"start_date"`
-	EndDate            string       `json:"end_date"`
+	EndTime            string       `json:"end_time,omitempty"`
+	StartDate          string       `json:"start_date,omitempty"`
+	EndDate            string       `json:"end_date,omitempty"`
 	PerformMonitoring  bool         `json:"perform_monitoring"`
+	// StartDay and EndDay are days of the week, where 0 is Sunday. MarshalJSON
+	// sends them for the maintenance types that use them even when they are 0.
 	StartDay           int          `json:"start_day,omitempty"`
 	EndDay             int          `json:"end_day,omitempty"`
 	Duration           interface{}  `json:"duration,omitempty"`
@@ -492,10 +494,9 @@ type ScheduleMaintenance struct {
 	Monitors           []string     `json:"monitors,omitempty"`
 	MonitorGroups      []string     `json:"monitor_groups,omitempty"`
 	Tags               []string     `json:"tags,omitempty"`
-	// The fields below are returned by the API but not managed by the
-	// site24x7_schedule_maintenance resource. They are all omitempty so that
-	// requests built by the resource are unchanged; the
-	// site24x7_schedule_maintenances data source reads them.
+	// Monthly and recurrence settings, subgroup_monitors, and read-only
+	// attributes. All omitempty, so a maintenance type that does not use them
+	// sends none of them.
 	MaintenanceStatus        string `json:"maintenance_status,omitempty"`
 	MonthlyStartDate         int    `json:"monthly_start_date,omitempty"`
 	StartWeek                int    `json:"start_week,omitempty"`
@@ -512,6 +513,158 @@ type ScheduleMaintenance struct {
 
 func (scheduleMaintenance *ScheduleMaintenance) String() string {
 	return ToString(scheduleMaintenance)
+}
+
+// MarshalJSON sends start_day and end_day for the maintenance types that use
+// them, including 0 (Sunday), which omitempty would otherwise drop. Other
+// maintenance types never send them.
+func (scheduleMaintenance *ScheduleMaintenance) MarshalJSON() ([]byte, error) {
+	type request ScheduleMaintenance
+	body := struct {
+		request
+		// These shadow the embedded fields of the same JSON name.
+		StartDay *int `json:"start_day,omitempty"`
+		EndDay   *int `json:"end_day,omitempty"`
+	}{request: request(*scheduleMaintenance)}
+
+	switch scheduleMaintenance.MaintenanceType {
+	case MaintenanceTypeWeeklyByTime:
+		body.StartDay = &scheduleMaintenance.StartDay
+		body.EndDay = &scheduleMaintenance.EndDay
+	case MaintenanceTypeMonthlyByDay:
+		body.StartDay = &scheduleMaintenance.StartDay
+	}
+
+	return json.Marshal(body)
+}
+
+// UnmarshalJSON reads a maintenance returned by the API, which sends "" for
+// the numeric and boolean attributes a maintenance type does not use (for
+// example end_day on a Once maintenance) and sometimes sends numbers as
+// strings.
+func (scheduleMaintenance *ScheduleMaintenance) UnmarshalJSON(data []byte) error {
+	type response ScheduleMaintenance
+	body := struct {
+		*response
+		// These shadow the embedded fields of the same JSON name.
+		MaintenanceType          flexibleInt     `json:"maintenance_type"`
+		StartDay                 flexibleInt     `json:"start_day"`
+		EndDay                   flexibleInt     `json:"end_day"`
+		WeekDays                 flexibleIntList `json:"week_days"`
+		ExecuteEvery             flexibleInt     `json:"execute_every"`
+		SelectionType            flexibleInt     `json:"selection_type"`
+		MonthlyStartDate         flexibleInt     `json:"monthly_start_date"`
+		StartWeek                flexibleInt     `json:"start_week"`
+		StartAfter               flexibleInt     `json:"start_after"`
+		MaintenanceEndType       flexibleInt     `json:"maintenance_end_type"`
+		MaintenanceEndAfterTimes flexibleInt     `json:"maintenance_end_after_times"`
+		PerformMonitoring        flexibleBool    `json:"perform_monitoring"`
+		SubgroupMonitors         flexibleBool    `json:"subgroup_monitors"`
+	}{response: (*response)(scheduleMaintenance)}
+
+	if err := json.Unmarshal(data, &body); err != nil {
+		return err
+	}
+
+	scheduleMaintenance.MaintenanceType = int(body.MaintenanceType)
+	scheduleMaintenance.StartDay = int(body.StartDay)
+	scheduleMaintenance.EndDay = int(body.EndDay)
+	scheduleMaintenance.WeekDays = []int(body.WeekDays)
+	scheduleMaintenance.ExecuteEvery = int(body.ExecuteEvery)
+	scheduleMaintenance.SelectionType = ResourceType(body.SelectionType)
+	scheduleMaintenance.MonthlyStartDate = int(body.MonthlyStartDate)
+	scheduleMaintenance.StartWeek = int(body.StartWeek)
+	scheduleMaintenance.StartAfter = int(body.StartAfter)
+	scheduleMaintenance.MaintenanceEndType = int(body.MaintenanceEndType)
+	scheduleMaintenance.MaintenanceEndAfterTimes = int(body.MaintenanceEndAfterTimes)
+	scheduleMaintenance.PerformMonitoring = body.PerformMonitoring.value
+	scheduleMaintenance.SubgroupMonitors = nil
+	if body.SubgroupMonitors.set {
+		subgroupMonitors := body.SubgroupMonitors.value
+		scheduleMaintenance.SubgroupMonitors = &subgroupMonitors
+	}
+
+	return nil
+}
+
+// flexibleInt decodes a JSON number, a numeric string, or "" and null as 0.
+type flexibleInt int
+
+func (value *flexibleInt) UnmarshalJSON(rawValue []byte) error {
+	var number int
+	if err := json.Unmarshal(rawValue, &number); err == nil {
+		*value = flexibleInt(number)
+		return nil
+	}
+
+	var text string
+	if err := json.Unmarshal(rawValue, &text); err != nil {
+		return err
+	}
+	if text == "" {
+		*value = 0
+		return nil
+	}
+
+	number, err := strconv.Atoi(text)
+	if err != nil {
+		return err
+	}
+	*value = flexibleInt(number)
+	return nil
+}
+
+// flexibleIntList decodes a list of flexibleInt, or "" and null as no list.
+type flexibleIntList []int
+
+func (list *flexibleIntList) UnmarshalJSON(rawValue []byte) error {
+	var text string
+	if err := json.Unmarshal(rawValue, &text); err == nil && text == "" {
+		*list = nil
+		return nil
+	}
+
+	var values []flexibleInt
+	if err := json.Unmarshal(rawValue, &values); err != nil {
+		return err
+	}
+
+	*list = nil
+	for _, v := range values {
+		*list = append(*list, int(v))
+	}
+	return nil
+}
+
+// flexibleBool decodes a JSON boolean or "true" / "false". "" and null leave
+// it unset.
+type flexibleBool struct {
+	value bool
+	set   bool
+}
+
+func (flag *flexibleBool) UnmarshalJSON(rawValue []byte) error {
+	var value bool
+	if err := json.Unmarshal(rawValue, &value); err == nil {
+		*flag = flexibleBool{value: value, set: string(rawValue) != "null"}
+		return nil
+	}
+
+	var text string
+	if err := json.Unmarshal(rawValue, &text); err != nil {
+		return err
+	}
+	if text == "" {
+		*flag = flexibleBool{}
+		return nil
+	}
+
+	value, err := strconv.ParseBool(text)
+	if err != nil {
+		return err
+	}
+	*flag = flexibleBool{value: value, set: true}
+	return nil
 }
 
 type ScheduleReport struct {

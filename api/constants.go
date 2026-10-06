@@ -11,6 +11,16 @@ const (
 	Discovery          Status = 9
 	ConfigurationError Status = 10
 
+	// Maintenance type constants of a scheduled maintenance, as listed in the
+	// Schedule Maintenance constants of the Site24x7 API.
+	MaintenanceTypeDaily         = 1
+	MaintenanceTypeWeeklyByTime  = 2
+	MaintenanceTypeOnce          = 3
+	MaintenanceTypeMonthlyByDate = 5
+	MaintenanceTypeMonthlyByDay  = 6
+	MaintenanceTypeWeeklyByDay   = 8
+	MaintenanceTypeYearly        = 9
+
 	// ResourceType constants denotes the resource type of the third party integration.
 	AllMonitors ResourceType = 0
 	Monitor     ResourceType = 2
