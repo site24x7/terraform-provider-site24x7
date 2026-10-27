@@ -13,6 +13,27 @@ never come back from the API.
 | [`site24x7-drift-troubleshooting`](site24x7-drift-troubleshooting/SKILL.md) | Users and provider developers | Plans that never settle — secrets, list ordering, server defaults, profile flips, recreate loops — with a workaround for users and the Go fix for the provider |
 | [`site24x7-add-resource`](site24x7-add-resource/SKILL.md) | Provider developers | Adding a resource or data source to this codebase end to end: API type, endpoint, fake, tests, schema, Importer, registration, docs, example |
 
+## Quick start
+
+1. **Make the skills available where you work.** They load automatically inside this
+   repository. To use them in your own Terraform project, copy them to your user skills folder
+   first (see [Two things to know before you start](#two-things-to-know-before-you-start)).
+2. **Put your Site24x7 credentials in the environment**, or in a `.env` file in the project
+   folder: `SITE24X7_OAUTH2_CLIENT_ID`, `SITE24X7_OAUTH2_CLIENT_SECRET`,
+   `SITE24X7_OAUTH2_REFRESH_TOKEN`. Say which one when you ask, for example "credentials are in
+   .env".
+3. **Open Claude Code in the project folder** and either describe the task in plain words or
+   type the skill name with what you want:
+
+   ```
+   /site24x7-import-existing monitor group PROD_WEB and its monitors, credentials from .env
+   ```
+
+4. **Read the plan before anything is applied.** The skills run `terraform plan` themselves.
+   Read its output, or ask Claude to walk you through it, before you agree to a
+   `terraform apply`. The import skill never applies until the plan has been read line by line.
+5. **Finish on a clean plan.** A task is done when `terraform plan` reports "No changes".
+
 ## Which one do I want?
 
 | I want to… | Skill |
@@ -31,6 +52,8 @@ never come back from the API.
 | Add a customer under an MSP or BU | `site24x7-alerting-and-profiles` |
 | Know what `terraform destroy` really does to a resource | `site24x7-alerting-and-profiles` |
 | Import monitors that already exist | `site24x7-import-existing` |
+| Import every monitor of one type (all website, SERVER or SSL monitors) | `site24x7-import-existing` |
+| Import a monitor group together with the monitors in it | `site24x7-import-existing` |
 | Adopt a whole hand-built account into Terraform | `site24x7-import-existing` |
 | Drive `terraform plan` to "No changes" after an import | `site24x7-import-existing` |
 | Decide between `import` blocks, `terraform import`, and `site24x7_importer.py` | `site24x7-import-existing` |
@@ -50,6 +73,7 @@ get my existing monitors into Terraform", "set up Slack alerts") without anyone 
 
 ```
 /site24x7-import-existing all SERVER monitors
+/site24x7-import-existing monitor group PROD_WEB and its monitors, credentials from .env
 /site24x7-monitor-authoring the 12 prod API endpoints, alert the payments on-call
 /site24x7-alerting-and-profiles PagerDuty for the payments team
 /site24x7-drift-troubleshooting user_group_ids on site24x7_ssl_monitor.api keeps re-ordering
@@ -93,9 +117,23 @@ on apply.
 4. Generates configuration and reconciles the diff.
 5. Repeats until `terraform plan` reports "No changes", then hands over.
 
-It has a fast path for a single named monitor, so asking it to adopt one SSL monitor will not
-trigger a full account sweep. It will not run `apply` during an adoption unless the plan has
-been read line by line — an apply against a half-written config overwrites live monitors.
+It has three fast paths that skip the full account sweep:
+
+- **One named monitor.** Asking it to adopt one SSL monitor imports just that monitor.
+- **Every monitor of one type.** It lists that type with the `site24x7_monitors` data source
+  in a separate `inventory/` directory, so nothing in your project gets applied. It can narrow
+  the list with a name regex and leaves out monitors your project already manages. It then
+  generates the `import` blocks with a script and imports in batches of about 20.
+- **One monitor group and its monitors.** It finds the group by exact name, lists the
+  monitors in it, looks up each monitor's type with one read-only API call, and imports the
+  group and the monitors in a single `terraform plan -generate-config-out`. Monitors of types
+  that cannot be imported (`AMAZON`, `GCP`, `AZURE`) are listed for you instead. Importing the
+  group never adds or removes members: membership stays on each monitor's `monitor_groups`.
+
+It runs one Terraform process at a time in the foreground, never in a loop or in the
+background, and loads credentials from `.env` in the same command that runs Terraform. It will
+not run `apply` during an adoption unless the plan has been read line by line — an apply
+against a half-written config overwrites live monitors.
 
 ### `site24x7-drift-troubleshooting`
 
@@ -124,6 +162,10 @@ the other skills' counts.
 
 - **Credentials in the environment**, never in a `.tf` file:
   `SITE24X7_OAUTH2_CLIENT_ID`, `SITE24X7_OAUTH2_CLIENT_SECRET`, `SITE24X7_OAUTH2_REFRESH_TOKEN`.
+  A `.env` file in the project folder also works if you tell the skill it is there; Terraform
+  itself never reads `.env`. Save it with Unix line endings if you can: Windows line endings
+  add a hidden character to every value, which the import skill strips but other tools may
+  not. Keep `.env` out of version control.
 - **`data_center` matching where those credentials were issued** — `US`, `EU`, `IN`, `AU`, `CN`,
   `JP` or `CA`. A mismatch fails as a confusing auth error, not a clear one.
 - **`zaaid`** when the target is a customer under an MSP or BU. Without it you query the parent
@@ -161,13 +203,40 @@ Copied that way they are a snapshot: re-copy after pulling changes to this repo.
 | `TF_LOG=DEBUG terraform apply` | `$env:TF_LOG='DEBUG'; terraform apply` |
 | `grep -rE 'oauth2_\|auth_pass\|secret' *.tf` | `Select-String -Path *.tf -Pattern 'oauth2_\|auth_pass\|secret'` |
 
+## If a run looks stuck
+
+A skill that shows a spinner for a long time is usually waiting on Terraform, not broken.
+
+1. **Wait first.** A plan that imports many monitors can take several minutes. Failed API
+   calls are retried up to 4 times with waits of up to 30 seconds each, so wrong credentials or
+   a wrong `data_center` look like a hang before they fail.
+2. **Look for a loop.** If the session says it is running Terraform in a loop or in the
+   background, or that "two loops are racing", press Esc to stop it. One Terraform run imports
+   everything, so no loop is needed.
+3. **End leftover Terraform processes** from PowerShell (an administrator window if you get
+   "Access is denied"):
+
+   ```powershell
+   Get-CimInstance Win32_Process |
+     Where-Object { $_.CommandLine -match 'terraform(\.exe)? (import|plan|apply)' } |
+     Select-Object ProcessId, CommandLine
+   Stop-Process -Id <ProcessId> -Force
+   ```
+
+4. **Check the state before retrying.** In the project folder, copy `terraform.tfstate`
+   somewhere safe, delete `.terraform.tfstate.lock.info` if it is still there once no
+   Terraform process is running, and run `terraform state list` to see what was imported.
+5. **Ask again with the constraint stated**, for example: "use import blocks and a single
+   `terraform plan -generate-config-out`, run in the foreground, no loops".
+
 ## Maintaining these skills
 
 Each `SKILL.md` has YAML frontmatter with `name` (**must equal its directory name**),
 `description` (what drives automatic loading — keep the trigger phrases in it),
 `user-invocable`, `argument-hint` and `allowed-tools` (all five are granted `Read`, `Write`,
-`Edit`, `Glob`, `Grep`, `Bash`, so they can write `.tf` files and run `terraform`; the drift and
-add-resource skills also get `PowerShell`, since their audit commands are written for it).
+`Edit`, `Glob`, `Grep`, `Bash`, so they can write `.tf` files and run `terraform`; the drift,
+add-resource and import skills also get `PowerShell`, since some of their commands are written
+for it).
 
 The skills state facts about the provider that change when the provider changes: how many
 resources are importable, which resources expose `location_profile_name`, the monitor type

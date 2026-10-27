@@ -214,6 +214,10 @@ Note: Domain names in the OAuth credentials generation steps vary based on your 
 6. Canada (CA) - https://accounts.zohocloud.ca and https://api-console.zohocloud.ca
 
 
+## Using Claude Code skills
+
+This repository ships [Claude Code](https://claude.com/claude-code) skills that write monitors and alerting, import an existing account or a monitor group with its monitors, fix plans that never settle, and add resources to the provider. See [.claude/skills/README.md](.claude/skills/README.md) for what each skill does and how to use it.
+
 ## Steps to import existing monitors and generate terraform resource configuration for the same
 
 #### Clone the repository
