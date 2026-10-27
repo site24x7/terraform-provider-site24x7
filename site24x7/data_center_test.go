@@ -10,9 +10,10 @@ import (
 
 // The exact endpoints per data center, from https://www.site24x7.com/help/api/
 //
-// Japan is the odd one out: its API is served from app.site24x7.jp, not from a
-// www host like every other region. www.site24x7.jp is the Japanese marketing
-// site, so pointing the provider at it returns HTML, never API responses.
+// Japan, the UK and the UAE are the odd ones out: their documented API roots
+// are on the app host (app.site24x7.jp, app.site24x7.uk, app.site24x7.ae), not
+// on www like every other region. www.site24x7.jp is the Japanese marketing site, so pointing the
+// provider at it returns HTML, never API responses.
 func TestDataCenterEndpoints(t *testing.T) {
 	for _, test := range []struct {
 		code     string
@@ -26,6 +27,9 @@ func TestDataCenterEndpoints(t *testing.T) {
 		{"CN", "https://www.site24x7.cn/api", "https://accounts.zoho.com.cn/oauth/v2/token"},
 		{"JP", "https://app.site24x7.jp/api", "https://accounts.zoho.jp/oauth/v2/token"},
 		{"CA", "https://www.site24x7.ca/api", "https://accounts.zohocloud.ca/oauth/v2/token"},
+		{"UK", "https://app.site24x7.uk/api", "https://accounts.zoho.uk/oauth/v2/token"},
+		{"AE", "https://app.site24x7.ae/api", "https://accounts.zoho.ae/oauth/v2/token"},
+		{"SA", "https://www.site24x7.sa/api", "https://accounts.zoho.sa/oauth/v2/token"},
 	} {
 		t.Run(test.code, func(t *testing.T) {
 			dc := GetDataCenter(test.code)
@@ -60,4 +64,8 @@ func TestDataCenterURLsAreWellFormed(t *testing.T) {
 			assert.Equal(t, "/oauth/v2/token", tokenURL.Path)
 		})
 	}
+}
+
+func TestDataCenterCodes(t *testing.T) {
+	assert.Equal(t, []string{"AE", "AU", "CA", "CN", "EU", "IN", "JP", "SA", "UK", "US"}, DataCenterCodes())
 }

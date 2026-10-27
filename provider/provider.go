@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
 	"github.com/hashicorp/terraform-plugin-sdk/terraform"
 	log "github.com/sirupsen/logrus"
 	"github.com/site24x7/terraform-provider-site24x7/backoff"
@@ -50,9 +51,10 @@ func Provider() terraform.ResourceProvider {
 				Description: "Access token expiry in seconds",
 			},
 			"data_center": {
-				Type:        schema.TypeString,
-				Required:    true,
-				Description: "Site24x7 data center.",
+				Type:         schema.TypeString,
+				Required:     true,
+				ValidateFunc: validation.StringInSlice(site24x7.DataCenterCodes(), false),
+				Description:  "Site24x7 data center.",
 			},
 			"zaaid": {
 				Type:        schema.TypeString,

@@ -40,7 +40,7 @@ provider "site24x7" {
   // environment variable if the attribute is empty or omitted.
   oauth2_refresh_token = "<SITE24X7_OAUTH2_REFRESH_TOKEN>"
 
-  // (Required) Specify the data center (US/EU/IN/AU/CN/JP/CA).
+  // (Required) Specify the data center (US/EU/IN/AU/CN/JP/CA/UK/AE/SA).
   data_center = "US"
 }
 

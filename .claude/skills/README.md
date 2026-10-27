@@ -167,7 +167,7 @@ the other skills' counts.
   add a hidden character to every value, which the import skill strips but other tools may
   not. Keep `.env` out of version control.
 - **`data_center` matching where those credentials were issued** — `US`, `EU`, `IN`, `AU`, `CN`,
-  `JP` or `CA`. A mismatch fails as a confusing auth error, not a clear one.
+  `JP`, `CA`, `UK`, `AE` or `SA`. A mismatch fails as a confusing auth error, not a clear one.
 - **`zaaid`** when the target is a customer under an MSP or BU. Without it you query the parent
   account and see none of the customer's monitors.
 - **Terraform ≥ 1.5** to use `import` blocks and `terraform plan -generate-config-out`. The
