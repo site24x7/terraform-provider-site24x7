@@ -97,7 +97,7 @@ terraform {
 
 provider "site24x7" {
   # Read from SITE24X7_OAUTH2_CLIENT_ID / _CLIENT_SECRET / _REFRESH_TOKEN
-  data_center = "US"       # US | EU | IN | AU | CN | JP | CA
+  data_center = "US"       # US | EU | IN | AU | CN | JP | CA | UK | AE | SA
   # zaaid     = "1234"     # only for a customer under an MSP or BU
 }
 ```

@@ -54,7 +54,7 @@ terraform {
 provider "site24x7" {
   # Credentials come from SITE24X7_OAUTH2_CLIENT_ID / _CLIENT_SECRET / _REFRESH_TOKEN.
   # Never write them into a .tf file.
-  data_center = "US" # US | EU | IN | AU | CN | JP | CA — must match where the
+  data_center = "US" # US | EU | IN | AU | CN | JP | CA | UK | AE | SA — must match where the
                      # credentials were issued, or auth fails confusingly
 }
 ```
