@@ -1,0 +1,17 @@
+{
+  "display_name": "Databricks Workspace",
+  "type": "DBRICKS_WS",
+  "check_frequency": "30",
+  "auth_type": 4,
+  "TOKEN_PROFILE": "databricks_oidc",
+  "WORKSPACE_URI": "https://adb-1234567890123456.7.azuredatabricks.net/",
+  "access_key": "fake-client-id",
+  "secret_key": "fake-client-secret",
+  "monitored_services": [5002],
+  "disable_discovery": 0,
+  "threshold_profile_id": "123456000000057003",
+  "notification_profile_id": "123456000000057005",
+  "user_group_ids": ["123456000000057000"],
+  "tag_ids": [],
+  "update_auth_details": false
+}

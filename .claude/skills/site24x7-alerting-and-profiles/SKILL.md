@@ -136,6 +136,7 @@ monitors, and they are **printed in cleartext** in plan output, `terraform show`
 | `password` (in the `auth_details` map) | `site24x7_web_transaction_browser_monitor` | yes, via the map. The SDK ignores `Sensitive` on a map's nested schema, so the whole `auth_details` map is marked instead |
 | `client_secret` | `site24x7_oauth2_provider`, `site24x7_azure_monitor` | yes |
 | `private_key` | `site24x7_gcp_monitor`, `site24x7_connectwise_integration` | yes |
+| `secret_key` | `site24x7_databricks_monitor` (write-only, never read back) | yes |
 | `token` | `site24x7_telegram_integration` | yes |
 | `access_token` | `site24x7_oauth2_provider` (computed, server-issued) | yes |
 

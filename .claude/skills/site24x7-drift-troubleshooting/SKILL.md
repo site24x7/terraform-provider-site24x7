@@ -105,6 +105,7 @@ after provider changes.
 | `site24x7_rest_api_transaction_monitor` | `steps` → `client_certificate_password` | yes | always | yes (via `d.Set("steps", …)`) |
 | `site24x7_web_transaction_browser_monitor` | `auth_details` → `password` | yes (on the map) | no | **yes** (via `d.Set("auth_details", …)`) |
 | `site24x7_azure_monitor` | `client_secret` | yes | no | no ✓ |
+| `site24x7_databricks_monitor` | `secret_key` | yes | no | no ✓ |
 
 `site24x7_soap_monitor` has no `client_certificate_password` attribute; it's commented out
 in the schema.

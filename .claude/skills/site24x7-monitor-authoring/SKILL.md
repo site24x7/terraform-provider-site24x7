@@ -87,6 +87,7 @@ Ask what is being checked, not what the customer calls it.
 | ISP / network path quality | `site24x7_isp_monitor` |
 | FTP upload/download works | `site24x7_ftp_transfer_monitor` |
 | AWS / GCP / Azure account discovery | `site24x7_amazon_monitor` / `_gcp_monitor` / `_azure_monitor` |
+| A Databricks workspace (type `DBRICKS_WS`) | `site24x7_databricks_monitor` |
 | Application internals — transactions, traces, slow SQL, apdex | **not a monitor** — APM Insight, see Step 5 |
 
 `cron` vs `heartbeat`: use `site24x7_cron_monitor` when the job has a schedule Site24x7
@@ -108,9 +109,9 @@ Step 5 for those.
 | Write this | Instead of | Available on |
 |---|---|---|
 | `location_profile_name` | `location_profile_id` | 14 resources |
-| `notification_profile_name` | `notification_profile_id` | 19 resources |
-| `user_group_names` (list) | `user_group_ids` | 19 resources |
-| `tag_names` (list) | `tag_ids` | 19 resources |
+| `notification_profile_name` | `notification_profile_id` | 20 resources |
+| `user_group_names` (list) | `user_group_ids` | 20 resources |
+| `tag_names` (list) | `tag_ids` | 20 resources |
 
 Not every monitor type exposes every one — `grep '"location_profile_name"'` in the
 resource's Go file, or check its page under `docs/resources/`, before assuming.

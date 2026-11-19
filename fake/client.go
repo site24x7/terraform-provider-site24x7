@@ -23,6 +23,7 @@ type Client struct {
 	FakeTags                          *fake.Tags
 	FakeAmazonMonitors                *fake.AmazonMonitors
 	FakeAzureMonitors                 *fake.AzureMonitors
+	FakeDatabricksMonitors            *fake.DatabricksMonitors
 	FakeWebsiteMonitors               *fake.WebsiteMonitors
 	FakeWebPageSpeedMonitors          *fake.WebPageSpeedMonitors
 	FakeSSLMonitors                   *fake.SSLMonitors
@@ -81,6 +82,7 @@ func NewClient() *Client {
 		FakeTags:                          &fake.Tags{},
 		FakeAmazonMonitors:                &fake.AmazonMonitors{},
 		FakeAzureMonitors:                 &fake.AzureMonitors{},
+		FakeDatabricksMonitors:            &fake.DatabricksMonitors{},
 		FakeSSLMonitors:                   &fake.SSLMonitors{},
 		FakeCronMonitors:                  &fake.CronMonitors{},
 		FakeHeartbeatMonitors:             &fake.HeartbeatMonitors{},
@@ -241,6 +243,11 @@ func (c *Client) AWSExternalID() aws.AWSExternalID {
 // Monitors implements Client.
 func (c *Client) AzureMonitors() monitors.AzureMonitors {
 	return c.FakeAzureMonitors
+}
+
+// DatabricksMonitors implements Client.
+func (c *Client) DatabricksMonitors() monitors.DatabricksMonitors {
+	return c.FakeDatabricksMonitors
 }
 
 // MonitorGroups implements Client.

@@ -148,7 +148,7 @@ Monitor type codes (`api/constants.go` — these are the exact accepted strings)
 | `CRON` | `site24x7_cron_monitor` | `DOMAINEXPIRY` | `site24x7_domain_expiry_monitor` |
 | `HEARTBEAT` | `site24x7_heartbeat_monitor` | `REALBROWSER` | `site24x7_web_transaction_browser_monitor` |
 | `AMAZON` | `site24x7_amazon_monitor` | `GCP` | `site24x7_gcp_monitor` |
-| `AZURE` | `site24x7_azure_monitor` | | |
+| `AZURE` | `site24x7_azure_monitor` | `DBRICKS_WS` | `site24x7_databricks_monitor` |
 
 Also inventory the things monitors *depend on*, and import those **first** — a monitor
 referencing a location/notification/threshold profile that isn't in state will churn
@@ -503,7 +503,7 @@ terraform plan -generate-config-out=generated.tf
 ```
 
 Terraform writes real HCL for every `import` block and tells you exactly what still
-differs. It works for **42 of the 46 resources** — every resource whose Go definition
+differs. It works for **43 of the 47 resources** — every resource whose Go definition
 carries a `ResourceImporter`.
 
 **B. `terraform import` CLI — only for Terraform < 1.5.** Requires an empty

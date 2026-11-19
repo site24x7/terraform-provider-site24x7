@@ -1,0 +1,18 @@
+{
+  "code": 0,
+  "message": "success",
+  "data": [
+    {
+      "monitor_id": "123456000028010003",
+      "type": "DBRICKS_WS",
+      "display_name": "Databricks Workspace",
+      "check_frequency": "30"
+    },
+    {
+      "monitor_id": "123456000028010004",
+      "type": "DBRICKS_WS",
+      "display_name": "Databricks Workspace 2",
+      "check_frequency": "60"
+    }
+  ]
+}
