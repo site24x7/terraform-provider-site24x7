@@ -1,0 +1,18 @@
+{
+  "monitor_id": "123456000028010003",
+  "display_name": "Databricks Workspace Renamed",
+  "type": "DBRICKS_WS",
+  "check_frequency": "60",
+  "auth_type": 4,
+  "TOKEN_PROFILE": "databricks_oidc",
+  "WORKSPACE_URI": "https://adb-1234567890123456.7.azuredatabricks.net/",
+  "access_key": "fake-client-id",
+  "secret_key": "rotated-client-secret",
+  "monitored_services": [5002],
+  "disable_discovery": 1,
+  "threshold_profile_id": "123456000000057003",
+  "notification_profile_id": "123456000000057005",
+  "user_group_ids": ["123456000000057000"],
+  "tag_ids": ["123456000000057010"],
+  "update_auth_details": true
+}

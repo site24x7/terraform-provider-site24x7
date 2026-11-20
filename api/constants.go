@@ -46,4 +46,5 @@ const (
 	SOAP         MonitorType = "SOAP"
 	GCP          MonitorType = "GCP"
 	AZURE        MonitorType = "AZURE"
+	DBRICKS_WS   MonitorType = "DBRICKS_WS"
 )

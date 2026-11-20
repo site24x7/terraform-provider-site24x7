@@ -1327,3 +1327,70 @@ func (azureMonitor *AzureMonitor) GetUserGroupIDs() []string {
 func (azureMonitor *AzureMonitor) String() string {
 	return ToString(azureMonitor)
 }
+
+// IntList is a list of ints that also unmarshals from a JSON-encoded string such
+// as "[5002]", which is how the GET monitor API returns some list fields (for
+// example Databricks monitored_services). It always marshals as a plain array.
+type IntList []int
+
+func (l *IntList) UnmarshalJSON(data []byte) error {
+	var raw string
+	if err := json.Unmarshal(data, &raw); err == nil {
+		if raw == "" {
+			*l = IntList{}
+			return nil
+		}
+		data = []byte(raw)
+	}
+	var ints []int
+	if err := json.Unmarshal(data, &ints); err != nil {
+		return fmt.Errorf("cannot parse int list %s: %w", string(data), err)
+	}
+	*l = ints
+	return nil
+}
+
+// DatabricksMonitor represents a Databricks workspace monitor (type DBRICKS_WS).
+//
+// The create response does not echo the credentials, the workspace URI, the auth type
+// or the monitored services, so the pointer fields let Read tell "not returned" apart
+// from a real zero value.
+type DatabricksMonitor struct {
+	_                     struct{} `type:"structure"` // Enforces key-based initialization.
+	MonitorID             string   `json:"monitor_id,omitempty"`
+	DisplayName           string   `json:"display_name"`
+	Type                  string   `json:"type"`
+	CheckFrequency        string   `json:"check_frequency,omitempty"`
+	AuthType              *int     `json:"auth_type,omitempty"`
+	TokenProfile          string   `json:"TOKEN_PROFILE,omitempty"`
+	WorkspaceURI          string   `json:"WORKSPACE_URI,omitempty"`
+	AccessKey             string   `json:"access_key,omitempty"`
+	SecretKey             string   `json:"secret_key,omitempty"`
+	MonitoredServices     IntList  `json:"monitored_services,omitempty"`
+	DisableDiscovery      *int     `json:"disable_discovery,omitempty"`
+	ThresholdProfileID    string   `json:"threshold_profile_id,omitempty"`
+	NotificationProfileID string   `json:"notification_profile_id,omitempty"`
+	UserGroupIDs          []string `json:"user_group_ids"`
+	TagIDs                []string `json:"tag_ids"`
+	UpdateAuthDetails     *bool    `json:"update_auth_details,omitempty"`
+}
+
+func (m *DatabricksMonitor) SetLocationProfileID(locationProfileID string) {}
+
+func (m *DatabricksMonitor) GetLocationProfileID() string { return "" }
+
+func (m *DatabricksMonitor) SetNotificationProfileID(notificationProfileID string) {
+	m.NotificationProfileID = notificationProfileID
+}
+
+func (m *DatabricksMonitor) GetNotificationProfileID() string { return m.NotificationProfileID }
+
+func (m *DatabricksMonitor) SetUserGroupIDs(userGroupIDs []string) { m.UserGroupIDs = userGroupIDs }
+
+func (m *DatabricksMonitor) GetUserGroupIDs() []string { return m.UserGroupIDs }
+
+func (m *DatabricksMonitor) SetTagIDs(tagIDs []string) { m.TagIDs = tagIDs }
+
+func (m *DatabricksMonitor) GetTagIDs() []string { return m.TagIDs }
+
+func (m *DatabricksMonitor) String() string { return ToString(m) }

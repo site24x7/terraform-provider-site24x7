@@ -1,0 +1,18 @@
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "monitor_id": "123456000028010003",
+    "check_frequency": "30",
+    "threshold_profile_id": "123456000000057003",
+    "type": "DBRICKS_WS",
+    "display_name": "Databricks Workspace",
+    "auth_type": 4,
+    "monitored_services": "[5002]",
+    "disable_discovery": 0,
+    "WORKSPACE_URI": "https://adb-1234567890123456.7.azuredatabricks.net/",
+    "auth_data": "{\"access_key\":\"fake-client-id\"}",
+    "user_group_ids": ["123456000000057000"],
+    "notification_profile_id": "123456000000057005"
+  }
+}
